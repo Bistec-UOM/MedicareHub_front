@@ -1,9 +1,13 @@
 import React from 'react'
+import Navbar from '../components/navbar/Navbar'
+
+
+
 
 export default function Receptionist() {
   return (
     <div>
-        <h1>Receptionist</h1>
+        <Navbar/>
     </div>
   )
 }
