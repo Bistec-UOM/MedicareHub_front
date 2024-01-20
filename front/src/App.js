@@ -1,10 +1,11 @@
-import Admin from "./pages/Admin";
+
 import Doctor from "./pages/Doctor";
 import Pharmacy from "./pages/Pharmacy";
 import Receptionist from "./pages/Receptionist";
 import Lab from "./pages/Lab";
 import Log from "./pages/Log";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Dashboard from "./pages/Admin/Dashboard";
 
 function App() {
   return (
@@ -12,7 +13,7 @@ function App() {
       <BrowserRouter>
         <Routes>
         <Route path='/' element={<Log></Log>}></Route>
-      <Route path='admin' element={<Admin></Admin>}></Route>
+      <Route path='admin' element={<Dashboard/>}></Route>
       <Route path='recep' element={<Receptionist></Receptionist>}></Route>
       <Route path='doct' element={<Doctor></Doctor>}></Route>
       <Route path='pharm' element={<Pharmacy></Pharmacy>}></Route>
