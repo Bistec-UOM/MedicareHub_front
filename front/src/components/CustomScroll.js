@@ -2,24 +2,36 @@
 import styled from 'styled-components';
 
 export const CustomScroll = styled.div`
-  /* Add the scrollbar styles here */
-  ::-webkit-scrollbar {
-    width: 8px;
-  }
+/* Set overflow to auto or scroll */
+overflow: auto;
 
-  ::-webkit-scrollbar-thumb:hover {
-    background: #888;
-  }
+/* Hide scrollbar by default */
+::-webkit-scrollbar {
+  width: 0;
+}
 
-  ::-webkit-scrollbar-thumb {
-    background: #cccaca;
-    border-radius: 12px;
-  }
+/* Show scrollbar track when overflow occurs */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
 
-  ::-webkit-scrollbar-track {
-    background: #f1f1f1;
-  }
+/* Show scrollbar handle */
+::-webkit-scrollbar-thumb {
+  background: #555;
+  border-radius: 12px;
+}
 
-  /* For Firefox */
-  scrollbar-color: #555 #f1f1f1;
+/* Show scrollbar handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #888;
+}
+
+/* For Firefox */
+scrollbar-width: thin;
+scrollbar-color: #555 #f1f1f1;
+
+/* For Firefox - show scrollbar only when overflow occurs */
+&:hover {
+  scrollbar-width: thin;
+}
 `;

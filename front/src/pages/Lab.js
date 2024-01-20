@@ -4,6 +4,7 @@ import {SidebarContainer,SidebarTop,SidebarList} from '../components/sidebar/Sid
 import {Sideunit_Doctor} from '../components/sidebar/Sideunits'
 import SearchIcon from '@mui/icons-material/Search';
 import { CustomScroll } from '../components/CustomScroll';
+import Navbar from '../components/navbar/Navbar'
 
 export default function Lab() {
 
@@ -20,8 +21,9 @@ export default function Lab() {
 
   return (
    <CustomScroll>
-     <Grid container spacing={0}>
-       <Grid item xs={3} style={{height:'100vh',overflowY:'scroll'}}>
+     <Navbar></Navbar>
+     <Grid container spacing={0} sx={{paddingTop:'64px',height:'100vh'}}>
+       <Grid item xs={3} style={{height:'100%'}}>
          <SidebarContainer>
            <SidebarTop>
              <Toolbar>
@@ -30,28 +32,50 @@ export default function Lab() {
              </Toolbar>
            </SidebarTop>
            <SidebarList>
-             {data.map(el=>{
-               return(
-                 <Sideunit_Doctor name={el.name} title={el.title}></Sideunit_Doctor>
-               )
-             })}
-             {data.map(el=>{
-               return(
-                 <Sideunit_Doctor name={el.name} title={el.title}></Sideunit_Doctor>
-               )
-             })}
-             {data.map(el=>{
-               return(
-                 <Sideunit_Doctor name={el.name} title={el.title}></Sideunit_Doctor>
-               )
-             })}
+
            </SidebarList>
          </SidebarContainer>
        </Grid>
-       <Grid item xs={9}>
+       <Grid item xs={9} style={{height:'100%',overflowY:'scroll'}}>
     
        </Grid>
      </Grid>
    </CustomScroll>
   )
 }
+
+
+//backup code
+/* {
+<CustomScroll>
+<Navbar></Navbar>
+<Grid container spacing={0} sx={{paddingTop:'64px',height:'100vh'}}>
+  <Grid item xs={3} style={{height:'100%',backgroundColor:'gray'}}>
+    <SidebarContainer>
+      <SidebarTop>
+        <Toolbar>
+          <SearchIcon></SearchIcon>
+          <Paper sx={{width:'150px',height:'20px'}}>Search here</Paper>
+        </Toolbar>
+      </SidebarTop>
+      <SidebarList>
+        {data.map(el=>{
+          return(
+            <Sideunit_Doctor name={el.name} title={el.title}></Sideunit_Doctor>
+          )
+        })}
+        {data.map(el=>{
+          return(
+            <Sideunit_Doctor name={el.name} title={el.title}></Sideunit_Doctor>
+          )
+        })}
+
+      </SidebarList>
+    </SidebarContainer>
+  </Grid>
+  <Grid item xs={9} style={{height:'100%',overflowY:'scroll',backgroundColor:'yellow'}}>
+
+  </Grid>
+</Grid>
+</CustomScroll>
+} */
