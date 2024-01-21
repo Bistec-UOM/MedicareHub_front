@@ -2,7 +2,7 @@ import React from 'react';
 import TextField from '@mui/material/TextField';
 import SearchIcon from '@mui/icons-material/Search';
 
-const SearchBar = ({isDisabled}) => {
+const SearchBar = ({isDisabled,placename}) => {
 
     const handleSearch=()=>
     {
@@ -10,10 +10,10 @@ const SearchBar = ({isDisabled}) => {
     }
     
   return (
-    <TextField  sx={{marginLeft:'10%'}}
+    <TextField  sx={{marginLeft:'10%', backgroundColor:'#ffff'}}
       variant="outlined"
       size="small"
-      placeholder="Patient Name or Id..."
+      placeholder={placename}
       InputProps={{
         startAdornment: (
           <SearchIcon onClick={handleSearch}
@@ -28,6 +28,7 @@ const SearchBar = ({isDisabled}) => {
         },
       }}
       disabled={isDisabled}
+      
       
     />
   );
