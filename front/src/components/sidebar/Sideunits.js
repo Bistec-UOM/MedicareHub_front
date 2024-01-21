@@ -26,11 +26,17 @@ function Sideunit_Patient({name,status,time}) {
     )
 }
 
-function Sideunit_Test({name,test}) {
+function Sideunit_Test({id,name,test,setSelect}) {
     return (
-      <div style={{width:'90%',backgroundColor:'beige'}}>
-          <Typography variant='h5'>{name}</Typography>
-          <p>{test}</p>
+      <div style={{width:'90%',backgroundColor:'beige',marginTop:'5px'}} onClick={()=>setSelect(id)}>
+          <Typography sx={{fontSize:'16px'}}>{name}</Typography>
+          {
+            test.map((el)=>{
+              return(
+              <div key={el} style={{display:'inline',border:'1px solid black',paddingLeft:'4px',paddingLeft:'4px',borderRadius:'15px',marginLeft:'4px'}}>{el}</div>
+              )
+            })
+          }
       </div>
     )
 }
