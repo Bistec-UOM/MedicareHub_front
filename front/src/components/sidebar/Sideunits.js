@@ -2,12 +2,14 @@ import React from 'react'
 import Typography from '@mui/material/Typography'
 import { Chip } from '@mui/material'
 import CheckIcon from '@mui/icons-material/Check';
+import Divider from '@mui/material/Divider';
 
 function Sideunit_Doctor({name,title}) {
   return (
-    <div style={{width:'90%',backgroundColor:'beige'}}>
-        <Typography variant='h6'>Dr. {name}</Typography>
-        <p>{title}</p>
+    <div style={{width:'90%',margin:'3px'}}>
+        <Typography sx={{color:'black'}} variant='h6'>Dr. {name}</Typography>
+        <p style={{color:'#9F9D9D'}}>{title}</p>
+        <Divider variant="middle" />
     </div>
   )
 }
