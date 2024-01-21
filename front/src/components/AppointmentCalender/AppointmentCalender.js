@@ -29,7 +29,7 @@ const AppointmentCalender = () => {
           <Grid item md={3}>
            <SidebarContainer>
             <SidebarTop>
-              <SearchBar isDisabled={false} placename="Doctor name or id..."></SearchBar>
+              <SearchBar mgl="10%" isDisabled={false} placename="Doctor name or id..."></SearchBar>
             </SidebarTop>
             <SidebarList>
               {data.map((item,index)=>(
