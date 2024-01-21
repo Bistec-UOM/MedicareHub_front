@@ -9,6 +9,7 @@ import { SidebarContainer } from "../sidebar/Sidebar";
 import { SidebarTop,SidebarList } from "../sidebar/Sidebar";
 import { Sideunit_Doctor } from "../sidebar/Sideunits";
 import { CustomScroll } from "../CustomScroll";
+import AppAddPopup from "../../AppAddPopup/AppAddPopup";
 
 const Day = () => {
   var location = useLocation();
@@ -16,6 +17,20 @@ const Day = () => {
   const [dayapp, setDayApp] = useState([]);
   const [isDisabled, setIsDisabled] = useState(true);
   const [filteredAppointments, setFilteredAppointments] = useState([]);
+
+  const [apopen,setApopen]=useState(false);
+
+  const handleDeleteAll=()=>
+  {
+    setFilteredAppointments([]);
+    setIsDisabled(true);
+
+  }
+
+  const handleAppAd=()=>
+  {
+    setApopen(true);
+  }
 
   const [appointlist,setAppointList]=useState([
     {
@@ -119,7 +134,7 @@ const Day = () => {
           <Grid item md={3}>
           <SidebarContainer>
             <SidebarTop>
-              <SearchBar  isDisabled={false} placename="Doctor name or id..."></SearchBar>
+              <SearchBar  isDisabled={false} placename="Doctor name or id..." mgl="10%"></SearchBar>
             </SidebarTop>
             <SidebarList>
               {data.map((item,index)=>(
@@ -138,7 +153,7 @@ const Day = () => {
                 alignItem: "center",
               }}
             >
-              <SearchBar isDisabled={isDisabled} placename="Patient name or id..."/>
+              <SearchBar mgl="10%" isDisabled={isDisabled} placename="Patient name or id..."/>
 
               <Stack
                 sx={{
@@ -150,6 +165,7 @@ const Day = () => {
                 direction="row"
               >
                 <Button
+                  onClick={handleAppAd}
                   sx={{
                     backgroundColor: "#79CCBE",
                     fontWeight: 25,
@@ -162,6 +178,7 @@ const Day = () => {
                   Add
                 </Button>
                 <Button
+                  onClick={handleDeleteAll}
                   disabled={isDisabled}
                   sx={{
                     backgroundColor: "#F44336",
@@ -187,11 +204,12 @@ const Day = () => {
               { <div style={{ width: "80%" }}>
                 {filteredAppointments.map((item) => (
                   <div key={item.nic}>
-                    <AppointmentCard item={item} />
+                    <AppointmentCard filteredAppointments={filteredAppointments} setFilteredAppointments={setFilteredAppointments} item={item} />
                   </div>
                 ))}
               </div> }
             </div>
+            <AppAddPopup apopen={apopen} setApopen={setApopen}/>
           </Grid>
         </Grid>
       

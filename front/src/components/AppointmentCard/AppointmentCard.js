@@ -11,17 +11,19 @@ import { useState } from "react";
 import { Stack } from "@mui/material";
 import {IconButton} from "@mui/material";
 import Steper from "../Setper/Steper";
+import AppAddPopup from "../../AppAddPopup/AppAddPopup";
 
-const AppointmentCard = ({ item }) => {
-  const [open, setOpen] = useState(false);
+const AppointmentCard = ({filteredAppointments,setFilteredAppointments, item }) => {
 
-  const handleDelete = () => {
-    //  setAList(alist.filter((itemf) => itemf.nic !== item.nic));
-    console.log("hello");
+ 
+
+  const handleDeleteAppointment = () => {
+    setFilteredAppointments(filteredAppointments.filter((itemf)=>itemf.nic!==item.nic));
+    
   };
 
   const handleEdit = () => {
-    setOpen(true);
+   // setApopen(true);
   };
 
   return (
@@ -49,15 +51,12 @@ const AppointmentCard = ({ item }) => {
         
                 <Box>
         
-                 <IconButton onClick={handleDelete}><DeleteIcon  sx={{ marginLeft: "auto", color: "#E60000" }} /></IconButton>
+                 <IconButton onClick={handleDeleteAppointment}><DeleteIcon  sx={{ marginLeft: "auto", color: "#E60000" }} /></IconButton>
                   <IconButton onClick={handleEdit}><EditIcon  sx={{ color: "#F66444", }} /></IconButton>
         
         
                 </Box>
               </Stack>
-              <Stack sx={{ml:'3%'}}>
-        
-              </Stack >
               <Stack sx={{justifyContent:'space-between',alignItem:'center'}} direction={'row'}>
                 <Typography variant="body2" color="text.secondary">
                   {item.city}
@@ -74,23 +73,8 @@ const AppointmentCard = ({ item }) => {
             </Stack>
         
           </Card>
-          {/* <Popup
-            item={item}
-            name={name}
-            setName={setName}
-            address={address}
-            setAddress={setAddress}
-            nic={nic}
-            setNic={setNic}
-            timevalue={timevalue}
-            setTimeValue={setTimeValue}
-            alist={alist}
-            setAList={setAList}
-            count={count}
-            setCount={setCount}
-            open={open}
-            setOpen={setOpen}
-          ></Popup> */}
+          
+         
         </div>
     </div>
   );
