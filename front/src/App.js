@@ -5,20 +5,21 @@ import Receptionist from "./pages/Receptionist";
 import Lab from "./pages/Lab";
 import Log from "./pages/Log";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Lab_template from "./pages/Lab_template";
 
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <Routes>
-        <Route path='/' element={<Log></Log>}></Route>
+      <Routes>
+      <Route path='/' element={<Log></Log>}></Route>
       <Route path='admin' element={<Admin></Admin>}></Route>
       <Route path='recep' element={<Receptionist></Receptionist>}></Route>
       <Route path='doct' element={<Doctor></Doctor>}></Route>
       <Route path='pharm' element={<Pharmacy></Pharmacy>}></Route>
       <Route path='lab' element={<Lab></Lab>}></Route>
-
-        </Routes>
+      <Route path='lab/temp' element={<Lab_template></Lab_template>}></Route>
+      </Routes>
       </BrowserRouter>
     </div>
   );
