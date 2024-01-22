@@ -11,7 +11,7 @@ import { useState } from "react";
 import { Stack } from "@mui/material";
 import {IconButton} from "@mui/material";
 import Steper from "../Setper/Steper";
-import AppAddPopup from "../../AppAddPopup/AppAddPopup";
+import AppAddPopup from "../AppAddPopup/AppAddPopup";
 
 const AppointmentCard = ({filteredAppointments,setFilteredAppointments, item }) => {
 
