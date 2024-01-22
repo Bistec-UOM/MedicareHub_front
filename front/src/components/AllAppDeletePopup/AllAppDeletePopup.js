@@ -20,7 +20,6 @@ import SearchBar from "../Searchbar/Searchbar";
 import { Box } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { Grid, Stack } from "@mui/material";
-import { Card } from "react-bootstrap";
 import ErrorIcon from "@mui/icons-material/Error";
 
 export default function AllAppDeletePopup({ dopen, setDopen,filteredAppointments,setFilteredAppointments,isDisabled,setIsDisabled }) {
