@@ -9,7 +9,8 @@ import { SidebarContainer } from "../sidebar/Sidebar";
 import { SidebarTop,SidebarList } from "../sidebar/Sidebar";
 import { Sideunit_Doctor } from "../sidebar/Sideunits";
 import { CustomScroll } from "../CustomScroll";
-import AppAddPopup from "../../AppAddPopup/AppAddPopup";
+import AppAddPopup from "../AppAddPopup/AppAddPopup";
+import AllAppDeletePopup from "../AllAppDeletePopup/AllAppDeletePopup";
 
 const Day = () => {
   var location = useLocation();
@@ -19,12 +20,12 @@ const Day = () => {
   const [filteredAppointments, setFilteredAppointments] = useState([]);
 
   const [apopen,setApopen]=useState(false);
+  const [dopen,setDopen]=useState(false);
 
+ 
   const handleDeleteAll=()=>
   {
-    setFilteredAppointments([]);
-    setIsDisabled(true);
-
+    setDopen(true);
   }
 
   const handleAppAd=()=>
@@ -145,7 +146,7 @@ const Day = () => {
            </SidebarContainer>
           </Grid>
 
-          <Grid  item md={9}>
+          <Grid  item  md={9}>
             <Box
               sx={{
                 display: "flex",
@@ -210,6 +211,7 @@ const Day = () => {
               </div> }
             </div>
             <AppAddPopup apopen={apopen} setApopen={setApopen}/>
+            <AllAppDeletePopup isDisabled={isDisabled} setIsDisabled={setIsDisabled} filteredAppointments={filteredAppointments} setFilteredAppointments={setFilteredAppointments}  dopen={dopen} setDopen={setDopen}/>
           </Grid>
         </Grid>
       
