@@ -2,7 +2,8 @@ import React from 'react';
 import TextField from '@mui/material/TextField';
 import SearchIcon from '@mui/icons-material/Search';
 
-const SearchBar = ({isDisabled,placename}) => {
+const SearchBar = (props) => {
+  console.log(props)
 
     const handleSearch=()=>
     {
@@ -10,16 +11,17 @@ const SearchBar = ({isDisabled,placename}) => {
     }
     
   return (
-    <TextField  sx={{marginLeft:'10%', backgroundColor:'#ffff'}}
+    <TextField  sx={{marginLeft:props.mgl, backgroundColor:'#ffff'}}
       variant="outlined"
       size="small"
-      placeholder={placename}
+      placeholder={props.placename}
       InputProps={{
         startAdornment: (
           <SearchIcon onClick={handleSearch}
             sx={{
               color: 'action.active',
               marginLeft: 1,
+              marginRight:1
             }}
           />
         ),
@@ -27,7 +29,7 @@ const SearchBar = ({isDisabled,placename}) => {
           borderRadius: '25px', // Adjust the value to change the roundness of the corners
         },
       }}
-      disabled={isDisabled}
+      disabled={props.isDisabled}
       
       
     />

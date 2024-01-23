@@ -1,21 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { Grid, Stack, Typography, Button, Container, Box } from "@mui/material";
-import Navbar from "../navbar/Navbar";
+import Navbar from "../../navbar/Navbar";
 import AppointmentCard from "../AppointmentCard/AppointmentCard";
 import SearchBar from "../Searchbar/Searchbar";
 import Steper from "../Setper/Steper";
-import { SidebarContainer } from "../sidebar/Sidebar";
-import { SidebarTop,SidebarList } from "../sidebar/Sidebar";
-import { Sideunit_Doctor } from "../sidebar/Sideunits";
-import { CustomScroll } from "../CustomScroll";
+import { SidebarContainer } from "../../sidebar/Sidebar";
+import { SidebarTop,SidebarList } from "../../sidebar/Sidebar";
+import { Sideunit_Doctor } from "../../sidebar/Sideunits";
+import { CustomScroll } from "../../CustomScroll";
+import AppAddPopup from "../AppAddPopup/AppAddPopup";
+import AllAppDeletePopup from "../AllAppDeletePopup/AllAppDeletePopup";
+import DayList from "../DayAppList/DayAppList";
+import SearchPatientPage from "../SearchPatientPage/SearchPatienPage";
 
 const Day = () => {
-  var location = useLocation();
-  var loc = location.state;
-  const [dayapp, setDayApp] = useState([]);
-  const [isDisabled, setIsDisabled] = useState(true);
-  const [filteredAppointments, setFilteredAppointments] = useState([]);
+  const [renderVal,setRenderVal]=useState(false);
+  
+  
+
+ 
+ 
 
   const [appointlist,setAppointList]=useState([
     {
@@ -105,12 +110,7 @@ const Day = () => {
     {'name':'Infas Mohomad','title':'MBBS, FCGP(SL), MD-CH(UK), MBS-CH(UK), C.ht(USA)'}
  ] 
 
-  useEffect(() => {
-    document.body.style.margin = '0';
-    const appointments = appointlist.filter((item) => item.today === loc.today);
-    setFilteredAppointments(appointments);
-    setIsDisabled(appointments.length === 0);
-  }, [appointlist, loc]);
+ 
   return (
     <CustomScroll>
       <Navbar />
@@ -119,7 +119,7 @@ const Day = () => {
           <Grid item md={3}>
           <SidebarContainer>
             <SidebarTop>
-              <SearchBar  isDisabled={false} placename="Doctor name or id..."></SearchBar>
+              <SearchBar  isDisabled={false} placename="Doctor name or id..." mgl="10%"></SearchBar>
             </SidebarTop>
             <SidebarList>
               {data.map((item,index)=>(
@@ -129,8 +129,11 @@ const Day = () => {
             </SidebarList>
            </SidebarContainer>
           </Grid>
+          <Grid  item  md={9}>
+          {renderVal ?  <SearchPatientPage renderVal={renderVal} setRenderVal={setRenderVal}/> :<DayList appointlist={appointlist} renderVal={renderVal} setRenderVal={setRenderVal}/>}
+          </Grid>
 
-          <Grid  item md={9}>
+          {/* <Grid  item  md={9}>
             <Box
               sx={{
                 display: "flex",
@@ -138,7 +141,7 @@ const Day = () => {
                 alignItem: "center",
               }}
             >
-              <SearchBar isDisabled={isDisabled} placename="Patient name or id..."/>
+              <SearchBar mgl="10%" isDisabled={isDisabled} placename="Patient name or id..."/>
 
               <Stack
                 sx={{
@@ -150,6 +153,7 @@ const Day = () => {
                 direction="row"
               >
                 <Button
+                  onClick={handleAppAd}
                   sx={{
                     backgroundColor: "#79CCBE",
                     fontWeight: 25,
@@ -162,6 +166,7 @@ const Day = () => {
                   Add
                 </Button>
                 <Button
+                  onClick={handleDeleteAll}
                   disabled={isDisabled}
                   sx={{
                     backgroundColor: "#F44336",
@@ -187,12 +192,14 @@ const Day = () => {
               { <div style={{ width: "80%" }}>
                 {filteredAppointments.map((item) => (
                   <div key={item.nic}>
-                    <AppointmentCard item={item} />
+                    <AppointmentCard filteredAppointments={filteredAppointments} setFilteredAppointments={setFilteredAppointments} item={item} />
                   </div>
                 ))}
               </div> }
             </div>
-          </Grid>
+            <AppAddPopup apopen={apopen} setApopen={setApopen}/>
+            <AllAppDeletePopup isDisabled={isDisabled} setIsDisabled={setIsDisabled} filteredAppointments={filteredAppointments} setFilteredAppointments={setFilteredAppointments}  dopen={dopen} setDopen={setDopen}/>
+          </Grid> */}
         </Grid>
       
     </CustomScroll>

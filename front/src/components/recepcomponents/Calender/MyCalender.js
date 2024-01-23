@@ -7,6 +7,7 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { Typography } from '@mui/material';
 import LinearProgress from '@mui/material/LinearProgress';
+import '../../../recep.css'
 
 const localizer = momentLocalizer(moment);
 let today;

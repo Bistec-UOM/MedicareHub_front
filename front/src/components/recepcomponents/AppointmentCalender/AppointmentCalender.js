@@ -3,10 +3,10 @@ import { Grid, Stack, Typography, Button, Container, Box } from "@mui/material";
 import { useState } from "react";
 import Calender from "../Calender/MyCalender";
 import MyCalendar from "../Calender/MyCalender";
-import { SidebarContainer, SidebarTop,SidebarList } from "../sidebar/Sidebar";
+import { SidebarContainer, SidebarTop,SidebarList } from "../../sidebar/Sidebar";
 import { useEffect } from "react";
-import { CustomScroll } from "../CustomScroll";
-import { Sideunit_Doctor } from "../sidebar/Sideunits";
+import { CustomScroll } from "../../CustomScroll";
+import { Sideunit_Doctor } from "../../sidebar/Sideunits";
 import SearchBar from "../Searchbar/Searchbar";
 
 const AppointmentCalender = () => {
@@ -29,7 +29,7 @@ const AppointmentCalender = () => {
           <Grid item md={3}>
            <SidebarContainer>
             <SidebarTop>
-              <SearchBar isDisabled={false} placename="Doctor name or id..."></SearchBar>
+              <SearchBar mgl="10%" isDisabled={false} placename="Doctor name or id..."></SearchBar>
             </SidebarTop>
             <SidebarList>
               {data.map((item,index)=>(
