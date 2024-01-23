@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { Grid, Stack, Typography, Button, Container, Box } from "@mui/material";
-import Navbar from "../navbar/Navbar";
+import Navbar from "../../navbar/Navbar";
 import AppointmentCard from "../AppointmentCard/AppointmentCard";
 import SearchBar from "../Searchbar/Searchbar";
 import Steper from "../Setper/Steper";
-import { SidebarContainer } from "../sidebar/Sidebar";
-import { SidebarTop, SidebarList } from "../sidebar/Sidebar";
-import { Sideunit_Doctor } from "../sidebar/Sideunits";
-import { CustomScroll } from "../CustomScroll";
+import { SidebarContainer } from "../../sidebar/Sidebar";
+import { SidebarTop, SidebarList } from "../../sidebar/Sidebar";
+import { Sideunit_Doctor } from "../../sidebar/Sideunits";
+import { CustomScroll } from "../../CustomScroll";
 import AppAddPopup from "../AppAddPopup/AppAddPopup";
 import AllAppDeletePopup from "../AllAppDeletePopup/AllAppDeletePopup";
-import DayAppList from "../DayAppList/DayAppList";
+import DayAppList from "./DayAppList";
 
 const DayList = (props) => {
   const [dayapp, setDayApp] = useState([]);

@@ -4,7 +4,7 @@ import Pharmacy from "./pages/Pharmacy";
 import Receptionist from "./pages/Receptionist";
 import Lab from "./pages/Lab";
 import Log from "./pages/Log";
-import Day from './components/Day/Day'
+import Day from "./components/recepcomponents/Day/Day";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Lab_template from "./pages/Lab_template";
 
