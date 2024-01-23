@@ -11,27 +11,16 @@ import { Sideunit_Doctor } from "../sidebar/Sideunits";
 import { CustomScroll } from "../CustomScroll";
 import AppAddPopup from "../AppAddPopup/AppAddPopup";
 import AllAppDeletePopup from "../AllAppDeletePopup/AllAppDeletePopup";
+import DayList from "../DayAppList/DayAppList";
+import SearchPatientPage from "../SearchPatientPage/SearchPatienPage";
 
 const Day = () => {
-  var location = useLocation();
-  var loc = location.state;
-  const [dayapp, setDayApp] = useState([]);
-  const [isDisabled, setIsDisabled] = useState(true);
-  const [filteredAppointments, setFilteredAppointments] = useState([]);
-
-  const [apopen,setApopen]=useState(false);
-  const [dopen,setDopen]=useState(false);
+  const [renderVal,setRenderVal]=useState(false);
+  
+  
 
  
-  const handleDeleteAll=()=>
-  {
-    setDopen(true);
-  }
-
-  const handleAppAd=()=>
-  {
-    setApopen(true);
-  }
+ 
 
   const [appointlist,setAppointList]=useState([
     {
@@ -121,12 +110,7 @@ const Day = () => {
     {'name':'Infas Mohomad','title':'MBBS, FCGP(SL), MD-CH(UK), MBS-CH(UK), C.ht(USA)'}
  ] 
 
-  useEffect(() => {
-    document.body.style.margin = '0';
-    const appointments = appointlist.filter((item) => item.today === loc.today);
-    setFilteredAppointments(appointments);
-    setIsDisabled(appointments.length === 0);
-  }, [appointlist, loc]);
+ 
   return (
     <CustomScroll>
       <Navbar />
@@ -145,8 +129,11 @@ const Day = () => {
             </SidebarList>
            </SidebarContainer>
           </Grid>
-
           <Grid  item  md={9}>
+          {renderVal ?  <SearchPatientPage renderVal={renderVal} setRenderVal={setRenderVal}/> :<DayList appointlist={appointlist} renderVal={renderVal} setRenderVal={setRenderVal}/>}
+          </Grid>
+
+          {/* <Grid  item  md={9}>
             <Box
               sx={{
                 display: "flex",
@@ -212,7 +199,7 @@ const Day = () => {
             </div>
             <AppAddPopup apopen={apopen} setApopen={setApopen}/>
             <AllAppDeletePopup isDisabled={isDisabled} setIsDisabled={setIsDisabled} filteredAppointments={filteredAppointments} setFilteredAppointments={setFilteredAppointments}  dopen={dopen} setDopen={setDopen}/>
-          </Grid>
+          </Grid> */}
         </Grid>
       
     </CustomScroll>
