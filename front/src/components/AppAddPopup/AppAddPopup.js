@@ -9,6 +9,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { CardContent, IconButton, TextField, Typography } from "@mui/material";
 
 import { useState } from "react";
+import { useEffect } from "react";
 
 import dayjs from "dayjs";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
@@ -22,9 +23,10 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Grid, Stack } from "@mui/material";
 
 
-export default function AppAddPopup({ apopen, setApopen }) {
+export default function AppAddPopup({ activeId,patientList,apopen, setApopen ,activeD}) {
   // const [enameError,seteNameError]=useState(false)
   // const [eaddressError,seteAddressError]=useState(false)
+  console.log(activeD)
   // const [enicError,seteNicError]=useState(false)
   const [etimevalueError, seteTimeValueError] = useState(false);
 
@@ -32,6 +34,8 @@ export default function AppAddPopup({ apopen, setApopen }) {
   // const [eaddress,setEAddress]=useState(item.address)
   // const [enic,setENic]=useState(item.nic)
   const [timevalue, setTimeValue] = useState("");
+
+  const [activeData, setActiveData] = useState({});
 
   const handleClickOpen = () => {
     setApopen(true);
@@ -44,6 +48,17 @@ export default function AppAddPopup({ apopen, setApopen }) {
   async function handleSubmit(event) {
     event.preventDefault();
   }
+  useEffect(() => {
+   
+    if (patientList && Array.isArray(patientList)) {
+      setActiveData(patientList.filter((patient) => patient.nic === activeId));
+  }
+  console.log(activeData)
+   // setActiveData(output);
+    
+
+}, []);
+
 
   return (
     <React.Fragment>
@@ -54,7 +69,7 @@ export default function AppAddPopup({ apopen, setApopen }) {
               <Box
                 sx={{
                   backgroundColor: "#DEF4F2",
-                  height: "30px",
+                  height: "40px",
                   display: "flex",
                   justifyContent: "flex-end",
                   width: "100%",
@@ -72,26 +87,7 @@ export default function AppAddPopup({ apopen, setApopen }) {
                   alignItem: "center",
                 }}
               >
-                <Stack direction={"row"}>
-                  <SearchBar
-                    mgl="0%"
-                    isDisabled={false}
-                    placename="Patient name or id..."
-                  ></SearchBar>
-                  <Button
-                    sx={{
-                      backgroundColor: "#2EB1DA", // Replace with your desired color
-                      "&:hover": {
-                        backgroundColor: "#2EB1DA", // Replace with your desired hover color
-                      },
-                      marginLeft: "20px",
-                    }}
-                    variant="contained"
-                    type="submit"
-                  >
-                    New
-                  </Button>
-                </Stack>
+               
                 <Grid container sx={{ marginTop: "3%" }}>
                   <Grid md={6} item>
                     <Box
@@ -112,10 +108,10 @@ export default function AppAddPopup({ apopen, setApopen }) {
                               alignItem: "center",
                             }}
                           >
-                            <Typography sx={{padding:'2%'}} variant="h5">Kamal Sandaruwan </Typography>
+                            <Typography sx={{padding:'2%'}} variant="h5">{activeData.name}</Typography>
                           </Stack>
                           <Stack>
-                            <Typography sx={{padding:'2%'}} color="text.secondary">990722650v</Typography>
+                            <Typography sx={{padding:'2%'}} color="text.secondary">{activeData.nic}</Typography>
                           </Stack>
                           <Stack
                             sx={{
@@ -125,11 +121,11 @@ export default function AppAddPopup({ apopen, setApopen }) {
                             direction={"row"}
                           >
                             <Typography sx={{padding:'2%'}} variant="body2" color="text.secondary">
-                            Matale
+                            { activeData.city}
                             </Typography>
 
                             <Typography variant="body2" color="text.secondary">
-                            071 2 322 134
+                            {activeData.phone}
                             </Typography>
                           </Stack>
                         </Stack>
