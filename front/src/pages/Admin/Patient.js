@@ -14,6 +14,7 @@ import { useState } from "react";
 import {Checkbox,Dialog,DialogActions,DialogContent,DialogTitle,FormControl,FormControlLabel,FormGroup,Grid,InputLabel,MenuItem,Select,TextField,Typography,} from "@mui/material";
 import { Button } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import { Filter } from "@mui/icons-material";
 
 function createData(Id,fullName,name,NIC,address,contactNumber,emailAddress,age,gender
 ) {
@@ -25,12 +26,12 @@ const rows = [
   createData(2, "wimal kostha", "wimal", 237, 9.0, 37, 4.3, 30, "female"),
   createData(3, "kumara sangakkara", "kumara", 262, 16.0, 24, 6.0, 30, "male"),
   createData(4,"pathirana saman","pathirana",305,3.7,67,4.3,30,"female"),
-  createData(5, "lavu kanush", "kanush", 356, 16.0, 49, 3.9, 30, "male"),
+  createData(5, "lavu kanush", "kanush", 356, 16.0, 49, 3.9, 30, "male")
 ];
 
 function Patient() {
-  const [open, setOpen] = React.useState(false);
-  const [editOpen, setEditOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [editOpen, setEditOpen] = useState(false);
   const [selectedPaper, setSelectedPaper] = useState(null);
 
   const handleClickOpen = () => {
@@ -63,6 +64,11 @@ function Patient() {
       [field]: value,
     });
   };
+const [records,setRecords] = useState(rows)
+// creating filter function
+const Filter = (event)=>{
+  setRecords(rows.filter(f=>f.name.toLowerCase().includes(event.target.value)))
+}
 
   return (
     <div>
@@ -80,7 +86,7 @@ function Patient() {
             boxShadow: 3,
           }}
         >
-          <InputBase sx={{ ml: 3, flex: 1 }} placeholder="Search Patient" />
+          <InputBase type="text" className="form-control" onChange={Filter} sx={{ ml: 3, flex: 1 }} placeholder="Search Patient" />
           <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
           <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
             <SearchIcon />
@@ -105,8 +111,8 @@ function Patient() {
 
 
       <Grid sx={{display:'flex',justifyContent:'space-around', m:2,width:'90vh'}}>
-{/* fill box */}
-<FormControlLabel
+          {/* fill box */}
+          <FormControlLabel
             control={
                 // <Checkbox checked={gilad} onChange={handleChange} name="gilad" />
                 <Checkbox    sx={{
@@ -201,7 +207,7 @@ function Patient() {
         </Dialog>
       </Grid>
       <Grid>
-        {rows.map((row) => (
+        {records.map((row) => (
           <Paper
             key={row.Id}
             sx={{
