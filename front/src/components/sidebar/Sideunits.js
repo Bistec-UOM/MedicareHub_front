@@ -19,7 +19,7 @@ function Sideunit_Patient({name,status,time}) {
       <div style={{width:'90%',backgroundColor:'beige'}}>
           <Typography variant='h6'>{name}</Typography>
           <div>
-                  <Chip>{time}</Chip>
+                  <div>{time}</div>
                   {status=='done'||status=='pending'?<CheckIcon color={status=='done'?'success':'warning'}></CheckIcon>:''}
           </div>
       </div>
@@ -39,6 +39,17 @@ function Sideunit_Test({id,name,test,setSelect}) {
           }
       </div>
     )
+}
+
+function Sideunit_Bill({name,time}) {
+  return (
+    <div style={{width:'90%',backgroundColor:'beige'}}>
+        <Typography variant='h6'>{name}</Typography>
+        <div>
+                <div>{time}</div>
+        </div>
+    </div>
+  )
 }
 
 export {Sideunit_Doctor,Sideunit_Patient,Sideunit_Test}
