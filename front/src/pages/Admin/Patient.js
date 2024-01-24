@@ -22,11 +22,11 @@ function createData(Id,fullName,name,NIC,address,contactNumber,emailAddress,age,
   };
 }
 const rows = [
-  createData(1,"chamath palliyaguruge","chamath",159,6.0,24,4,30,"male"),
-  createData(2, "wimal kostha", "wimal", 237, 9.0, 37, 4.3, 30, "female"),
-  createData(3, "kumara sangakkara", "kumara", 262, 16.0, 24, 6.0, 30, "male"),
-  createData(4,"pathirana saman","pathirana",305,3.7,67,4.3,30,"female"),
-  createData(5, "lavu kanush", "kanush", 356, 16.0, 49, 3.9, 30, "male")
+  createData(1,"chamath palliyaguruge","chamath",'200422400159','123/t thotawatte rd,thota langa','0781754824','dhammika@gmail.com','30',"male"),
+  createData(2, "wimal kostha", "wimal", '200666503237', '134/h hansamaligama,premadasadeniya', '0756321737', 'easter@gmail.com', '30', "female"),
+  createData(3, "kumara sangakkara", "kumara", '200154996552', '109/o malwatte handiya,migamuwa', '0741572003', 'asanka@gmail.com', '30', "male"),
+  createData(4,"pathirana saman","pathirana",'201052946305','234/v nonagumgama,raddoluwa','0791031573','tharaka@gmail.com','30',"female"),
+  createData(5, "lavu kanush", "kanush",'200933401635', '546/g sandangana gama,sandalankaawa', '0783985174', 'sonic@gmail.com', '30', "male")
 ];
 
 function Patient() {
@@ -66,9 +66,24 @@ function Patient() {
   };
 const [records,setRecords] = useState(rows)
 // creating filter function
-const Filter = (event)=>{
-  setRecords(rows.filter(f=>f.name.toLowerCase().includes(event.target.value)))
-}
+const Filter = (event) => {
+  const searchTerm = event.target.value.toLowerCase();
+
+  setRecords(
+    rows.filter(
+      (f) =>
+        (typeof f.name === 'string' && f.name.toLowerCase().includes(searchTerm)) ||
+        (typeof f.address === 'string' && f.address.toLowerCase().includes(searchTerm)) ||
+        (typeof f.NIC === 'string' && f.NIC.toLowerCase().includes(searchTerm)) ||
+        (typeof f.contactNumber === 'string' && f.contactNumber.toLowerCase().includes(searchTerm))
+    )
+  );
+};
+
+const handleChange = (e) => {
+  console.log(e.target.value);
+};
+
 
   return (
     <div>
@@ -114,19 +129,24 @@ const Filter = (event)=>{
           {/* fill box */}
           <FormControlLabel
             control={
-                // <Checkbox checked={gilad} onChange={handleChange} name="gilad" />
-                <Checkbox    sx={{
+              <Checkbox    
+              onChange={(e)=>handleChange(e)}  
+              value={'Name'}
+              sx={{
+                color: 'rgb(121, 204, 190)',
+                '&.Mui-checked': {
                   color: 'rgb(121, 204, 190)',
-                  '&.Mui-checked': {
-                    color: 'rgb(121, 204, 190)',
-                  },
-                }}/>
+                },
+              }}/>
             }
             label="Name"
           />
           <FormControlLabel
             control={
-              <Checkbox    sx={{
+              <Checkbox    
+              onChange={(e)=>handleChange(e)}  
+              value={'Address'}
+              sx={{
                 color: 'rgb(121, 204, 190)',
                 '&.Mui-checked': {
                   color: 'rgb(121, 204, 190)',
@@ -137,7 +157,10 @@ const Filter = (event)=>{
           />
           <FormControlLabel
             control={
-              <Checkbox    sx={{
+              <Checkbox    
+              onChange={(e)=>handleChange(e)}  
+              value={'Telephone'}
+              sx={{
                 color: 'rgb(121, 204, 190)',
                 '&.Mui-checked': {
                   color: 'rgb(121, 204, 190)',
@@ -148,7 +171,10 @@ const Filter = (event)=>{
           />
           <FormControlLabel
             control={
-              <Checkbox    sx={{
+              <Checkbox    
+              onChange={(e)=>handleChange(e)}  
+              value={'ID'}
+              sx={{
                 color: 'rgb(121, 204, 190)',
                 '&.Mui-checked': {
                   color: 'rgb(121, 204, 190)',
@@ -159,6 +185,8 @@ const Filter = (event)=>{
           />
           
         </Grid>
+
+        
       <Grid>
         {/* data adding popup */}
         <Dialog open={editOpen} onClose={handleEditClose}>
@@ -211,6 +239,7 @@ const Filter = (event)=>{
           <Paper
             key={row.Id}
             sx={{
+              cursor:'pointer',
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
