@@ -89,7 +89,7 @@ const handleChange = (e) => {
     <div>
 
       {/* search bar */}
-      <Grid sx={{ display: "flex", justifyContent: "space-between" }}>
+      <Grid sx={{ display: "flex", justifyContent: "space-between",mb:4 }}>
         <Paper
           component="form"
           sx={{
@@ -125,123 +125,68 @@ const handleChange = (e) => {
       </Grid>
 
 
-      <Grid sx={{display:'flex',justifyContent:'space-around', m:2,width:'90vh'}}>
-          {/* fill box */}
-          <FormControlLabel
-            control={
-              <Checkbox    
-              onChange={(e)=>handleChange(e)}  
-              value={'Name'}
-              sx={{
-                color: 'rgb(121, 204, 190)',
-                '&.Mui-checked': {
-                  color: 'rgb(121, 204, 190)',
-                },
-              }}/>
-            }
-            label="Name"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox    
-              onChange={(e)=>handleChange(e)}  
-              value={'Address'}
-              sx={{
-                color: 'rgb(121, 204, 190)',
-                '&.Mui-checked': {
-                  color: 'rgb(121, 204, 190)',
-                },
-              }}/>
-            }
-            label="Address"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox    
-              onChange={(e)=>handleChange(e)}  
-              value={'Telephone'}
-              sx={{
-                color: 'rgb(121, 204, 190)',
-                '&.Mui-checked': {
-                  color: 'rgb(121, 204, 190)',
-                },
-              }}/>
-            }
-            label="Telephone"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox    
-              onChange={(e)=>handleChange(e)}  
-              value={'ID'}
-              sx={{
-                color: 'rgb(121, 204, 190)',
-                '&.Mui-checked': {
-                  color: 'rgb(121, 204, 190)',
-                },
-              }}/>
-            }
-            label="ID"
-          />
-          
-        </Grid>
-
-        
-      <Grid>
-        {/* data adding popup */}
-        <Dialog open={editOpen} onClose={handleEditClose}>
-          <DialogTitle
-            sx={{
-              backgroundColor: "rgb(222, 244, 242)",
-              display: "flex",
-              justifyContent: "space-between",
-            }}
+     
+<Grid>
+{/* for popup when adding */}
+<Dialog open={open} onClose={handleClose}>
+        <DialogTitle
+          sx={{
+            backgroundColor: "rgb(222, 244, 242)",
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        >
+          Add Patient
+          <CloseIcon onClick={handleClose} sx={{cursor:'pointer'}}/>
+        </DialogTitle>
+        <DialogContent>
+          {/* Add form fields or other content here */}
+          <TextField label="Name" fullWidth sx={{ mb: 1, mt: 3 }} />
+          <TextField label="Usual Name" sx={{ mb: 1 }} />
+          <TextField label="NIC" sx={{ ml: 4, mb: 1 }} />
+          <TextField label="Address" fullWidth sx={{ mb: 1 }} />
+          <TextField label="Contact Number" sx={{ mb: 1 }} />
+          <TextField label="E-mail" fullWidth sx={{ mb: 1 }} />
+          <TextField label="Age" sx={{ mb: 1 }} />
+          <TextField label="Gender" sx={{ ml: 4, mb: 1 }} />
+          {/* Add more fields as needed */}
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={handleEditSave}
+            variant="contained"
+            sx={{ backgroundColor: "rgb(121, 204, 190)", m: 2 }}
           >
-            Edit Doctor
-            <CloseIcon onClick={handleEditClose} />
-          </DialogTitle>
-          <DialogContent>
-            <TextField
-              label="Full Name"
-              fullWidth
-              margin="dense"
-              value={selectedPaper ? selectedPaper.name : ""}
-              onChange={(e) => handleInputChange("name", e.target.value)}
-            />
-
-            <FormControl margin="normal">
-              <InputLabel id="gender-label">Gender</InputLabel>
-              <Select
-                labelId="gender-label"
-                id="gender"
-                value={selectedPaper ? selectedPaper.gender : ""}
-                onChange={(e) => handleInputChange("gender", e.target.value)}
-                label="Gender"
-              >
-                <MenuItem value="Male">Male</MenuItem>
-                <MenuItem value="Female">Female</MenuItem>
-              </Select>
-            </FormControl>
-          </DialogContent>
-          <DialogActions>
-            <Button
-              onClick={handleEditSave}
-              variant="contained"
-              sx={{ backgroundColor: "rgb(121, 204, 190)", m: 2 }}
-            >
-              Save
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </Grid>
+            Add
+          </Button>
+        </DialogActions>
+      </Dialog>
+</Grid>
+      
       <Grid>
+      <Paper
+      sx={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        marginBottom: "10px",
+        padding: 2,
+        boxShadow: 5,
+        borderRadius:'12px'
+      }}
+      >
+      <Typography sx={{ flex: 1 }}>name</Typography>
+      <Typography sx={{ flex: 1 }}>NIC</Typography>
+      <Typography sx={{ flex: 1 }}>Gender</Typography>
+      <Typography sx={{ flex: 1 }}>Email</Typography>
+      </Paper>
         {records.map((row) => (
           <Paper
-            key={row.Id}
-            sx={{
-              cursor:'pointer',
-              display: "flex",
-              justifyContent: "space-between",
+          key={row.Id}
+          sx={{
+            cursor:'pointer',
+            display: "flex",
+            justifyContent: "space-between",
               alignItems: "center",
               marginBottom: "10px",
               padding: 2,
@@ -268,8 +213,8 @@ const handleChange = (e) => {
               justifyContent: "space-between",
             }}
           >
-            Edit Doctor
-            <CloseIcon onClick={handleEditClose} />
+            Edit Patient
+            <CloseIcon onClick={handleEditClose} sx={{cursor:'pointer'}} />
           </DialogTitle>
           <DialogContent>
             <TextField
@@ -278,53 +223,52 @@ const handleChange = (e) => {
               margin="dense"
               value={selectedPaper ? selectedPaper.fullName : ""}
               onChange={(e) => handleInputChange("fullName", e.target.value)}
-            />
+              />
             <TextField
               label="Name"
-              fullWidth
               margin="dense"
               value={selectedPaper ? selectedPaper.name : ""}
               onChange={(e) => handleInputChange("name", e.target.value)}
-            />
+              />
             <TextField
+              sx={{ml:1}}
               label="NIC"
-              fullWidth
               margin="dense"
               value={selectedPaper ? selectedPaper.NIC : ""}
               onChange={(e) => handleInputChange("protein", e.target.value)}
-            />
+              />
             <TextField
               label="Address"
               fullWidth
               margin="dense"
               value={selectedPaper ? selectedPaper.address : ""}
               onChange={(e) => handleInputChange("carbs", e.target.value)}
-            />
+              />
             <TextField
               label="Contact Number"
-              fullWidth
               margin="dense"
               value={selectedPaper ? selectedPaper.contactNumber : ""}
               onChange={(e) => handleInputChange("name", e.target.value)}
-            />
+              />
             <TextField
               label="Email"
-              fullWidth
               margin="dense"
               value={selectedPaper ? selectedPaper.emailAddress : ""}
+              sx={{ml:1}}
               onChange={(e) => handleInputChange("name", e.target.value)}
-            />
+              />
             <TextField
               label="Age"
-              fullWidth
               margin="dense"
               value={selectedPaper ? selectedPaper.age : ""}
               onChange={(e) => handleInputChange("name", e.target.value)}
             />
 
             <FormControl margin="normal" sx={{ width: "15vh" }}>
+
               <InputLabel id="gender-label">Gender</InputLabel>
               <Select
+                sx={{ml:1}}
                 labelId="gender-label"
                 id="gender"
                 value={selectedPaper ? selectedPaper.gender : ""}

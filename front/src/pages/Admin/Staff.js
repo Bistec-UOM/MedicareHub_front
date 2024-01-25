@@ -1,24 +1,11 @@
-import {
-  Paper,
-  Typography,
-  Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  TextField,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-} from "@mui/material";
+import {Paper,Typography,Button,Dialog,DialogTitle,DialogContent,DialogActions,TextField,FormControl,InputLabel,Select,MenuItem} from "@mui/material";
 import * as React from "react";
 import CloseIcon from "@mui/icons-material/Close";
 
 export default function Staff() {
   const [open, setOpen] = React.useState(false);
   const [editOpen, setEditOpen] = React.useState(false);
-  const [formData, setFormData] = React.useState({
+  const [rows, setrows] = React.useState({
     fullName: "Dr.Amal Rathnayake",
     usualName: "amal",
     nic: "992941687",
@@ -31,6 +18,59 @@ export default function Staff() {
     gender: "male",
   });
 
+
+
+  const [selectedPaper, setSelectedPaper] = React.useState(null);
+  const handleEditSave = () => {
+    // Handle saving edited data here
+    console.log("Edited data:", selectedPaper);
+    setEditOpen(false);
+  };
+
+  const handleEditClickOpen = (row) => {
+    setSelectedPaper(row);
+    setEditOpen(true);
+  };
+
+  const handleEditClose = () => {
+    setSelectedPaper(null);
+    setEditOpen(false);
+  };
+
+  const handleInputChange = (field, value) => {
+    setSelectedPaper({
+      ...selectedPaper,
+      [field]: value,
+    });
+  };
+
+
+
+  function createData(Id,fullName,name,NIC,address,contactNumber,degree,role,emailAddress,age,gender
+    ) {
+      return {Id,fullName,name,NIC,address,contactNumber,degree,role,emailAddress,age,gender
+      };
+    }
+const row0 = [
+  createData(1, "wimal kostha", "wimal", '200666503237', '134/h hansamaligama,premadasadeniya', '0756321737','mbbs','Family physician', 'easter@gmail.com', '30', "female"),
+  createData(2, "kumara sangakkara", "kumara", '200154996552', '109/o malwatte handiya,migamuwa', '0741572003','mbbs','Endocrinologist', 'asanka@gmail.com', '30', "male"),
+  createData(3,"pathirana saman","pathirana",'201052946305','234/v nonagumgama,raddoluwa','0791031573','mbbs','Neurologist','tharaka@gmail.com','30',"female"),
+  createData(4, "lavu kanush", "kanush",'200933401635', '546/g sandangana gama,sandalankaawa', '0783985174','mbbs','Hospitalist','sonic@gmail.com', '30', "male")
+];
+
+const row1 = [
+  createData(2, "wimal kostha", "wimal", '200666503237', '134/h hansamaligama,premadasadeniya', '0756321737','hr','........', 'easter@gmail.com', '30', "female"),
+  createData(3, "kumara sangakkara", "kumara", '200154996552', '109/o malwatte handiya,migamuwa', '0741572003','hr','....', 'asanka@gmail.com', '30', "male"),
+  createData(4,"pathirana saman","pathirana",'201052946305','234/v nonagumgama,raddoluwa','0791031573','hr','....','tharaka@gmail.com','30',"female"),
+  createData(5, "lavu kanush", "kanush",'200933401635', '546/g sandangana gama,sandalankaawa', '0783985174','hr','....','sonic@gmail.com', '30', "male")
+];
+const row2 = [
+  createData(2, "wimal kostha", "wimal", '200666503237', '134/h hansamaligama,premadasadeniya', '0756321737','mlt','........', 'easter@gmail.com', '30', "female"),
+  createData(3, "kumara sangakkara", "kumara", '200154996552', '109/o malwatte handiya,migamuwa', '0741572003','mlt','....', 'asanka@gmail.com', '30', "male"),
+  createData(4,"pathirana saman","pathirana",'201052946305','234/v nonagumgama,raddoluwa','0791031573','mlt','....','tharaka@gmail.com','30',"female"),
+  createData(5, "lavu kanush", "kanush",'200933401635', '546/g sandangana gama,sandalankaawa', '0783985174','mlt','....','sonic@gmail.com', '30', "male")
+];
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -39,26 +79,7 @@ export default function Staff() {
     setOpen(false);
   };
 
-  const handleEditClickOpen = () => {
-    setEditOpen(true);
-  };
 
-  const handleEditClose = () => {
-    setEditOpen(false);
-  };
-
-  const handleEditSave = () => {
-    // Handle saving edited data here
-    console.log("Edited data:", formData);
-    setEditOpen(false);
-  };
-
-  const handleInputChange = (field, value) => {
-    setFormData({
-      ...formData,
-      [field]: value,
-    });
-  };
 
   return (
     <div>
@@ -98,7 +119,7 @@ export default function Staff() {
 
       {/* data adding */}
 
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog open={open} onClose={handleClose} >
         <DialogTitle
           sx={{
             backgroundColor: "rgb(222, 244, 242)",
@@ -107,7 +128,7 @@ export default function Staff() {
           }}
         >
           Add Doctor
-          <CloseIcon onClick={handleClose} />
+          <CloseIcon onClick={handleClose} sx={{cursor:'pointer'}}/>
         </DialogTitle>
         <DialogContent>
           {/* Add form fields or other content here */}
@@ -151,59 +172,59 @@ export default function Staff() {
             label="Full Name"
             fullWidth
             margin="dense"
-            value={formData.fullName}
+            value={row0.fullName}
             onChange={(e) => handleInputChange("fullName", e.target.value)}
           />
           <TextField
             label="Usual Name"
             margin="normal"
-            value={formData.usualName}
-            onChange={(e) => handleInputChange("usualName", e.target.value)}
+            value={row0.name}
+            onChange={(e) => handleInputChange("name", e.target.value)}
           />
           <TextField
             label="NIC"
             margin="normal"
             sx={{ ml: 4 }}
-            value={formData.nic}
-            onChange={(e) => handleInputChange("nic", e.target.value)}
+            value={row0.NIC}
+            onChange={(e) => handleInputChange("NIC", e.target.value)}
           />
           <TextField
             label="Address"
             fullWidth
             margin="normal"
-            value={formData.address}
+            value={row0.address}
             onChange={(e) => handleInputChange("address", e.target.value)}
           />
           <TextField
             label="Contact Number"
             margin="normal"
-            value={formData.contactNumber}
+            value={row0.contactNumber}
             onChange={(e) => handleInputChange("contactNumber", e.target.value)}
           />
           <TextField
             label="Degree"
             margin="normal"
             sx={{ ml: 4 }}
-            value={formData.degree}
+            value={row0.degree}
             onChange={(e) => handleInputChange("degree", e.target.value)}
           />
           <TextField
             label="Speciality"
             margin="normal"
-            value={formData.speciality}
-            onChange={(e) => handleInputChange("speciality", e.target.value)}
+            value={row0.role}
+            onChange={(e) => handleInputChange("role", e.target.value)}
           />
           <TextField
             label="Email Address"
             fullWidth
             margin="normal"
-            value={formData.emailAddress}
+            value={row0.emailAddress}
             onChange={(e) => handleInputChange("emailAddress", e.target.value)}
           />
           <TextField
             label="Age"
             margin="normal"
-            value={formData.age}
+            value={row0.age}
             onChange={(e) => handleInputChange("age", e.target.value)}
           />
           <FormControl margin="normal" sx={{ width: "15vh",ml:4 }}>
@@ -211,7 +232,7 @@ export default function Staff() {
             <Select
               labelId="gender-label"
               id="gender"
-              value={formData.gender}
+              value={row0.gender}
               onChange={(e) => handleInputChange("gender", e.target.value)}
               label="Gender"
             >
@@ -232,8 +253,12 @@ export default function Staff() {
       </Dialog>
 
       {/* Dr Data Paper */}
+      {row0.map((row)=>
       <Paper
+      key={row.Id}
+      
         sx={{
+          cursor:'Pointer',
           mt: 3,
           display: "flex",
           flexDirection: "column", // Set to 'column' for vertical display
@@ -243,13 +268,13 @@ export default function Staff() {
         onClick={handleEditClickOpen} // Open the edit window when clicking on the paper
       >
         <Typography variant="h6" sx={{ paddingTop: 0.75 }}>
-          {formData.fullName}
+          {row.fullName}
         </Typography>
         <Typography
           variant="h10"
           sx={{ fontSize: 10, color: "rgb(186, 177, 177)" }}
         >
-          {formData.degree}
+          {row.degree}
         </Typography>
         <Typography
           variant="h10"
@@ -259,9 +284,155 @@ export default function Staff() {
             color: "rgb(186, 177, 177)",
           }}
         >
-          {formData.speciality}
+          {row.role}
         </Typography>
+      </Paper>)}
+
+      <div>
+
+      <Paper
+        sx={{
+          mt:2,
+          m: 1,
+          backgroundColor: "rgb(59, 135, 122)",
+          color: "white",
+          margin: "10 auto",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          paddingLeft: 2,
+          paddingRight: 2,
+        }}
+      >
+        <Typography
+          variant="h5"
+          sx={{ paddingTop: 0.75, paddingBottom: 0.75, fontWeight: "bolder" }}
+        >
+          Receptionist
+        </Typography>
+        <Button
+          variant="contained"
+          size="small"
+          sx={{
+            backgroundColor: "rgb(121, 204, 190)",
+            paddingLeft: "1rem",
+            paddingRight: "1rem",
+            fontWeight: "bolder",
+          }}
+          onClick={handleClickOpen}
+        >
+          Add
+        </Button>
       </Paper>
+      {/* recep Paper */}
+      {row1.map((row)=>
+      <Paper
+      key={row.Id}
+      
+        sx={{
+          cursor:'Pointer',
+          mt: 3,
+          display: "flex",
+          flexDirection: "column", // Set to 'column' for vertical display
+          paddingLeft: 2,
+          paddingRight: 2,
+        }}
+        onClick={handleEditClickOpen} // Open the edit window when clicking on the paper
+      >
+        <Typography variant="h6" sx={{ paddingTop: 0.75 }}>
+          {row.fullName}
+        </Typography>
+        <Typography
+          variant="h10"
+          sx={{ fontSize: 10, color: "rgb(186, 177, 177)" }}
+        >
+          {row.degree}
+        </Typography>
+        <Typography
+          variant="h10"
+          sx={{
+            fontSize: 10,
+            paddingBottom: 0.75,
+            color: "rgb(186, 177, 177)",
+          }}
+        >
+          {row.role}
+        </Typography>
+      </Paper>)}
+      </div>
+
+      <div>
+
+<Paper
+  sx={{
+    mt:2,
+    m: 1,
+    backgroundColor: "rgb(59, 135, 122)",
+    color: "white",
+    margin: "10 auto",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingLeft: 2,
+    paddingRight: 2,
+  }}
+>
+  <Typography
+    variant="h5"
+    sx={{ paddingTop: 0.75, paddingBottom: 0.75, fontWeight: "bolder" }}
+  >
+    Lab Asistant
+  </Typography>
+  <Button
+    variant="contained"
+    size="small"
+    sx={{
+      backgroundColor: "rgb(121, 204, 190)",
+      paddingLeft: "1rem",
+      paddingRight: "1rem",
+      fontWeight: "bolder",
+    }}
+    onClick={handleClickOpen}
+  >
+    Add
+  </Button>
+</Paper>
+{/* recep Paper */}
+{row2.map((row)=>
+<Paper
+key={row.Id}
+
+  sx={{
+    cursor:'Pointer',
+    mt: 3,
+    display: "flex",
+    flexDirection: "column", // Set to 'column' for vertical display
+    paddingLeft: 2,
+    paddingRight: 2,
+  }}
+  onClick={handleEditClickOpen} // Open the edit window when clicking on the paper
+>
+  <Typography variant="h6" sx={{ paddingTop: 0.75 }}>
+    {row.fullName}
+  </Typography>
+  <Typography
+    variant="h10"
+    sx={{ fontSize: 10, color: "rgb(186, 177, 177)" }}
+  >
+    {row.degree}
+  </Typography>
+  <Typography
+    variant="h10"
+    sx={{
+      fontSize: 10,
+      paddingBottom: 0.75,
+      color: "rgb(186, 177, 177)",
+    }}
+  >
+    {row.role}
+  </Typography>
+</Paper>)}
+</div>
     </div>
   );
 }
