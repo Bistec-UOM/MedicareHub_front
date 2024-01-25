@@ -1,26 +1,52 @@
 import {Paper,Typography,Button,Dialog,DialogTitle,DialogContent,DialogActions,TextField,FormControl,InputLabel,Select,MenuItem} from "@mui/material";
 import * as React from "react";
 import CloseIcon from "@mui/icons-material/Close";
+import { useState } from "react";
+
+
+
+function createData(Id,fullName,name,NIC,address,contactNumber,degree,role,emailAddress,age,gender
+  ) {
+    return {Id,fullName,name,NIC,address,contactNumber,degree,role,emailAddress,age,gender
+    };
+  }
+
+const row0 = [
+  createData(1, "wimal kostha", "wimal", '200666503237', '134/h hansamaligama,premadasadeniya', '0756321737','mbbs','Family physician', 'easter@gmail.com', '30', "female"),
+  createData(2, "kumara sangakkara", "kumara", '200154996552', '109/o malwatte handiya,migamuwa', '0741572003','mbbs','Endocrinologist', 'asanka@gmail.com', '30', "male"),
+  createData(3,"pathirana saman","pathirana",'201052946305','234/v nonagumgama,raddoluwa','0791031573','mbbs','Neurologist','tharaka@gmail.com','30',"female"),
+  createData(4, "lavu kanush", "kanush",'200933401635', '546/g sandangana gama,sandalankaawa', '0783985174','mbbs','Hospitalist','sonic@gmail.com', '30', "male")
+];
+
+const row1 = [
+  createData(2, "wimal kostha", "wimal", '200666503237', '134/h hansamaligama,premadasadeniya', '0756321737','hr','........', 'easter@gmail.com', '30', "female"),
+  createData(3, "kumara sangakkara", "kumara", '200154996552', '109/o malwatte handiya,migamuwa', '0741572003','hr','....', 'asanka@gmail.com', '30', "male"),
+  createData(4,"pathirana saman","pathirana",'201052946305','234/v nonagumgama,raddoluwa','0791031573','hr','....','tharaka@gmail.com','30',"female"),
+  createData(5, "lavu kanush", "kanush",'200933401635', '546/g sandangana gama,sandalankaawa', '0783985174','hr','....','sonic@gmail.com', '30', "male")
+];
+const row2 = [
+  createData(2, "wimal kostha", "wimal", '200666503237', '134/h hansamaligama,premadasadeniya', '0756321737','mlt','........', 'easter@gmail.com', '30', "female"),
+  createData(3, "kumara sangakkara", "kumara", '200154996552', '109/o malwatte handiya,migamuwa', '0741572003','mlt','....', 'asanka@gmail.com', '30', "male"),
+  createData(4,"pathirana saman","pathirana",'201052946305','234/v nonagumgama,raddoluwa','0791031573','mlt','....','tharaka@gmail.com','30',"female"),
+  createData(5, "lavu kanush", "kanush",'200933401635', '546/g sandangana gama,sandalankaawa', '0783985174','mlt','....','sonic@gmail.com', '30', "male")
+];
+
+
+
 
 export default function Staff() {
-  const [open, setOpen] = React.useState(false);
-  const [editOpen, setEditOpen] = React.useState(false);
-  const [rows, setrows] = React.useState({
-    fullName: "Dr.Amal Rathnayake",
-    usualName: "amal",
-    nic: "992941687",
-    address: "japan",
-    degree: "MBBS",
-    speciality: "Cardiologist",
-    contactNumber: "t487",
-    emailAddress: "bcw",
-    age: "34",
-    gender: "male",
-  });
+  const [open, setOpen] = useState(false);
+  const [editOpen, setEditOpen] = useState(false);
+  const [selectedPaper, setSelectedPaper] = useState(null);
 
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
 
+  const handleClose = () => {
+    setOpen(false);
+  };
 
-  const [selectedPaper, setSelectedPaper] = React.useState(null);
   const handleEditSave = () => {
     // Handle saving edited data here
     console.log("Edited data:", selectedPaper);
@@ -43,41 +69,12 @@ export default function Staff() {
       [field]: value,
     });
   };
+const handleChange = (e) => {
+  console.log(e.target.value);
+};
 
 
 
-  function createData(Id,fullName,name,NIC,address,contactNumber,degree,role,emailAddress,age,gender
-    ) {
-      return {Id,fullName,name,NIC,address,contactNumber,degree,role,emailAddress,age,gender
-      };
-    }
-const row0 = [
-  createData(1, "wimal kostha", "wimal", '200666503237', '134/h hansamaligama,premadasadeniya', '0756321737','mbbs','Family physician', 'easter@gmail.com', '30', "female"),
-  createData(2, "kumara sangakkara", "kumara", '200154996552', '109/o malwatte handiya,migamuwa', '0741572003','mbbs','Endocrinologist', 'asanka@gmail.com', '30', "male"),
-  createData(3,"pathirana saman","pathirana",'201052946305','234/v nonagumgama,raddoluwa','0791031573','mbbs','Neurologist','tharaka@gmail.com','30',"female"),
-  createData(4, "lavu kanush", "kanush",'200933401635', '546/g sandangana gama,sandalankaawa', '0783985174','mbbs','Hospitalist','sonic@gmail.com', '30', "male")
-];
-
-const row1 = [
-  createData(2, "wimal kostha", "wimal", '200666503237', '134/h hansamaligama,premadasadeniya', '0756321737','hr','........', 'easter@gmail.com', '30', "female"),
-  createData(3, "kumara sangakkara", "kumara", '200154996552', '109/o malwatte handiya,migamuwa', '0741572003','hr','....', 'asanka@gmail.com', '30', "male"),
-  createData(4,"pathirana saman","pathirana",'201052946305','234/v nonagumgama,raddoluwa','0791031573','hr','....','tharaka@gmail.com','30',"female"),
-  createData(5, "lavu kanush", "kanush",'200933401635', '546/g sandangana gama,sandalankaawa', '0783985174','hr','....','sonic@gmail.com', '30', "male")
-];
-const row2 = [
-  createData(2, "wimal kostha", "wimal", '200666503237', '134/h hansamaligama,premadasadeniya', '0756321737','mlt','........', 'easter@gmail.com', '30', "female"),
-  createData(3, "kumara sangakkara", "kumara", '200154996552', '109/o malwatte handiya,migamuwa', '0741572003','mlt','....', 'asanka@gmail.com', '30', "male"),
-  createData(4,"pathirana saman","pathirana",'201052946305','234/v nonagumgama,raddoluwa','0791031573','mlt','....','tharaka@gmail.com','30',"female"),
-  createData(5, "lavu kanush", "kanush",'200933401635', '546/g sandangana gama,sandalankaawa', '0783985174','mlt','....','sonic@gmail.com', '30', "male")
-];
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
 
 
 
@@ -165,66 +162,66 @@ const row2 = [
           }}
         >
           Edit Doctor
-          <CloseIcon onClick={handleEditClose} />
+          <CloseIcon onClick={handleEditClose} sx={{cursor:'pointer'}} />
         </DialogTitle>
         <DialogContent>
           <TextField
             label="Full Name"
             fullWidth
             margin="dense"
-            value={row0.fullName}
+            value={selectedPaper ? selectedPaper.fullName : ""}
             onChange={(e) => handleInputChange("fullName", e.target.value)}
           />
           <TextField
             label="Usual Name"
             margin="normal"
-            value={row0.name}
+            value={selectedPaper ? selectedPaper.name : ""}
             onChange={(e) => handleInputChange("name", e.target.value)}
           />
           <TextField
             label="NIC"
             margin="normal"
             sx={{ ml: 4 }}
-            value={row0.NIC}
+            value={selectedPaper ? selectedPaper.NIC : ""}
             onChange={(e) => handleInputChange("NIC", e.target.value)}
           />
           <TextField
             label="Address"
             fullWidth
             margin="normal"
-            value={row0.address}
+            value={selectedPaper ? selectedPaper.address : ""}
             onChange={(e) => handleInputChange("address", e.target.value)}
           />
           <TextField
             label="Contact Number"
             margin="normal"
-            value={row0.contactNumber}
+            value={selectedPaper ? selectedPaper.contactNumber : ""}
             onChange={(e) => handleInputChange("contactNumber", e.target.value)}
           />
           <TextField
             label="Degree"
             margin="normal"
             sx={{ ml: 4 }}
-            value={row0.degree}
+            value={selectedPaper ? selectedPaper.degree : ""}
             onChange={(e) => handleInputChange("degree", e.target.value)}
           />
           <TextField
             label="Speciality"
             margin="normal"
-            value={row0.role}
+            value={selectedPaper ? selectedPaper.role : ""}
             onChange={(e) => handleInputChange("role", e.target.value)}
           />
           <TextField
             label="Email Address"
             fullWidth
             margin="normal"
-            value={row0.emailAddress}
+            value={selectedPaper ? selectedPaper.emailAddress : ""}
             onChange={(e) => handleInputChange("emailAddress", e.target.value)}
           />
           <TextField
             label="Age"
             margin="normal"
-            value={row0.age}
+            value={selectedPaper ? selectedPaper.age : ""}
             onChange={(e) => handleInputChange("age", e.target.value)}
           />
           <FormControl margin="normal" sx={{ width: "15vh",ml:4 }}>
@@ -232,7 +229,7 @@ const row2 = [
             <Select
               labelId="gender-label"
               id="gender"
-              value={row0.gender}
+              value={selectedPaper ? selectedPaper.gender : ""}
               onChange={(e) => handleInputChange("gender", e.target.value)}
               label="Gender"
             >
@@ -265,7 +262,7 @@ const row2 = [
           paddingLeft: 2,
           paddingRight: 2,
         }}
-        onClick={handleEditClickOpen} // Open the edit window when clicking on the paper
+        onClick={() => handleEditClickOpen(row)} // Open the edit window when clicking on the paper
       >
         <Typography variant="h6" sx={{ paddingTop: 0.75 }}>
           {row.fullName}
@@ -337,7 +334,7 @@ const row2 = [
           paddingLeft: 2,
           paddingRight: 2,
         }}
-        onClick={handleEditClickOpen} // Open the edit window when clicking on the paper
+        onClick={() => handleEditClickOpen(row)} // Open the edit window when clicking on the paper
       >
         <Typography variant="h6" sx={{ paddingTop: 0.75 }}>
           {row.fullName}
@@ -410,8 +407,8 @@ key={row.Id}
     paddingLeft: 2,
     paddingRight: 2,
   }}
-  onClick={handleEditClickOpen} // Open the edit window when clicking on the paper
->
+  onClick={() => handleEditClickOpen(row)} // Open the edit window when clicking on the paper
+  >
   <Typography variant="h6" sx={{ paddingTop: 0.75 }}>
     {row.fullName}
   </Typography>

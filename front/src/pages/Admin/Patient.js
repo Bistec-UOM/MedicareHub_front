@@ -75,6 +75,8 @@ const Filter = (event) => {
         (typeof f.name === 'string' && f.name.toLowerCase().includes(searchTerm)) ||
         (typeof f.address === 'string' && f.address.toLowerCase().includes(searchTerm)) ||
         (typeof f.NIC === 'string' && f.NIC.toLowerCase().includes(searchTerm)) ||
+        (typeof f.gender === 'string' && f.gender.toLowerCase().includes(searchTerm)) ||
+        (typeof f.emailAddress === 'string' && f.emailAddress.toLowerCase().includes(searchTerm)) ||
         (typeof f.contactNumber === 'string' && f.contactNumber.toLowerCase().includes(searchTerm))
     )
   );

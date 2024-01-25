@@ -8,6 +8,7 @@ import Day from "./components/recepcomponents/Day/Day";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Lab_template from "./pages/Lab_template";
 import Pharmacy_drugstore from "./pages/Pharmacy_drugstore";
+import Stest from "./pages/Admin/Stest";
 
 function App() {
  
@@ -27,6 +28,7 @@ function App() {
       <Route path='/day' element={<Day/>}></Route>
       <Route path='lab/temp' element={<Lab_template></Lab_template>}></Route>
       <Route path='pharm/drug' element={<Pharmacy_drugstore></Pharmacy_drugstore>}></Route>
+      <Route path="play" element={<Stest></Stest>}></Route>
 
       </Routes>
       </BrowserRouter>
