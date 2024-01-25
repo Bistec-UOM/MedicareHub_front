@@ -79,34 +79,53 @@ export default function Lab_template() {
     
     
               <Paper sx={{display:'flex',alignItems:'center',width:'70%'}}>
-                <div style={{display:'flex',alignItems:'center'}}>
-                  <Typography sx={{fontSize:'16px'}}>Field name</Typography>
+                <div style={{display:'flex',alignItems:'center',width:'45%',height:'100%'}}>
+                  <Typography sx={{fontSize:'16px',pl:'20px',mr:'5px'}}>Field name</Typography>
                   <input style={{height:'20px',borderRadius: '4px',border:'1px solid blue'}} onChange={(e)=>setFieldName(e.target.value)} value={fieldName}></input>
                 </div>
-                <div style={{display:'flex',alignItems:'center'}}>
-                  <Typography sx={{fontSize:'16px'}}>Ref</Typography>
+                <div style={{display:'flex',alignItems:'center',width:'30%',height:'100%'}}>
+                  <Typography sx={{fontSize:'16px',mr:'5px'}}>Ref</Typography>
                   <input style={{height:'20px',borderRadius: '4px',border:'1px solid blue',width:'60px'}} type='number' onChange={(e)=>setRefMin(e.target.value)} value={refMin}></input>
                 <h3>:</h3>
                   <input style={{height:'20px',borderRadius: '4px',border:'1px solid blue',width:'60px'}} type='number' onChange={(e)=>setRefMax(e.target.value)} value={refMax}></input>
                 </div>
-                <div style={{display:'flex',alignItems:'center'}}>
-                  <Typography sx={{fontSize:'16px'}}>Unit</Typography>
+                <div style={{display:'flex',alignItems:'center',width:'20%',height:'100%'}}>
+                  <Typography sx={{fontSize:'16px',mr:'5px'}}>Unit</Typography>
                   <input style={{height:'20px',borderRadius: '4px',border:'1px solid blue',width:'60px'}} onChange={(e)=>setUnit(e.target.value)} value={unit}></input>
                 </div>
-                <AddCircleIcon color='success' sx={{cursor:'pointer'}} onClick={addTestField}></AddCircleIcon>
+                <div style={{width:'5%',height:'100%'}}>
+                  <AddCircleIcon color='success' sx={{cursor:'pointer'}} onClick={addTestField}></AddCircleIcon>
+                </div>
               </Paper>
     
               {
                 testField.map((elm,indx)=>{
                   return(
-                  <div style={{display:'flex',width:'60%'}}>
-                      <Typography sx={{fontSize:'16px'}}>{elm.field}</Typography>
-                      <Typography sx={{fontSize:'16px'}}>{elm.min}</Typography>
-                      <Typography sx={{fontSize:'16px'}}>{elm.max}</Typography>
-                      <Typography sx={{fontSize:'16px'}}>{elm.unit}</Typography>
-                      <HighlightOffIcon color='error' sx={{cursor:'pointer'}} onClick={()=>deleteTestField(elm.field)} ></HighlightOffIcon>
-                      {indx!=0 ? <KeyboardDoubleArrowUpIcon style={{cursor:'pointer'}} onClick={()=>{swapElement(indx,indx-1)}}></KeyboardDoubleArrowUpIcon>: ''}
-                      {indx==(testField.length-1) ? '' : <KeyboardDoubleArrowDownIcon style={{cursor:'pointer'}} onClick={()=>{swapElement(indx,indx+1)}}></KeyboardDoubleArrowDownIcon>}
+                  <div style={{display:'flex',justifyContent:'space-between',width:'70%',height:'30px',backgroundColor:'yellow'}}>
+                      <div style={{width:'45%',height:'100%'}}>
+                        <Typography sx={{fontSize:'16px'}}>{elm.field}</Typography>
+                      </div>
+                      <div style={{width:'15%',height:'100%'}}>
+                        <Typography sx={{fontSize:'16px',textAlign:'right'}}>{elm.min}{' -'}</Typography>
+                      </div>
+                      <div style={{width:'15%',height:'100%'}}>
+                        <Typography sx={{fontSize:'16px',pl:'4px'}}>{elm.max}</Typography>
+                      </div>
+                      <div style={{width:'10%',height:'100%'}}>
+                        <Typography sx={{fontSize:'16px'}}>{elm.unit}</Typography>
+                      </div>
+
+                      <div style={{width:'10%',height:'100%',display:'flex',justifyContent:'flex-end'}}>
+                        {indx!=0 ? <KeyboardDoubleArrowUpIcon style={{cursor:'pointer'}} onClick={()=>{swapElement(indx,indx-1)}}></KeyboardDoubleArrowUpIcon>: ''}
+
+                        {indx==(testField.length-1) ? '' : <KeyboardDoubleArrowDownIcon style={{cursor:'pointer'}} onClick={()=>{swapElement(indx,indx+1)}}></KeyboardDoubleArrowDownIcon>}
+                      </div>
+
+                      <div style={{width:'5%',height:'100%',display:'flex',justifyContent:'flex-end'}}>
+                         <HighlightOffIcon color='error' sx={{cursor:'pointer'}} onClick={()=>deleteTestField(elm.field)} ></HighlightOffIcon>
+                      </div>
+                      
+
                   </div>
                   )
                 })
