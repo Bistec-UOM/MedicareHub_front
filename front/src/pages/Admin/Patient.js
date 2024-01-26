@@ -22,11 +22,11 @@ function createData(Id,fullName,name,NIC,address,contactNumber,emailAddress,age,
   };
 }
 const rows = [
-  createData(1,"chamath palliyaguruge","chamath",159,6.0,24,4,30,"male"),
-  createData(2, "wimal kostha", "wimal", 237, 9.0, 37, 4.3, 30, "female"),
-  createData(3, "kumara sangakkara", "kumara", 262, 16.0, 24, 6.0, 30, "male"),
-  createData(4,"pathirana saman","pathirana",305,3.7,67,4.3,30,"female"),
-  createData(5, "lavu kanush", "kanush", 356, 16.0, 49, 3.9, 30, "male")
+  createData(1,"chamath palliyaguruge","chamath",'200422400159','123/t thotawatte rd,thota langa','0781754824','dhammika@gmail.com','30',"male"),
+  createData(2, "wimal kostha", "wimal", '200666503237', '134/h hansamaligama,premadasadeniya', '0756321737', 'easter@gmail.com', '30', "female"),
+  createData(3, "kumara sangakkara", "kumara", '200154996552', '109/o malwatte handiya,migamuwa', '0741572003', 'asanka@gmail.com', '30', "male"),
+  createData(4,"pathirana saman","pathirana",'201052946305','234/v nonagumgama,raddoluwa','0791031573','tharaka@gmail.com','30',"female"),
+  createData(5, "lavu kanush", "kanush",'200933401635', '546/g sandangana gama,sandalankaawa', '0783985174', 'sonic@gmail.com', '30', "male")
 ];
 
 function Patient() {
@@ -66,15 +66,32 @@ function Patient() {
   };
 const [records,setRecords] = useState(rows)
 // creating filter function
-const Filter = (event)=>{
-  setRecords(rows.filter(f=>f.name.toLowerCase().includes(event.target.value)))
-}
+const Filter = (event) => {
+  const searchTerm = event.target.value.toLowerCase();
+
+  setRecords(
+    rows.filter(
+      (f) =>
+        (typeof f.name === 'string' && f.name.toLowerCase().includes(searchTerm)) ||
+        (typeof f.address === 'string' && f.address.toLowerCase().includes(searchTerm)) ||
+        (typeof f.NIC === 'string' && f.NIC.toLowerCase().includes(searchTerm)) ||
+        (typeof f.gender === 'string' && f.gender.toLowerCase().includes(searchTerm)) ||
+        (typeof f.emailAddress === 'string' && f.emailAddress.toLowerCase().includes(searchTerm)) ||
+        (typeof f.contactNumber === 'string' && f.contactNumber.toLowerCase().includes(searchTerm))
+    )
+  );
+};
+
+const handleChange = (e) => {
+  console.log(e.target.value);
+};
+
 
   return (
     <div>
 
       {/* search bar */}
-      <Grid sx={{ display: "flex", justifyContent: "space-between" }}>
+      <Grid sx={{ display: "flex", justifyContent: "space-between",mb:4 }}>
         <Paper
           component="form"
           sx={{
@@ -110,109 +127,68 @@ const Filter = (event)=>{
       </Grid>
 
 
-      <Grid sx={{display:'flex',justifyContent:'space-around', m:2,width:'90vh'}}>
-          {/* fill box */}
-          <FormControlLabel
-            control={
-                // <Checkbox checked={gilad} onChange={handleChange} name="gilad" />
-                <Checkbox    sx={{
-                  color: 'rgb(121, 204, 190)',
-                  '&.Mui-checked': {
-                    color: 'rgb(121, 204, 190)',
-                  },
-                }}/>
-            }
-            label="Name"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox    sx={{
-                color: 'rgb(121, 204, 190)',
-                '&.Mui-checked': {
-                  color: 'rgb(121, 204, 190)',
-                },
-              }}/>
-            }
-            label="Address"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox    sx={{
-                color: 'rgb(121, 204, 190)',
-                '&.Mui-checked': {
-                  color: 'rgb(121, 204, 190)',
-                },
-              }}/>
-            }
-            label="Telephone"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox    sx={{
-                color: 'rgb(121, 204, 190)',
-                '&.Mui-checked': {
-                  color: 'rgb(121, 204, 190)',
-                },
-              }}/>
-            }
-            label="ID"
-          />
-          
-        </Grid>
-      <Grid>
-        {/* data adding popup */}
-        <Dialog open={editOpen} onClose={handleEditClose}>
-          <DialogTitle
-            sx={{
-              backgroundColor: "rgb(222, 244, 242)",
-              display: "flex",
-              justifyContent: "space-between",
-            }}
+     
+<Grid>
+{/* for popup when adding */}
+<Dialog open={open} onClose={handleClose}>
+        <DialogTitle
+          sx={{
+            backgroundColor: "rgb(222, 244, 242)",
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        >
+          Add Patient
+          <CloseIcon onClick={handleClose} sx={{cursor:'pointer'}}/>
+        </DialogTitle>
+        <DialogContent>
+          {/* Add form fields or other content here */}
+          <TextField label="Name" fullWidth sx={{ mb: 1, mt: 3 }} />
+          <TextField label="Usual Name" sx={{ mb: 1 }} />
+          <TextField label="NIC" sx={{ ml: 4, mb: 1 }} />
+          <TextField label="Address" fullWidth sx={{ mb: 1 }} />
+          <TextField label="Contact Number" sx={{ mb: 1 }} />
+          <TextField label="E-mail" fullWidth sx={{ mb: 1 }} />
+          <TextField label="Age" sx={{ mb: 1 }} />
+          <TextField label="Gender" sx={{ ml: 4, mb: 1 }} />
+          {/* Add more fields as needed */}
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={handleEditSave}
+            variant="contained"
+            sx={{ backgroundColor: "rgb(121, 204, 190)", m: 2 }}
           >
-            Edit Doctor
-            <CloseIcon onClick={handleEditClose} />
-          </DialogTitle>
-          <DialogContent>
-            <TextField
-              label="Full Name"
-              fullWidth
-              margin="dense"
-              value={selectedPaper ? selectedPaper.name : ""}
-              onChange={(e) => handleInputChange("name", e.target.value)}
-            />
-
-            <FormControl margin="normal">
-              <InputLabel id="gender-label">Gender</InputLabel>
-              <Select
-                labelId="gender-label"
-                id="gender"
-                value={selectedPaper ? selectedPaper.gender : ""}
-                onChange={(e) => handleInputChange("gender", e.target.value)}
-                label="Gender"
-              >
-                <MenuItem value="Male">Male</MenuItem>
-                <MenuItem value="Female">Female</MenuItem>
-              </Select>
-            </FormControl>
-          </DialogContent>
-          <DialogActions>
-            <Button
-              onClick={handleEditSave}
-              variant="contained"
-              sx={{ backgroundColor: "rgb(121, 204, 190)", m: 2 }}
-            >
-              Save
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </Grid>
+            Add
+          </Button>
+        </DialogActions>
+      </Dialog>
+</Grid>
+      
       <Grid>
+      <Paper
+      sx={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        marginBottom: "10px",
+        padding: 2,
+        boxShadow: 5,
+        borderRadius:'12px'
+      }}
+      >
+      <Typography sx={{ flex: 1 }}>name</Typography>
+      <Typography sx={{ flex: 1 }}>NIC</Typography>
+      <Typography sx={{ flex: 1 }}>Gender</Typography>
+      <Typography sx={{ flex: 1 }}>Email</Typography>
+      </Paper>
         {records.map((row) => (
           <Paper
-            key={row.Id}
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
+          key={row.Id}
+          sx={{
+            cursor:'pointer',
+            display: "flex",
+            justifyContent: "space-between",
               alignItems: "center",
               marginBottom: "10px",
               padding: 2,
@@ -239,8 +215,8 @@ const Filter = (event)=>{
               justifyContent: "space-between",
             }}
           >
-            Edit Doctor
-            <CloseIcon onClick={handleEditClose} />
+            Edit Patient
+            <CloseIcon onClick={handleEditClose} sx={{cursor:'pointer'}} />
           </DialogTitle>
           <DialogContent>
             <TextField
@@ -249,53 +225,52 @@ const Filter = (event)=>{
               margin="dense"
               value={selectedPaper ? selectedPaper.fullName : ""}
               onChange={(e) => handleInputChange("fullName", e.target.value)}
-            />
+              />
             <TextField
               label="Name"
-              fullWidth
               margin="dense"
               value={selectedPaper ? selectedPaper.name : ""}
               onChange={(e) => handleInputChange("name", e.target.value)}
-            />
+              />
             <TextField
+              sx={{ml:1}}
               label="NIC"
-              fullWidth
               margin="dense"
               value={selectedPaper ? selectedPaper.NIC : ""}
               onChange={(e) => handleInputChange("protein", e.target.value)}
-            />
+              />
             <TextField
               label="Address"
               fullWidth
               margin="dense"
               value={selectedPaper ? selectedPaper.address : ""}
               onChange={(e) => handleInputChange("carbs", e.target.value)}
-            />
+              />
             <TextField
               label="Contact Number"
-              fullWidth
               margin="dense"
               value={selectedPaper ? selectedPaper.contactNumber : ""}
               onChange={(e) => handleInputChange("name", e.target.value)}
-            />
+              />
             <TextField
               label="Email"
-              fullWidth
               margin="dense"
               value={selectedPaper ? selectedPaper.emailAddress : ""}
+              sx={{ml:1}}
               onChange={(e) => handleInputChange("name", e.target.value)}
-            />
+              />
             <TextField
               label="Age"
-              fullWidth
               margin="dense"
               value={selectedPaper ? selectedPaper.age : ""}
               onChange={(e) => handleInputChange("name", e.target.value)}
             />
 
             <FormControl margin="normal" sx={{ width: "15vh" }}>
+
               <InputLabel id="gender-label">Gender</InputLabel>
               <Select
+                sx={{ml:1}}
                 labelId="gender-label"
                 id="gender"
                 value={selectedPaper ? selectedPaper.gender : ""}

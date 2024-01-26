@@ -38,7 +38,7 @@ export default function Lab() {
            <SidebarList>
            {
               loadIn.map((elm)=>{
-                 return(<Sideunit_Test key={elm.id} id={elm.id} name={elm.name} test={elm.test} setSelect={setSelect}></Sideunit_Test>)
+                 return(<Sideunit_Test key={elm.id} id={elm.id} name={elm.name} test={elm.test} setSelect={setSelect} selected={elm.id==select?true:''}></Sideunit_Test>)
               })
             }
            </SidebarList>

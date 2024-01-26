@@ -1,7 +1,117 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { SidebarContainer, SidebarTop, SidebarList } from '../components/sidebar/Sidebar'
+import { CustomScroll } from '../components/CustomScroll';
+import Navbar from '../components/navbar/Navbar'
+import { Grid, Card, Typography } from '@mui/material'
+import { Sideunit_Patient } from '../components/sidebar/Sideunits';
+import CardContent from '@mui/material/CardContent';
+import TextField from '@mui/material/TextField';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Paper from '@mui/material/Paper';
+import { styled } from '@mui/material/styles';
+import AudioFileIcon from '@mui/icons-material/AudioFile';
+import UpdateIcon from '@mui/icons-material/Update';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import ThermostatIcon from '@mui/icons-material/Thermostat';
+import DoNotDisturbOnIcon from '@mui/icons-material/DoNotDisturbOn';
 
-export default function Doctor() {
+export default function Pharmacy() {
+  useEffect(() => {
+    document.body.style.margin = '0';
+
+  }, [])
+
+  const Item = styled(Paper)(({ theme }) => ({
+
+    padding: theme.spacing(1),
+    textAlign: 'center',
+
+  }));
+
+  const load = [
+    { name: 'Nethmi Eranga Wijeweera', age: '30', gender: 'Female' },
+  ];
+  const pres = [
+    { name: 'Acetaminophen', quantity: '30', hour: 'BID' },
+  ];
+
   return (
-    <div>Doctor</div>
+    <CustomScroll>
+      <Navbar></Navbar>
+
+      <Grid container spacing={0} sx={{ paddingTop: '64px', height: '100vh' }}>
+        <Grid item xs={3} style={{ height: '100%' }}>
+          <SidebarContainer>
+            <SidebarTop>
+            </SidebarTop>
+            <SidebarList>
+            </SidebarList>
+          </SidebarContainer>
+        </Grid>
+
+        <Grid item xs={9} style={{ height: '100%', overflowY: 'scroll' }}>
+
+          <div>
+            {load.map((docdata, id) => (
+              <Card key={id} sx={{ maxWidth: '100%', height: '100px' }}>
+                <CardContent>
+                  <AudioFileIcon sx={{ color: 'rgb(0, 153, 255)', float: 'right', marginRight: '10px', fontSize: '30px' }} />
+                  <UpdateIcon sx={{ color: 'rgb(255, 153, 0)', float: 'right', marginRight: '10px', fontSize: '30px' }} />
+                  <Typography gutterBottom variant="h6">{docdata.name}</Typography>
+                  <Typography gutterBottom variant="p" sx={{ color: '#808080' }}>{docdata.age}  years</Typography><br />
+                  <Typography gutterBottom variant="p" sx={{ color: '#808080' }}>{docdata.gender}</Typography>
+                </CardContent>
+              </Card>
+            ))}
+          </div>      
+
+         <div>
+            {pres.map((drug,num) => (
+            <Grid key={num} container spacing={3} style={{marginTop:"1px",marginLeft: '14%',}}>
+              <Grid item xs={8}>
+              <Item sx={{ backgroundColor: '#0099cc', color: 'white', fontSize: '18px',}}>
+                <Typography gutterBottom variant="p" sx={{ marginLeft: '10px', }}>{drug.name}</Typography>
+                <Typography gutterBottom variant="p" sx={{ marginLeft: '200px', }}>{drug.quantity} mg</Typography>
+                <Typography gutterBottom variant="p" sx={{ marginLeft: '250px', }}>{drug.hour}</Typography>
+              </Item>
+              </Grid>
+              <Grid item xs={4}>
+              < DoNotDisturbOnIcon sx={{ color: 'red', marginLeft: '5px', fontSize: '30px', float: 'Left' }} />
+              </Grid>              
+            </Grid>
+            ))}
+         </div>
+
+          < AddCircleIcon sx={{ color: '#00cc66', marginLeft: '10%', fontSize: '30px', float: 'Left',marginTop: '27px' }} />
+          <ThermostatIcon sx={{ color: '#33cc33', marginLeft: '75%', fontSize: '45px', marginTop: '100px' }} />
+
+          <div>
+            <Box
+              component="form"
+              sx={{
+                '& .MuiTextField-root': { m: 1, width: '90%' }, marginLeft: '8%',
+              }}
+              noValidate
+              autoComplete="off"
+            >
+              <TextField
+                id="outlined-multiline-flexible"
+                placeholder="Patient extra details"
+                multiline
+                rows={9}
+                InputProps={{
+                style: {
+                    backgroundColor: 'rgb(209, 224, 250)',
+                    borderRadius: '25px',
+                },
+                }} />
+            </Box>
+            <br></br>
+            <Button variant="contained" sx={{ backgroundColor: '#00cca3', left: '80%' }}>Confirm</Button>
+          </div>
+        </Grid>
+      </Grid>
+    </CustomScroll>
   )
 }
