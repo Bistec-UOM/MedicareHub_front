@@ -8,6 +8,8 @@ import { useEffect } from "react";
 import { CustomScroll } from "../../CustomScroll";
 import { Sideunit_Doctor } from "../../sidebar/Sideunits";
 import SearchBar from "../Searchbar/Searchbar";
+import {Tabs,Tab} from "@mui/material";
+import '../../../recep.css'
 
 const AppointmentCalender = () => {
   useEffect(()=>{
@@ -20,6 +22,15 @@ const AppointmentCalender = () => {
       {'name':'Tharushi Fernando','title':'MBBS, MD'},
       {'name':'Infas Mohomad','title':'MBBS, FCGP(SL), MD-CH(UK), MBS-CH(UK), C.ht(USA)'}
    ] 
+   const [search,setSearch]=useState("")
+
+   const [selectedTab, setSelectedTab] = useState(0);
+ //  const [doctorid,setDoctorid]=useState(null)
+
+
+   const handleChange = (event, newValue) => {
+     setSelectedTab(newValue);
+   };
   
    // const []
   return (
@@ -29,19 +40,58 @@ const AppointmentCalender = () => {
           <Grid item md={3}>
            <SidebarContainer>
             <SidebarTop>
-              <SearchBar mgl="10%" isDisabled={false} placename="Doctor name or id..."></SearchBar>
+              <SearchBar search={search} setSearch={setSearch} mgl="10%" isDisabled={false} placename="Doctor name or id..."></SearchBar>
             </SidebarTop>
             <SidebarList>
-              {data.map((item,index)=>(
-                <Sideunit_Doctor name={item.name} title={item.title} key={index}></Sideunit_Doctor>
+            <Tabs
+        orientation="vertical"
+       // variant="scrollable"
+        value={selectedTab}
+        onChange={handleChange}
+        aria-label="example vertical tabs"
+        sx={{marginTop:0}}
+        
+      >
+              {/* {data.filter((item)=>{
+                  return search.toLowerCase()===''?item:item.name.toLowerCase().includes(search.toLowerCase());
+              }).map((item,index)=>(
+                <Tab key={index} label="" style={{ display: 'none' }} />
+                
+                
+                //<Sideunit_Doctor name={item.name} title={item.title} key={index}></Sideunit_Doctor>
+              ))} */}
+              </Tabs>
+              <div>
+              {data.filter((item)=>{
+                  return search.toLowerCase()===''?item:item.name.toLowerCase().includes(search.toLowerCase());
+              }).map((item,index)=>(
+                <div
+                key={index}
+                onClick={() => setSelectedTab(index)}
+                style={{
+                  backgroundColor: selectedTab === index ? '#79CCBE' : 'transparent',
+                   padding: '10px',
+                   margin: '5px',
+                  cursor: 'pointer',
+                  borderRadius:'8px'
+                }}
+              >
+                <Sideunit_Doctor selectedTab={selectedTab} name={item.name} title={item.title} index={index} key={index}></Sideunit_Doctor>
+              </div>
+               
+                
+                
+               
               ))}
+
+              </div>
                
             </SidebarList>
            </SidebarContainer>
           </Grid>
 
           <Grid sx={{paddingLeft:'10px',paddingRight:'10px'}} item md={9}>
-           <MyCalendar/>
+           <MyCalendar doctorId={selectedTab}/>
           </Grid>
         </Grid>
      

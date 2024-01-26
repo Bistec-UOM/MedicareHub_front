@@ -15,7 +15,7 @@ import AppAddPopup from "../AppAddPopup/AppAddPopup";
 import AddIcon from '@mui/icons-material/Add';
 import { useEffect } from "react";
 
-const PatientDetailCard = ({ setActiveId,item,apopen, setApopen }) => {
+const PatientDetailCard = ({ appAddPopupCount,setAppAddPopupCount,setActiveId,item,apopen, setApopen }) => {
 
  
 
@@ -26,7 +26,9 @@ const PatientDetailCard = ({ setActiveId,item,apopen, setApopen }) => {
 
   const handleAppAddPopup = () => {
     // setActiveId(item.nic)
+    setAppAddPopupCount(appAddPopupCount+1);
    setApopen(true)
+   setActiveId(item.nic)
   };
   useEffect(()=>{
     setActiveId(item.nic)

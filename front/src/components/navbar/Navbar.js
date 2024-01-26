@@ -86,6 +86,8 @@ const Navbar = () => {
                               PaperProps={{
                                 sx: {
                                   backgroundColor: '#ffff', // Set the background color of the Menu
+                                  paddingRight:'3%'
+                                  
                                 },
                               }}
                           >

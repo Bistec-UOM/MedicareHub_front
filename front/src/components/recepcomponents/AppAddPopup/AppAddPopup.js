@@ -23,10 +23,10 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Grid, Stack } from "@mui/material";
 
 
-export default function AppAddPopup({ activeId,patientList,apopen, setApopen ,activeD}) {
+export default function AppAddPopup({ appAddPopupCount,setAppAddPopupCount, activeId,patientList,apopen, setApopen ,activeD}) {
   // const [enameError,seteNameError]=useState(false)
   // const [eaddressError,seteAddressError]=useState(false)
-  console.log(activeD)
+  //console.log(activeD)
   // const [enicError,seteNicError]=useState(false)
   const [etimevalueError, seteTimeValueError] = useState(false);
 
@@ -49,15 +49,19 @@ export default function AppAddPopup({ activeId,patientList,apopen, setApopen ,ac
     event.preventDefault();
   }
   useEffect(() => {
-   
+   // console.log(activeId);
+  
     if (patientList && Array.isArray(patientList)) {
-      setActiveData(patientList.filter((patient) => patient.nic === activeId));
-  }
-  console.log(activeData)
-   // setActiveData(output);
-    
+      const filteredData = patientList.find((patient) => patient.nic === activeId);
+      setActiveData(filteredData);
+    }
+  }, [appAddPopupCount, activeId, patientList]);
+  
+  useEffect(() => {
+   // console.log("Updated Active Data:", activeData);
+  }, [activeData]);
+  
 
-}, []);
 
 
   return (
@@ -108,10 +112,10 @@ export default function AppAddPopup({ activeId,patientList,apopen, setApopen ,ac
                               alignItem: "center",
                             }}
                           >
-                            <Typography sx={{padding:'2%'}} variant="h5">{activeData.name}</Typography>
+                            <Typography sx={{padding:'2%'}} variant="h5">{activeData?.name}</Typography>
                           </Stack>
                           <Stack>
-                            <Typography sx={{padding:'2%'}} color="text.secondary">{activeData.nic}</Typography>
+                            <Typography sx={{padding:'2%'}} color="text.secondary">{activeData?.nic}</Typography>
                           </Stack>
                           <Stack
                             sx={{
@@ -121,11 +125,11 @@ export default function AppAddPopup({ activeId,patientList,apopen, setApopen ,ac
                             direction={"row"}
                           >
                             <Typography sx={{padding:'2%'}} variant="body2" color="text.secondary">
-                            { activeData.city}
+                            { activeData?.city}
                             </Typography>
 
                             <Typography variant="body2" color="text.secondary">
-                            {activeData.phone}
+                            {activeData?.phone}
                             </Typography>
                           </Stack>
                         </Stack>

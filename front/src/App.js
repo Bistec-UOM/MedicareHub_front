@@ -1,4 +1,4 @@
-import Admin from "./pages/Admin";
+import Dashboard from "./pages/Admin/Dashboard";
 import Doctor from "./pages/Doctor";
 import Pharmacy from "./pages/Pharmacy";
 import Receptionist from "./pages/Receptionist";
@@ -18,7 +18,7 @@ function App() {
       <BrowserRouter>
       <Routes>
       <Route path='/' element={<Log></Log>}></Route>
-      <Route path='admin' element={<Admin></Admin>}></Route>
+      <Route path='admin' element={<Dashboard></Dashboard>}></Route>
       <Route path='recep' element={<Receptionist></Receptionist>}></Route>
       <Route path='doct' element={<Doctor></Doctor>}></Route>
       <Route path='pharm' element={<Pharmacy></Pharmacy>}></Route>

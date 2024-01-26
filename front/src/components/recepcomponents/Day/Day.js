@@ -16,7 +16,14 @@ import SearchPatientPage from "../SearchPatientPage/SearchPatienPage";
 
 const Day = () => {
   const [renderVal,setRenderVal]=useState(false);
+  const [search,setSearch]=useState("")
   
+
+  const location=useLocation();
+  const {doctorid}=location.state;
+
+  const [docid,setDocid]=useState(doctorid)
+ // console.log(doctorid);
   
 
  
@@ -119,11 +126,25 @@ const Day = () => {
           <Grid item md={3}>
           <SidebarContainer>
             <SidebarTop>
-              <SearchBar  isDisabled={false} placename="Doctor name or id..." mgl="10%"></SearchBar>
+              <SearchBar search={search} setSearch={setSearch}  isDisabled={false} placename="Doctor name or id..." mgl="10%"></SearchBar>
             </SidebarTop>
             <SidebarList>
-              {data.map((item,index)=>(
-                <Sideunit_Doctor name={item.name} title={item.title} key={index}></Sideunit_Doctor>
+              {data.filter((item)=>{
+                 return search.toLowerCase()===''?item:item.name.toLowerCase().includes(search.toLowerCase())
+              }).map((item,index)=>(
+                <div
+                key={index}
+                onClick={() => setDocid(index)}
+                style={{
+                  backgroundColor: docid === index ? '#79CCBE' : 'transparent',
+                   padding: '10px',
+                   margin: '5px',
+                  cursor: 'pointer',
+                  borderRadius:'8px'
+                }}
+              >
+                <Sideunit_Doctor  selectedTab={docid} name={item.name} title={item.title} index={index} key={index}></Sideunit_Doctor>
+              </div>
               ))}
                
             </SidebarList>
