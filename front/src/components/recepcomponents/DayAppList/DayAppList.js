@@ -19,7 +19,7 @@ import DayAppList from "./DayAppList";
 
 const DayList = (props) => {
   const [dayapp, setDayApp] = useState([]);
-  const [isDisabled, setIsDisabled] = useState(true);
+ 
   const [filteredAppointments, setFilteredAppointments] = useState([]);
   const [search,setSearch]=useState("")
 
@@ -42,8 +42,9 @@ const DayList = (props) => {
   useEffect(() => {
     document.body.style.margin = "0";
     const appointments = props.appointlist.filter((item) => item.today === loc.today);
-    setFilteredAppointments(appointments);
-    setIsDisabled(appointments.length === 0);
+    const newappointments=appointments.filter((item)=>item.did===props.docid)
+    setFilteredAppointments(newappointments);
+    props.setIsDisabled(filteredAppointments.length === 0);
   }, [delcount]);
 
   return (
@@ -59,7 +60,7 @@ const DayList = (props) => {
           search={search}
           setSearch={setSearch}
           mgl="10%"
-          isDisabled={isDisabled}
+          isDisabled={props.isDisabled}
           placename="Patient name or id..."
         />
         <Stack
@@ -86,7 +87,7 @@ const DayList = (props) => {
           </Button>
           <Button
             onClick={handleDeleteAll}
-            disabled={isDisabled}
+            disabled={props.isDisabled}
             sx={{
               backgroundColor: "#F44336",
               fontWeight: 25,
@@ -133,8 +134,8 @@ const DayList = (props) => {
       </div>
       <AppAddPopup apopen={apopen} setApopen={setApopen} />
       <AllAppDeletePopup
-        isDisabled={isDisabled}
-        setIsDisabled={setIsDisabled}
+        isDisabled={props.isDisabled}
+        setIsDisabled={props.setIsDisabled}
         filteredAppointments={filteredAppointments}
         setFilteredAppointments={setFilteredAppointments}
         dopen={dopen}

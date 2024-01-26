@@ -23,7 +23,9 @@ const Day = () => {
   const {doctorid}=location.state;
 
   const [docid,setDocid]=useState(doctorid)
- // console.log(doctorid);
+  console.log(doctorid);
+
+  const [isDisabled, setIsDisabled] = useState(true);
   
 
  
@@ -36,7 +38,8 @@ const Day = () => {
       today:'January 4, 2024',
       nic:'21433454325',
       phone:'0774733245',
-      time:'8.30 AM'
+      time:'8.30 AM',
+      did:0
       
 
     },
@@ -46,7 +49,8 @@ const Day = () => {
       today:'January 4, 2024',
       nic:'4524523',
       phone:'0774733245',
-      time:'9.00 AM'
+      time:'9.00 AM',
+      did:3,
       
 
     },
@@ -56,7 +60,8 @@ const Day = () => {
       today:'January 4, 2024',
       nic:'452452343',
       phone:'0774733245',
-      time:'9.30 AM'
+      time:'9.30 AM',
+      did:1,
       
 
     },
@@ -66,7 +71,8 @@ const Day = () => {
       today:'January 4, 2024',
       nic:'4524543223',
       phone:'0774733245',
-      time:'10.00 AM'
+      time:'10.00 AM',
+      did:1,
       
 
     },
@@ -76,7 +82,8 @@ const Day = () => {
       today:'January 4, 2024',
       nic:'45244332523',
       phone:'0774733245',
-      time:'10.30 AM'
+      time:'10.30 AM',
+      did:0
       
 
     },
@@ -86,7 +93,8 @@ const Day = () => {
       today:'January 4, 2024',
       nic:'54325324',
       phone:'0742314567',
-      time:'11.00 AM'
+      time:'11.00 AM',
+      did:1
       
 
     },
@@ -96,7 +104,8 @@ const Day = () => {
       today:'January 5, 2024',
       nic:'54243252',
       phone:'0774733245',
-      time:'9.30 AM'
+      time:'9.30 AM',
+      did:1,
 
     },
 
@@ -106,7 +115,8 @@ const Day = () => {
       today:'January 6, 2024',
       nic:'5243525',
       phone:'0774733245',
-      time:'9.30 AM'
+      time:'9.30 AM',
+      did:3
     }
   ]);
 
@@ -115,6 +125,7 @@ const Day = () => {
     {'name':'Bimasara Herath','title':'MBBS, MD, MRCP(UK), PRCP-E'},
     {'name':'Tharushi Fernando','title':'MBBS, MD'},
     {'name':'Infas Mohomad','title':'MBBS, FCGP(SL), MD-CH(UK), MBS-CH(UK), C.ht(USA)'}
+    
  ] 
 
  
@@ -126,15 +137,18 @@ const Day = () => {
           <Grid item md={3}>
           <SidebarContainer>
             <SidebarTop>
-              <SearchBar search={search} setSearch={setSearch}  isDisabled={false} placename="Doctor name or id..." mgl="10%"></SearchBar>
+              <SearchBar  search={search} setSearch={setSearch}  isDisabled={true} placename="Doctor name or id..." mgl="10%"></SearchBar>
             </SidebarTop>
             <SidebarList>
+              <div>
+
+             
               {data.filter((item)=>{
                  return search.toLowerCase()===''?item:item.name.toLowerCase().includes(search.toLowerCase())
               }).map((item,index)=>(
                 <div
                 key={index}
-                onClick={() => setDocid(index)}
+               // onClick={() => setDocid(index)}
                 style={{
                   backgroundColor: docid === index ? '#79CCBE' : 'transparent',
                    padding: '10px',
@@ -146,12 +160,13 @@ const Day = () => {
                 <Sideunit_Doctor  selectedTab={docid} name={item.name} title={item.title} index={index} key={index}></Sideunit_Doctor>
               </div>
               ))}
+               </div>
                
             </SidebarList>
            </SidebarContainer>
           </Grid>
           <Grid  item  md={9}>
-          {renderVal ?  <SearchPatientPage renderVal={renderVal} setRenderVal={setRenderVal}/> :<DayList appointlist={appointlist} renderVal={renderVal} setRenderVal={setRenderVal}/>}
+          {renderVal ?  <SearchPatientPage renderVal={renderVal} setRenderVal={setRenderVal}/> :<DayList isDisabled={isDisabled} setIsDisabled={setIsDisabled} docid={docid} appointlist={appointlist} renderVal={renderVal} setRenderVal={setRenderVal}/>}
           </Grid>
 
           {/* <Grid  item  md={9}>
