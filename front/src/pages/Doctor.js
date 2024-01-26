@@ -3,7 +3,6 @@ import { SidebarContainer, SidebarTop, SidebarList } from '../components/sidebar
 import { CustomScroll } from '../components/CustomScroll';
 import Navbar from '../components/navbar/Navbar'
 import { Grid, Card, Typography } from '@mui/material'
-import { Sideunit_Patient } from '../components/sidebar/Sideunits';
 import CardContent from '@mui/material/CardContent';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
@@ -16,7 +15,7 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import ThermostatIcon from '@mui/icons-material/Thermostat';
 import DoNotDisturbOnIcon from '@mui/icons-material/DoNotDisturbOn';
 
-export default function Pharmacy() {
+export default function Doctor() {
   useEffect(() => {
     document.body.style.margin = '0';
 
@@ -34,6 +33,8 @@ export default function Pharmacy() {
   ];
   const pres = [
     { name: 'Acetaminophen', quantity: '30', hour: 'BID' },
+    { name: 'Acetaminophen', quantity: '30', hour: 'BID' },
+    
   ];
 
   return (
@@ -68,9 +69,9 @@ export default function Pharmacy() {
 
          <div>
             {pres.map((drug,num) => (
-            <Grid key={num} container spacing={3} style={{marginTop:"1px",marginLeft: '14%',}}>
+            <Grid key={num} container spacing={1} sx={{marginTop:"5px",marginLeft: '16%',}}>
               <Grid item xs={8}>
-              <Item sx={{ backgroundColor: '#0099cc', color: 'white', fontSize: '18px',}}>
+              <Item sx={{ backgroundColor: '#0099cc', color: 'white', fontSize: '17px',}}>
                 <Typography gutterBottom variant="p" sx={{ marginLeft: '10px', }}>{drug.name}</Typography>
                 <Typography gutterBottom variant="p" sx={{ marginLeft: '200px', }}>{drug.quantity} mg</Typography>
                 <Typography gutterBottom variant="p" sx={{ marginLeft: '250px', }}>{drug.hour}</Typography>
@@ -84,7 +85,7 @@ export default function Pharmacy() {
          </div>
 
           < AddCircleIcon sx={{ color: '#00cc66', marginLeft: '10%', fontSize: '30px', float: 'Left',marginTop: '27px' }} />
-          <ThermostatIcon sx={{ color: '#33cc33', marginLeft: '75%', fontSize: '45px', marginTop: '100px' }} />
+          <ThermostatIcon sx={{ color: '#33cc33', marginLeft: '74%', fontSize: '45px', marginTop: '70px' }} />
 
           <div>
             <Box
@@ -99,13 +100,17 @@ export default function Pharmacy() {
                 id="outlined-multiline-flexible"
                 placeholder="Patient extra details"
                 multiline
-                rows={9}
+                rows={7}
                 InputProps={{
                 style: {
                     backgroundColor: 'rgb(209, 224, 250)',
                     borderRadius: '25px',
+                    fontSize: '22px',
+                    color:'blue',
+                    textAlign:'center',
                 },
-                }} />
+                }}
+                 />
             </Box>
             <br></br>
             <Button variant="contained" sx={{ backgroundColor: '#00cca3', left: '80%' }}>Confirm</Button>
