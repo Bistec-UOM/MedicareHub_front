@@ -12,7 +12,7 @@ import '../../../recep.css'
 const localizer = momentLocalizer(moment);
 let today;
 
-const MyCalendar = () => {
+const MyCalendar = ({doctorId}) => {
   const navigate = useNavigate();
   const [displayedRange, setDisplayedRange] = useState({
     start: moment().startOf('month'),
@@ -27,7 +27,7 @@ const MyCalendar = () => {
     console.log(selectedMonth);
     console.log(currentMonth);
     if (selectedMonth === currentMonth) {
-      navigate('/day', { state: { today: today } });
+      navigate('/day', { state: { today: today ,doctorid:doctorId} });
     }
   };
 

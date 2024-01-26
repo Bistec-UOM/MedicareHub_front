@@ -5,13 +5,16 @@ import SearchIcon from '@mui/icons-material/Search';
 const SearchBar = (props) => {
   console.log(props)
 
-    const handleSearch=()=>
+    const handleSearch=(e)=>
     {
+      props.setSearch(e.target.value);
+      
         
     }
     
   return (
     <TextField  sx={{marginLeft:props.mgl, backgroundColor:'#ffff'}}
+      value={props.search}
       variant="outlined"
       size="small"
       placeholder={props.placename}
@@ -30,6 +33,7 @@ const SearchBar = (props) => {
         },
       }}
       disabled={props.isDisabled}
+      onChange={handleSearch}
       
       
     />

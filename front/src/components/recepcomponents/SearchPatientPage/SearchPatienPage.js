@@ -13,20 +13,31 @@ import AppAddPopup from "../AppAddPopup/AppAddPopup";
 import AllAppDeletePopup from "../AllAppDeletePopup/AllAppDeletePopup";
 import DayAppList from "../DayAppList/DayAppList";
 import PatientDetailCard from "../PatientDetailCard/PatientDetailCard";
+import PatientRegpopup from "../PatRegPopup/PatientRegPopup";
 
 const SearchPatientPage = (props) => {
+  const [search,setSearch]=useState("")
   const [dayapp, setDayApp] = useState([]);
   const [isDisabled, setIsDisabled] = useState(true);
   const [filteredAppointments, setFilteredAppointments] = useState([]);
 
+  const [appAddPopupCount,setAppAddPopupCount]=useState(0);
+
   const [apopen, setApopen] = useState(false);
   const [dopen, setDopen] = useState(false);
+
+  const [regopen,setRegopen]=useState(false);
 
   const handleBackToList = () => {
     props.setRenderVal(false);
   };
 
-  const patientList = [
+  const handleRegOpen=()=>
+  {
+    setRegopen(true);
+  }
+
+  const [patientList,setPatientList] = useState([
     {
       name: "Dammika jayalath",
       city: "Colombo",
@@ -76,7 +87,7 @@ const SearchPatientPage = (props) => {
       nic: "5243525",
       phone: "0774733245",
     },
-  ];
+  ]);
 
   const handleDeleteAll = () => {
     setDopen(true);
@@ -108,8 +119,10 @@ const SearchPatientPage = (props) => {
         }}
       >
         <SearchBar
+          search={search}
+          setSearch={setSearch}
           mgl="10%"
-          isDisabled={isDisabled}
+          isDisabled={false}
           placename="Patient name or id..."
         />
         <Stack
@@ -122,7 +135,7 @@ const SearchPatientPage = (props) => {
           direction="row"
         >
           <Button
-            onClick={handleAppAd}
+            onClick={handleRegOpen}
             sx={{
               backgroundColor: "#79CCBE",
               fontWeight: 25,
@@ -161,9 +174,13 @@ const SearchPatientPage = (props) => {
       >
         {
           <div style={{ width: "80%" }}>
-            {patientList.map((item) => (
+            {patientList.filter((item)=>{
+              return search.toLowerCase() ===''?item:item.name.toLowerCase().includes(search.toLowerCase());
+            }).map((item) => (
               <div key={item.nic}>
                 <PatientDetailCard
+                appAddPopupCount={appAddPopupCount}
+                  setAppAddPopupCount={setAppAddPopupCount}
                   setActiveId={setActiveId}
                   apopen={apopen}
                   setApopen={setApopen}
@@ -173,7 +190,8 @@ const SearchPatientPage = (props) => {
             ))}
           </div>
         }
-        <AppAddPopup patientList={patientList} activeId={activeId} apopen={apopen} setApopen={setApopen} />
+        <AppAddPopup appAddPopupCount={appAddPopupCount} setAppAddPopupCount={setAppAddPopupCount} patientList={patientList} activeId={activeId} apopen={apopen} setApopen={setApopen} />
+        <PatientRegpopup patientList={patientList} setPatientList={setPatientList} regopen={regopen} setRegopen={setRegopen}></PatientRegpopup>
       </div>
     </Box>
   );

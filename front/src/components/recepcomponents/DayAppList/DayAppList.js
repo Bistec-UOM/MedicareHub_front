@@ -13,13 +13,20 @@ import AppAddPopup from "../AppAddPopup/AppAddPopup";
 import AllAppDeletePopup from "../AllAppDeletePopup/AllAppDeletePopup";
 import DayAppList from "./DayAppList";
 
+
+
+
+
 const DayList = (props) => {
   const [dayapp, setDayApp] = useState([]);
   const [isDisabled, setIsDisabled] = useState(true);
   const [filteredAppointments, setFilteredAppointments] = useState([]);
+  const [search,setSearch]=useState("")
 
   const [apopen, setApopen] = useState(false);
   const [dopen, setDopen] = useState(false);
+
+  const [delcount,setDelcount]=useState(0)
 
   const handleDeleteAll = () => {
     setDopen(true);
@@ -37,7 +44,7 @@ const DayList = (props) => {
     const appointments = props.appointlist.filter((item) => item.today === loc.today);
     setFilteredAppointments(appointments);
     setIsDisabled(appointments.length === 0);
-  }, [props.appointlist, loc]);
+  }, [delcount]);
 
   return (
     <Box>
@@ -49,6 +56,8 @@ const DayList = (props) => {
         }}
       >
         <SearchBar
+          search={search}
+          setSearch={setSearch}
           mgl="10%"
           isDisabled={isDisabled}
           placename="Patient name or id..."
@@ -101,14 +110,18 @@ const DayList = (props) => {
         }}
       >
         <Box sx={{ padding: "3% 0 0 8%" }}>
-          <Steper items={filteredAppointments}></Steper>
+          <Steper search={search} items={filteredAppointments}></Steper>
         </Box>
 
         {
           <div style={{ width: "80%" }}>
-            {filteredAppointments.map((item) => (
+            {filteredAppointments.filter((item)=>{
+              return search.toLowerCase()===''?item:item.name.toLowerCase().includes(search.toLowerCase())
+            }).map((item) => (
               <div key={item.nic}>
-                <AppointmentCard
+                <AppointmentCard 
+                  delcount={delcount}
+                  setDelcount={setDelcount}
                   filteredAppointments={filteredAppointments}
                   setFilteredAppointments={setFilteredAppointments}
                   item={item}

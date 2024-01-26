@@ -12,13 +12,16 @@ import { Stack } from "@mui/material";
 import {IconButton} from "@mui/material";
 import Steper from "../Setper/Steper";
 import AppAddPopup from "../AppAddPopup/AppAddPopup";
+import AppDeletePopup from "../AppDeletePopup/AppDeletePopup";
 
-const AppointmentCard = ({filteredAppointments,setFilteredAppointments, item }) => {
+const AppointmentCard = ({filteredAppointments,setFilteredAppointments, item ,delcount,setDelcount}) => {
+  const [daopen,setDaopen]=useState(false);
 
  
 
   const handleDeleteAppointment = () => {
-    setFilteredAppointments(filteredAppointments.filter((itemf)=>itemf.nic!==item.nic));
+    setDaopen(true)
+    
     
   };
 
@@ -76,6 +79,7 @@ const AppointmentCard = ({filteredAppointments,setFilteredAppointments, item }) 
           
          
         </div>
+        <AppDeletePopup delcount={delcount} setDelcount={setDelcount} item={item} daopen={daopen} setDaopen={setDaopen} filteredAppointments={filteredAppointments} setFilteredAppointments={setFilteredAppointments}/>
     </div>
   );
 };
