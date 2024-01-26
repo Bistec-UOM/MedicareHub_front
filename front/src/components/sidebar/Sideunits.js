@@ -16,10 +16,10 @@ function Sideunit_Doctor({name,title}) {
 
 function Sideunit_Patient({name,status,time,selected}) {
     return (
-      <div style={{width:'90%',margin:'3px',cursor:'pointer',backgroundColor: selected==true?'#79CCBE':'',padding:'5px',paddingTop:'0'}}>
-          <Typography variant='h6'>{name}</Typography>
-          <div>
-                  <div style={{display:'inline',border:'1px solid black',paddingLeft:'4px',paddingLeft:'4px',borderRadius:'15px',marginLeft:'4px',color: selected==true?'white':''}}>{time}</div>
+      <div style={{width:'90%',margin:'3px',cursor:'pointer',backgroundColor: selected==true?'#79CCBE':'',padding:'5px',paddingTop:'0',}}>
+          <Typography sx={{fontSize:'17px'}}>{name}</Typography>
+          <div style={{display:'flex',alignContent:'space-between'}}>
+                  <div style={{display:'inline',border:selected==true?'1px solid white':'1px solid grey',paddingLeft:'4px',paddingRight:'4px',borderRadius:'5px',marginLeft:'4px',color: selected==true?'white':'grey'}}>{time}</div>
                   {status=='done'||status=='pending'?<CheckIcon color={status=='done'?'success':'warning'}></CheckIcon>:''}
           </div>
       </div>
@@ -43,10 +43,10 @@ function Sideunit_Test({id,name,test,setSelect,selected}) {
 
 function Sideunit_Bill({name,time,selected}) {
   return (
-    <div style={{width:'90%',margin:'3px',padding:'5px',paddingTop:'0',cursor:'pointer',backgroundColor: selected==true?'#79CCBE':''}}>
-        <Typography variant='h6'>{name}</Typography>
+    <div style={{width:'90%',margin:'3px',padding:'5px',paddingTop:'0',cursor:'pointer',backgroundColor: selected==true?'#79CCBE':'',color: selected==true?'#FFFFFF':''}}>
+        <Typography sx={{fontSize:'17px'}}>{name}</Typography>
         <div>
-                <div style={{display:'inline',border:'1px solid black',paddingLeft:'4px',paddingLeft:'4px',borderRadius:'15px',marginLeft:'4px',color: selected==true?'white':''}}>{time}</div>
+                <div style={{display:'inline',border:selected==true?'1px solid white':'1px solid grey',color:selected==true?'white':'grey',paddingLeft:'4px',paddingRight:'4px',borderRadius:'5px'}}>{time}</div>
         </div>
     </div>
   )
