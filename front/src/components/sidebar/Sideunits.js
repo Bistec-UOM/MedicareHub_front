@@ -79,5 +79,4 @@ function Sideunit_Bill({name,time,selected}) {
     </div>
   )
 }
-
 export {Sideunit_Doctor,Sideunit_Patient,Sideunit_Test}
