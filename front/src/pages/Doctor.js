@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { SidebarContainer, SidebarTop, SidebarList } from '../components/sidebar/Sidebar'
 import { CustomScroll } from '../components/CustomScroll';
 import Navbar from '../components/navbar/Navbar'
@@ -14,6 +14,7 @@ import UpdateIcon from '@mui/icons-material/Update';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import ThermostatIcon from '@mui/icons-material/Thermostat';
 import DoNotDisturbOnIcon from '@mui/icons-material/DoNotDisturbOn';
+import PatientsRecords from '../components/DoctorComponents/PatientsRecords';
 
 export default function Doctor() {
   useEffect(() => {
@@ -37,6 +38,13 @@ export default function Doctor() {
     
   ];
 
+ 
+  const [openPopup, setOpenPopup] = useState(false);
+
+  const handleAddIconClick = () => {
+    setOpenPopup(true);
+  };
+
   return (
     <CustomScroll>
       <Navbar></Navbar>
@@ -57,13 +65,14 @@ export default function Doctor() {
             {load.map((docdata, id) => (
               <Card key={id} sx={{ maxWidth: '100%', height: '100px' }}>
                 <CardContent>
-                  <AudioFileIcon sx={{ color: 'rgb(0, 153, 255)', float: 'right', marginRight: '10px', fontSize: '30px' }} />
+                  <AudioFileIcon sx={{ color: 'rgb(0, 153, 255)', float: 'right', marginRight: '10px', fontSize: '30px' }} onClick={handleAddIconClick} />
                   <UpdateIcon sx={{ color: 'rgb(255, 153, 0)', float: 'right', marginRight: '10px', fontSize: '30px' }} />
                   <Typography gutterBottom variant="h6">{docdata.name}</Typography>
                   <Typography gutterBottom variant="p" sx={{ color: '#808080' }}>{docdata.age}  years</Typography><br />
                   <Typography gutterBottom variant="p" sx={{ color: '#808080' }}>{docdata.gender}</Typography>
                 </CardContent>
-              </Card>
+                <PatientsRecords openPopup={openPopup} setOpenPopup={setOpenPopup}/>               
+            </Card>
             ))}
           </div>      
 
@@ -71,7 +80,7 @@ export default function Doctor() {
             {pres.map((drug,num) => (
             <Grid key={num} container spacing={1} sx={{marginTop:"5px",marginLeft: '16%',}}>
               <Grid item xs={8}>
-              <Item sx={{ backgroundColor: '#0099cc', color: 'white', fontSize: '17px',}}>
+              <Item sx={{ backgroundColor: '#0099cc', color: 'white', fontSize: '18px',}}>
                 <Typography gutterBottom variant="p" sx={{ marginLeft: '10px', }}>{drug.name}</Typography>
                 <Typography gutterBottom variant="p" sx={{ marginLeft: '200px', }}>{drug.quantity} mg</Typography>
                 <Typography gutterBottom variant="p" sx={{ marginLeft: '250px', }}>{drug.hour}</Typography>
