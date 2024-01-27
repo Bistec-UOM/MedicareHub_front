@@ -26,7 +26,6 @@ function App() {
       <Route path='pharm' element={<Pharmacy></Pharmacy>}></Route>
       <Route path='lab' element={<Lab></Lab>}></Route>
       <Route path='/day' element={<Day/>}></Route>
-      <Route path='lab/temp' element={<Lab_template></Lab_template>}></Route>
       <Route path='pharm/drug' element={<Pharmacy_drugstore></Pharmacy_drugstore>}></Route>
       <Route path="play" element={<Stest></Stest>}></Route>
 
