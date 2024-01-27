@@ -16,10 +16,8 @@ export default function PatientsRecords(props) {
     <div>
       <Dialog open={openPopup}>
       <CloseIcon onClick={handleClose} style={{ position: 'absolute', right: '8px', top: '8px', cursor: 'pointer' }} />
-        <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-          Modal title
-        </DialogTitle>
-        <DialogContent dividers>
+        <DialogTitle sx={{ m: 0, p: 2 }}>6 days ago</DialogTitle>
+        <DialogContent dividers  sx={{ maxHeight: '500px', overflowY: 'auto' }}>
           <Typography>
             Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
             dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
@@ -30,7 +28,12 @@ export default function PatientsRecords(props) {
             dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
             consectetur ac, vestibulum at eros.
           </Typography>
-        </DialogContent>
+          <Typography>
+            Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
+            dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
+            consectetur ac, vestibulum at eros.
+          </Typography>        
+         </DialogContent>
       </Dialog>
     </div>
   );
