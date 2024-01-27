@@ -15,6 +15,7 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import ThermostatIcon from '@mui/icons-material/Thermostat';
 import DoNotDisturbOnIcon from '@mui/icons-material/DoNotDisturbOn';
 import PatientsRecords from '../components/DoctorComponents/PatientsRecords';
+import DoctorAddDrugs from '../components/DoctorComponents/DoctorAddDrugs';
 
 export default function Doctor() {
   useEffect(() => {
@@ -45,10 +46,14 @@ export default function Doctor() {
     setOpenPopup(true);
   };
 
+  const [openBox, setOpenBox] = useState(false);
+
+  const handleAddDrugsClick = () => {
+    setOpenBox(true);
+  };
   return (
     <CustomScroll>
       <Navbar></Navbar>
-
       <Grid container spacing={0} sx={{ paddingTop: '64px', height: '100vh' }}>
         <Grid item xs={3} style={{ height: '100%' }}>
           <SidebarContainer>
@@ -78,12 +83,12 @@ export default function Doctor() {
 
          <div>
             {pres.map((drug,num) => (
-            <Grid key={num} container spacing={1} sx={{marginTop:"5px",marginLeft: '16%',}}>
+            <Grid key={num} container spacing={1} sx={{marginTop:"5px",}}>
               <Grid item xs={8}>
               <Item sx={{ backgroundColor: '#0099cc', color: 'white', fontSize: '18px',}}>
                 <Typography gutterBottom variant="p" sx={{ marginLeft: '10px', }}>{drug.name}</Typography>
-                <Typography gutterBottom variant="p" sx={{ marginLeft: '200px', }}>{drug.quantity} mg</Typography>
-                <Typography gutterBottom variant="p" sx={{ marginLeft: '250px', }}>{drug.hour}</Typography>
+                <Typography gutterBottom variant="p" sx={{ marginLeft: '100px', }}>{drug.quantity} mg</Typography>
+                <Typography gutterBottom variant="p" sx={{ marginLeft: '150px', }}>{drug.hour}</Typography>
               </Item>
               </Grid>
               <Grid item xs={4}>
@@ -92,8 +97,10 @@ export default function Doctor() {
             </Grid>
             ))}
          </div>
-
-          < AddCircleIcon sx={{ color: '#00cc66', marginLeft: '10%', fontSize: '30px', float: 'Left',marginTop: '27px' }} />
+         <div>
+          < AddCircleIcon sx={{ color: '#00cc66', marginLeft: '10%', fontSize: '30px', float: 'Left',marginTop: '27px' }} onClick={handleAddDrugsClick}/>
+          <DoctorAddDrugs openBox={openBox} setOpenBox={setOpenBox} />  
+          </div>
           <ThermostatIcon sx={{ color: '#33cc33', marginLeft: '74%', fontSize: '45px', marginTop: '70px' }} />
 
           <div>
