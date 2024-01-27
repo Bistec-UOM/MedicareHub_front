@@ -1,13 +1,17 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import {SidebarContainer,SidebarTop,SidebarList} from '../components/sidebar/Sidebar'
 import { CustomScroll } from '../components/CustomScroll';
 import Navbar from '../components/navbar/Navbar'
-import { Grid,Card,Paper,Button,InputBase, Typography, List } from '@mui/material'
+import { Grid,Card,Paper,Button,InputBase, Typography,TextField, List } from '@mui/material'
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import Filter from "@mui/icons-material/Filter";
 import TuneIcon from '@mui/icons-material/Tune';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from '@mui/material';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import CloseIcon from '@mui/icons-material/Close';
 import { Sideunit_Patient } from '../components/sidebar/Sideunits';
 import Box from '@mui/material/Box';
 import CardActions from '@mui/material/CardActions';
@@ -36,6 +40,20 @@ const rows = [
 
 
 export default function Pharmacy_drugstore() {
+
+  const [open, setOpen] =useState(false);
+  const [confirm, setConfirm] =useState(false);
+  const handleClickOpen =() => {
+    setOpen(true)
+  };
+  const handleClose =() => {
+    setOpen(false)
+  }; 
+  const handleConfirm =() => {
+    setConfirm(false)
+  };
+
+
   useEffect(()=>{
     document.body.style.margin = '0';
 
@@ -97,10 +115,42 @@ export default function Pharmacy_drugstore() {
             marginRight:"20px",
             marginTop:"10px",
           }}
+          onClick={handleClickOpen}
         >
           Add
         </Button>
         </Grid>
+        <Grid>
+<Dialog open={open} onClose={handleClose}>
+        <DialogTitle
+          sx={{
+            backgroundColor: "rgb(222, 244, 242)",
+            display: "flex",
+            justifyContent: "space-between",
+            paddingLeft:"200px",
+          }}
+        >
+          Add new drug
+          <CloseIcon onClick={handleClose} sx={{cursor:'pointer'}}/>
+        </DialogTitle>
+        <DialogContent>
+          <TextField label="Genaric name" fullWidth sx={{ mb: 1, mt: 3 }} />
+          <TextField label="Brand Name" sx={{ mb: 1 }} />
+          <TextField label="dossage" sx={{ ml: 4, mb: 1 }} />
+          <TextField label="unit price" fullWidth sx={{ mb: 1 }} />
+          <TextField label="Amount" sx={{ mb: 1 }} />
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={handleConfirm}
+            variant="contained"
+            sx={{ backgroundColor: "rgb(121, 204, 190)", m: 2 }}
+          >
+            confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
+</Grid>
        
         {rows.map((row) => (
     <div><Card 
