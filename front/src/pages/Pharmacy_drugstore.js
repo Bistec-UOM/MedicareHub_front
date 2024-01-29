@@ -42,6 +42,9 @@ const rows = [
 export default function Pharmacy_drugstore() {
 
   const [open, setOpen] =useState(false);
+  const [selectedCard, setSelectedCard] =useState(null);
+  const [editOpen, setEditOpen] =useState(false);
+
   const [confirm, setConfirm] =useState(false);
   const handleClickOpen =() => {
     setOpen(true)
@@ -51,6 +54,17 @@ export default function Pharmacy_drugstore() {
   }; 
   const handleConfirm =() => {
     setConfirm(false)
+  };
+  const handleEditClose = () => {
+    setSelectedCard(null);
+    setEditOpen(false);
+  };
+  const handleEdit =() => {
+    setConfirm(false)
+  };
+  const handleEditOpen =(row) => {
+    setSelectedCard(row);
+    setEditOpen(true);
   };
 
 
@@ -155,6 +169,7 @@ export default function Pharmacy_drugstore() {
         {rows.map((row) => (
     <div><Card 
     sx={{ minWidth:"30px",marginTop:"20px",marginLeft:"20px",marginRight:"20px"}}
+    onClick={() =>handleEditOpen(row)}
     key={row.ID}
     >
     <Grid container spacing={2}>
@@ -198,6 +213,64 @@ export default function Pharmacy_drugstore() {
     </div>
         ))
 }
+<Grid>
+<Dialog open={editOpen} onClose={handleEditClose}>
+        <DialogTitle
+          sx={{
+            backgroundColor: "rgb(222, 244, 242)",
+            display: "flex",
+            justifyContent: "space-between",
+            paddingLeft:"200px",
+          }}
+        >
+          Edit drug
+          <CloseIcon onClick={handleEditClose} sx={{cursor:'pointer'}}/>
+        </DialogTitle>
+        <DialogContent>
+          <TextField
+          label="Genaric name"
+          fullWidth
+          margin='dense'
+          value={selectedCard ? selectedCard.drug : ""}
+          />
+          <TextField
+          label="brand name"
+          fullWidth
+          margin='dense'
+          value={selectedCard ? selectedCard.brand : ""}
+          />
+          <TextField
+          label="dossage"
+          fullWidth
+          margin='dense'
+          value={selectedCard ? selectedCard.dosage : ""}
+          />
+          <TextField
+          label="quantity"
+          fullWidth
+          margin='dense'
+          value={selectedCard ? selectedCard.quantity : ""}
+          />
+          <TextField
+          label="amount"
+          fullWidth
+          margin='dense'
+          value={selectedCard ? selectedCard.price : ""}
+          />
+
+          
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={handleEdit}
+            variant="contained"
+            sx={{ backgroundColor: "rgb(121, 204, 190)", m: 2 }}
+          >
+            confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
+</Grid>
       </Grid>
 
 
