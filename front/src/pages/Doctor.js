@@ -70,7 +70,12 @@ export default function Doctor() {
             {load.map((docdata, id) => (
               <Card key={id} sx={{ maxWidth: '100%', height: '100px' }}>
                 <CardContent>
-                  <AudioFileIcon sx={{ color: 'rgb(0, 153, 255)', float: 'right', marginRight: '10px', fontSize: '30px' }} onClick={handleAddIconClick} />
+                  <AudioFileIcon sx={{ 
+                  color: 'rgb(0, 153, 255)', 
+                  float: 'right', 
+                  marginRight: '10px', 
+                  fontSize: '30px' }} 
+                  onClick={handleAddIconClick} />
                   <UpdateIcon sx={{ color: 'rgb(255, 153, 0)', float: 'right', marginRight: '10px', fontSize: '30px' }} />
                   <Typography gutterBottom variant="h6">{docdata.name}</Typography>
                   <Typography gutterBottom variant="p" sx={{ color: '#808080' }}>{docdata.age}  years</Typography><br />
@@ -92,16 +97,29 @@ export default function Doctor() {
               </Item>
               </Grid>
               <Grid item xs={4}>
-              < DoNotDisturbOnIcon sx={{ color: 'red', marginLeft: '5px', fontSize: '30px', float: 'Left' }} />
+              < DoNotDisturbOnIcon sx={{
+                color: 'red', 
+                marginLeft: '5px',
+                fontSize: '30px',
+                float: 'Left' }} />
               </Grid>              
             </Grid>
             ))}
          </div>
          <div>
-          < AddCircleIcon sx={{ color: '#00cc66', marginLeft: '10%', fontSize: '30px', float: 'Left',marginTop: '27px' }} onClick={handleAddDrugsClick}/>
+          < AddCircleIcon sx={{ 
+            color: '#00cc66', 
+            marginLeft: '10%',
+            fontSize: '30px', 
+            float: 'Left',
+            marginTop: '27px' }}
+           onClick={handleAddDrugsClick}/>
           <DoctorAddDrugs openBox={openBox} setOpenBox={setOpenBox} />  
           </div>
-          <ThermostatIcon sx={{ color: '#33cc33', marginLeft: '74%', fontSize: '45px', marginTop: '70px' }} />
+          <ThermostatIcon sx={{ color: '#33cc33',
+                                marginLeft: '74%', 
+                                fontSize: '45px', 
+                                 marginTop: '70px' }} />
 
           <div>
             <Box
