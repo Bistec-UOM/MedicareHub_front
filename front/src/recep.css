@@ -14,5 +14,22 @@
     display: none !important;
     
 }
+#root > div > div > div.MuiGrid-root.MuiGrid-container.css-1ri637b-MuiGrid-root > div.MuiGrid-root.MuiGrid-item.MuiGrid-grid-md-9.css-neb4x5-MuiGrid-root > div > div.MuiBox-root.css-1yjsyn0
+{
+  padding-top: 10px;
+
+}
+
+#root > div > div > div.MuiGrid-root.MuiGrid-container.css-1ri637b-MuiGrid-root > div.MuiGrid-root.MuiGrid-item.MuiGrid-grid-md-9.css-neb4x5-MuiGrid-root > div > div.MuiBox-root.css-1libr1i
+{
+  padding-top:10px;
+}
+#root > div > div > div.sc-beySPh.cxSrBg > div > div.MuiGrid-root.MuiGrid-item.MuiGrid-grid-xs-1.MuiGrid-grid-sm-10.MuiGrid-grid-md-9.css-1jvafor-MuiGrid-root > div > div
+{
+  width:{
+    xs:400,
+  }
+}
+
 
   

@@ -1,6 +1,8 @@
 import React from 'react';
 import TextField from '@mui/material/TextField';
 import SearchIcon from '@mui/icons-material/Search';
+import { IconButton } from '@mui/material';
+import {Box} from '@mui/material';
 
 const SearchBar = (props) => {
   console.log(props)
@@ -13,20 +15,21 @@ const SearchBar = (props) => {
     }
     
   return (
-    <TextField  sx={{marginLeft:props.mgl, backgroundColor:'#ffff'}}
+    <Box sx={{borderRadius:'25px',marginLeft:{xs:'3%',sm:'0%'}}}>
+       <TextField  sx={{marginLeft:{md:props.mgl},width:{xs:'80%'}, backgroundColor:'#ffff',borderRadius:'25px',boxShadow:3}}
       value={props.search}
       variant="outlined"
       size="small"
       placeholder={props.placename}
       InputProps={{
         startAdornment: (
-          <SearchIcon onClick={handleSearch}
-            sx={{
-              color: 'action.active',
-              marginLeft: 1,
-              marginRight:1
-            }}
-          />
+          <IconButton onClick={handleSearch}> <SearchIcon 
+          sx={{
+            color: 'action.active',
+           
+          }}
+        /></IconButton>
+         
         ),
         sx: {
           borderRadius: '25px', // Adjust the value to change the roundness of the corners
@@ -37,6 +40,9 @@ const SearchBar = (props) => {
       
       
     />
+
+    </Box>
+   
   );
 };
 
