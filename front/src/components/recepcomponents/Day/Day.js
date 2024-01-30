@@ -15,21 +15,21 @@ import DayList from "../DayAppList/DayAppList";
 import SearchPatientPage from "../SearchPatientPage/SearchPatienPage";
 
 const Day = () => {
-  const [renderVal,setRenderVal]=useState(false);
-  const [search,setSearch]=useState("")
+  const [renderVal,setRenderVal]=useState(false); //use for condition rendering of search patients and day appointments
+  const [search,setSearch]=useState("")  //for appointment search or patient search var
   
 
   const location=useLocation();
-  const {doctorid}=location.state;
+  const {doctorid}=location.state;  //for identifing the selected doctor tab
 
   const [docid,setDocid]=useState(doctorid)
   console.log(doctorid);
 
-  const [isDisabled, setIsDisabled] = useState(true);
+  
   
 
  
- 
+ //appointment list
 
   const [appointlist,setAppointList]=useState([
     {
@@ -140,7 +140,7 @@ const Day = () => {
               <SearchBar  search={search} setSearch={setSearch}  isDisabled={true} placename="Doctor name or id..." mgl="10%"></SearchBar>
             </SidebarTop>
             <SidebarList>
-              <div>
+              <div style={{width:'100%'}}>
 
              
               {data.filter((item)=>{
@@ -166,7 +166,7 @@ const Day = () => {
            </SidebarContainer>
           </Grid>
           <Grid  item  md={9}>
-          {renderVal ?  <SearchPatientPage renderVal={renderVal} setRenderVal={setRenderVal}/> :<DayList isDisabled={isDisabled} setIsDisabled={setIsDisabled} docid={docid} appointlist={appointlist} renderVal={renderVal} setRenderVal={setRenderVal}/>}
+          {renderVal ?  <SearchPatientPage renderVal={renderVal} setRenderVal={setRenderVal}/> :<DayList  docid={docid} appointlist={appointlist} renderVal={renderVal} setRenderVal={setRenderVal}/>}
           </Grid>
 
           {/* <Grid  item  md={9}>

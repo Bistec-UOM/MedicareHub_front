@@ -7,12 +7,13 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { Typography } from '@mui/material';
 import LinearProgress from '@mui/material/LinearProgress';
+import {Box} from '@mui/material';
 import '../../../recep.css'
 
 const localizer = momentLocalizer(moment);
 let today;
 
-const MyCalendar = ({doctorId}) => {
+const MyCalendar = ({doctorId,selectedTab,setSelectedTab}) => {
   const navigate = useNavigate();
   const [displayedRange, setDisplayedRange] = useState({
     start: moment().startOf('month'),
@@ -27,7 +28,7 @@ const MyCalendar = ({doctorId}) => {
     console.log(selectedMonth);
     console.log(currentMonth);
     if (selectedMonth === currentMonth) {
-      navigate('/day', { state: { today: today ,doctorid:doctorId} });
+      navigate('/resday', { state: { today: today ,doctorid:doctorId} });
     }
   };
 
@@ -88,7 +89,10 @@ const MyCalendar = ({doctorId}) => {
   };
 
   return (
-    <div style={{ height: '100%', width: '100%' }}>
+    
+    <Box sx={{ height: '100%', width:'100%'
+     
+    }}>
       <Calendar
         localizer={localizer}
         events={[]}
@@ -104,7 +108,7 @@ const MyCalendar = ({doctorId}) => {
         dayLayoutAlgorithm="no-overlap"
         dayPropGetter={dayPropGetter}
       />
-    </div>
+    </Box>
   );
 };
 
