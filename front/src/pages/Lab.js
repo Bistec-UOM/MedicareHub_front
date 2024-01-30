@@ -1,9 +1,10 @@
-import { Grid,Card, Typography } from '@mui/material'
+import { Grid,Card, Typography, Paper, IconButton, Divider, InputBase } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import {SidebarContainer,SidebarTop,SidebarList} from '../components/sidebar/Sidebar'
 import { CustomScroll } from '../components/CustomScroll';
 import Navbar from '../components/navbar/Navbar'
 import { Sideunit_Test } from '../components/sidebar/Sideunits';
+import LabSearch from '../components/Lab/LabSearch';
 
 export default function Lab() {
 
@@ -34,6 +35,7 @@ export default function Lab() {
        <Grid item xs={3} style={{height:'100%'}}>
          <SidebarContainer>
            <SidebarTop>
+              <LabSearch></LabSearch>
            </SidebarTop>
            <SidebarList>
            {

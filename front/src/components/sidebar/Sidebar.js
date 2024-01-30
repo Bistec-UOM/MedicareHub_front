@@ -28,8 +28,12 @@ const SidebarTop = ({ children }) => {
     <div
       style={{
         width: '100%',
-        height: '60px',
-        backgroundColor:'#DEF4F2'
+        height: '80px',
+        paddingBottom:'15px',
+        backgroundColor:'#DEF4F2',
+        display:'flex',
+        justifyContent:'center',
+        alignItems:'center'
       }}
     >
       {children}
