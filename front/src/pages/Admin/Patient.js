@@ -23,7 +23,7 @@ function createData(Id,fullName,name,NIC,address,contactNumber,emailAddress,age,
 }
 const rows = [
   createData(1,"chamath palliyaguruge","chamath",'200422400159','123/t thotawatte rd,thota langa','0781754824','dhammika@gmail.com','30',"male"),
-  createData(2, "wimal kostha", "wimal", '200666503237', '134/h hansamaligama,premadasadeniya', '0756321737', 'easter@gmail.com', '30', "female"),
+  createData(2, "Nimali kostha", "wimal", '200666503237', '134/h hansamaligama,premadasadeniya', '0756321737', 'easter@gmail.com', '30', "female"),
   createData(3, "kumara sangakkara", "kumara", '200154996552', '109/o malwatte handiya,migamuwa', '0741572003', 'asanka@gmail.com', '30', "male"),
   createData(4,"pathirana saman","pathirana",'201052946305','234/v nonagumgama,raddoluwa','0791031573','tharaka@gmail.com','30',"female"),
   createData(5, "lavu kanush", "kanush",'200933401635', '546/g sandangana gama,sandalankaawa', '0783985174', 'sonic@gmail.com', '30', "male")
