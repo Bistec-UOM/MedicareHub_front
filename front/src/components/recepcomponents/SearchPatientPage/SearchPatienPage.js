@@ -121,7 +121,7 @@ const SearchPatientPage = (props) => {
         <SearchBar
           search={search}
           setSearch={setSearch}
-          mgl="10%"
+          mgl="20%"
           isDisabled={false}
           placename="Patient name or id..."
         />

@@ -11,13 +11,14 @@ import { Sideunit_Doctor } from "../../sidebar/Sideunits";
 import { CustomScroll } from "../../CustomScroll";
 import AppAddPopup from "../AppAddPopup/AppAddPopup";
 import AllAppDeletePopup from "../AllAppDeletePopup/AllAppDeletePopup";
-import DayAppList from "./DayAppList";
+import '../../../recep.css'
 
 
 
 
 
-const DayList = (props) => {
+
+const ResDayList = (props) => {
   const [dayapp, setDayApp] = useState([]);
  
   const [filteredAppointments, setFilteredAppointments] = useState([]);
@@ -50,13 +51,13 @@ const DayList = (props) => {
   }, [delcount]);
 
   return (
-    <Box>
+    <Box >
       <Box 
         sx={{
           display: "flex",
           justifyContent: "space-between",
           alignItem: "center",
-          paddingTop:10,
+          paddingTop:2,
           //marginLeft:-10
         }}
       >
@@ -149,4 +150,4 @@ const DayList = (props) => {
   );
 };
 
-export default DayList;
+export default ResDayList;

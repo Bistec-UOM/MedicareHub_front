@@ -37,7 +37,7 @@ const AppointmentCalender = () => {
     <CustomScroll>
       
         <Grid sx={{paddingTop:'64px',height:'100vh'}} container direction="row">
-          <Grid item md={3}>
+          <Grid item xs={3} sm={2} md={3}>
            <SidebarContainer>
             <SidebarTop>
               <SearchBar search={search} setSearch={setSearch} mgl="10%" isDisabled={false} placename="Doctor name or id..."></SearchBar>
@@ -61,7 +61,7 @@ const AppointmentCalender = () => {
                 //<Sideunit_Doctor name={item.name} title={item.title} key={index}></Sideunit_Doctor>
               ))} */}
               </Tabs>
-              <div>
+              <div style={{width:'100%'}}>
               {data.filter((item)=>{
                   return search.toLowerCase()===''?item:item.name.toLowerCase().includes(search.toLowerCase());
               }).map((item,index)=>(
@@ -90,7 +90,7 @@ const AppointmentCalender = () => {
            </SidebarContainer>
           </Grid>
 
-          <Grid sx={{paddingLeft:'10px',paddingRight:'10px'}} item md={9}>
+<Grid sx={{paddingLeft:'10px',paddingRight:'10px'}} item xs={9} sm={10} md={9}>
            <MyCalendar doctorId={selectedTab}/>
           </Grid>
         </Grid>

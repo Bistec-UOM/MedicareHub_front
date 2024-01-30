@@ -32,10 +32,10 @@ function Sideunit_Doctor({ name, title ,selectedTab,index}) {
         //backgroundColor: isSelected ? "green" : "transparent",
       }}
     >
-      <Typography sx={{ color: selectedTab==index?"white":"black",width:"100%",display:'flex',justifyContent:'left' }}  variant="h6">
+      <Typography sx={{ color: selectedTab==index?"white":"black",width:"100%",display:'flex',justifyContent:'left',fontSize:{xs:15,sm:20} }}  variant="h6">
         Dr. {name}
       </Typography>
-      <Typography style={{color: selectedTab==index?"white":"black",width:"100%",display:'flex',justifyContent:'left'}} variant="body2">{title} </Typography>
+      <Typography style={{color: selectedTab==index?"white":"gray",width:"100%",display:'flex',justifyContent:'left',fontSize:{xs:6,sm:12}}} variant="body2">{title} </Typography>
       <Divider variant="middle" sx={{ width: '100%' }} />
     </Box>
   );

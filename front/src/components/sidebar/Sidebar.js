@@ -29,7 +29,8 @@ const SidebarTop = ({ children }) => {
       style={{
         width: '100%',
         height: '60px',
-        backgroundColor:'#DEF4F2'
+        backgroundColor:'#DEF4F2',
+        paddingTop:10
       }}
     >
       {children}
