@@ -46,13 +46,12 @@ const SidebarList = ({ children }) => {
     <div
       style={{
         width: '100%',
-        height:'75vh',
+        height:'70vh',
         display:'flex',
         flexDirection:'column',
         justifyContent:'flex-start',
         alignItems:'center',
-        overflowY:'scroll',
-        backgroundColor:'#DEF4F2'
+        overflowY:'scroll'
       }}
     >
       {children}

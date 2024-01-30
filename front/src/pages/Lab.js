@@ -5,8 +5,12 @@ import { CustomScroll } from '../components/CustomScroll';
 import Navbar from '../components/navbar/Navbar'
 import { Sideunit_Test } from '../components/sidebar/Sideunits';
 import LabSearch from '../components/Lab/LabSearch';
+import LabTestList from '../components/Lab/LabTestList';
 
 export default function Lab() {
+
+  {/*to navigate between pages   1:fill test   2:test list*/}
+  const [page,setPage]=useState(1)
 
   let x=[
     {id:1,"name": "John Doe", "test": ['Thyroxin']},
@@ -30,17 +34,22 @@ export default function Lab() {
 
   return (
    <CustomScroll>
-     <Navbar></Navbar>
+    <Navbar></Navbar>
      <Grid container spacing={0} sx={{paddingTop:'64px',height:'100vh'}}>
-       <Grid item xs={3} style={{height:'100%'}}>
+       <Grid item xs={3} style={{height:'100%',backgroundColor:'#DEF4F2'}}>
          <SidebarContainer>
            <SidebarTop>
-              <LabSearch></LabSearch>
+              <LabSearch setPage={setPage}></LabSearch>
            </SidebarTop>
            <SidebarList>
            {
               loadIn.map((elm)=>{
-                 return(<Sideunit_Test key={elm.id} id={elm.id} name={elm.name} test={elm.test} setSelect={setSelect} selected={elm.id==select?true:''}></Sideunit_Test>)
+                 return(
+                  <>
+                   <Sideunit_Test key={elm.id} id={elm.id} name={elm.name} test={elm.test} setSelect={setSelect} selected={elm.id==select?true:''}></Sideunit_Test>
+                   <div style={{borderBottom:'1px solid #c2c8d1',height:'1px',width:'90%'}}></div>
+                  </>
+                 )
               })
             }
            </SidebarList>
@@ -49,13 +58,18 @@ export default function Lab() {
 
        <Grid item xs={9} style={{height:'100%',overflowY:'scroll'}}>
             {
+              page==1?
+
               select ? 
-              <Card sx={{width:'100%',height:'30px'}}>
+              <Card sx={{width:'100%',height:'30px'}} square>
                 <Typography variant='h6'>{
                   showSelect(select)
                 }</Typography>
               </Card>
               : ''
+
+              :page==2?<LabTestList></LabTestList>:''
+
             }
        </Grid>
 
