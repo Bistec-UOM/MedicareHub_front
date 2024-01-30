@@ -51,13 +51,14 @@ const ResDayList = (props) => {
   }, [delcount]);
 
   return (
+    
     <Box >
       <Box 
         sx={{
           display: "flex",
           justifyContent: "space-between",
           alignItem: "center",
-          paddingTop:2,
+         // paddingTop:10,
           //marginLeft:-10
         }}
       >
@@ -72,7 +73,10 @@ const ResDayList = (props) => {
           sx={{
             justifyContent: "flex-end",
             marginBottom: 3,
-            marginRight: 3,
+            marginRight: {
+                md:3,
+                xs:-3
+            },
           }}
           spacing={2}
           direction="row"
@@ -112,10 +116,14 @@ const ResDayList = (props) => {
           flexDirection: "row",
           width: "100%",
           maxHeight: "75vh",
-          overflowY: "scroll",
+         
         }}
       >
-        <Box sx={{ padding: "3% 0 0 8%" }}>
+        <Box sx={{ padding:{
+            sm: "3% 0 0 8%",
+            xs:"5% 0 0 2%"
+
+        },marginRight:{xs:'3%',sm:'0%'} }}>
           <Steper search={search} items={filteredAppointments}></Steper>
         </Box>
 

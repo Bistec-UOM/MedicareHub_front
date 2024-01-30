@@ -58,7 +58,7 @@ export default function AppDeletePopup({item,delcount,setDelcount, daopen, setDa
   return (
     <React.Fragment>
       <Dialog open={daopen} onClose={handleClose}>
-        <Box sx={{ width: "500px", height: "150px" }}>
+        <Box sx={{ width: {xs:"100%",sm:"500px"}, height: "150px" }}>
           <Box>
             <Box
               sx={{
