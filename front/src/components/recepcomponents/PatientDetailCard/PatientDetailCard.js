@@ -1,17 +1,11 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
 import { useState } from "react";
 import { Stack } from "@mui/material";
 import {IconButton} from "@mui/material";
-import Steper from "../Setper/Steper";
-import AppAddPopup from "../AppAddPopup/AppAddPopup";
 import AddIcon from '@mui/icons-material/Add';
 import { useEffect } from "react";
 
@@ -39,7 +33,7 @@ const PatientDetailCard = ({ appAddPopupCount,setAppAddPopupCount,setActiveId,it
     
     <div>
         
-        <div classname="test" style={{ width: "80%", marginLeft: "auto", marginRight: "auto"}}>
+        <Box  sx={{ width: { md:"80%",xs:'100%'}, marginLeft: "auto", marginRight: "auto"}}>
           <Card
             sx={{
               backgroundColor: "#FFFF",
@@ -47,6 +41,7 @@ const PatientDetailCard = ({ appAddPopupCount,setAppAddPopupCount,setActiveId,it
               marginBottom: 2,
               border: "1px solid #3B877A",
               borderRadius: 5,
+              
         
             }}
           >
@@ -66,7 +61,7 @@ const PatientDetailCard = ({ appAddPopupCount,setAppAddPopupCount,setActiveId,it
         
                 </Box>
               </Stack>
-              <Stack sx={{justifyContent:'space-between',alignItem:'center'}} direction={'row'}>
+              <Stack sx={{justifyContent:'space-between',alignItem:'center',flexDirection:{xs:'column',sm:'row'}}} >
                 <Typography variant="body2" color="text.secondary">
                   {item.city}
                 </Typography>
@@ -84,7 +79,7 @@ const PatientDetailCard = ({ appAddPopupCount,setAppAddPopupCount,setActiveId,it
           </Card>
           
          
-        </div>
+        </Box>
        
     </div>
   );

@@ -67,7 +67,7 @@ export default function AppAddPopup({ appAddPopupCount,setAppAddPopupCount, acti
   return (
     <React.Fragment>
       <Dialog open={apopen} onClose={handleClose}>
-        <Box sx={{ width: "600px"}}>
+        <Box sx={{ width: {sm:"600px",xs:"280px"}}}>
           <form autoComplete="false" noValidate onSubmit={handleSubmit}>
             <Box >
               <Box
@@ -101,7 +101,15 @@ export default function AppAddPopup({ appAddPopupCount,setAppAddPopupCount, acti
                         padding:'2%',
                         border: "1px solid #3B877A",
                         borderRadius: 5,
-                        height:'125px',
+                        height:{md:'125px',xs:'180px'},
+                        marginBottom:{xs:'5%',sm:0},
+                        width:'100%',
+                        marginRight:{
+                          sm:0,
+                          xs:5
+                        }
+                        
+                        
                       }}
                     >
                         <Stack direction={"column"}>
@@ -121,8 +129,9 @@ export default function AppAddPopup({ appAddPopupCount,setAppAddPopupCount, acti
                             sx={{
                               justifyContent: "space-between",
                               alignItem: "center",
+                              flexDirection:{xs:'column',sm:'row'}
                             }}
-                            direction={"row"}
+                           
                           >
                             <Typography sx={{padding:'2%'}} variant="body2" color="text.secondary">
                             { activeData?.city}
@@ -186,6 +195,7 @@ export default function AppAddPopup({ appAddPopupCount,setAppAddPopupCount, acti
             <DialogActions>
               <Button
                 sx={{
+                 // marginBottom:{xs:'2%',sm:0},
                   backgroundColor: "#79CCBE", // Replace with your desired color
                   "&:hover": {
                     backgroundColor: "#79CCBE", // Replace with your desired hover color
