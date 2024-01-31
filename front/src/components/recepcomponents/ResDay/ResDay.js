@@ -215,7 +215,7 @@ function ResDay() {
       <Grid item xs={3} sm={1} md={3}>
            <SidebarContainer>
             <SidebarTop>
-              <SearchBar search={search} setSearch={setSearch} mgl="10%" isDisabled={false} placename="Doctor name"></SearchBar>
+              <SearchBar search={search} setSearch={setSearch} mgl="10%" isDisabled={true} placename="Doctor name"></SearchBar>
             </SidebarTop>
             <SidebarList>
             <Tabs

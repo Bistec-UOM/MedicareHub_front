@@ -14,6 +14,7 @@ import AllAppDeletePopup from "../AllAppDeletePopup/AllAppDeletePopup";
 import DayAppList from "../DayAppList/DayAppList";
 import PatientDetailCard from "../PatientDetailCard/PatientDetailCard";
 import PatientRegpopup from "../PatRegPopup/PatientRegPopup";
+import '../../../recep.css'
 
 const SearchPatientPage = (props) => {
   const [search,setSearch]=useState("")
@@ -110,12 +111,15 @@ const SearchPatientPage = (props) => {
   };
 
   return (
-    <Box>
+    <CustomScroll>
+    <Box >
       <Box
         sx={{
           display: "flex",
           justifyContent: "space-between",
           alignItem: "center",
+         
+         
         }}
       >
         <SearchBar
@@ -129,7 +133,8 @@ const SearchPatientPage = (props) => {
           sx={{
             justifyContent: "flex-end",
             marginBottom: 3,
-            marginRight: 3,
+           
+           
           }}
           spacing={2}
           direction="row"
@@ -153,6 +158,8 @@ const SearchPatientPage = (props) => {
             sx={{
               backgroundColor: "#F44336",
               fontWeight: 25,
+               whiteSpace: "nowrap",
+              
               "&:hover": {
                 backgroundColor: "#F34436", // Set hover background color to be the same
               },
@@ -169,7 +176,7 @@ const SearchPatientPage = (props) => {
           flexDirection: "row",
           width: "100%",
           maxHeight: "75vh",
-          overflowY: "scroll",
+         
         }}
       >
         {
@@ -194,6 +201,7 @@ const SearchPatientPage = (props) => {
         <PatientRegpopup patientList={patientList} setPatientList={setPatientList} regopen={regopen} setRegopen={setRegopen}></PatientRegpopup>
       </div>
     </Box>
+    </CustomScroll>
   );
 };
 
