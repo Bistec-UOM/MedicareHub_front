@@ -6,6 +6,7 @@ import Navbar from '../components/navbar/Navbar'
 import { Sideunit_Test } from '../components/sidebar/Sideunits';
 import LabSearch from '../components/Lab/LabSearch';
 import LabTestList from '../components/Lab/LabTestList';
+import CreateLabTemplate from '../components/Lab/CreateLabTemplate';
 
 export default function Lab() {
 
@@ -68,8 +69,9 @@ export default function Lab() {
               </Card>
               : ''
 
-              :page==2?<LabTestList></LabTestList>:''
-
+              :page==2?<LabTestList setPage={setPage}></LabTestList>
+              :page==3?<CreateLabTemplate setPage={setPage}></CreateLabTemplate>
+              :''
             }
        </Grid>
 
