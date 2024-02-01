@@ -51,7 +51,8 @@ const SidebarList = ({ children }) => {
         flexDirection:'column',
         justifyContent:'flex-start',
         alignItems:'center',
-        overflowY:'scroll'
+        overflowY:'scroll',
+        backgroundColor:'#DEF4F2',
       }}
     >
       {children}

@@ -217,7 +217,9 @@ const PatientRegpopup = ({ regopen, setRegopen,setPatientList,patientList }) => 
             justifyContent: "center",
           }}><Typography variant="h5" sx={{textAlign:'center',color:'#20415C'}}> Patient Registration Form</Typography></Box>
          
-          <IconButton><CloseIcon onClick={handleAddClose} /></IconButton>
+          <IconButton sx={{ position: 'absolute',
+    top: 0,
+    right: 0,}} ><CloseIcon onClick={handleAddClose} /></IconButton>
         </DialogTitle> 
         <DialogContent>
             
@@ -283,7 +285,7 @@ const PatientRegpopup = ({ regopen, setRegopen,setPatientList,patientList }) => 
             value={age}
            
           />
-          <FormControl margin="normal" sx={{ width: "15vh", ml: 4 }}>
+          <FormControl margin="normal" sx={{ width: "15vh", ml: {sm:4,xs:0} }}>
             <InputLabel id="gender-label">Gender</InputLabel>
             <Select
               labelId="gender-label"

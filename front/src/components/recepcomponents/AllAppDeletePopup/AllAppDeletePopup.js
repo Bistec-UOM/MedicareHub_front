@@ -57,7 +57,7 @@ export default function AllAppDeletePopup({ dopen, setDopen,filteredAppointments
   return (
     <React.Fragment>
       <Dialog open={dopen} onClose={handleClose}>
-        <Box sx={{ width: "500px", height: "150px" }}>
+        <Box sx={{ width: {xs:"100%",sm:"500px"}, height: "150px" }}>
           <Box>
             <Box
               sx={{

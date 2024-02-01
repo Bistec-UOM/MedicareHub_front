@@ -215,7 +215,7 @@ function ResDay() {
       <Grid item xs={3} sm={1} md={3}>
            <SidebarContainer>
             <SidebarTop>
-              <SearchBar search={search} setSearch={setSearch} mgl="10%" isDisabled={false} placename="Doctor name"></SearchBar>
+              <SearchBar search={search} setSearch={setSearch} mgl="10%" isDisabled={true} placename="Doctor name"></SearchBar>
             </SidebarTop>
             <SidebarList>
             <Tabs
@@ -308,9 +308,27 @@ function ResDay() {
           {drawer}
         </Drawer>
       </Box>
-      <Grid sx={{paddingLeft:'10px',paddingRight:'10px',paddingTop:'64px',width:'100%', height:'100%'}} item xs={9} sm={11} md={9}>
+      {/* <Grid sx={{paddingLeft:'10px',paddingRight:'10px',paddingTop:'64px',width:'100%', height:'100%'}} item xs={9} sm={11} md={9}>
           {renderVal ?  <SearchPatientPage renderVal={renderVal} setRenderVal={setRenderVal}/> :<ResDayList  docid={docid} appointlist={appointlist} renderVal={renderVal} setRenderVal={setRenderVal}/>}
+          </Grid> */}
+          <Box
+        component="main"
+        sx={{ flexGrow: 1,height:{
+          xs:'85vh',
+          sm:'90vh',
+          md:'100vh'
+        }, p: 3, width: { xs:'100%',sm: `calc(100% - ${drawerWidth}px)` } }}
+      >
+       
+        
+        <Grid sx={{paddingRight:'10px',paddingTop:{
+          md:'54px',
+          xs:'45px'
+        },width:'100%', height:'100%'}} item xs={9} sm={11} md={9}>
+        {renderVal ?  <SearchPatientPage renderVal={renderVal} setRenderVal={setRenderVal}/> :<ResDayList  docid={docid} appointlist={appointlist} renderVal={renderVal} setRenderVal={setRenderVal}/>}   
           </Grid>
+        
+      </Box>
     </Box>
     </CustomScroll>
   );

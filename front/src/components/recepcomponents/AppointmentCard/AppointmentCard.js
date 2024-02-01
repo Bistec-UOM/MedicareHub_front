@@ -32,8 +32,11 @@ const AppointmentCard = ({filteredAppointments,setFilteredAppointments, item ,de
   return (
     
     <div>
+      
+
+     
         
-        <div classname="test" style={{ width: "80%", marginLeft: "auto", marginRight: "auto"}}>
+        <Box  sx={{ width: { md:"80%",xs:'100%'}, marginLeft: "auto", marginRight: "auto"}}>
           <Card
             sx={{
               backgroundColor: "#FFFF",
@@ -41,6 +44,7 @@ const AppointmentCard = ({filteredAppointments,setFilteredAppointments, item ,de
               marginBottom: 2,
               border: "1px solid #3B877A",
               borderRadius: 5,
+            
         
             }}
           >
@@ -60,7 +64,7 @@ const AppointmentCard = ({filteredAppointments,setFilteredAppointments, item ,de
         
                 </Box>
               </Stack>
-              <Stack sx={{justifyContent:'space-between',alignItem:'center'}} direction={'row'}>
+              <Stack sx={{justifyContent:'space-between',alignItem:'center',flexDirection:{xs:'column',md:'row'}}} >
                 <Typography variant="body2" color="text.secondary">
                   {item.city}
                 </Typography>
@@ -78,9 +82,11 @@ const AppointmentCard = ({filteredAppointments,setFilteredAppointments, item ,de
           </Card>
           
          
-        </div>
+        </Box>
         <AppDeletePopup delcount={delcount} setDelcount={setDelcount} item={item} daopen={daopen} setDaopen={setDaopen} filteredAppointments={filteredAppointments} setFilteredAppointments={setFilteredAppointments}/>
+      
     </div>
+   
   );
 };
 
