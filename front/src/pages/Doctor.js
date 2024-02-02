@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { SidebarContainer, SidebarTop, SidebarList } from '../components/sidebar/Sidebar'
-import { CustomScroll } from '../components/CustomScroll';
+import './components/CustomScroll.css' 
 import Navbar from '../components/navbar/Navbar'
 import { Grid, Card, Typography } from '@mui/material'
 import CardContent from '@mui/material/CardContent';
@@ -52,7 +52,7 @@ export default function Doctor() {
     setOpenBox(true);
   };
   return (
-    <CustomScroll>
+    <div>
       <Navbar></Navbar>
       <Grid container spacing={0} sx={{ paddingTop: '64px', height: '100vh' }}>
         <Grid item xs={3} style={{ height: '100%' }}>
@@ -63,7 +63,7 @@ export default function Doctor() {
             </SidebarList>
           </SidebarContainer>
         </Grid>
-
+        
         <Grid item xs={9} style={{ height: '100%', overflowY: 'scroll' }}>
 
           <div>
@@ -151,6 +151,7 @@ export default function Doctor() {
           </div>
         </Grid>
       </Grid>
-    </CustomScroll>
+      </div>
+    
   )
 }
