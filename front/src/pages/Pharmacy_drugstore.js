@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import {SidebarContainer,SidebarTop,SidebarList} from '../components/sidebar/Sidebar'
-import { CustomScroll } from '../components/CustomScroll';
 import Navbar from '../components/navbar/Navbar'
 import { Grid,Card,Paper,Button,InputBase, Typography,TextField, List } from '@mui/material'
 import IconButton from "@mui/material/IconButton";
@@ -12,7 +11,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import CloseIcon from '@mui/icons-material/Close';
-import { Sideunit_Patient } from '../components/sidebar/Sideunits';
+import './components/CustomScroll.css'
 import Box from '@mui/material/Box';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -73,7 +72,7 @@ export default function Pharmacy_drugstore() {
 
    },[]) 
   return (
-    <CustomScroll>
+    
     <Navbar></Navbar>
 
     <Grid container spacing={0} sx={{paddingTop:'64px',height:'100vh'}}>
@@ -103,7 +102,7 @@ export default function Pharmacy_drugstore() {
             marginTop:"10px",
           }}
         >
-          <InputBase type="text" className="form-control" onChange={Filter} sx={{ ml: 3, flex: 1 }} placeholder="Search " />
+          <InputBase type="text" className="form-control" onChange={CardActions} sx={{ ml: 3, flex: 1 }} placeholder="Search " />
          
           <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
             <SearchIcon />
@@ -276,6 +275,6 @@ export default function Pharmacy_drugstore() {
 
     </Grid>
 
-  </CustomScroll>
+  
   )
 }
