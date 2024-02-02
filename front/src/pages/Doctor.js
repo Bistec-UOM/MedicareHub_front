@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { SidebarContainer, SidebarTop, SidebarList } from '../components/sidebar/Sidebar'
-
 import Navbar from '../components/navbar/Navbar'
 import { Grid, Card, Typography } from '@mui/material'
 import CardContent from '@mui/material/CardContent';
@@ -63,7 +62,7 @@ export default function Doctor() {
             </SidebarList>
           </SidebarContainer>
         </Grid>
-
+        
         <Grid item xs={9} style={{ height: '100%', overflowY: 'scroll' }}>
 
           <div>
