@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import {SidebarContainer,SidebarTop,SidebarList} from '../components/sidebar/Sidebar'
-import { CustomScroll } from '../components/CustomScroll';
+
 import Navbar from '../components/navbar/Navbar'
 import { Grid,Card,Paper,Button,InputBase, Typography,TextField, List } from '@mui/material'
 import IconButton from "@mui/material/IconButton";
@@ -73,7 +73,7 @@ export default function Pharmacy_drugstore() {
 
    },[]) 
   return (
-    <CustomScroll>
+    <div>
     <Navbar></Navbar>
 
     <Grid container spacing={0} sx={{paddingTop:'64px',height:'100vh'}}>
@@ -276,6 +276,6 @@ export default function Pharmacy_drugstore() {
 
     </Grid>
 
-  </CustomScroll>
+  </div>
   )
 }

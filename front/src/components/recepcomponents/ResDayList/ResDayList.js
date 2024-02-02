@@ -8,7 +8,7 @@ import Steper from "../Setper/Steper";
 import { SidebarContainer } from "../../sidebar/Sidebar";
 import { SidebarTop, SidebarList } from "../../sidebar/Sidebar";
 import { Sideunit_Doctor } from "../../sidebar/Sideunits";
-import { CustomScroll } from "../../CustomScroll";
+
 import AppAddPopup from "../AppAddPopup/AppAddPopup";
 import AllAppDeletePopup from "../AllAppDeletePopup/AllAppDeletePopup";
 import '../../../recep.css'
@@ -52,12 +52,17 @@ const ResDayList = (props) => {
 
   return (
     
-    <Box >
+    <Box sx={{height:'100%'}}>
       <Box 
         sx={{
           display: "flex",
           justifyContent: "space-between",
           alignItem: "center",
+          position:'fixed',
+          backgroundColor:'white',
+          width:{sm:'70%',xs:'90%'},
+          flexWrap:'wrap-reverse',
+          paddingTop:{xs:'7px',sm:'0'}
          // paddingTop:10,
           //marginLeft:-10
         }}
@@ -77,6 +82,7 @@ const ResDayList = (props) => {
                 md:3,
                 xs:-3
             },
+            width:{xs:'100%',sm:'auto'}
           }}
           spacing={2}
           direction="row"
@@ -123,12 +129,12 @@ const ResDayList = (props) => {
             sm: "3% 0 0 8%",
             xs:"5% 0 0 2%"
 
-        },marginRight:{xs:'3%',sm:'0%'} }}>
+        },marginRight:{xs:'3%',sm:'0%'},marginTop:{xs:'50%',sm:'7%'} }}>
           <Steper search={search} items={filteredAppointments}></Steper>
         </Box>
 
         {
-          <div style={{ width: "80%" }}>
+          <Box sx={{ width: "80%",marginTop:{xs:'40%',sm:'7%'}}}>
             {filteredAppointments.filter((item)=>{
               return search.toLowerCase()===''?item:item.name.toLowerCase().includes(search.toLowerCase())
             }).map((item) => (
@@ -142,7 +148,7 @@ const ResDayList = (props) => {
                 />
               </div>
             ))}
-          </div>
+          </Box>
         }
       </div>
       <AppAddPopup apopen={apopen} setApopen={setApopen} />

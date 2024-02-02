@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import {SidebarContainer,SidebarTop,SidebarList} from '../components/sidebar/Sidebar'
-import { CustomScroll } from '../components/CustomScroll';
+
 import Navbar from '../components/navbar/Navbar'
 import { Grid,Card, Typography, CardContent } from '@mui/material'
 import { Sideunit_Patient } from '../components/sidebar/Sideunits';
@@ -18,7 +18,7 @@ export default function Pharmacy() {
    },[]) 
   
   return (
-    <CustomScroll>
+    <div>
     <Navbar></Navbar>
 
     <Grid container spacing={0} sx={{paddingTop:'64px',height:'100vh'}}>
@@ -51,7 +51,7 @@ export default function Pharmacy() {
 
     </Grid>
 
-  </CustomScroll>
+  </div>
   )
 }
 
