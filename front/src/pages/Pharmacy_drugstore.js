@@ -11,7 +11,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import CloseIcon from '@mui/icons-material/Close';
-import './components/CustomScroll.css'
+import '../components/CustomScroll.css'
 import Box from '@mui/material/Box';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -72,7 +72,7 @@ export default function Pharmacy_drugstore() {
 
    },[]) 
   return (
-    
+    <div>
     <Navbar></Navbar>
 
     <Grid container spacing={0} sx={{paddingTop:'64px',height:'100vh'}}>
@@ -275,6 +275,6 @@ export default function Pharmacy_drugstore() {
 
     </Grid>
 
-  
+  </div>
   )
 }

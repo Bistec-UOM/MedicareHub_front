@@ -8,7 +8,7 @@ import Steper from "../Setper/Steper";
 import { SidebarContainer } from "../../sidebar/Sidebar";
 import { SidebarTop, SidebarList } from "../../sidebar/Sidebar";
 import { Sideunit_Doctor } from "../../sidebar/Sideunits";
-import { CustomScroll } from "../../CustomScroll";
+
 import AppAddPopup from "../AppAddPopup/AppAddPopup";
 import AllAppDeletePopup from "../AllAppDeletePopup/AllAppDeletePopup";
 import DayAppList from "./DayAppList";

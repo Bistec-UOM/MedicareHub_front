@@ -10,6 +10,7 @@ const SidebarContainer = ({ children }) => {
         style: {
           // Add your custom styles here
           ...child.props.style,
+          backgroundColor:'#DEF4F2',
         },
         // Add any additional props as needed
       });
@@ -46,12 +47,12 @@ const SidebarList = ({ children }) => {
     <div
       style={{
         width: '100%',
-        height:'70vh',
+        //height:'0vh',
         display:'flex',
         flexDirection:'column',
         justifyContent:'flex-start',
         alignItems:'center',
-        overflowY:'scroll',
+      //  overflowY:'scroll',
         backgroundColor:'#DEF4F2',
       }}
     >

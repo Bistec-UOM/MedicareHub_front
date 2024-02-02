@@ -40,5 +40,22 @@
 }
 
 
+#root > div > div > div > nav > div > div > div > div.MuiGrid-root.MuiGrid-item.MuiGrid-grid-xs-3.MuiGrid-grid-sm-1.MuiGrid-grid-md-3.css-mcxjgr-MuiGrid-root > div > div:nth-child(2) > div:nth-child(2)
+{
+  background-color:#DEF4F2
+}
+
+
+
+.css-12i7wg6-MuiPaper-root-MuiDrawer-paper
+{
+  overflow-y: none !important;
+}
+
+::-webkit-scrollbar-thumb {
+  background: red;
+  border-radius: 10px;
+}
+
 
   

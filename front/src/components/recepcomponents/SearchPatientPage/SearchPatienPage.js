@@ -8,7 +8,7 @@ import Steper from "../Setper/Steper";
 import { SidebarContainer } from "../../sidebar/Sidebar";
 import { SidebarTop, SidebarList } from "../../sidebar/Sidebar";
 import { Sideunit_Doctor } from "../../sidebar/Sideunits";
-import { CustomScroll } from "../../CustomScroll";
+
 import AppAddPopup from "../AppAddPopup/AppAddPopup";
 import AllAppDeletePopup from "../AllAppDeletePopup/AllAppDeletePopup";
 import DayAppList from "../DayAppList/DayAppList";
@@ -111,14 +111,24 @@ const SearchPatientPage = (props) => {
   };
 
   return (
-    <CustomScroll>
-    <Box >
+  
+    <Box sx={{height:'100%'}} >
       <Box
         sx={{
           display: "flex",
-          justifyContent: "space-between",
+         justifyContent: "space-between",
           alignItem: "center",
-         
+          position:'fixed',
+          backgroundColor:'white',
+          width:{sm:'70%',xs:'90%'},
+          flexWrap:'wrap-reverse',
+          paddingTop:{xs:'7px',sm:'0'}
+          // flexDirection:{
+          //   xs:'column',
+          //   sm:'row'
+          // },
+            // bgcolor:'red'
+      
          
         }}
       >
@@ -133,7 +143,8 @@ const SearchPatientPage = (props) => {
           sx={{
             justifyContent: "flex-end",
             marginBottom: 3,
-           
+           // bgcolor:'blue',
+            width:{xs:'100%',sm:'auto'}
            
           }}
           spacing={2}
@@ -176,11 +187,12 @@ const SearchPatientPage = (props) => {
           flexDirection: "row",
           width: "100%",
           maxHeight: "75vh",
+          paddingTop:'80px'
          
         }}
       >
         {
-          <div style={{ width: "80%" }}>
+          <Box sx={{ width: "80%" ,marginTop:{xs:'20%',sm:'0%'}}}>
             {patientList.filter((item)=>{
               return search.toLowerCase() ===''?item:item.name.toLowerCase().includes(search.toLowerCase());
             }).map((item) => (
@@ -195,13 +207,13 @@ const SearchPatientPage = (props) => {
                 />
               </div>
             ))}
-          </div>
+          </Box>
         }
         <AppAddPopup appAddPopupCount={appAddPopupCount} setAppAddPopupCount={setAppAddPopupCount} patientList={patientList} activeId={activeId} apopen={apopen} setApopen={setApopen} />
         <PatientRegpopup patientList={patientList} setPatientList={setPatientList} regopen={regopen} setRegopen={setRegopen}></PatientRegpopup>
       </div>
     </Box>
-    </CustomScroll>
+   
   );
 };
 
