@@ -237,8 +237,9 @@ const Day = () => {
             <AllAppDeletePopup isDisabled={isDisabled} setIsDisabled={setIsDisabled} filteredAppointments={filteredAppointments} setFilteredAppointments={setFilteredAppointments}  dopen={dopen} setDopen={setDopen}/>
           </Grid> */}
         </Grid>
+        </div>
       
-    </div>
+   
   );
 
   // return <div>

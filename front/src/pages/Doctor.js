@@ -15,6 +15,7 @@ import ThermostatIcon from '@mui/icons-material/Thermostat';
 import DoNotDisturbOnIcon from '@mui/icons-material/DoNotDisturbOn';
 import PatientsRecords from '../components/DoctorComponents/PatientsRecords';
 import DoctorAddDrugs from '../components/DoctorComponents/DoctorAddDrugs';
+import '../components/CustomScroll.css'
 
 export default function Doctor() {
   useEffect(() => {
