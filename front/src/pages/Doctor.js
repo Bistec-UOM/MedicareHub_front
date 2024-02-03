@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { SidebarContainer, SidebarTop, SidebarList } from '../components/sidebar/Sidebar'
-
 import Navbar from '../components/navbar/Navbar'
 import { Grid, Card, Typography } from '@mui/material'
 import CardContent from '@mui/material/CardContent';
@@ -16,6 +15,7 @@ import ThermostatIcon from '@mui/icons-material/Thermostat';
 import DoNotDisturbOnIcon from '@mui/icons-material/DoNotDisturbOn';
 import PatientsRecords from '../components/DoctorComponents/PatientsRecords';
 import DoctorAddDrugs from '../components/DoctorComponents/DoctorAddDrugs';
+import '../components/CustomScroll.css'
 
 export default function Doctor() {
   useEffect(() => {
@@ -151,7 +151,6 @@ export default function Doctor() {
           </div>
         </Grid>
       </Grid>
-      </div>
-    
+    </div>
   )
 }

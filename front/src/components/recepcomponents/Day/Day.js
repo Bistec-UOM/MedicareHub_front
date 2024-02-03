@@ -131,7 +131,6 @@ const Day = () => {
  
   return (
     <div>
-   
       <Navbar />
       
         <Grid sx={{paddingTop:'64px',height:'100vh'}} container direction="row">

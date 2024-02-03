@@ -110,7 +110,7 @@ function ResDay() {
    {
      name:'kamal',
      city:'Colombo',
-     today:'January 4, 2024',
+     today:'January 6, 2024',
      nic:'21433454325',
      phone:'0774733245',
      time:'8.30 AM',
@@ -121,40 +121,40 @@ function ResDay() {
    {
      name:'akila',
      city:'Colombo',
-     today:'January 4, 2024',
+     today:'January 6, 2024',
      nic:'4524523',
      phone:'0774733245',
      time:'9.00 AM',
-     did:3,
+     did:0,
      
 
    },
    {
      name:'namal',
      city:'Colombo',
-     today:'January 4, 2024',
+     today:'January 6, 2024',
      nic:'452452343',
      phone:'0774733245',
      time:'9.30 AM',
-     did:1,
+     did:0,
      
 
    },
    {
      name:'sachith',
      city:'Colombo',
-     today:'January 4, 2024',
+     today:'January 6, 2024',
      nic:'4524543223',
      phone:'0774733245',
      time:'10.00 AM',
-     did:1,
+     did:0,
      
 
    },
    {
      name:'vihanga',
      city:'Colombo',
-     today:'January 4, 2024',
+     today:'January 6, 2024',
      nic:'45244332523',
      phone:'0774733245',
      time:'10.30 AM',
@@ -165,22 +165,22 @@ function ResDay() {
    {
      name:'ranil',
      city:'Moratuwa',
-     today:'January 4, 2024',
+     today:'January 6, 2024',
      nic:'54325324',
      phone:'0742314567',
      time:'11.00 AM',
-     did:1
+     did:0
      
 
    },
    {
      name:'saman',
      city:'kandy',
-     today:'January 5, 2024',
+     today:'January 6, 2024',
      nic:'54243252',
      phone:'0774733245',
      time:'9.30 AM',
-     did:1,
+     did:0,
 
    },
 
@@ -191,11 +191,15 @@ function ResDay() {
      nic:'5243525',
      phone:'0774733245',
      time:'9.30 AM',
-     did:3
+     did:0
    }
  ]);
 
  const data=[
+   {'name':'Amal Rathnayaka','title':'MBBS, MD, MRCP(UK)'},
+   {'name':'Bimasara Herath','title':'MBBS, MD, MRCP(UK), PRCP-E'},
+   {'name':'Tharushi Fernando','title':'MBBS, MD'},
+   {'name':'Infas Mohomad','title':'MBBS, FCGP(SL), MD-CH(UK), MBS-CH(UK), C.ht(USA)'},
    {'name':'Amal Rathnayaka','title':'MBBS, MD, MRCP(UK)'},
    {'name':'Bimasara Herath','title':'MBBS, MD, MRCP(UK), PRCP-E'},
    {'name':'Tharushi Fernando','title':'MBBS, MD'},
@@ -218,6 +222,7 @@ function ResDay() {
               <SearchBar search={search} setSearch={setSearch} mgl="10%" isDisabled={true} placename="Doctor name"></SearchBar>
             </SidebarTop>
             <SidebarList>
+            <Box sx={{overflowY:'scroll',height:'81vh'}}>
             <Tabs
         orientation="vertical"
        // variant="scrollable"
@@ -235,6 +240,7 @@ function ResDay() {
                 
                 //<Sideunit_Doctor name={item.name} title={item.title} key={index}></Sideunit_Doctor>
               ))} */}
+              
               </Tabs>
               <div style={{width:'100%',marginTop:'2%'}}>
               {data.filter((item)=>{
@@ -260,6 +266,7 @@ function ResDay() {
               ))}
 
               </div>
+              </Box>
                
             </SidebarList>
            </SidebarContainer>
@@ -269,7 +276,7 @@ function ResDay() {
 
   
   return (
-    
+   
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <ResNavBar isClosing={isClosing} setMobileOpen={setMobileOpen} mobileOpen={mobileOpen} />
@@ -323,14 +330,14 @@ function ResDay() {
         
         <Grid sx={{paddingRight:'10px',paddingTop:{
           md:'54px',
-          xs:'45px'
+          xs:'30px'
         },width:'100%', height:'100%'}} item xs={9} sm={11} md={9}>
         {renderVal ?  <SearchPatientPage renderVal={renderVal} setRenderVal={setRenderVal}/> :<ResDayList  docid={docid} appointlist={appointlist} renderVal={renderVal} setRenderVal={setRenderVal}/>}   
           </Grid>
         
       </Box>
     </Box>
-
+   
   );
 }
 

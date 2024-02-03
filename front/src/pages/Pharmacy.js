@@ -9,7 +9,8 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField'
-import '../components/CustomScroll.css' 
+import '../components/CustomScroll.css'
+
 
 
 
@@ -113,7 +114,7 @@ const medicine =[{name:"Acetaminophe",quantity:"10",hour:"BID"},
 
     </Grid>
 
-    </div>
+  </div>
   )
 }
 

@@ -153,7 +153,7 @@ function ResponsiveDrawer() {
 
   
   return (
-   
+    
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <ResNavBar isClosing={isClosing} setMobileOpen={setMobileOpen} mobileOpen={mobileOpen} />
@@ -208,7 +208,7 @@ function ResponsiveDrawer() {
         
       </Box>
     </Box>
-    
+   
   );
 }
 

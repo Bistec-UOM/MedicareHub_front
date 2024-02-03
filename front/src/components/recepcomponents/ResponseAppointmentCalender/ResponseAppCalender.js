@@ -73,79 +73,91 @@ function ResponseAppCalender() {
     {'name':'Bimasara Herath','title':'MBBS, MD, MRCP(UK), PRCP-E'},
     {'name':'Tharushi Fernando','title':'MBBS, MD'},
     {'name':'Infas Mohomad','title':'MBBS, FCGP(SL), MD-CH(UK), MBS-CH(UK), C.ht(USA)'},
+    {'name':'Amal Rathnayaka','title':'MBBS, MD, MRCP(UK)'},
+    {'name':'Bimasara Herath','title':'MBBS, MD, MRCP(UK), PRCP-E'},
+    {'name':'Tharushi Fernando','title':'MBBS, MD'},
+    {'name':'Infas Mohomad','title':'MBBS, FCGP(SL), MD-CH(UK), MBS-CH(UK), C.ht(USA)'}
+    
+    
    
  ] 
  const [search,setSearch]=useState("")
 
   const drawer = (
     <div>
+
       <Toolbar />
       <Divider />
-      <Grid  item xs={3} sm={1} md={3}>
+      <Grid  item xs={3} sm={1} md={3} sx={{backgroundColor:'#DEF4F2'}}>
            <SidebarContainer>
             <SidebarTop>
               <SearchBar search={search} setSearch={setSearch} mgl="10%" isDisabled={false} placename="Doctor name"></SearchBar>
             </SidebarTop>
-            <SidebarList>
-            <Tabs
-        orientation="vertical"
-       // variant="scrollable"
-        value={selectedTab}
-        onChange={handleChanges}
-        aria-label="example vertical tabs"
-        sx={{marginTop:0}}
-        
-      >
-              {/* {data.filter((item)=>{
-                  return search.toLowerCase()===''?item:item.name.toLowerCase().includes(search.toLowerCase());
-              }).map((item,index)=>(
-                <Tab key={index} label="" style={{ display: 'none' }} />
-                
-                
-                //<Sideunit_Doctor name={item.name} title={item.title} key={index}></Sideunit_Doctor>
-              ))} */}
-              </Tabs>
-              <div style={{width:'100%',marginTop:'2%'}}>
-              {data.filter((item)=>{
-                  return search.toLowerCase()===''?item:item.name.toLowerCase().includes(search.toLowerCase());
-              }).map((item,index)=>(
-                <div
-                key={index}
-                onClick={() => setSelectedTab(index)}
-                style={{
-                  backgroundColor: selectedTab === index ? '#79CCBE' : 'transparent',
-                   padding: '10px',
-                   margin: '5px',
-                  cursor: 'pointer',
-                  borderRadius:'8px'
-                }}
-              >
-                <Sideunit_Doctor selectedTab={selectedTab} name={item.name} title={item.title} index={index} key={index}></Sideunit_Doctor>
-              </div>
-               
-                
-                
-               
-              ))}
-
-              </div>
+            <SidebarList sx={{backgroundColor:'#DEF4F2'}}>
+              
+            <Box sx={{overflowY:'scroll',height:'81vh'}}>
+              <Tabs
+                      orientation="vertical"
+                     // variant="scrollable"
+                      value={selectedTab}
+                      onChange={handleChanges}
+                      aria-label="example vertical tabs"
+                      sx={{marginTop:0}}
+                      
+                    >
+                {/* {data.filter((item)=>{
+                    return search.toLowerCase()===''?item:item.name.toLowerCase().includes(search.toLowerCase());
+                }).map((item,index)=>(
+                  <Tab key={index} label="" style={{ display: 'none' }} />
+              
+              
+                  //<Sideunit_Doctor name={item.name} title={item.title} key={index}></Sideunit_Doctor>
+                ))} */}
+                </Tabs>
+                <div style={{width:'100%',marginTop:'2%'}}>
+                {data.filter((item)=>{
+                    return search.toLowerCase()===''?item:item.name.toLowerCase().includes(search.toLowerCase());
+                }).map((item,index)=>(
+                  <div
+                  key={index}
+                  onClick={() => setSelectedTab(index)}
+                  style={{
+                    backgroundColor: selectedTab === index ? '#79CCBE' : 'transparent',
+                     padding: '10px',
+                     margin: '5px',
+                    cursor: 'pointer',
+                    borderRadius:'8px'
+                  }}
+                >
+                  <Sideunit_Doctor selectedTab={selectedTab} name={item.name} title={item.title} index={index} key={index}></Sideunit_Doctor>
+                </div>
+              
+              
+              
+              
+                ))}
+                </div>
+            </Box>
+           
                
             </SidebarList>
            </SidebarContainer>
-          </Grid>
+      </Grid>
+ 
     </div>
   );
 
   
   return (
    
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex' ,height:'100%'}}>
       <CssBaseline />
       <ResNavBar isClosing={isClosing} setMobileOpen={setMobileOpen} mobileOpen={mobileOpen} />
       <Box
         component="nav"
-        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+        sx={{ width: { sm: drawerWidth },  flexShrink: { sm: 0 } }}
         aria-label="mailbox folders"
+       
       >
         {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
         <Drawer
@@ -160,6 +172,9 @@ function ResponseAppCalender() {
           sx={{
             display: { xs: 'block', sm: 'none' },
             '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth-100 },
+           
+            height:'100%'
+
           }}
         >
           {drawer}
@@ -170,6 +185,7 @@ function ResponseAppCalender() {
             display: { xs: 'none', sm: 'block' },
              marginTop:'20px',
             '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+            
            
           }}
           open
