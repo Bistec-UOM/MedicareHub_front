@@ -18,16 +18,22 @@ export default function Pharmacy() {
   
   const data =[{name:"Dhammika Mahendra Wijesingha",age:"36",gender:"male"},
 ];
+const [selectedQuantities, setSelectedQuantities] = React.useState('');
 const [quantity, setQuantity] = React.useState('');
 
-const handleChange = (event) => {
-  setQuantity(event.target.value);
+
+const handleChange = (event,no) => {
+  const newQuantities = [...selectedQuantities];
+    newQuantities[no] = event.target.value;
+    setSelectedQuantities(newQuantities);
 };
-const medicine =[{name:"Acetaminophe",quantity:"10",hour:"BID"},
-             {name:"Sumatripan",quantity:"20",hour:"BID"},
-             {name:"Rizatripan",quantity:"0.5",hour:"4H"},
+
+const medicine =[{name:"Acetaminophe",quantity:"10",hour:"BID",value:"10",unit_price:"15.00",fullprice:"{value*unit_price"},
+             {name:"Sumatripan",quantity:"20",hour:"BID",value:"10",unit_price:"4.50",fullprice:"=10*4.50"},
+             {name:"Rizatripan",quantity:"0.5",hour:"4H",value:"",unit_price:"",fullprice:""},
 ];
 
+const result = 10 * 15
   useEffect(()=>{
     document.body.style.margin = '0';
 
@@ -61,31 +67,29 @@ const medicine =[{name:"Acetaminophe",quantity:"10",hour:"BID"},
       </Card>
           ))}
       </div>
+      
       <div>
       {medicine.map((drug, no) => (
-        <Grid key={no} container spacing={1} sx={{marginTop:"10px"}}>
-        <Grid item xs={8}>
-        <Card sx={{ backgroundColor: '#0099cc', color: 'white', fontSize: '18px',width:"500px"}}>
+        <Grid key={no} container spacing={1} sx={{marginTop:"10px",}}>
+        <Grid item xs={12}>
+        <Card sx={{ backgroundColor: '#0099cc', color: 'white', fontSize: '20px',width:"500px",marginLeft:"10px"}}>
                 <Typography gutterBottom variant="p" sx={{ marginLeft: '10px', }}>{drug.name}</Typography>
                 <Typography gutterBottom variant="p" sx={{ marginLeft: '110px ',  }}>{drug.quantity} mg</Typography>
                 <Typography gutterBottom variant="p" sx={{ marginLeft: '150px', }}>{drug.hour}</Typography>
-                </Card>       
-        </Grid>
-        </Grid> 
-      ))}
-      <Card sx={{ minWidth: 275 }}>
-        
-      <Grid container spacing={1} sx={{marginTop:"10px"}}>
+                </Card>   
+                <Grid key={no} container spacing={1} sx={{marginTop:"10px"}}>
       <Grid item xs={12}>
         
-          <FormControl sx={{ m: 1, minWidth: 120 ,marginLeft: '190px',}} size="large" marginTop="20px">
+          <FormControl sx={{ m: 0, minWidth: 120 ,marginLeft: '200px',}} size="large" marginTop="20px">
       <InputLabel id="demo-select-small-label">Quantity</InputLabel>
       <Select
-        labelId="demo-select-small-label"
+       sx={{ borderColor:"0099cc", }}
+        labelId="`quantity-label-${no}`"
         id="demo-select-small"
-        value={quantity}
+        value={selectedQuantities[no]}
         label="Quantity"
-        onChange={handleChange}
+        onChange={(event) => handleChange(event, no)}
+       
       >
         <MenuItem value="">
           <em>None</em>
@@ -97,15 +101,18 @@ const medicine =[{name:"Acetaminophe",quantity:"10",hour:"BID"},
     </FormControl>
     
       <TextField  sx={{
-        '& > :not(style)': { m: 1, width: '20ch' },
-      }} id="outlined-basic" label="Enter" variant="outlined" defaultValue={10}  />
+        '& > :not(style)': { m: 0, width: '10ch' ,marginLeft: '100px '},
+      }} id="outlined-basic" label="Enter" variant="outlined" defaultValue={drug.value}  />
       
-      <Typography gutterBottom variant="p" sx={{ marginLeft: '11px ', }}>15.00</Typography>
-      <Typography gutterBottom variant="p" sx={{ marginLeft: '30px ', }}><b>15.00*10</b></Typography>
+      <Typography gutterBottom variant="p" sx={{ marginLeft: '45px '}}>{drug.unit_price}</Typography>
+      <Typography gutterBottom variant="p" sx={{ marginLeft: '90px ', }}><b>{drug.fullprice}</b></Typography>
       
     </Grid>
-    </Grid>
-    </Card>
+    </Grid> 
+        
+        </Grid>
+        </Grid> 
+      ))}
       </div>
 
 
