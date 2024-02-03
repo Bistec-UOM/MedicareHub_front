@@ -5,7 +5,7 @@ import Calender from "../Calender/MyCalender";
 import MyCalendar from "../Calender/MyCalender";
 import { SidebarContainer, SidebarTop,SidebarList } from "../../sidebar/Sidebar";
 import { useEffect } from "react";
-import { CustomScroll } from "../../CustomScroll";
+
 import { Sideunit_Doctor } from "../../sidebar/Sideunits";
 import SearchBar from "../Searchbar/Searchbar";
 import {Tabs,Tab} from "@mui/material";
@@ -34,7 +34,7 @@ const AppointmentCalender = () => {
   
    // const []
   return (
-    <CustomScroll>
+    
       
         <Grid sx={{paddingTop:'64px',height:'100vh'}} container direction="row">
           <Grid item xs={3} sm={2} md={3}>
@@ -95,7 +95,7 @@ const AppointmentCalender = () => {
           </Grid>
         </Grid>
      
-    </CustomScroll>
+   
   );
 };
 

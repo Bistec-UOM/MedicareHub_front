@@ -8,7 +8,7 @@ import Steper from "../Setper/Steper";
 import { SidebarContainer } from "../../sidebar/Sidebar";
 import { SidebarTop, SidebarList } from "../../sidebar/Sidebar";
 import { Sideunit_Doctor } from "../../sidebar/Sideunits";
-import { CustomScroll } from "../../CustomScroll";
+
 import AppAddPopup from "../AppAddPopup/AppAddPopup";
 import AllAppDeletePopup from "../AllAppDeletePopup/AllAppDeletePopup";
 import DayAppList from "../DayAppList/DayAppList";
@@ -111,7 +111,7 @@ const SearchPatientPage = (props) => {
   };
 
   return (
-    <CustomScroll>
+   
     <Box >
       <Box
         sx={{
@@ -201,7 +201,7 @@ const SearchPatientPage = (props) => {
         <PatientRegpopup patientList={patientList} setPatientList={setPatientList} regopen={regopen} setRegopen={setRegopen}></PatientRegpopup>
       </div>
     </Box>
-    </CustomScroll>
+    
   );
 };
 

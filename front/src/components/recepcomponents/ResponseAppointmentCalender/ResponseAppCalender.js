@@ -17,7 +17,7 @@ import SearchBar from '../Searchbar/Searchbar';
 import { useEffect } from 'react';
 import {Tabs} from '@mui/material';
 import { Sideunit_Doctor } from '../../sidebar/Sideunits';
-import { CustomScroll } from '../../CustomScroll';
+
 import ResNavBar from '../ResNavBar/ResNabBar';
 
 const drawerWidth = 358.4;
@@ -138,7 +138,7 @@ function ResponseAppCalender() {
 
   
   return (
-    <CustomScroll>
+   
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <ResNavBar isClosing={isClosing} setMobileOpen={setMobileOpen} mobileOpen={mobileOpen} />
@@ -193,7 +193,7 @@ function ResponseAppCalender() {
         
       </Box>
     </Box>
-    </CustomScroll>
+  
   );
 }
 

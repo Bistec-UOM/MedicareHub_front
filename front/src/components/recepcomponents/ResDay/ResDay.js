@@ -32,7 +32,7 @@ import SearchBar from '../Searchbar/Searchbar';
 import { useEffect } from 'react';
 import {Tabs} from '@mui/material';
 import { Sideunit_Doctor } from '../../sidebar/Sideunits';
-import { CustomScroll } from '../../CustomScroll';
+
 import ResNavBar from '../ResNavBar/ResNabBar';
 import { useLocation } from 'react-router-dom';
 import SearchPatientPage from '../SearchPatientPage/SearchPatienPage';
@@ -269,7 +269,7 @@ function ResDay() {
 
   
   return (
-    <CustomScroll>
+    
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <ResNavBar isClosing={isClosing} setMobileOpen={setMobileOpen} mobileOpen={mobileOpen} />
@@ -330,7 +330,7 @@ function ResDay() {
         
       </Box>
     </Box>
-    </CustomScroll>
+
   );
 }
 

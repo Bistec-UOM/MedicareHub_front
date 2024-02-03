@@ -8,7 +8,7 @@ import Steper from "../Setper/Steper";
 import { SidebarContainer } from "../../sidebar/Sidebar";
 import { SidebarTop,SidebarList } from "../../sidebar/Sidebar";
 import { Sideunit_Doctor } from "../../sidebar/Sideunits";
-import { CustomScroll } from "../../CustomScroll";
+
 import AppAddPopup from "../AppAddPopup/AppAddPopup";
 import AllAppDeletePopup from "../AllAppDeletePopup/AllAppDeletePopup";
 import DayList from "../DayAppList/DayAppList";
@@ -130,7 +130,8 @@ const Day = () => {
 
  
   return (
-    <CustomScroll>
+    <div>
+   
       <Navbar />
       
         <Grid sx={{paddingTop:'64px',height:'100vh'}} container direction="row">
@@ -237,8 +238,9 @@ const Day = () => {
             <AllAppDeletePopup isDisabled={isDisabled} setIsDisabled={setIsDisabled} filteredAppointments={filteredAppointments} setFilteredAppointments={setFilteredAppointments}  dopen={dopen} setDopen={setDopen}/>
           </Grid> */}
         </Grid>
+        </div>
       
-    </CustomScroll>
+   
   );
 
   // return <div>
