@@ -1,12 +1,12 @@
 import { Grid,Card, Typography, Paper, IconButton, Divider, InputBase } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import {SidebarContainer,SidebarTop,SidebarList} from '../components/sidebar/Sidebar'
-import { CustomScroll } from '../components/CustomScroll';
 import Navbar from '../components/navbar/Navbar'
 import { Sideunit_Test } from '../components/sidebar/Sideunits';
 import LabSearch from '../components/Lab/LabSearch';
 import LabTestList from '../components/Lab/LabTestList';
 import CreateLabTemplate from '../components/Lab/CreateLabTemplate';
+import '../components/CustomScroll.css'
 
 export default function Lab() {
 
@@ -34,7 +34,7 @@ export default function Lab() {
 
 
   return (
-   <CustomScroll>
+   <div>
     <Navbar></Navbar>
      <Grid container spacing={0} sx={{paddingTop:'64px',height:'100vh'}}>
        <Grid item xs={3} style={{height:'100%',backgroundColor:'#DEF4F2'}}>
@@ -76,7 +76,7 @@ export default function Lab() {
        </Grid>
 
      </Grid>
-   </CustomScroll>
+   </div>
   )
 }
 

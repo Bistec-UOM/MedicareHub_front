@@ -52,18 +52,17 @@ export default function DoctorAddDrugs(props) {
       },
     },
     }}/>
-            
+
+          <Select sx={{ m: 1 ,top: '10px',border: '2px solid #0099cc',width:'50px',height: '40px',}} variant="standard">         
+          <MenuItem value={10}>mg</MenuItem>
+          <MenuItem value={20}>mg</MenuItem>         
+        </Select>   
         <Select sx={{ m: 1 ,top: '10px',  border: '2px solid #0099cc',width:'55px',height: '40px',}} variant="standard" >         
           <MenuItem value={10}>BD</MenuItem>
           <MenuItem value={20}>BD</MenuItem>
           <MenuItem value={30}>BD</MenuItem>
-        </Select>      
-            
-        <Select sx={{ m: 1 ,top: '10px',border: '2px solid #0099cc',width:'50px',height: '40px',}} variant="standard">         
-          <MenuItem value={10}>mg</MenuItem>
-          <MenuItem value={20}>mg</MenuItem>         
-        </Select>                
-        <Button variant="outlined" sx={{top: '10px',color:'Green', borderColor: 'Green', borderWidth: '3px', }} >OK</Button>        
+        </Select>    
+         <Button variant="outlined" sx={{top: '10px',color:'Green', borderColor: 'Green', borderWidth: '3px', }} >OK</Button>        
          </DialogContent>
       </Dialog>
       
