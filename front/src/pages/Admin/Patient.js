@@ -4,17 +4,11 @@ import InputBase from "@mui/material/InputBase";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
 import { useState } from "react";
 import {Checkbox,Dialog,DialogActions,DialogContent,DialogTitle,FormControl,FormControlLabel,FormGroup,Grid,InputLabel,MenuItem,Select,TextField,Typography,} from "@mui/material";
 import { Button } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { Filter } from "@mui/icons-material";
+
 
 function createData(Id,fullName,name,NIC,address,contactNumber,emailAddress,age,gender
 ) {
@@ -34,6 +28,12 @@ function Patient() {
   const [editOpen, setEditOpen] = useState(false);
   const [selectedPaper, setSelectedPaper] = useState(null);
 
+  // calling for edit
+  const [isDisabled, setIsDisabled] = useState(true);
+
+  const handleClick = () => {
+    setIsDisabled(!isDisabled);
+  };
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -46,6 +46,8 @@ function Patient() {
     // Handle saving edited data here
     console.log("Edited data:", selectedPaper);
     setEditOpen(false);
+    
+    setIsDisabled(!isDisabled);
   };
 
   const handleEditClickOpen = (row) => {
@@ -168,7 +170,7 @@ const handleChange = (e) => {
       <Grid>
       <Paper
       sx={{
-        display: "flex",
+        display: {sm:'flex',xs:'none'},
         justifyContent: "space-between",
         alignItems: "center",
         marginBottom: "10px",
@@ -187,13 +189,14 @@ const handleChange = (e) => {
           key={row.Id}
           sx={{
             cursor:'pointer',
-            display: "flex",
+            display: {sm:'flex',xs:'gird'},
             justifyContent: "space-between",
               alignItems: "center",
               marginBottom: "10px",
               padding: 2,
               boxShadow: 2,
-              borderRadius:'12px'
+              borderRadius:'12px',
+              pl:{sm:'2',xs:'30px'}
             }}
             onClick={() => handleEditClickOpen(row)} // Pass the row to handleEditClickOpen
           >
@@ -220,6 +223,7 @@ const handleChange = (e) => {
           </DialogTitle>
           <DialogContent>
             <TextField
+              disabled={isDisabled}
               label="Full Name"
               fullWidth
               margin="dense"
@@ -227,12 +231,14 @@ const handleChange = (e) => {
               onChange={(e) => handleInputChange("fullName", e.target.value)}
               />
             <TextField
+              disabled={isDisabled}
               label="Name"
               margin="dense"
               value={selectedPaper ? selectedPaper.name : ""}
               onChange={(e) => handleInputChange("name", e.target.value)}
               />
             <TextField
+              disabled={isDisabled}
               sx={{ml:1}}
               label="NIC"
               margin="dense"
@@ -240,6 +246,7 @@ const handleChange = (e) => {
               onChange={(e) => handleInputChange("protein", e.target.value)}
               />
             <TextField
+              disabled={isDisabled}
               label="Address"
               fullWidth
               margin="dense"
@@ -247,12 +254,14 @@ const handleChange = (e) => {
               onChange={(e) => handleInputChange("carbs", e.target.value)}
               />
             <TextField
+              disabled={isDisabled}
               label="Contact Number"
               margin="dense"
               value={selectedPaper ? selectedPaper.contactNumber : ""}
               onChange={(e) => handleInputChange("name", e.target.value)}
               />
             <TextField
+              disabled={isDisabled}
               label="Email"
               margin="dense"
               value={selectedPaper ? selectedPaper.emailAddress : ""}
@@ -260,6 +269,7 @@ const handleChange = (e) => {
               onChange={(e) => handleInputChange("name", e.target.value)}
               />
             <TextField
+              disabled={isDisabled}
               label="Age"
               margin="dense"
               value={selectedPaper ? selectedPaper.age : ""}
@@ -284,11 +294,11 @@ const handleChange = (e) => {
           </DialogContent>
           <DialogActions>
             <Button
-              onClick={handleEditSave}
+              onClick={isDisabled ? handleClick : handleEditSave}
               variant="contained"
               sx={{ backgroundColor: "rgb(121, 204, 190)", m: 2 }}
             >
-              Save
+              {isDisabled ? 'Toggle' : 'Save'}
             </Button>
           </DialogActions>
         </Dialog>
