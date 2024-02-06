@@ -171,15 +171,16 @@ const handleChange = (e) => {
       <Paper
       sx={{
         display: {sm:'flex',xs:'none'},
-        justifyContent: "space-between",
+        justifyContent: "space-around",
         alignItems: "center",
         marginBottom: "10px",
         padding: 2,
+        paddingLeft:'2vw',
         boxShadow: 5,
         borderRadius:'12px'
       }}
       >
-      <Typography sx={{ flex: 1 }}>name</Typography>
+      <Typography sx={{ flex: 1 }}>Name</Typography>
       <Typography sx={{ flex: 1 }}>NIC</Typography>
       <Typography sx={{ flex: 1 }}>Gender</Typography>
       <Typography sx={{ flex: 1 }}>Email</Typography>
