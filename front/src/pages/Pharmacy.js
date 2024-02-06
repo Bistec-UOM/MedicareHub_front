@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import {SidebarContainer,SidebarTop,SidebarList} from '../components/sidebar/Sidebar'
-
 import Navbar from '../components/navbar/Navbar'
 import { Grid,Card, Typography, CardContent } from '@mui/material'
 import FormControl from '@mui/material/FormControl';
@@ -10,8 +9,8 @@ import Select from '@mui/material/Select';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField'
 import '../components/CustomScroll.css'
-
-
+import EditIcon from '@mui/icons-material/Edit';
+import IconButton from '@mui/material/IconButton';
 
 
 export default function Pharmacy() {
@@ -28,8 +27,8 @@ const handleChange = (event,no) => {
     setSelectedQuantities(newQuantities);
 };
 
-const medicine =[{name:"Acetaminophe",quantity:"10",hour:"BID",value:"10",unit_price:"15.00",fullprice:"{value*unit_price"},
-             {name:"Sumatripan",quantity:"20",hour:"BID",value:"10",unit_price:"4.50",fullprice:"=10*4.50"},
+const medicine =[{name:"Acetaminophe",quantity:"10",hour:"BID",value:"10",unit_price:"15.00",fullprice:"150"},
+             {name:"Sumatripan",quantity:"20",hour:"BID",value:"10",unit_price:"04.50",fullprice:"45"},
              {name:"Rizatripan",quantity:"0.5",hour:"4H",value:"",unit_price:"",fullprice:""},
 ];
 
@@ -114,7 +113,19 @@ const result = 10 * 15
         </Grid> 
       ))}
       </div>
-
+      <Card></Card>
+       <Card>
+        
+        <Typography>Service charge
+        <IconButton aria-label="edit" color='secondary'
+        sx={{color:'#CFDB1A'}}>
+      <EditIcon />
+    </IconButton>
+        </Typography>
+      
+       
+    
+       </Card>
 
       </Grid>
 
