@@ -14,9 +14,18 @@ export default function Lab() {
   const [page,setPage]=useState(1)
 
   let x=[
-    {id:1,"name": "John Doe", "test": ['Thyroxin']},
-    {id:2,"name": "Jane Smith", "test":['FBC','Thyroxin']},
-    {id:3,"name": "Bob Johnson", "test": ['FBC']}
+    {id:1,"name": "Hande ercel", "test": ['Thyroxin']},
+    {id:2,"name": "Hazal kaya", "test":['FBC','hCG']},
+    {id:3,"name": "Ozge yagiz", "test": ['FBC']},
+    {id:4,"name": "Ozge gurel", "test": ['BMT']},
+    {id:5,"name": "Turkan sorey", "test":['HBC','Thyroxin']},
+    {id:6,"name": "Saadet akzoy", "test": ['Urine']},
+    {id:7,"name": "Ezgi mola", "test": ['FBC']},
+    {id:8,"name": "Deniz beysal", "test":['FBC']},
+    {id:9,"name": "Ozgu kaya", "test": ['FBC']},
+    {id:10,"name": "Zehra yilmaz", "test": ['Lipid']},
+    {id:11,"name": "Serenay Sarikaya", "test":['Lipid','Glucose']},
+    {id:12,"name": "Yuzra geyik", "test": ['FBC']}
    ]
 
  useEffect(()=>{
