@@ -16,6 +16,7 @@ import DoNotDisturbOnIcon from '@mui/icons-material/DoNotDisturbOn';
 import PatientsRecords from '../components/DoctorComponents/PatientsRecords';
 import DoctorAddDrugs from '../components/DoctorComponents/DoctorAddDrugs';
 import AnaliticalReports from '../components/DoctorComponents/AnaliticalReports';
+import '../components/CustomScroll.css'
 
 export default function Doctor() {
   useEffect(() => {
