@@ -37,7 +37,7 @@ export default function DoctorAddDrugs(props) {
             />
       <TextField variant="outlined" size="small" sx={{ m: 1,width:'45%',top: '10px', '& .MuiOutlinedInput-root': {
       '& fieldset': {
-        borderColor: '#0099cc',  // Change to your desired border color
+        borderColor: '#0099cc', 
         borderWidth: '2px',
         borderRadius:'25px',  
       },
