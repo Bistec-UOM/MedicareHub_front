@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {Button, Paper, TextField, Toolbar, Typography} from "@mui/material"
+import {Button, Paper, TextField, Toolbar, Typography,Box} from "@mui/material"
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
@@ -65,18 +65,18 @@ export default function CreateLabTemplate({setPage}) {
 
   return (
     <div>
-        <Toolbar sx={{position:'fixed',width:'60%',justifyContent:'space-between'}}>
+        <Toolbar sx={{position:'fixed',width:{xs:'100%',sm:'80%'},justifyContent:'space-between',backgroundColor:'yellow'}}>
             <ArrowBackIcon sx={{cursor:'pointer'}} onClick={()=>setPage(2)}></ArrowBackIcon>
 
-            <div style={{width:'100%',padding:'5px',display:'flex',alignItems:'center',marginLeft:'30px'}} square>
-              <Typography variant='h6'>Lab test name</Typography>
+            <div style={{width:'100%',padding:'5px',display:'flex',alignItems:'center',marginLeft:{xs:'2px',sm:'30px'}}} square>
+              <Typography variant='h6' sx={{fontSize:{xs:'17px'}}}>Lab test name</Typography>
               <TextField size='small' onChange={(e)=>setTestName(e.target.value)}></TextField>
             </div>
         
             <Button variant='contained' size='small' onClick={()=>createTemplate()}>Create</Button>
         </Toolbar>
 
-        <div style={{paddingLeft:'8%', paddingTop:'80px'}}>
+        <Box sx={{paddingLeft:{xs:'2%',sm:'8%'}, paddingTop:{xs:'60px',sm:'80px'}}}>
            {/*---------- Printed lab sheet-----------------*/}
          
                {
@@ -112,7 +112,7 @@ export default function CreateLabTemplate({setPage}) {
            }
     
            {/* ------------------------ Form-------------------------------------------------- */}
-           <Paper sx={{display:'flex',alignItems:'center',width:'70%',marginTop:'40px'}}>
+           <Paper sx={{display:'flex',alignItems:'center',width:{sx:'100%',sm:'90%'},marginTop:'40px'}}>
              
              <div style={{display:'flex',alignItems:'center',width:'45%',height:'100%'}}>
                <Typography sx={{fontSize:'16px',pl:'20px',mr:'5px'}}>Field name</Typography>
@@ -136,7 +136,7 @@ export default function CreateLabTemplate({setPage}) {
              </div>
     
            </Paper>
-        </div>
+        </Box>
     </div>
   )
 }

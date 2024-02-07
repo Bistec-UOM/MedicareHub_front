@@ -25,8 +25,8 @@ export default function LabTestList({setPage}) {
         {name:'Basic metabolic test',provider:'Asiri',price:1700.00}
     ])
   return (
-    <div>
-        <Toolbar sx={{width:'70%',justifyContent:'space-between',position:'fixed',backgroundColor:'white',paddingLeft:'20%',pr:'20%'}}>
+    <div style={{width:'100%'}}>
+        <Toolbar sx={{width:{xs:'100%',sm:'60%',md:'70%'},justifyContent:'space-between',position:'fixed',backgroundColor:'yellow',pl:{xs:'2%',sm:'20%'},pr:{sx:'2%',sm:'20%'}}}>
             <ArrowBackIcon sx={{cursor:'pointer'}} onClick={()=>setPage(1)}></ArrowBackIcon>
 
             {/*-------Search bar--------------- */}
@@ -39,18 +39,18 @@ export default function LabTestList({setPage}) {
             </Paper>  
 
             {/*-------Add new button--------------- */}
-            <Button variant='contained' onClick={()=>setPage(3)} sx={{mr:'8%'}}>Add new</Button>
+            <Button variant='contained' onClick={()=>setPage(3)}>Add new</Button>
             
         </Toolbar>
 
-        <Stack sx={{paddingTop:'60px',paddingLeft:'8%'}}>
+        <Stack sx={{paddingTop:'60px',paddingLeft:{xs:'5%',sm:'8%'}}}>
             {
                 test.map((el)=>{
                     return(
-                    <Paper sx={{display:'flex',width:'85%',justifyContent:'space-between',cursor:'pointer',padding:2,borderRadius:'12px',mb:'10px'}}>
-                        <Typography sx={{fontSize:'16px',flex:1}}>{el.name}</Typography>
-                        <Typography sx={{fontSize:'16px',flex:1}}>{el.provider}</Typography>
-                        <Typography sx={{fontSize:'16px',flex:1}}>{el.price}</Typography>
+                    <Paper sx={{display:'flex',width:{xs:'95%',sm:'80%'},justifyContent:'space-between',cursor:'pointer',padding:{xs:1,sm:2},borderRadius:'12px',mb:'10px'}}>
+                        <Typography sx={{fontSize:'16px',flex:{xs:3,sm:1}}}>{el.name}</Typography>
+                        <Typography sx={{fontSize:'16px',flex:{xs:2,sm:1}}}>{el.provider}</Typography>
+                        <Typography sx={{fontSize:'16px',flex:{xs:1,sm:1}, textAlign:'right'}}>{el.price}</Typography>
                     </Paper>
                     )
                 })
