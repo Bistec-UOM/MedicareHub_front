@@ -11,7 +11,7 @@ export default function LabSearch({setPage}) {
   return (
       <div style={{display:'flex',justifyContent:'space-between'}}>
 
-      <ViewListIcon sx={{cursor:'pointer'}}></ViewListIcon>
+      <ViewListIcon sx={{cursor:'pointer',ml:'10px'}}></ViewListIcon>
 
       <div style={{display:'flex',flexDirection:'column',alignItems:'center'}}>
     
@@ -35,7 +35,7 @@ export default function LabSearch({setPage}) {
      </Paper>  
      </div>
 
-     <InsertDriveFileIcon sx={{cursor:'pointer'}} onClick={()=>setPage(2)}></InsertDriveFileIcon>
+     <InsertDriveFileIcon sx={{cursor:'pointer',mr:'10px'}} onClick={()=>setPage(2)}></InsertDriveFileIcon>
 
     </div>
   )
