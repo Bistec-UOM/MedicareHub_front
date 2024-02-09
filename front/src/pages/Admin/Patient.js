@@ -90,10 +90,11 @@ const handleChange = (e) => {
 
 
   return (
-    <div>
+    <div >
 
-      {/* search bar */}
-      <Grid sx={{ display: "flex", justifyContent: "space-between",mb:4 }}>
+<Grid sx={{width:{xs:'87.5vw'},paddingLeft:{xs:'0vw',sm:'0px'}}}>
+        {/* search bar */}
+        <Grid sx={{ display: "flex", justifyContent: "space-between",mb:4 }}>
         <Paper
           component="form"
           sx={{
@@ -121,6 +122,7 @@ const handleChange = (e) => {
             width: "10vh",
             height: "5vh",
             fontWeight: "bolder",
+            marginLeft:{ xs:"20px"},
           }}
           onClick={handleClickOpen}
         >
@@ -304,6 +306,7 @@ const handleChange = (e) => {
           </DialogActions>
         </Dialog>
       </Grid>
+</Grid>
     </div>
   );
 }
