@@ -91,7 +91,7 @@ export default function Lab() {
       </Box>
     </Box>
 
-    <Grid container spacing={0} sx={{paddingTop:'64px',height:'100vh'}}>
+    <Grid container spacing={0} sx={{paddingTop:{xs:'48px',sm:'64px'},height:'100vh'}}>
 
     <Drawer variant="temporary" open={mobileOpen} onTransitionEnd={handleDrawerTransitionEnd} 
      onClose={handleDrawerClose} ModalProps={{keepMounted: true}}

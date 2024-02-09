@@ -43,7 +43,7 @@ export default function LabTestList({setPage}) {
             
         </Toolbar>
 
-        <Stack sx={{paddingTop:'60px',paddingLeft:{xs:'5%',sm:'8%'}}}>
+        <Stack sx={{paddingTop:{xs:'60px',sm:'80px'},paddingLeft:{xs:'5%',sm:'8%'}}}>
             {
                 test.map((el)=>{
                     return(
