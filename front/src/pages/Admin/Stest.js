@@ -1,9 +1,11 @@
-export default function Stest() {
+import React from 'react';
 
-
+const Stest = () => {
   return (
     <div>
-        make  this as playgound
+      thi
     </div>
   );
 }
+
+export default Stest;
