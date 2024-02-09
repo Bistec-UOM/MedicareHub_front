@@ -15,6 +15,7 @@ import ThermostatIcon from '@mui/icons-material/Thermostat';
 import DoNotDisturbOnIcon from '@mui/icons-material/DoNotDisturbOn';
 import PatientsRecords from '../components/DoctorComponents/PatientsRecords';
 import DoctorAddDrugs from '../components/DoctorComponents/DoctorAddDrugs';
+import AnaliticalReports from '../components/DoctorComponents/AnaliticalReports';
 import '../components/CustomScroll.css'
 
 export default function Doctor() {
@@ -51,6 +52,11 @@ export default function Doctor() {
   const handleAddDrugsClick = () => {
     setOpenBox(true);
   };
+  const [openAreports, setOpenAreports] = useState(false);
+
+  const handleViewReporsClick = () => {
+    setOpenAreports(true);
+  };
   return (
     <div>
       <Navbar></Navbar>
@@ -76,7 +82,9 @@ export default function Doctor() {
                   marginRight: '10px', 
                   fontSize: '30px' }} 
                   onClick={handleAddIconClick} />
-                  <UpdateIcon sx={{ color: 'rgb(255, 153, 0)', float: 'right', marginRight: '10px', fontSize: '30px' }} />
+                  <UpdateIcon sx={{ color: 'rgb(255, 153, 0)', float: 'right', marginRight: '10px', fontSize: '30px' }}
+                  onClick={handleViewReporsClick} />
+                  <AnaliticalReports openAreports={openAreports} setOpenAreports={setOpenAreports} /> 
                   <Typography gutterBottom variant="h6">{docdata.name}</Typography>
                   <Typography gutterBottom variant="p" sx={{ color: '#808080' }}>{docdata.age}  years</Typography><br />
                   <Typography gutterBottom variant="p" sx={{ color: '#808080' }}>{docdata.gender}</Typography>
@@ -97,11 +105,14 @@ export default function Doctor() {
               </Item>
               </Grid>
               <Grid item xs={4}>
+                
               < DoNotDisturbOnIcon sx={{
                 color: 'red', 
                 marginLeft: '5px',
                 fontSize: '30px',
-                float: 'Left' }} />
+                float: 'Left' }}
+                 />
+                                
               </Grid>              
             </Grid>
             ))}
@@ -119,7 +130,9 @@ export default function Doctor() {
           <ThermostatIcon sx={{ color: '#33cc33',
                                 marginLeft: '74%', 
                                 fontSize: '45px', 
-                                 marginTop: '70px' }} />
+                                marginTop: '50px' }} 
+                               />
+           
 
           <div>
             <Box

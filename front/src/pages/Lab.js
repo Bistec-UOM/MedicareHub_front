@@ -1,12 +1,13 @@
-import { Grid,Card, Typography, Paper, IconButton, Divider, InputBase } from '@mui/material'
+import { Grid,Card, Typography, CssBaseline, Box, Drawer } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import {SidebarContainer,SidebarTop,SidebarList} from '../components/sidebar/Sidebar'
-import Navbar from '../components/navbar/Navbar'
 import { Sideunit_Test } from '../components/sidebar/Sideunits';
 import LabSearch from '../components/Lab/LabSearch';
 import LabTestList from '../components/Lab/LabTestList';
 import CreateLabTemplate from '../components/Lab/CreateLabTemplate';
 import '../components/CustomScroll.css'
+import '../components/Lab/Lab.css'
+import ResNavBar from '../components/recepcomponents/ResNavBar/ResNabBar';
 
 export default function Lab() {
 
@@ -41,33 +42,72 @@ export default function Lab() {
   return matchingItem ? matchingItem.name : null;
  }
 
+ //mobile responsive part
+ const style={
+  
+ }
+ const drawerW=320
+ const [mobileOpen, setMobileOpen] = React.useState(false)
+ const [isClosing, setIsClosing] = React.useState(false)
+
+ const handleDrawerClose = () => {
+  setIsClosing(true)
+  setMobileOpen(false)
+  }
+
+ const handleDrawerTransitionEnd = () => {
+   setIsClosing(false)
+ }
+
+ const drawer=(
+  <Grid  item spacing={0} style={{paddingTop:'64px',backgroundColor:'#DEF4F2',height:'100%'}}>
+    <SidebarContainer>
+      <SidebarTop>
+         <LabSearch setPage={setPage}></LabSearch>
+      </SidebarTop>
+      <SidebarList>
+      {
+         loadIn.map((elm)=>{
+            return(
+             <>
+              <Sideunit_Test key={elm.id} id={elm.id} name={elm.name} test={elm.test} setSelect={setSelect} selected={elm.id==select?true:''}></Sideunit_Test>
+              <div style={{borderBottom:'1px solid #c2c8d1',height:'1px',width:'90%'}}></div>
+             </>
+            )
+         })
+       }
+      </SidebarList>
+    </SidebarContainer>
+  </Grid>
+ )
 
   return (
    <div>
-    <Navbar></Navbar>
-     <Grid container spacing={0} sx={{paddingTop:'64px',height:'100vh'}}>
-       <Grid item xs={3} style={{height:'100%',backgroundColor:'#DEF4F2'}}>
-         <SidebarContainer>
-           <SidebarTop>
-              <LabSearch setPage={setPage}></LabSearch>
-           </SidebarTop>
-           <SidebarList>
-           {
-              loadIn.map((elm)=>{
-                 return(
-                  <>
-                   <Sideunit_Test key={elm.id} id={elm.id} name={elm.name} test={elm.test} setSelect={setSelect} selected={elm.id==select?true:''}></Sideunit_Test>
-                   <div style={{borderBottom:'1px solid #c2c8d1',height:'1px',width:'90%'}}></div>
-                  </>
-                 )
-              })
-            }
-           </SidebarList>
-         </SidebarContainer>
-       </Grid>
+    <Box sx={{ display: 'flex' ,height:'100%'}}>
+      <CssBaseline />
+      <ResNavBar isClosing={isClosing} setMobileOpen={setMobileOpen} mobileOpen={mobileOpen} />
+      <Box component="nav" sx={{ width: { sm: drawerW },  flexShrink: { sm: 0 } }}
+       aria-label="mailbox folders">
+      </Box>
+    </Box>
 
-       <Grid item xs={9} style={{height:'100%',overflowY:'scroll'}}>
-            {
+    <Grid container spacing={0} sx={{paddingTop:{xs:'48px',sm:'64px'},height:'100vh'}}>
+
+    <Drawer variant="temporary" open={mobileOpen} onTransitionEnd={handleDrawerTransitionEnd} 
+     onClose={handleDrawerClose} ModalProps={{keepMounted: true}}
+    sx={{display: { xs: 'block', sm: 'none' },'& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerW-30 },height:'100%'}} >
+          
+      {drawer}
+        
+    </Drawer>
+    <Drawer variant="permanent" sx={{display: { xs: 'none', sm: 'block' },marginTop:'20px','& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerW }}} open>
+
+      {drawer}
+
+    </Drawer>
+
+    <Grid item sm={9} spacing={0} sx={{height:'100%',marginLeft:{sm:'320px',xs:'0px'},width:{xs:'100vw',sm:'60vw'}}}>
+    {
               page==1?
 
               select ? 
@@ -81,10 +121,11 @@ export default function Lab() {
               :page==2?<LabTestList setPage={setPage}></LabTestList>
               :page==3?<CreateLabTemplate setPage={setPage}></CreateLabTemplate>
               :''
-            }
-       </Grid>
+      }
 
-     </Grid>
+    </Grid>
+
+    </Grid>
    </div>
   )
 }
