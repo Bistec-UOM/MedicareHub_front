@@ -13,16 +13,14 @@ export default function CreateLabTemplate({setPage}) {
         document.body.style.margin = '0';
        },[])
       
+      //Field values--------------------------------------------------------------
       const [testField,setTestField]=useState([])
-    
       const [testName,setTestName]=useState()
       const [fieldName,setFieldName]=useState()
       const [refMin,setRefMin]=useState()
       const [refMax,setRefMax]=useState()
       const [unit,setUnit]=useState()
 
-      const[editMode,setEditMode]=useState(false)
-      const[editData,setEditData]=useState({ind:'',field:'',min:'',max:'',unit:''})
       const addTestField=()=>{
         let data_set={
           'field':fieldName,'min':refMin,'max':refMax,'unit':unit
@@ -34,6 +32,14 @@ export default function CreateLabTemplate({setPage}) {
         setUnit('')
       }
     
+      const deleteTestField=(f)=>{
+        setTestField(testField.filter((x)=>{return x.field!=f}))
+      }
+
+      //Edit fields---------------------------------------------------------------
+      const[editMode,setEditMode]=useState(false)
+      const[editData,setEditData]=useState({ind:'',field:'',min:'',max:'',unit:''})
+
       const setEditModeData=(indx)=>{
         setEditMode(true)
         setEditData({...editData,ind:indx,field:testField[indx].field,min:testField[indx].min,max:testField[indx].max,unit:testField[indx].unit})
@@ -48,22 +54,9 @@ export default function CreateLabTemplate({setPage}) {
           max:editData.max,
           unit:editData.unit
         }
-        testField[editData.ind]=e_data;
+        arr[editData.ind]=e_data;
+        setTestField(arr)
         setEditMode(false)
-      }
-
-      const deleteTestField=(f)=>{
-        setTestField(testField.filter((x)=>{return x.field!=f}))
-      }
-    
-      const createTemplate=()=>{
-        let load={
-          'name':testName,
-          'template':testField
-        }
-        load=JSON.stringify(load)
-        load=JSON.parse(load)
-        
       }
     
       const swapElement = (indexToSwap, newIndex) => {
@@ -82,23 +75,38 @@ export default function CreateLabTemplate({setPage}) {
           setTestField(updatedList);
         }
       }
+
+      //Finalizing
+      const createTemplate=()=>{
+        let load={
+          'name':testName,
+          'template':testField
+        }
+        load=JSON.stringify(load)
+        load=JSON.parse(load)
+        
+      }
+    
     
 
   return (
     <div>
-        <Toolbar sx={{position:'fixed',width:{xs:'100%',sm:'70%'},justifyContent:'space-between',backgroundColor:'yellow'}}>
+        <Toolbar sx={{position:'fixed',width:{xs:'100%',sm:'70%'},justifyContent:'space-between',alignItems:'center',p:'0',pt:{xs:'10px'},backgroundColor:'yellow'}}>
             <ArrowBackIcon sx={{cursor:'pointer'}} onClick={()=>setPage(2)}></ArrowBackIcon>
 
-            <div style={{width:'100%',padding:'5px',display:'flex',alignItems:'center',marginLeft:{xs:'2px',sm:'30px'}}} square>
-              <Typography variant='h6' sx={{fontSize:{xs:'17px'}}}>Lab test name</Typography>
-              <TextField size='small' onChange={(e)=>setTestName(e.target.value)}></TextField>
-            </div>
+            <Box sx={{width:'100%',display:'flex',alignItems:'center',ml:{xs:'2px',sm:'8%'}}} square>
+              <Typography sx={{fontSize:{xs:'17px'}}}>Lab test name</Typography>
+              <TextField size='small' sx={{m:'0px',ml:{xs:'0',sm:'10px'},padding:'2px',width:{xs:'100px'}}} onChange={(e)=>setTestName(e.target.value)}></TextField>
+            </Box>
         
-            <Button variant='contained' size='small' onClick={()=>createTemplate()}>Create</Button>
+            <Button variant='contained' size='small' onClick={()=>createTemplate()} sx={{mr:{xs:'5px',sm:'15px'}}}>Create</Button>
         </Toolbar>
 
         <Box sx={{display:'flex',flexDirection:'column',alignItems:'center', paddingTop:{xs:'80px',sm:'80px'}}}>
-           {/*---------- Printed lab sheet-----------------*/}
+
+           {/*--------------------------------------------------------------------------------------*/}
+           {/*---------- Printed lab sheet----------------------------------------------------------*/}
+           {/*--------------------------------------------------------------------------------------*/}
          
                {
                    testField.map((elm,indx)=>{
@@ -108,7 +116,7 @@ export default function CreateLabTemplate({setPage}) {
                              <Typography sx={{fontSize:'16px',cursor:'pointer'}} onClick={()=>setEditModeData(indx)}>{elm.field}</Typography>
                            </Box>
                            <Box sx={{width:{xs:'10%',sm:'15%'},height:'100%'}}>
-                             <Typography sx={{fontSize:'16px',textAlign:'right'}}>{elm.min}{' -'}</Typography>
+                             <Typography sx={{fontSize:'16px',textAlign:'right'}}>{elm.min}</Typography>
                            </Box>
                            <Box sx={{width:{xs:'10%',sm:'15%'},height:'100%'}}>
                              <Typography sx={{fontSize:'16px',pl:'4px'}}>{elm.max}</Typography>
@@ -132,7 +140,10 @@ export default function CreateLabTemplate({setPage}) {
                })
            }
     
-           {/* ------------------------ Form-------------------------------------------------- */}
+           {/* ----------------------------------------------------------------------------------- */}
+           {/* ------------------------Add Field-------------------------------------------------- */}
+           {/* ----------------------------------------------------------------------------------- */}
+           
            <Paper sx={{display:'flex',alignItems:'center',width:{xs:'90%',sm:'80%'},marginTop:'40px',pb:'5px'}}>
              
              <Box sx={{display:'flex',flexDirection:'column',alignItems:'flex-start',width:'45%',height:'100%',ml:'10px'}}>
@@ -160,13 +171,15 @@ export default function CreateLabTemplate({setPage}) {
            </Paper>
         </Box>
         {
-          /* Form appearing to edit existing fileds------------------------------------------- */
+          /*-------------------------------------------------------------------------------------*/
+          /* -------------------------------Form Edit------------------------------------------- */
+          /*-------------------------------------------------------------------------------------*/
           editMode ? <Box sx={{backgroundColor:'rgba(12,12,12,0.8)',position:'fixed',top:{xs:'48px',sm:'64px'},height:'100vh',width:'100vw',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center'}} onClick={()=>setEditMode(false)}>
           </Box>:''
         }
         {
           editMode?
-          <Paper sx={{display:'flex',alignItems:'center',width:{xs:'90%',sm:'60%'},position:'fixed',Top:'40px',pb:'10px'}}>
+          <Paper sx={{display:'flex',alignItems:'center',width:{xs:'90%',sm:'60%'},position:'fixed',top:'40%',right:{xs:'5%',sm:'10%'},pb:'10px'}}>
              
           <Box sx={{display:'flex',flexDirection:'column',alignItems:'flex-start',width:'45%',height:'100%',ml:'10px'}}>
             <Typography sx={{fontSize:'16px',mr:'5px'}}>Field name</Typography>
