@@ -2,7 +2,7 @@ import React from 'react';
 import { TextField, Button, IconButton } from '@mui/material';
 import {Card, CardContent } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import SearchIcon from '@mui/icons-material/Search';
+
 
 export default function LabRequest(props) {
   const { setShowForm } = props;   
@@ -36,15 +36,8 @@ export default function LabRequest(props) {
           }}
           placeholder="Enter Lab Request"
         />
-         <SearchIcon
-              sx={{
-              position: 'absolute',
-              left:'49%', 
-              top:'52%',            
-              cursor: 'pointer',
-              }}
-            />
-        <Button variant="outlined" sx={{ top: '10px', color: 'Green', borderColor: 'Green', borderWidth: '3px' }}>
+        
+        <Button variant="outlined" sx={{top: '10px', color: 'Green', borderColor: 'Green', borderWidth: '3px' }}>
           OK
         </Button>        
       </form>      
