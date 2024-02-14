@@ -17,6 +17,7 @@ import PatientsRecords from '../components/DoctorComponents/PatientsRecords';
 import DoctorAddDrugs from '../components/DoctorComponents/DoctorAddDrugs';
 import AnaliticalReports from '../components/DoctorComponents/AnaliticalReports';
 import '../components/CustomScroll.css'
+import LabRequest from '../components/DoctorComponents/LabRequest';
 
 export default function Doctor() {
   useEffect(() => {
@@ -40,22 +41,26 @@ export default function Doctor() {
     
   ];
 
- 
   const [openPopup, setOpenPopup] = useState(false);
+  const [openBox, setOpenBox] = useState(false);
+  const [openAreports, setOpenAreports] = useState(false);
+  const [showForm, setShowForm] = useState(false);
+
 
   const handleAddIconClick = () => {
     setOpenPopup(true);
-  };
-
-  const [openBox, setOpenBox] = useState(false);
+  }; 
 
   const handleAddDrugsClick = () => {
     setOpenBox(true);
-  };
-  const [openAreports, setOpenAreports] = useState(false);
+  }; 
 
   const handleViewReporsClick = () => {
     setOpenAreports(true);
+  };  
+
+  const handleAddButtonClick = () => {
+    setShowForm(true);
   };
   return (
     <div>
@@ -71,8 +76,8 @@ export default function Doctor() {
         </Grid>
         
         <Grid item xs={9} style={{ height: '100%', overflowY: 'scroll' }}>
-
-          <div>
+          
+          <div sx={{display:'flex'}}>         
             {load.map((docdata, id) => (
               <Card key={id} sx={{ maxWidth: '100%', height: '100px' }}>
                 <CardContent>
@@ -91,10 +96,10 @@ export default function Doctor() {
                 </CardContent>
                 <PatientsRecords openPopup={openPopup} setOpenPopup={setOpenPopup}/>               
             </Card>
-            ))}
-          </div>      
-
-         <div>
+            
+            ))}            
+          </div>  
+          <div>
             {pres.map((drug,num) => (
             <Grid key={num} container spacing={1} sx={{marginTop:"5px",}}>
               <Grid item xs={8}>
@@ -104,15 +109,13 @@ export default function Doctor() {
                 <Typography gutterBottom variant="p" sx={{ marginLeft: '150px', }}>{drug.hour}</Typography>
               </Item>
               </Grid>
-              <Grid item xs={4}>
-                
+              <Grid item xs={4}>                
               < DoNotDisturbOnIcon sx={{
                 color: 'red', 
                 marginLeft: '5px',
                 fontSize: '30px',
                 float: 'Left' }}
-                 />
-                                
+                 />                                
               </Grid>              
             </Grid>
             ))}
@@ -127,14 +130,16 @@ export default function Doctor() {
            onClick={handleAddDrugsClick}/>
           <DoctorAddDrugs openBox={openBox} setOpenBox={setOpenBox} />  
           </div>
+           
           <ThermostatIcon sx={{ color: '#33cc33',
                                 marginLeft: '74%', 
                                 fontSize: '45px', 
-                                marginTop: '50px' }} 
-                               />
-           
+                                marginTop: '48px' }} 
+                                onClick={handleAddButtonClick}
+                               /> 
+                               {showForm &&<LabRequest setShowForm={setShowForm}/>}                                     
 
-          <div>
+          <div  sx={{display:'flex'}}>
             <Box
               component="form"
               sx={{
@@ -165,5 +170,6 @@ export default function Doctor() {
         </Grid>
       </Grid>
     </div>
+    
   )
 }
