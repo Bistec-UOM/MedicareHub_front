@@ -12,8 +12,8 @@ import axios from 'axios';
 import { useEffect } from "react";
 
 
-function createData(id, name, nic, address,dob, email,gender,fullName) {
-  return { id, name, nic, address,dob, email,gender,fullName };
+function createData(id, name, nic, address,dob, email,gender,fullName,contactNumber) {
+  return { id, name, nic, address,dob, email,gender,fullName,contactNumber };
 }
 
 
@@ -32,7 +32,8 @@ const [update,forceUpdate]=useState(0);
           data.dob,
           data.email,
           data.gender,
-          data.fullName
+          data.fullName,
+          data.contactNumber
         ));
         setData(apiData);
         setRecords(apiData); // Initialize records with the fetched data
@@ -65,9 +66,7 @@ const [update,forceUpdate]=useState(0);
   const handleAddOpen = () => {
     setOpen(true);
   };
-  const handleAddSaveClose = () => {
-      // Create a data object to send in the POST request
-  const postData = {
+  const pData = {
     id:formData.id,
     name: formData.name,
     fullName: formData.fullName,
@@ -78,8 +77,12 @@ const [update,forceUpdate]=useState(0);
     dob: formData.dob,
     gender: formData.gender,
   };
+
+
+  const handleAddSaveClose = () => {
+      // Create a data object to send in the POST request
   
-  axios.post('https://localhost:7205/api/Patient', postData)
+  axios.post('https://localhost:7205/api/Patient', pData)
   .then(response => {
     console.log('Data added successfully:', response.data);
     forceUpdate(prevCount => prevCount + 1); // Trigger a re-render
@@ -105,22 +108,11 @@ const [isDisabled, setIsDisabled] = useState(true);
 
 
   const handleEditSave = () => {
-    // console.log(selectedPaper.name,selectedPaper.id,formData.name)
-    const putData = {
-      id:formData.id,
-      name: formData.name,
-      fullName: formData.fullName,
-      nic: formData.nic,
-      address: formData.address,
-      contactNumber: formData.contactNumber,
-      email: formData.email,
-      dob: formData.dob,
-      gender: formData.gender,
-    };
+
 try {
-  console.log(putData)
+  console.log(pData)
           // Assuming you have an API endpoint for updating a patient
-          axios.put('https://localhost:7205/api/Patient/'+ `${formData.id}` , putData)
+          axios.put('https://localhost:7205/api/Patient/'+ `${formData.id}` , pData)
           .then(response => {
             // Handle success, maybe update local state or dispatch an action
             console.log('Patient updated successfully:', response.data);
