@@ -298,6 +298,7 @@ function ResDay() {
           sx={{
             display: { xs: 'block', sm: 'none' },
             '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth-100 },
+          
           }}
         >
           {drawer}
@@ -308,6 +309,7 @@ function ResDay() {
             display: { xs: 'none', sm: 'block' },
              marginTop:'20px',
             '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+          
            
           }}
           open
@@ -329,10 +331,10 @@ function ResDay() {
        
         
         <Grid sx={{paddingRight:'10px',paddingTop:{
-          md:'54px',
+          sm:'35px',
           xs:'30px'
         },width:'100%', height:'100%'}} item xs={9} sm={11} md={9}>
-        {renderVal ?  <SearchPatientPage renderVal={renderVal} setRenderVal={setRenderVal}/> :<ResDayList  docid={docid} appointlist={appointlist} renderVal={renderVal} setRenderVal={setRenderVal}/>}   
+        {renderVal ?  <SearchPatientPage renderVal={renderVal} setRenderVal={setRenderVal}/> :<ResDayList  docid={docid} setAppointList={setAppointList} appointlist={appointlist} renderVal={renderVal} setRenderVal={setRenderVal}/>}   
           </Grid>
         
       </Box>

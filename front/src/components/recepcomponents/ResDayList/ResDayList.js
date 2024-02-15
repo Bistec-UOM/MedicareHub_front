@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { Grid, Stack, Typography, Button, Container, Box } from "@mui/material";
+import { Grid, Stack, Typography, Button, Container, Box, Hidden } from "@mui/material";
 import Navbar from "../../navbar/Navbar";
 import AppointmentCard from "../AppointmentCard/AppointmentCard";
 import SearchBar from "../Searchbar/Searchbar";
@@ -12,6 +12,8 @@ import { Sideunit_Doctor } from "../../sidebar/Sideunits";
 import AppAddPopup from "../AppAddPopup/AppAddPopup";
 import AllAppDeletePopup from "../AllAppDeletePopup/AllAppDeletePopup";
 import '../../../recep.css'
+import SuccessNotification from "../SnackBar/SuccessNotification";
+
 
 
 
@@ -19,6 +21,22 @@ import '../../../recep.css'
 
 
 const ResDayList = (props) => {
+
+  const [notificationOpen,setNotificationOpen]=useState(false);
+  const [notiMessage,setNotiMessage]=useState("");
+
+  const handleNotification=(msg)=>
+ {
+     //console.log(msg)
+     setNotiMessage(msg);
+    setNotificationOpen(true);
+    console.log(notiMessage);
+   
+    
+ }
+
+
+
   const [dayapp, setDayApp] = useState([]);
  
   const [filteredAppointments, setFilteredAppointments] = useState([]);
@@ -62,7 +80,9 @@ const ResDayList = (props) => {
           backgroundColor:'white',
           width:{sm:'70%',xs:'90%'},
           flexWrap:'wrap-reverse',
-          paddingTop:{xs:'7px',sm:'0'}
+          paddingTop:{xs:'7px',sm:'10px'},
+          zIndex:10
+          
          // paddingTop:10,
           //marginLeft:-10
         }}
@@ -80,6 +100,7 @@ const ResDayList = (props) => {
             marginBottom: 3,
             marginRight: {
                 md:3,
+                sm:5,
                 xs:-3
             },
             width:{xs:'100%',sm:'auto'}
@@ -127,19 +148,21 @@ const ResDayList = (props) => {
       >
         <Box sx={{ padding:{
             sm: "3% 0 0 8%",
-            xs:"5% 0 0 2%"
+            xs:"5% 0 0 2%",
+            
 
-        },marginRight:{xs:'3%',sm:'0%'},marginTop:{xs:'50%',sm:'7%'} }}>
-          <Steper search={search} items={filteredAppointments}></Steper>
+        },display:{xs:'none',sm:'none',md:'flex'},marginRight:{xs:'3%',sm:'0%'},marginTop:{xs:'50%',sm:'20%',md:'7%'} }}>
+          <Steper  search={search} items={filteredAppointments}></Steper>
         </Box>
 
         {
-          <Box sx={{ width: "80%",marginTop:{xs:'40%',sm:'7%'}}}>
+          <Box sx={{ width: "80%",marginTop:{xs:'40%',sm:'20%',md:'7%'}}}>
             {filteredAppointments.filter((item)=>{
               return search.toLowerCase()===''?item:item.name.toLowerCase().includes(search.toLowerCase())
             }).map((item) => (
               <div key={item.nic}>
-                <AppointmentCard 
+                <AppointmentCard  
+                  handleNotification={handleNotification}
                   delcount={delcount}
                   setDelcount={setDelcount}
                   filteredAppointments={filteredAppointments}
@@ -153,6 +176,7 @@ const ResDayList = (props) => {
       </div>
       <AppAddPopup apopen={apopen} setApopen={setApopen} />
       <AllAppDeletePopup
+        handleNotification={handleNotification}
         isDisabled={isDisabled}
         setIsDisabled={setIsDisabled}
         filteredAppointments={filteredAppointments}
@@ -160,6 +184,8 @@ const ResDayList = (props) => {
         dopen={dopen}
         setDopen={setDopen}
       />
+       <SuccessNotification setNotificationOpen={setNotificationOpen} notiMessage={notiMessage} notificationOpen={notificationOpen}/>
+    
     </Box>
   );
 };

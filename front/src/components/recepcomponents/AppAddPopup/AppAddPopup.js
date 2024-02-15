@@ -1,4 +1,5 @@
 import * as React from "react";
+import BasicTimePicker from "../TimePicker/TimePicker";
 
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -23,7 +24,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Grid, Stack } from "@mui/material";
 
 
-export default function AppAddPopup({ appAddPopupCount,setAppAddPopupCount, activeId,patientList,apopen, setApopen ,activeD}) {
+export default function AppAddPopup({handleNotification,docid,appointmentList,setAppointmentList,appAddPopupCount,setAppAddPopupCount, activeId,patientList,apopen, setApopen ,activeD}) {
   // const [enameError,seteNameError]=useState(false)
   // const [eaddressError,seteAddressError]=useState(false)
   //console.log(activeD)
@@ -47,6 +48,11 @@ export default function AppAddPopup({ appAddPopupCount,setAppAddPopupCount, acti
 
   async function handleSubmit(event) {
     event.preventDefault();
+   // setAppointmentList([...appointmentList,{name:activeData.name,city:activeData.city,nic:activeData.nic,phone:activeData.phone,did:docid,time:"9:00 AM"}]);
+    setApopen(false);
+    handleNotification("A new appointment added succesfully!");
+
+
   }
   useEffect(() => {
    // console.log(activeId);
@@ -156,7 +162,7 @@ export default function AppAddPopup({ appAddPopupCount,setAppAddPopupCount, acti
                         display:"flex",
                         alignItems:'center'
                       }}
-                    ><Typography sx={{color:'#3B877A'}} variant="h2">08</Typography></Box>
+                    ><Typography sx={{color:'#3B877A'}} variant="h2">09</Typography></Box>
                   </Grid>
                   <Grid md={2} item sx={{ padding: "0 2%" }}>
                    
@@ -171,7 +177,7 @@ export default function AppAddPopup({ appAddPopupCount,setAppAddPopupCount, acti
                         display:"flex",
                         alignItems:'center'
                       }}
-                    ><Typography sx={{color:'#3B877A'}} variant="h2">57</Typography></Box>
+                    ><Typography sx={{color:'#3B877A'}} variant="h2">30</Typography></Box>
                   </Grid>
                   <Grid md={2} item sx={{ padding: "0 2%" }}>
                   <Box
@@ -193,6 +199,7 @@ export default function AppAddPopup({ appAddPopupCount,setAppAddPopupCount, acti
               </Stack>
             </Box>
             <DialogActions>
+              <BasicTimePicker></BasicTimePicker>
               <Button
                 sx={{
                  // marginBottom:{xs:'2%',sm:0},
