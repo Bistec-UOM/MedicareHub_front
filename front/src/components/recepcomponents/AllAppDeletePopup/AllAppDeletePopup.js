@@ -22,7 +22,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Grid, Stack } from "@mui/material";
 import ErrorIcon from "@mui/icons-material/Error";
 
-export default function AllAppDeletePopup({ dopen, setDopen,filteredAppointments,setFilteredAppointments,isDisabled,setIsDisabled }) {
+export default function AllAppDeletePopup({handleNotification, dopen, setDopen,filteredAppointments,setFilteredAppointments,isDisabled,setIsDisabled }) {
   // const [enameError,seteNameError]=useState(false)
   // const [eaddressError,seteAddressError]=useState(false)
   // const [enicError,seteNicError]=useState(false)
@@ -39,6 +39,7 @@ export default function AllAppDeletePopup({ dopen, setDopen,filteredAppointments
     setFilteredAppointments([]);
     setIsDisabled(true);
     setDopen(false);
+    handleNotification("All appointment deleted succesfully!")
 
   }
 

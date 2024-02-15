@@ -57,5 +57,22 @@
   border-radius: 10px;
 }
 
+#root > div > div > nav > div > div > div > div.MuiGrid-root.MuiGrid-item.MuiGrid-grid-xs-3.MuiGrid-grid-sm-1.MuiGrid-grid-md-3.css-13i4rnv-MuiGrid-root
+{
+  background-color: #DEF4F2;
+}
+
+#root > div > div > nav > div > div
+{
+  background-color: #DEF4F2;
+
+}
+
+body > div.MuiDrawer-root.MuiDrawer-modal.MuiModal-root.css-hjb2rp-MuiModal-root-MuiDrawer-root > div.MuiPaper-root.MuiPaper-elevation.MuiPaper-elevation16.MuiDrawer-paper.MuiDrawer-paperAnchorLeft.css-4t3x6l-MuiPaper-root-MuiDrawer-paper > div > div.MuiGrid-root.MuiGrid-item.MuiGrid-grid-xs-3.MuiGrid-grid-sm-1.MuiGrid-grid-md-3.css-13i4rnv-MuiGrid-root > div > div:nth-child(2) > div > div:nth-child(2)
+{
+  background-color: #DEF4F2 !important; 
+}
+
+
 
   

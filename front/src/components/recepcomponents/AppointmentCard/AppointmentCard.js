@@ -14,7 +14,7 @@ import Steper from "../Setper/Steper";
 import AppAddPopup from "../AppAddPopup/AppAddPopup";
 import AppDeletePopup from "../AppDeletePopup/AppDeletePopup";
 
-const AppointmentCard = ({filteredAppointments,setFilteredAppointments, item ,delcount,setDelcount}) => {
+const AppointmentCard = ({handleNotification,filteredAppointments,setFilteredAppointments, item ,delcount,setDelcount}) => {
   const [daopen,setDaopen]=useState(false);
 
  
@@ -74,6 +74,9 @@ const AppointmentCard = ({filteredAppointments,setFilteredAppointments, item ,de
                 <Typography variant="body2" color="text.secondary">
                   {item.phone}
                 </Typography>
+                <Typography sx={{display:{xs:'flex',sm:'flex',md:'none'}}} variant="body2" color="text.secondary">
+                  {item.time}
+                </Typography>
         
               </Stack>
               </CardContent>
@@ -83,7 +86,7 @@ const AppointmentCard = ({filteredAppointments,setFilteredAppointments, item ,de
           
          
         </Box>
-        <AppDeletePopup delcount={delcount} setDelcount={setDelcount} item={item} daopen={daopen} setDaopen={setDaopen} filteredAppointments={filteredAppointments} setFilteredAppointments={setFilteredAppointments}/>
+        <AppDeletePopup handleNotification={handleNotification} delcount={delcount} setDelcount={setDelcount} item={item} daopen={daopen} setDaopen={setDaopen} filteredAppointments={filteredAppointments} setFilteredAppointments={setFilteredAppointments}/>
       
     </div>
    

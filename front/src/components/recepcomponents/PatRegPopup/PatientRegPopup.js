@@ -6,7 +6,7 @@ import { Box } from "@mui/material";
 
 
 
-const PatientRegpopup = ({ regopen, setRegopen,setPatientList,patientList }) => {
+const PatientRegpopup = ({handleNotification, regopen, setRegopen,setPatientList,patientList }) => {
   const [name, setName] = useState("");
   const [nic, setNic] = useState("");
   const [address, setAddress] = useState("");
@@ -89,7 +89,7 @@ const PatientRegpopup = ({ regopen, setRegopen,setPatientList,patientList }) => 
 
   const handleNameError = (e) =>{
     setName(e.target.value)
-    const nameregex=/^[a-zA-Z]+$/
+    const nameregex=/^[a-zA-Z ]+$/
     let len = e.target.value.length
     if( len > 0){
         if(len <= 5 || !nameregex.test(e.target.value)){
@@ -102,10 +102,12 @@ const PatientRegpopup = ({ regopen, setRegopen,setPatientList,patientList }) => 
           {
             setNameDisplayError(2);
           }
+         
             
         }else{
 
             setNameError(false)
+            setNameDisplayError(3);
         }
        
     }
@@ -184,6 +186,7 @@ const PatientRegpopup = ({ regopen, setRegopen,setPatientList,patientList }) => 
         setPhone("")
 
         console.log("Data saved")
+        handleNotification("A new patient registered succesfully!")
         setRegopen(false)
 
     }

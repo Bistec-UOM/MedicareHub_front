@@ -166,7 +166,7 @@ const Day = () => {
            </SidebarContainer>
           </Grid>
           <Grid  item  md={9}>
-          {renderVal ?  <SearchPatientPage renderVal={renderVal} setRenderVal={setRenderVal}/> :<DayList  docid={docid} appointlist={appointlist} renderVal={renderVal} setRenderVal={setRenderVal}/>}
+          {renderVal ?  <SearchPatientPage renderVal={renderVal} setRenderVal={setRenderVal}/> :<DayList  docid={docid} appointlist={appointlist} setAppointList={setAppointList} renderVal={renderVal} setRenderVal={setRenderVal}/>}
           </Grid>
 
           {/* <Grid  item  md={9}>

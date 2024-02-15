@@ -61,7 +61,7 @@ const PatientDetailCard = ({ appAddPopupCount,setAppAddPopupCount,setActiveId,it
         
                 </Box>
               </Stack>
-              <Stack sx={{justifyContent:'space-between',alignItem:'center',flexDirection:{xs:'column',sm:'row'}}} >
+              <Stack sx={{justifyContent:'space-between',alignItem:'center',flexDirection:{xs:'column',sm:'column',md:'row'}}} >
                 <Typography variant="body2" color="text.secondary">
                   {item.city}
                 </Typography>

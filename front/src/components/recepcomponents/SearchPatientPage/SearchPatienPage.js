@@ -9,6 +9,11 @@ import { SidebarContainer } from "../../sidebar/Sidebar";
 import { SidebarTop, SidebarList } from "../../sidebar/Sidebar";
 import { Sideunit_Doctor } from "../../sidebar/Sideunits";
 
+import SuccessNotification from "../SnackBar/SuccessNotification";
+
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
+
 import AppAddPopup from "../AppAddPopup/AppAddPopup";
 import AllAppDeletePopup from "../AllAppDeletePopup/AllAppDeletePopup";
 import DayAppList from "../DayAppList/DayAppList";
@@ -16,7 +21,13 @@ import PatientDetailCard from "../PatientDetailCard/PatientDetailCard";
 import PatientRegpopup from "../PatRegPopup/PatientRegPopup";
 import '../../../recep.css'
 
+
 const SearchPatientPage = (props) => {
+
+  const [notificationOpen,setNotificationOpen]=useState(false);
+  const [notiMessage,setNotiMessage]=useState("");
+
+
   const [search,setSearch]=useState("")
   const [dayapp, setDayApp] = useState([]);
   const [isDisabled, setIsDisabled] = useState(true);
@@ -28,6 +39,18 @@ const SearchPatientPage = (props) => {
   const [dopen, setDopen] = useState(false);
 
   const [regopen,setRegopen]=useState(false);
+
+
+
+ const handleNotification=(msg)=>
+ {
+     //console.log(msg)
+     setNotiMessage(msg);
+    setNotificationOpen(true);
+    console.log(notiMessage);
+   
+    
+ }
 
   const handleBackToList = () => {
     props.setRenderVal(false);
@@ -122,12 +145,17 @@ const SearchPatientPage = (props) => {
           backgroundColor:'white',
           width:{sm:'70%',xs:'90%'},
           flexWrap:'wrap-reverse',
-          paddingTop:{xs:'7px',sm:'0'}
+          paddingTop:{xs:'7px',sm:'10px'},
+          zIndex:10
+          
+        
+       
+
           // flexDirection:{
           //   xs:'column',
           //   sm:'row'
           // },
-            // bgcolor:'red'
+             //bgcolor:'red'
       
          
         }}
@@ -144,7 +172,8 @@ const SearchPatientPage = (props) => {
             justifyContent: "flex-end",
             marginBottom: 3,
            // bgcolor:'blue',
-            width:{xs:'100%',sm:'auto'}
+            width:{xs:'100%',sm:'auto'},
+            marginRight:{xs:'0',sm:'5%',md:'5%'}
            
           }}
           spacing={2}
@@ -209,9 +238,11 @@ const SearchPatientPage = (props) => {
             ))}
           </Box>
         }
-        <AppAddPopup appAddPopupCount={appAddPopupCount} setAppAddPopupCount={setAppAddPopupCount} patientList={patientList} activeId={activeId} apopen={apopen} setApopen={setApopen} />
-        <PatientRegpopup patientList={patientList} setPatientList={setPatientList} regopen={regopen} setRegopen={setRegopen}></PatientRegpopup>
+        <AppAddPopup handleNotification={handleNotification} doci={props.docid} appointmentList={props.appointlist} setAppointmentList={props.setAppointmentList} appAddPopupCount={appAddPopupCount} setAppAddPopupCount={setAppAddPopupCount} patientList={patientList} activeId={activeId} apopen={apopen} setApopen={setApopen} />
+        <PatientRegpopup handleNotification={handleNotification} patientList={patientList} setPatientList={setPatientList} regopen={regopen} setRegopen={setRegopen}></PatientRegpopup>
       </div>
+      <SuccessNotification setNotificationOpen={setNotificationOpen} notiMessage={notiMessage} notificationOpen={notificationOpen}/>
+    
     </Box>
    
   );

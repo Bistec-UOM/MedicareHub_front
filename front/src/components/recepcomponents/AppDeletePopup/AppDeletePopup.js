@@ -22,7 +22,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Grid, Stack } from "@mui/material";
 import ErrorIcon from "@mui/icons-material/Error";
 
-export default function AppDeletePopup({item,delcount,setDelcount, daopen, setDaopen,filteredAppointments,setFilteredAppointments,isDisabled,setIsDisabled }) {
+export default function AppDeletePopup({handleNotification,item,delcount,setDelcount, daopen, setDaopen,filteredAppointments,setFilteredAppointments,isDisabled,setIsDisabled }) {
   // const [enameError,seteNameError]=useState(false)
   // const [eaddressError,seteAddressError]=useState(false)
   // const [enicError,seteNicError]=useState(false)
@@ -40,6 +40,7 @@ export default function AppDeletePopup({item,delcount,setDelcount, daopen, setDa
     //setIsDisabled(true);
     setDelcount(delcount+1);
     setDaopen(false);
+    handleNotification("Appointment deleted succesfully!");
 
   }
 

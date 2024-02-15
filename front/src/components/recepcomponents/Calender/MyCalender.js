@@ -53,13 +53,14 @@ const MyCalendar = ({doctorId,selectedTab,setSelectedTab}) => {
     return {
       className: isToday ? 'today-day' : className,
       style: isToday ? { backgroundColor: '#3B877A' } : null,
-      dayWrapper: isToday ? <ProgressToday /> : null,
+      dayWrapper: <ProgressToday/>
     };
   };
 
+ 
   const ProgressToday = () => (
     <div style={{ position: 'relative', height: '100%' }}>
-      <LinearProgress variant="determinate" value={50} /> {/* Adjust value based on your progress */}
+      <LinearProgress variant="determinate" value={50} /> {}
     </div>
   );
 
@@ -107,6 +108,7 @@ const MyCalendar = ({doctorId,selectedTab,setSelectedTab}) => {
         }}
         dayLayoutAlgorithm="no-overlap"
         dayPropGetter={dayPropGetter}
+        
       />
     </Box>
   );
