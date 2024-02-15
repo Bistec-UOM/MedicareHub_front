@@ -27,7 +27,7 @@ export default function LabTestList({setPage,settId,Tdata}) {
 
   return (
     <div>
-        <Toolbar sx={{width:{xs:'100%',sm:'70%'},justifyContent:'space-between',position:'fixed',backgroundColor:'yellow',pt:{xs:'10px'}}}>
+        <Toolbar sx={{width:{xs:'100%',sm:'70%'},justifyContent:'space-between',position:'fixed',backgroundColor:'white',pt:{xs:'10px'}}}>
             <ArrowBackIcon sx={{cursor:'pointer'}} onClick={()=>setPage(1)}></ArrowBackIcon>
 
             {/*-------Search bar--------------- */}

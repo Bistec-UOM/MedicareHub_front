@@ -7,15 +7,15 @@ import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrow
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
-export default function Edittemplate({setPage,data}) {
+export default function CreateLabTemplate({setPage,Fdata,tId,Tdata,FloadEdit}) {
 
     useEffect(()=>{
         document.body.style.margin = '0';
        },[])
       
       //Field values--------------------------------------------------------------
-      const [testField,setTestField]=useState(data)
-      const [testName,setTestName]=useState()
+      const [testData,setTestData]=useState({name:'',provider:'',price:0})
+      const [testField,setTestField]=useState(Fdata)
       const [fieldName,setFieldName]=useState()
       const [refMin,setRefMin]=useState()
       const [refMax,setRefMax]=useState()
@@ -78,28 +78,19 @@ export default function Edittemplate({setPage,data}) {
 
       //Finalizing
       const createTemplate=()=>{
-        let load={
-          'name':testName,
-          'template':testField
-        }
-        load=JSON.stringify(load)
-        load=JSON.parse(load)
-        
+        FloadEdit(tId,testField)
+        setPage(2)
       }
-    
     
 
   return (
     <div>
-        <Toolbar sx={{position:'fixed',width:{xs:'100%',sm:'70%'},justifyContent:'space-between',alignItems:'center',p:'0',pt:{xs:'10px'},backgroundColor:'yellow'}}>
+        <Toolbar sx={{position:'fixed',width:{xs:'100%',sm:'70%'},justifyContent:'space-between',alignItems:'center',p:'0',pt:{xs:'10px'},backgroundColor:'white'}}>
             <ArrowBackIcon sx={{cursor:'pointer'}} onClick={()=>setPage(2)}></ArrowBackIcon>
 
-            <Box sx={{width:'100%',display:'flex',alignItems:'center',ml:{xs:'2px',sm:'8%'}}} square>
-              <Typography sx={{fontSize:{xs:'17px'}}}>Lab test name</Typography>
-              <TextField size='small' sx={{m:'0px',ml:{xs:'0',sm:'10px'},padding:'2px',width:{xs:'100px'}}} onChange={(e)=>setTestName(e.target.value)}></TextField>
-            </Box>
+            <Typography sx={{fontSize:{xs:'17px'}}}>{Tdata.name}</Typography>
         
-            <Button variant='contained' size='small' onClick={()=>createTemplate()} sx={{mr:{xs:'5px',sm:'15px'}}}>Create</Button>
+            <Button variant='contained' size='small' onClick={()=>createTemplate()} sx={{mr:{xs:'5px',sm:'15px'}}}>Save</Button>
         </Toolbar>
 
         <Box sx={{display:'flex',flexDirection:'column',alignItems:'center', paddingTop:{xs:'80px',sm:'80px'}}}>
@@ -113,7 +104,7 @@ export default function Edittemplate({setPage,data}) {
                        return(
                        <Box sx={{display:'flex',justifyContent:'space-between',alignItems:'center',width:{xs:'90%',sm:'80%'},height:'30px',borderBottom:'1px solid #0488b0',mt:'5px'}}>
                            <Box sx={{width:{xs:'40%',sm:'45%'},height:'100%'}}>
-                             <Typography sx={{fontSize:'16px',cursor:'pointer'}} onClick={()=>setEditModeData(indx)}>{elm.field}</Typography>
+                             <Typography sx={{fontSize:'16px',cursor:'pointer'}} onDoubleClick={()=>setEditModeData(indx)}>{elm.field}</Typography>
                            </Box>
                            <Box sx={{width:{xs:'10%',sm:'15%'},height:'100%'}}>
                              <Typography sx={{fontSize:'16px',textAlign:'right'}}>{elm.min}</Typography>
@@ -172,7 +163,7 @@ export default function Edittemplate({setPage,data}) {
         </Box>
         {
           /*-------------------------------------------------------------------------------------*/
-          /* -------------------------------Form Edit------------------------------------------- */
+          /* -------------------------------Popup Form to Edit fields--------------------------- */
           /*-------------------------------------------------------------------------------------*/
           editMode ? <Box sx={{backgroundColor:'rgba(12,12,12,0.8)',position:'fixed',top:{xs:'48px',sm:'64px'},height:'100vh',width:'100vw',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center'}} onClick={()=>setEditMode(false)}>
           </Box>:''
