@@ -38,8 +38,9 @@ export default function Doctor() {
 
   const [openPopup, setOpenPopup] = useState(false);
   const [openBox, setOpenBox] = useState(false);
+  const [openpopBox, setOpenpopBox] = useState(false);
   const [openAreports, setOpenAreports] = useState(false);
-  const [showForm, setShowForm] = useState(false);
+  
 
 
   const handleAddIconClick = () => {
@@ -55,7 +56,7 @@ export default function Doctor() {
   };  
 
   const handleAddButtonClick = () => {
-    setShowForm(true);
+    setOpenpopBox(true);
   };
   return (
     <div>
@@ -103,8 +104,7 @@ export default function Doctor() {
             fontSize: '30px', 
             float: 'Left',
             marginTop: '27px' }}
-           onClick={handleAddDrugsClick}/>
-           
+           onClick={handleAddDrugsClick}/>           
           </div>
           
           <ThermostatIcon sx={{ color: '#33cc33',
@@ -112,8 +112,8 @@ export default function Doctor() {
                                 fontSize: '45px', 
                                 marginTop: '48px' }} 
                                 onClick={handleAddButtonClick}
-                               /> 
-                   {showForm &&<LabRequest setShowForm={setShowForm}/>}                                                
+                               />                                                                
+                   <LabRequest openpopBox={openpopBox} setOpenpopBox={setOpenpopBox} />
 
           <div  sx={{display:'flex'}}>
             <Box

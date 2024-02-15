@@ -1,38 +1,44 @@
 import React , { useState } from 'react';
-import { TextField, Button, IconButton } from '@mui/material';
-import {Card, CardContent } from '@mui/material';
+import { TextField, Button, IconButton, Dialog } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import DoNotDisturbOnIcon from '@mui/icons-material/DoNotDisturbOn';
-import { Grid, Typography } from '@mui/material'
+import { Grid, Typography,Card } from '@mui/material';
+import DialogContent from '@mui/material/DialogContent';
+
 
 export default function LabRequest(props) {
-  const { setShowForm } = props;  
-  const [pres, setPres] = useState([]);
+  const { openpopBox, setOpenpopBox } = props;
+   
+  const [rep, setrep] = useState([]);
   const [name, setName] = useState('');
 
   const handleClose = () => {
-    setShowForm(false);
-    setPres([]);
+    setOpenpopBox(false);   
   };
  
+ 
+  //error
   const handleAddLabRequest = () => {
-    const newDrug = { name };
-    setPres([...pres, newDrug]);
+    const newRep = { name };
+    setrep([...rep, newRep]);
     setName('');
+    // setOpen(true)
     
 };
 const handleDeleteLabRequest = (index) => {
-  const updatedPres = [...pres];
-  updatedPres.splice(index, 1);
-  setPres(updatedPres);
+  const updatedrep = [...rep];
+  updatedrep.splice(index, 1);
+  setrep(updatedrep);
 };
 
   return (
     <div>
-    <Card elevation={3} style={{ marginBottom:'50px',width:'45%',height: '70px', marginLeft: '20px',}}>
-    <CardContent>
+       <Dialog open={openpopBox}>
+      <DialogContent dividers 
+                    sx={{ '&::before': { content: "''", position: 'absolute', top: 0, right: 0, width: '35px', height: '100%', background: 'hsl(0, 0%, 90%)', }, }}>
+    
     <IconButton
-              sx={{ position: 'absolute', left:'57%',}}
+              sx={{ position: 'absolute', left:'87%',}}
               onClick={handleClose}
             >
             <CloseIcon />
@@ -43,7 +49,7 @@ const handleDeleteLabRequest = (index) => {
           size="small"
           sx={{
             m: 1,
-            width: '75%',
+            width: '65%',
             '& .MuiOutlinedInput-root': {
               '& fieldset': {
                 borderColor: '#0099cc',
@@ -60,12 +66,14 @@ const handleDeleteLabRequest = (index) => {
           OK
         </Button>        
       </form>      
-      </CardContent>
-      </Card>      
-      <div>
-      {pres.map((drug, index) => (
+     </DialogContent>  
+     
+      </Dialog>
+
+     <div >
+      {rep.map((drug, index) => (
       <Grid key={index} container spacing={1} sx={{ marginTop: "5px",}}>
-                        <Grid item xs={4}>
+                        <Grid item xs={3}>
                             <Card sx={{ backgroundColor: '#48EC4F', color: 'white', fontSize: '19px',height:'32px',marginleft:'90%',}}>
                                 <Typography gutterBottom variant="p" sx={{ marginLeft: '15px',}}>{drug.name}</Typography>
                             </Card>
@@ -75,7 +83,8 @@ const handleDeleteLabRequest = (index) => {
                         </Grid>
                     </Grid>
       ))}
-      </div>      
+      </div>
+        
       </div>
    
   );

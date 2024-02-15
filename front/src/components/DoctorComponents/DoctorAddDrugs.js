@@ -46,7 +46,7 @@ export default function DoctorAddDrugs(props) {
                 <DialogContent dividers 
                     sx={{ '&::before': { content: "''", position: 'absolute', top: 0, right: 0, width: '35px', height: '100%', background: 'hsl(0, 0%, 90%)', }, }}>
 
-                    <CloseIcon onClick={handleClose} style={{ position: 'absolute', right: '8px', top: '8px', cursor: 'pointer', }} />
+                    <CloseIcon onClick={handleClose} style={{ position: 'absolute', right: '8px', top: '8px', cursor: 'pointer' }} />
                     <SearchIcon sx={{ position: 'absolute', left: '41%', top: '43px', cursor: 'pointer' }} />
       
                     <TextField variant="outlined" size="small"
