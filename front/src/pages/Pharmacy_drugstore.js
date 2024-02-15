@@ -40,6 +40,16 @@ const rows = [
 
 export default function Pharmacy_drugstore() {
 
+  const [searchValue, setSearchValue] = useState('');
+
+  const handleInputChange = (event) => {
+    setSearchValue(event.target.value);
+    // You can perform additional filtering logic here if needed
+  };
+  
+
+  
+
   const [open, setOpen] =useState(false);
   const [selectedCard, setSelectedCard] =useState(null);
   const [editOpen, setEditOpen] =useState(false);
@@ -52,6 +62,7 @@ export default function Pharmacy_drugstore() {
     setOpen(false)
   }; 
   const handleConfirm =() => {
+    handleClose();
     setConfirm(false)
   };
   const handleEditClose = () => {
@@ -59,6 +70,7 @@ export default function Pharmacy_drugstore() {
     setEditOpen(false);
   };
   const handleEdit =() => {
+    handleEditClose();
     setConfirm(false)
   };
   const handleEditOpen =(row) => {
@@ -71,8 +83,16 @@ export default function Pharmacy_drugstore() {
     document.body.style.margin = '0';
 
    },[]) 
+   const handleFieldChange = (fieldName, value) => {
+    setSelectedCard(prevState => ({
+      ...prevState,
+      [fieldName]: value
+    }));
+  };
   return (
+    
     <div>
+      
     <Navbar></Navbar>
 
     <Grid container spacing={0} sx={{paddingTop:'64px',height:'100vh'}}>
@@ -102,7 +122,7 @@ export default function Pharmacy_drugstore() {
             marginTop:"10px",
           }}
         >
-          <InputBase type="text" className="form-control" onChange={CardActions} sx={{ ml: 3, flex: 1 }} placeholder="Search " />
+          <InputBase type="text" className="form-control" onChange={handleInputChange} sx={{ ml: 3, flex: 1 }} placeholder="Search " />
          
           <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
             <SearchIcon />
@@ -231,30 +251,35 @@ export default function Pharmacy_drugstore() {
           fullWidth
           margin='dense'
           value={selectedCard ? selectedCard.drug : ""}
+          onChange={(e) => handleFieldChange('drug', e.target.value)}
           />
           <TextField
           label="brand name"
           fullWidth
           margin='dense'
           value={selectedCard ? selectedCard.brand : ""}
+          onChange={(e) => handleFieldChange('brand', e.target.value)}
           />
           <TextField
           label="dossage"
           fullWidth
           margin='dense'
           value={selectedCard ? selectedCard.dosage : ""}
+          onChange={(e) => handleFieldChange('dosage', e.target.value)}
           />
           <TextField
           label="quantity"
           fullWidth
           margin='dense'
           value={selectedCard ? selectedCard.quantity : ""}
+          onChange={(e) => handleFieldChange('quantity', e.target.value)}
           />
           <TextField
           label="amount"
           fullWidth
           margin='dense'
           value={selectedCard ? selectedCard.price : ""}
+          onChange={(e) => handleFieldChange('price', e.target.value)}
           />
 
           

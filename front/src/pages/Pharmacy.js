@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import {SidebarContainer,SidebarTop,SidebarList} from '../components/sidebar/Sidebar'
 import Navbar from '../components/navbar/Navbar'
-import { Grid,Card, Typography, CardContent } from '@mui/material'
+import { Grid,Card, Typography,Button, CardContent } from '@mui/material'
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -12,9 +12,17 @@ import '../components/CustomScroll.css'
 import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
 import Divider from '@mui/material/Divider';
+import PrintIcon from '@mui/icons-material/Print';
 
 
 export default function Pharmacy() {
+ 
+  const dividerStyle = {
+    backgroundColor: '#0099cc',
+    height: '2px',
+    width:'230px', // Adjust height as needed
+    marginLeft: '550px', // Remove default margin
+  };
   
   const data =[{name:"Dhammika Mahendra Wijesingha",age:"36",gender:"male"},
 ];
@@ -114,9 +122,15 @@ const result = 10 * 15
         </Grid> 
       ))}
       </div>
-      <Divider />
-      <Card></Card>
-       <Card>
+      
+      <div style={{ textAlign: 'right' }}>
+      
+      <Divider style={dividerStyle} />
+      <Typography sx={{marginRight:'237px',}}><b>195.00</b></Typography>
+    </div>
+      
+      
+       <Card sx={{marginTop:'2px',}}>
        <Grid container spacing={2}>
        <Grid item xs={8}>
         <Typography>Service charge
@@ -132,10 +146,20 @@ const result = 10 * 15
        
     </Grid>
        </Card>
-
+       <div style={{ textAlign: 'right' }}>
+      <Typography sx={{marginRight:'237px',}}><b>495.00</b></Typography>
+    </div>
+    <div>
+    <PrintIcon sx={{position: 'absolute',
+  width: '60px',
+  height: '50px',
+  left: '766px',
+  top: '603px',
+  }} />
+  <Button variant="contained" sx={{ position: 'absolute',backgroundColor: '#00cca3', left: '960px' }}>Confirm</Button>
+    </div>
+<br></br>
       </Grid>
-
-
     </Grid>
 
   </div>
