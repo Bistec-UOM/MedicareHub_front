@@ -31,12 +31,20 @@ export default function AppAddPopup({handleNotification,docid,appointmentList,se
   // const [enicError,seteNicError]=useState(false)
   const [etimevalueError, seteTimeValueError] = useState(false);
 
+  const [selectedTime,setSelectedTime]=useState(null);
+
   // const [ename,setEName]=useState(item.name)
   // const [eaddress,setEAddress]=useState(item.address)
   // const [enic,setENic]=useState(item.nic)
   const [timevalue, setTimeValue] = useState("");
 
   const [activeData, setActiveData] = useState({});
+
+
+  const handleTimeChange=(time)=>
+  {
+    setSelectedTime(time)
+  }
 
   const handleClickOpen = () => {
     setApopen(true);
@@ -199,20 +207,23 @@ export default function AppAddPopup({handleNotification,docid,appointmentList,se
               </Stack>
             </Box>
             <DialogActions>
-              <BasicTimePicker></BasicTimePicker>
-              <Button
-                sx={{
-                 // marginBottom:{xs:'2%',sm:0},
-                  backgroundColor: "#79CCBE", // Replace with your desired color
-                  "&:hover": {
-                    backgroundColor: "#79CCBE", // Replace with your desired hover color
-                  },
-                }}
-                variant="contained"
-                type="submit"
-              >
-                Confirm
-              </Button>
+            <Stack direction="row" sx={{justifyContent:"space-between" ,alignItems:'baseline',width:'100%'} } >
+      <BasicTimePicker  value={selectedTime} onChange={handleTimeChange}/>
+      <h1>{selectedTime ? selectedTime.toLocaleTimeString() : 'hello'}</h1>  
+      <Button
+        sx={{
+          backgroundColor: "#79CCBE",
+          "&:hover": {
+            backgroundColor: "#79CCBE",
+          },
+         
+        }}
+        variant="contained"
+        type="submit"
+      >
+        Confirm
+      </Button>
+    </Stack>
             </DialogActions>
           </form>
         </Box>

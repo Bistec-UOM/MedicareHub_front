@@ -156,4 +156,3 @@ export default function Stest() {
   );
 }
 
-export default Stest;
