@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import {SidebarContainer,SidebarTop,SidebarList} from '../components/sidebar/Sidebar'
 import Navbar from '../components/navbar/Navbar'
-import { Grid,Card, Typography, CardContent } from '@mui/material'
+import { Grid,Card, Typography,Button, CardContent } from '@mui/material'
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -11,9 +11,18 @@ import TextField from '@mui/material/TextField'
 import '../components/CustomScroll.css'
 import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
+import Divider from '@mui/material/Divider';
+import PrintIcon from '@mui/icons-material/Print';
 
 
 export default function Pharmacy() {
+ 
+  const dividerStyle = {
+    backgroundColor: '#0099cc',
+    height: '2px',
+    width:'230px', // Adjust height as needed
+    marginLeft: '550px', // Remove default margin
+  };
   
   const data =[{name:"Dhammika Mahendra Wijesingha",age:"36",gender:"male"},
 ];
@@ -27,8 +36,8 @@ const handleChange = (event,no) => {
     setSelectedQuantities(newQuantities);
 };
 
-const medicine =[{name:"Acetaminophe",quantity:"10",hour:"BID",value:"10",unit_price:"15.00",fullprice:"150"},
-             {name:"Sumatripan",quantity:"20",hour:"BID",value:"10",unit_price:"04.50",fullprice:"45"},
+const medicine =[{name:"Acetaminophe",quantity:"10",hour:"BID",value:"10",unit_price:"15.00",fullprice:"150.00"},
+             {name:"Sumatripan",quantity:"20",hour:"BID",value:"10",unit_price:"04.50",fullprice:"45.00"},
              {name:"Rizatripan",quantity:"0.5",hour:"4H",value:"",unit_price:"",fullprice:""},
 ];
 
@@ -113,23 +122,44 @@ const result = 10 * 15
         </Grid> 
       ))}
       </div>
-      <Card></Card>
-       <Card>
-        
+      
+      <div style={{ textAlign: 'right' }}>
+      
+      <Divider style={dividerStyle} />
+      <Typography sx={{marginRight:'237px',}}><b>195.00</b></Typography>
+    </div>
+      
+      
+       <Card sx={{marginTop:'2px',}}>
+       <Grid container spacing={2}>
+       <Grid item xs={8}>
         <Typography>Service charge
         <IconButton aria-label="edit" color='secondary'
         sx={{color:'#CFDB1A'}}>
       <EditIcon />
     </IconButton>
         </Typography>
-      
-       
-    
-       </Card>
-
       </Grid>
-
-
+      <Grid item xs={4}>
+        <Typography sx={{ marginLeft: '23px ', }}><b>300.00</b></Typography>
+      </Grid>
+       
+    </Grid>
+       </Card>
+       <div style={{ textAlign: 'right' }}>
+      <Typography sx={{marginRight:'237px',}}><b>495.00</b></Typography>
+    </div>
+    <div>
+    <PrintIcon sx={{position: 'absolute',
+  width: '60px',
+  height: '50px',
+  left: '766px',
+  top: '603px',
+  }} />
+  <Button variant="contained" sx={{ position: 'absolute',backgroundColor: '#00cca3', left: '960px' }}>Confirm</Button>
+    </div>
+<br></br>
+      </Grid>
     </Grid>
 
   </div>

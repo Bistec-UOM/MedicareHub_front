@@ -1,78 +1,190 @@
 import {Paper,Typography,Button,Dialog,DialogTitle,DialogContent,DialogActions,TextField,FormControl,InputLabel,Select,MenuItem} from "@mui/material";
 import * as React from "react";
 import CloseIcon from "@mui/icons-material/Close";
-import { useState } from "react";
+import { useState,useEffect } from "react";
+import axios from "axios";
 
 
 
-function createData(Id,fullName,name,NIC,address,contactNumber,degree,role,emailAddress,age,gender
-  ) {
-    return {Id,fullName,name,NIC,address,contactNumber,degree,role,emailAddress,age,gender
-    };
+function createData(id,fullName,name,nic,address,contactNumber,qualifications,role,email,age,gender) {
+    return {id,fullName,name,nic,address,contactNumber,qualifications,role,email,age,gender};
   }
 
-const row0 = [
-  createData(1, "wimal kostha", "wimal", '200666503237', '134/h hansamaligama,premadasadeniya', '0756321737','mbbs','Family physician', 'easter@gmail.com', '30', "female"),
-  createData(2, "kumara sangakkara", "kumara", '200154996552', '109/o malwatte handiya,migamuwa', '0741572003','mbbs','Endocrinologist', 'asanka@gmail.com', '30', "male"),
-  createData(3,"pathirana saman","pathirana",'201052946305','234/v nonagumgama,raddoluwa','0791031573','mbbs','Neurologist','tharaka@gmail.com','30',"female"),
-  createData(4, "lavu kanush", "kanush",'200933401635', '546/g sandangana gama,sandalankaawa', '0783985174','mbbs','Hospitalist','sonic@gmail.com', '30', "male")
-];
 
-const row1 = [
-  createData(2, "wimal kostha", "wimal", '200666503237', '134/h hansamaligama,premadasadeniya', '0756321737','hr','........', 'easter@gmail.com', '30', "female"),
-  createData(3, "kumara sangakkara", "kumara", '200154996552', '109/o malwatte handiya,migamuwa', '0741572003','hr','....', 'asanka@gmail.com', '30', "male"),
-  createData(4,"pathirana saman","pathirana",'201052946305','234/v nonagumgama,raddoluwa','0791031573','hr','....','tharaka@gmail.com','30',"female"),
-  createData(5, "lavu kanush", "kanush",'200933401635', '546/g sandangana gama,sandalankaawa', '0783985174','hr','....','sonic@gmail.com', '30', "male")
-];
-const row2 = [
-  createData(2, "wimal kostha", "wimal", '200666503237', '134/h hansamaligama,premadasadeniya', '0756321737','mlt','........', 'easter@gmail.com', '30', "female"),
-  createData(3, "kumara sangakkara", "kumara", '200154996552', '109/o malwatte handiya,migamuwa', '0741572003','mlt','....', 'asanka@gmail.com', '30', "male"),
-  createData(4,"pathirana saman","pathirana",'201052946305','234/v nonagumgama,raddoluwa','0791031573','mlt','....','tharaka@gmail.com','30',"female"),
-  createData(5, "lavu kanush", "kanush",'200933401635', '546/g sandangana gama,sandalankaawa', '0783985174','mlt','....','sonic@gmail.com', '30', "male")
-];
+// const row2 = [
+//   createData(1, "wimal kostha", "wimal", '200666503237', '134/h hansamaligama,premadasadeniya', '0756321737','mlt','lab', 'easter@gmail.com', '30', "female"),
+//   createData(2, "kumara sangakkara", "kumara", '200154996552', '109/o malwatte handiya,migamuwa', '0741572003','mlt','lab', 'asanka@gmail.com', '30', "male"),
+//   createData(3,"pathirana saman","pathirana",'201052946305','234/v nonagumgama,raddoluwa','0791031573','mlt','lab','tharaka@gmail.com','30',"female"),
+//   createData(4, "lavu kanush", "kanush",'200933401635', '546/g sandangana gama,sandalankaawa', '0783985174','mlt','lab','sonic@gmail.com', '30', "male"),
+//   createData(1, "wimal kostha", "wimal", '200666503237', '134/h hansamaligama,premadasadeniya', '0756321737','mbbs','doctor', 'easter@gmail.com', '30', "female"),
+//   createData(2, "kumara sangakkara", "kumara", '200154996552', '109/o malwatte handiya,migamuwa', '0741572003','mbbs','doctor', 'asanka@gmail.com', '30', "male"),
+//   createData(3,"pathirana saman","pathirana",'201052946305','234/v nonagumgama,raddoluwa','0791031573','mbbs','doctor','tharaka@gmail.com','30',"female"),
+//   createData(4, "lavu kanush", "kanush",'200933401635', '546/g sandangana gama,sandalankaawa', '0783985174','mbbs','doctor','sonic@gmail.com', '30', "male"),
+//   createData(1, "wimal kostha", "wimal", '200666503237', '134/h hansamaligama,premadasadeniya', '0756321737','hr','recep', 'easter@gmail.com', '30', "female"),
+//   createData(2, "kumara sangakkara", "kumara", '200154996552', '109/o malwatte handiya,migamuwa', '0741572003','hr','recep', 'asanka@gmail.com', '30', "male"),
+//   createData(3,"pathirana saman","pathirana",'201052946305','234/v nonagumgama,raddoluwa','0791031573','hr','recep','tharaka@gmail.com','30',"female"),
+//   createData(4, "lavu kanush", "kanush",'200933401635', '546/g sandangana gama,sandalankaawa', '0783985174','hr','recep','sonic@gmail.com', '30', "male")
+// ];
 
 
 
 
 export default function Staff() {
+
+
+// calling for edit
+const [isDisabled, setIsDisabled] = useState(true);
+
+  const [formData, setFormData] = useState({
+    id:0,
+    name: "",
+    fullName: "",
+    nic: "",
+    address: "",
+    contactNumber: "",
+    email: "",
+    age: "",
+    gender: "",
+    role:"",
+    qualifications:""
+  });
+  const [update,forceUpdate]=useState(0);
+  useEffect(() => {
+    axios.get(`https://localhost:7205/api/User`)
+    .then(res => {
+      const apiData = res.data.map((data,index) => createData(
+        index+1,
+        data.fullName,
+        data.name,
+        data.nic,
+        data.address,
+        data.contactNumber,
+        data.qualifications,
+        data.role,
+        data.email,
+        data.age,
+        data.gender,
+        data.role,
+        // data.age
+      ));
+      setStaffData(apiData);
+    })
+    .catch(err=>{
+      console.log(err);
+    });
+    
+  }, [update]);
+  
+
+  const [row2, setStaffData] = useState([]);
+
+
+
+  const pData = {
+    id:formData.id,
+    name: formData.name,
+    fullName: formData.fullName,
+    nic: formData.nic,
+    address: formData.address,
+    contactNumber: formData.contactNumber,
+    email: formData.email,
+    age: formData.age,
+    gender: formData.gender,
+    qualifications:formData.qualifications,
+    role:formData.role
+  };
+
+  const handleAddSaveClose = () =>{
+    
+    axios.post(`https://localhost:7205/api/User`,pData)
+    .then(res => {
+      console.log('success')
+          forceUpdate(prevCount => prevCount + 1); // Trigger a re-render
+
+    }).catch(er => {
+      console.error(er);
+    });
+    setOpen(false);
+  };
+
+  const handleAddClickOpen = (buttonNumber) => {
+    setType(`Add ${buttonNumber}`);
+    setOpen(true);
+  };
+
+
   const [open, setOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
   const [selectedPaper, setSelectedPaper] = useState(null);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  const [Type, setType] = useState('');
 
   const handleClose = () => {
     setOpen(false);
   };
 
+
+
+
+
+
+  const handleEditClick = () =>{
+    setIsDisabled(false)
+  }
   const handleEditSave = () => {
     // Handle saving edited data here
     console.log("Edited data:", selectedPaper);
+
+    
+try {
+  console.log(pData,"fid",formData.id);
+
+          // Assuming you have an API endpoint for updating a patient
+          axios.put(`https://localhost:7205/api/User/`+`${formData.id}` , pData)
+          .then(response => {
+            // Handle success, maybe update local state or dispatch an action
+            console.log('Patient updated successfully:', response.data);
+            handleEditClose();
+            setIsDisabled(true);
+            forceUpdate(prevCount => prevCount + 1); // Trigger a re-render
+
+                // Assume the Axios request is successful, then set showPatient to true
+    // Close the edit dialog
+    setEditOpen(false);
+          })
+} catch (error) {
+  // Handle error, show an error message or dispatch an error action
+  console.error('Error updating patient:', error.response.data);
+  
+}
     setEditOpen(false);
   };
 
   const handleEditClickOpen = (row) => {
-    setSelectedPaper(row);
+    // setType(`Edit ${buttonNumber}`);
+    setFormData({...formData,id: row.id, name: row.name,role:row.role, fullName: row.fullName, nic: row.nic,address: row.address,contactNumber:row.contactNumber,email:row.email,age:row.age,gender:row.gender,qualifications:row.qualifications});
+
+    // setSelectedPaper(row);
     setEditOpen(true);
+    setIsDisabled(true);
   };
 
   const handleEditClose = () => {
     setSelectedPaper(null);
     setEditOpen(false);
+    // setIsDisabled(en);
   };
 
   const handleInputChange = (field, value) => {
-    setSelectedPaper({
-      ...selectedPaper,
+    console.log('update values');
+    setFormData({
+      ...formData,
       [field]: value,
     });
   };
-const handleChange = (e) => {
-  console.log(e.target.value);
-};
 
+  const handleRemove =()=>{
+    
+  }
 
 
 
@@ -97,7 +209,7 @@ const handleChange = (e) => {
           variant="h5"
           sx={{ paddingTop: 0.75, paddingBottom: 0.75, fontWeight: "bolder" }}
         >
-          Doctors
+          Doctor
         </Typography>
         <Button
           variant="contained"
@@ -108,7 +220,7 @@ const handleChange = (e) => {
             paddingRight: "1rem",
             fontWeight: "bolder",
           }}
-          onClick={handleClickOpen}
+          onClick={() =>handleAddClickOpen('Doctor')}
         >
           Add
         </Button>
@@ -124,26 +236,26 @@ const handleChange = (e) => {
             justifyContent: "space-between",
           }}
         >
-          Add Doctor
+         <Typography style={{textAlign:"center"}}>{Type}</Typography>
           <CloseIcon onClick={handleClose} sx={{cursor:'pointer'}}/>
         </DialogTitle>
         <DialogContent>
           {/* Add form fields or other content here */}
-          <TextField label="Name" fullWidth sx={{ mb: 1, mt: 3 }} />
-          <TextField label="Usual Name" sx={{ mb: 1 }} />
-          <TextField label="NIC" sx={{ ml: 4, mb: 1 }} />
-          <TextField label="Address" fullWidth sx={{ mb: 1 }} />
-          <TextField label="Contact Number" sx={{ mb: 1 }} />
-          <TextField label="Degree" sx={{ ml: 4, mb: 1 }} />
-          <TextField label="Specialty" fullWidth sx={{ mb: 1 }} />
-          <TextField label="E-mail" fullWidth sx={{ mb: 1 }} />
-          <TextField label="Age" sx={{ mb: 1 }} />
-          <TextField label="Gender" sx={{ ml: 4, mb: 1 }} />
+          <TextField label="Name" fullWidth sx={{ mb: 1, mt: 3 }} onChange={(e) => handleInputChange("name", e.target.value)}/>
+          <TextField label="Full Name" sx={{ mb: 1 }} onChange={(e) => handleInputChange("fullName", e.target.value)}/>
+          <TextField label="NIC" sx={{ ml: 4, mb: 1 }} onChange={(e) => handleInputChange("NIC", e.target.value)}/>
+          <TextField label="Address" fullWidth sx={{ mb: 1 }} onChange={(e) => handleInputChange("address", e.target.value)}/>
+          <TextField label="Contact Number" sx={{ mb: 1 }} onChange={(e) => handleInputChange("contactNumber", e.target.value)}/>
+          <TextField label="qualifications" sx={{ ml: 4, mb: 1 }} onChange={(e) => handleInputChange("qualifications", e.target.value)}/>
+          <TextField label="Role" fullWidth sx={{ mb: 1 }} onChange={(e) => handleInputChange("role", e.target.value)}/>
+          <TextField label="E-mail" fullWidth sx={{ mb: 1 }} onChange={(e) => handleInputChange("email", e.target.value)}/>
+          <TextField label="Date of Birth" sx={{ mb: 1 }} onChange={(e) => handleInputChange("age", e.target.value)}/>
+          <TextField label="Gender" sx={{ ml: 4, mb: 1 }} onChange={(e) => handleInputChange("gender", e.target.value)}/>
           {/* Add more fields as needed */}
         </DialogContent>
         <DialogActions>
           <Button
-            onClick={handleEditSave}
+            onClick={handleAddSaveClose}
             variant="contained"
             sx={{ backgroundColor: "rgb(121, 204, 190)", m: 2 }}
           >
@@ -161,96 +273,111 @@ const handleChange = (e) => {
             justifyContent: "space-between",
           }}
         >
-          Edit Doctor
+          Edit User
           <CloseIcon onClick={handleEditClose} sx={{cursor:'pointer'}} />
         </DialogTitle>
         <DialogContent>
           <TextField
             label="Full Name"
             fullWidth
-            margin="dense"
-            value={selectedPaper ? selectedPaper.fullName : ""}
-            onChange={(e) => handleInputChange("fullName", e.target.value)}
-          />
+            margin="normal"
+            value={formData.fullName}
+            disabled={isDisabled}
+            onChange={(e) =>setFormData({...formData,fullName:e.target.value})}
+            />
           <TextField
             label="Usual Name"
             margin="normal"
-            value={selectedPaper ? selectedPaper.name : ""}
-            onChange={(e) => handleInputChange("name", e.target.value)}
+            value={formData.name}
+            onChange={(e) => setFormData({...formData,name:e.target.value})}
+            disabled={isDisabled}
           />
           <TextField
             label="NIC"
             margin="normal"
             sx={{ ml: 4 }}
-            value={selectedPaper ? selectedPaper.NIC : ""}
-            onChange={(e) => handleInputChange("NIC", e.target.value)}
+            value={formData.nic}
+            disabled={isDisabled}
+            onChange={(e) => setFormData({...formData,nic:e.target.value})}
           />
           <TextField
             label="Address"
             fullWidth
             margin="normal"
-            value={selectedPaper ? selectedPaper.address : ""}
-            onChange={(e) => handleInputChange("address", e.target.value)}
+            value={formData.address}
+            onChange={(e) => setFormData({...formData,address:e.target.value})}
+            disabled={isDisabled}
           />
           <TextField
             label="Contact Number"
             margin="normal"
-            value={selectedPaper ? selectedPaper.contactNumber : ""}
-            onChange={(e) => handleInputChange("contactNumber", e.target.value)}
+            value={formData.contactNumber}
+            onChange={(e) => setFormData({...formData,contactNumber:e.target.value})}
+            disabled={isDisabled}
           />
           <TextField
-            label="Degree"
+            label="qualifications"
             margin="normal"
             sx={{ ml: 4 }}
-            value={selectedPaper ? selectedPaper.degree : ""}
-            onChange={(e) => handleInputChange("degree", e.target.value)}
+            value={formData.qualifications}
+            onChange={(e) => setFormData({...formData,qualifications:e.target.value})}
+            disabled={isDisabled}
           />
           <TextField
-            label="Speciality"
+            label="Role"
             margin="normal"
-            value={selectedPaper ? selectedPaper.role : ""}
-            onChange={(e) => handleInputChange("role", e.target.value)}
+            value={formData.role}
+            onChange={(e) => setFormData({...formData,role:e.target.value})}
+            disabled={isDisabled}
           />
           <TextField
             label="Email Address"
             fullWidth
             margin="normal"
-            value={selectedPaper ? selectedPaper.emailAddress : ""}
-            onChange={(e) => handleInputChange("emailAddress", e.target.value)}
+            value={formData.email}
+            onChange={(e) => setFormData({...formData,email:e.target.value})}
+            disabled={isDisabled}
           />
           <TextField
-            label="Age"
+            label="Date of birth"
             margin="normal"
-            value={selectedPaper ? selectedPaper.age : ""}
-            onChange={(e) => handleInputChange("age", e.target.value)}
+            value={formData.age}
+            onChange={(e) => setFormData({...formData,age:e.target.value})}
+            disabled={isDisabled}
           />
-          <FormControl margin="normal" sx={{ width: "15vh",ml:4 }}>
-            <InputLabel id="gender-label">Gender</InputLabel>
-            <Select
-              labelId="gender-label"
-              id="gender"
-              value={selectedPaper ? selectedPaper.gender : ""}
-              onChange={(e) => handleInputChange("gender", e.target.value)}
-              label="Gender"
-            >
-              <MenuItem value="Male">Male</MenuItem>
-              <MenuItem value="Female">Female</MenuItem>
-            </Select>
-          </FormControl>
+          <TextField
+            label="gender"
+            margin="normal"
+            value={formData.gender}
+            onChange={(e) => setFormData({...formData,gender:e.target.value})}
+            disabled={isDisabled}
+          />
+         
         </DialogContent>
         <DialogActions>
+        {!isDisabled && (
+        <Button
+          onClick={handleRemove}
+          variant="outlined"
+          color="error"
+          sx={{ m: 2 }}
+        >
+          Remove
+        </Button>
+      )}
           <Button
-            onClick={handleEditSave}
+            onClick={isDisabled? handleEditClick : handleEditSave}
             variant="contained"
             sx={{ backgroundColor: "rgb(121, 204, 190)", m: 2 }}
           >
-            Save
+            {isDisabled ? 'Edit' : 'Save'}
           </Button>
+
         </DialogActions>
       </Dialog>
 
       {/* Dr Data Paper */}
-      {row0.map((row)=>
+      {row2.filter(row=>row.role === 'doctor').map((row)=>
       <Paper
       key={row.Id}
       
@@ -271,7 +398,7 @@ const handleChange = (e) => {
           variant="h10"
           sx={{ fontSize: 10, color: "rgb(186, 177, 177)" }}
         >
-          {row.degree}
+          {row.qualifications}
         </Typography>
         <Typography
           variant="h10"
@@ -316,13 +443,13 @@ const handleChange = (e) => {
             paddingRight: "1rem",
             fontWeight: "bolder",
           }}
-          onClick={handleClickOpen}
+          onClick={() =>handleAddClickOpen('Receptionist')}
         >
           Add
         </Button>
       </Paper>
       {/* recep Paper */}
-      {row1.map((row)=>
+      {row2.filter(row=>row.role === 'recep').map((row)=>
       <Paper
       key={row.Id}
       
@@ -343,7 +470,7 @@ const handleChange = (e) => {
           variant="h10"
           sx={{ fontSize: 10, color: "rgb(186, 177, 177)" }}
         >
-          {row.degree}
+          {row.qualifications}
         </Typography>
         <Typography
           variant="h10"
@@ -389,13 +516,13 @@ const handleChange = (e) => {
       paddingRight: "1rem",
       fontWeight: "bolder",
     }}
-    onClick={handleClickOpen}
+    onClick={() =>handleAddClickOpen("Lab Asistant")}
   >
     Add
   </Button>
 </Paper>
 {/* recep Paper */}
-{row2.map((row)=>
+{row2.filter(row=>row.role === 'lab').map((row)=>
 <Paper
 key={row.Id}
 
@@ -416,7 +543,7 @@ key={row.Id}
     variant="h10"
     sx={{ fontSize: 10, color: "rgb(186, 177, 177)" }}
   >
-    {row.degree}
+    {row.qualifications}
   </Typography>
   <Typography
     variant="h10"

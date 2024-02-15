@@ -12,11 +12,11 @@ import AudioFileIcon from '@mui/icons-material/AudioFile';
 import UpdateIcon from '@mui/icons-material/Update';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import ThermostatIcon from '@mui/icons-material/Thermostat';
-import DoNotDisturbOnIcon from '@mui/icons-material/DoNotDisturbOn';
 import PatientsRecords from '../components/DoctorComponents/PatientsRecords';
 import DoctorAddDrugs from '../components/DoctorComponents/DoctorAddDrugs';
 import AnaliticalReports from '../components/DoctorComponents/AnaliticalReports';
 import '../components/CustomScroll.css'
+import LabRequest from '../components/DoctorComponents/LabRequest';
 
 export default function Doctor() {
   useEffect(() => {
@@ -34,28 +34,28 @@ export default function Doctor() {
   const load = [
     { name: 'Nethmi Eranga Wijeweera', age: '30', gender: 'Female' },
   ];
-  const pres = [
-    { name: 'Acetaminophen', quantity: '30', hour: 'BID' },
-    { name: 'Acetaminophen', quantity: '30', hour: 'BID' },
-    
-  ];
+  
 
- 
   const [openPopup, setOpenPopup] = useState(false);
+  const [openBox, setOpenBox] = useState(false);
+  const [openAreports, setOpenAreports] = useState(false);
+  const [showForm, setShowForm] = useState(false);
+
 
   const handleAddIconClick = () => {
     setOpenPopup(true);
-  };
-
-  const [openBox, setOpenBox] = useState(false);
+  }; 
 
   const handleAddDrugsClick = () => {
     setOpenBox(true);
-  };
-  const [openAreports, setOpenAreports] = useState(false);
+  }; 
 
   const handleViewReporsClick = () => {
     setOpenAreports(true);
+  };  
+
+  const handleAddButtonClick = () => {
+    setShowForm(true);
   };
   return (
     <div>
@@ -71,8 +71,8 @@ export default function Doctor() {
         </Grid>
         
         <Grid item xs={9} style={{ height: '100%', overflowY: 'scroll' }}>
-
-          <div>
+          
+          <div sx={{display:'flex'}}>         
             {load.map((docdata, id) => (
               <Card key={id} sx={{ maxWidth: '100%', height: '100px' }}>
                 <CardContent>
@@ -91,33 +91,12 @@ export default function Doctor() {
                 </CardContent>
                 <PatientsRecords openPopup={openPopup} setOpenPopup={setOpenPopup}/>               
             </Card>
-            ))}
-          </div>      
-
+            
+            ))}            
+          </div>  
+        
          <div>
-            {pres.map((drug,num) => (
-            <Grid key={num} container spacing={1} sx={{marginTop:"5px",}}>
-              <Grid item xs={8}>
-              <Item sx={{ backgroundColor: '#0099cc', color: 'white', fontSize: '18px',}}>
-                <Typography gutterBottom variant="p" sx={{ marginLeft: '10px', }}>{drug.name}</Typography>
-                <Typography gutterBottom variant="p" sx={{ marginLeft: '100px', }}>{drug.quantity} mg</Typography>
-                <Typography gutterBottom variant="p" sx={{ marginLeft: '150px', }}>{drug.hour}</Typography>
-              </Item>
-              </Grid>
-              <Grid item xs={4}>
-                
-              < DoNotDisturbOnIcon sx={{
-                color: 'red', 
-                marginLeft: '5px',
-                fontSize: '30px',
-                float: 'Left' }}
-                 />
-                                
-              </Grid>              
-            </Grid>
-            ))}
-         </div>
-         <div>
+         <DoctorAddDrugs openBox={openBox} setOpenBox={setOpenBox} />
           < AddCircleIcon sx={{ 
             color: '#00cc66', 
             marginLeft: '10%',
@@ -125,16 +104,18 @@ export default function Doctor() {
             float: 'Left',
             marginTop: '27px' }}
            onClick={handleAddDrugsClick}/>
-          <DoctorAddDrugs openBox={openBox} setOpenBox={setOpenBox} />  
+           
           </div>
+          
           <ThermostatIcon sx={{ color: '#33cc33',
                                 marginLeft: '74%', 
                                 fontSize: '45px', 
-                                marginTop: '50px' }} 
-                               />
-           
+                                marginTop: '48px' }} 
+                                onClick={handleAddButtonClick}
+                               /> 
+                   {showForm &&<LabRequest setShowForm={setShowForm}/>}                                                
 
-          <div>
+          <div  sx={{display:'flex'}}>
             <Box
               component="form"
               sx={{
@@ -165,5 +146,6 @@ export default function Doctor() {
         </Grid>
       </Grid>
     </div>
+    
   )
 }

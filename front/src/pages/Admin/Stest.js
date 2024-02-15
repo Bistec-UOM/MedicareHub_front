@@ -78,8 +78,6 @@ export default function Stest() {
           ))}
         </List>
       </Box>
-     
- 
     </div>
   );
 
@@ -157,3 +155,5 @@ export default function Stest() {
     </Box>
   );
 }
+
+export default Stest;
