@@ -2,6 +2,7 @@ import React, {useState } from 'react'
 import Typography from '@mui/material/Typography'
 import { Chip , Box} from '@mui/material'
 import CheckIcon from '@mui/icons-material/Check';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import Divider from '@mui/material/Divider';
 
 function Sideunit_Doctor({ name, title ,selectedTab,index}) {
@@ -44,11 +45,11 @@ function Sideunit_Doctor({ name, title ,selectedTab,index}) {
 
 function Sideunit_Patient({id,name,status,time,selected,setSelect}) {
     return (
-      <div style={{width:'90%',margin:'3px',cursor:'pointer',backgroundColor: selected==true?'#79CCBE':'',padding:'5px',paddingTop:'0',color: selected==true?'#FFFFFF':'',borderRadius:'5px'}} onClick={()=>setSelect(id)}>
+      <div style={{width:'90%',margin:'3px',cursor:'pointer',backgroundColor: selected==true?'#79CCBE':'#ffffff',padding:'5px',paddingTop:'0',color: selected==true?'#FFFFFF':'',borderRadius:'8px',boxShadow:'0 0 4px rgba(0, 0, 0, .2)'}} onClick={()=>setSelect(id)}>
           <Typography sx={{fontSize:'17px'}}>{name}</Typography>
           <div style={{display:'flex',alignContent:'space-between'}}>
                   <div style={{display:'inline',border:selected==true?'1px solid white':'1px solid grey',paddingLeft:'4px',paddingRight:'4px',borderRadius:'5px',marginLeft:'4px',color: selected==true?'white':'grey'}}>{time}</div>
-                  {status=='done'||status=='pending'?<CheckIcon color={status=='done'?'success':'warning'}></CheckIcon>:''}
+                  {status=='done'?<CheckIcon color={'success'}></CheckIcon>:status=='pending'?<MoreHorizIcon color={'warning'}></MoreHorizIcon>:''}
           </div>
       </div>
     )
@@ -56,7 +57,7 @@ function Sideunit_Patient({id,name,status,time,selected,setSelect}) {
 
 function Sideunit_Test({id,name,test,setSelectedT,selectedT}) {
     return (
-      <div style={{width:'90%',margin:'3px',cursor:'pointer',backgroundColor: selectedT==id?'#79CCBE':'#ffffff',padding:'5px',paddingTop:'0',color: selectedT==id?'#FFFFFF':'',borderRadius:'8px',boxShadow:'0 0 4px rgba(0, 0, 0, .2)'}} onClick={()=>setSelectedT(id)}>
+      <div style={{width:'90%',margin:'5px',cursor:'pointer',backgroundColor: selectedT==id?'#4A7C73':'#ffffff',padding:'5px',paddingTop:'0',color: selectedT==id?'#FFFFFF':'',borderRadius:'8px',boxShadow:'0 0 1.5px rgb(82, 90, 89) '}} onClick={()=>setSelectedT(id)}>
           <Typography sx={{fontSize:'17px'}}>{name}</Typography>
           {
             test.map((el)=>{
@@ -71,7 +72,7 @@ function Sideunit_Test({id,name,test,setSelectedT,selectedT}) {
 
 function Sideunit_Bill({id,name,time,setSelect,selected}) {
   return (
-    <div style={{width:'90%',margin:'3px',padding:'5px',paddingTop:'0',cursor:'pointer',backgroundColor: selected==true?'#79CCBE':'',color: selected==true?'#FFFFFF':''}} onClick={()=>setSelect(id)}>
+    <div style={{width:'90%',margin:'3px',padding:'5px',paddingTop:'0',cursor:'pointer',backgroundColor: selected==true?'#79CCBE':'#ffffff',borderRadius:'8px',color: selected==true?'#FFFFFF':'',boxShadow:'0 0 4px rgba(0, 0, 0, .2)'}} onClick={()=>setSelect(id)}>
         <Typography sx={{fontSize:'17px'}}>{name}</Typography>
         <div>
                 <div style={{display:'inline',border:selected==true?'1px solid white':'1px solid grey',color:selected==true?'white':'grey',paddingLeft:'4px',paddingRight:'4px',borderRadius:'5px'}}>{time}</div>

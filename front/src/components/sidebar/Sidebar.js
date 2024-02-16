@@ -31,7 +31,7 @@ const SidebarTop = ({ children }) => {
         width: '100%',
         height: '80px',
         paddingBottom:'15px',
-        backgroundColor:'#DEF4F2',
+        backgroundColor:'#e7fff9',
         display:'flex',
         justifyContent:'center',
         alignItems:'center'
