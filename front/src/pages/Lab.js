@@ -144,7 +144,7 @@ export default function Lab() {
  }
 
  const drawer=(
-  <Grid  item spacing={0} style={{paddingTop:'64px',backgroundColor:'#DEF4F2',height:'100%'}}>
+  <Grid  item spacing={0} style={{paddingTop:'64px',backgroundColor:'#E7FFF9',height:'100%'}}>
     <SidebarContainer>
       <SidebarTop>
          <LabSearch setPage={setPage} setDate={setDate} date={date}></LabSearch>

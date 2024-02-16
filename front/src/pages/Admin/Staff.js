@@ -1,4 +1,4 @@
-import {Paper,Typography,Button,Dialog,DialogTitle,DialogContent,DialogActions,TextField,FormControl,InputLabel,Select,MenuItem} from "@mui/material";
+import {Paper,Typography,Button,Dialog,DialogTitle,DialogContent,DialogActions,TextField,FormControl,InputLabel,Select,MenuItem, Box} from "@mui/material";
 import * as React from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import { useState,useEffect } from "react";
@@ -53,7 +53,8 @@ const [isDisabled, setIsDisabled] = useState(true);
     axios.get(`https://localhost:7205/api/User`)
     .then(res => {
       const apiData = res.data.map((data,index) => createData(
-        index+1,
+        // index+1,
+        data.id,
         data.fullName,
         data.name,
         data.nic,
@@ -65,6 +66,7 @@ const [isDisabled, setIsDisabled] = useState(true);
         data.age,
         data.gender,
         data.role,
+        
         // data.age
       ));
       setStaffData(apiData);
@@ -74,7 +76,6 @@ const [isDisabled, setIsDisabled] = useState(true);
     });
     
   }, [update]);
-  
 
   const [row2, setStaffData] = useState([]);
 
@@ -93,10 +94,25 @@ const [isDisabled, setIsDisabled] = useState(true);
     qualifications:formData.qualifications,
     role:formData.role
   };
+  // const p2Data = {
+  //   // id:formData.id,
+  //   name: formData.name,
+  //   fullName: formData.fullName,
+  //   nic: formData.nic,
+  //   address: formData.address,
+  //   contactNumber: formData.contactNumber,
+  //   email: formData.email,
+  //   age: formData.age,
+  //   gender: formData.gender,
+  //   qualifications:formData.qualifications,
+  //   role:formData.role
+  // };
 
   const handleAddSaveClose = () =>{
+    let temp = pData
+    temp.id = 0;
     
-    axios.post(`https://localhost:7205/api/User`,pData)
+    axios.post(`https://localhost:7205/api/User`,temp)
     .then(res => {
       console.log('success')
           forceUpdate(prevCount => prevCount + 1); // Trigger a re-render
@@ -126,7 +142,6 @@ const [isDisabled, setIsDisabled] = useState(true);
 
 
 
-
   const handleEditClick = () =>{
     setIsDisabled(false)
   }
@@ -136,10 +151,10 @@ const [isDisabled, setIsDisabled] = useState(true);
 
     
 try {
-  console.log(pData,"fid",formData.id);
+  console.log(pData,"fid",pData.id);
 
           // Assuming you have an API endpoint for updating a patient
-          axios.put(`https://localhost:7205/api/User/`+`${formData.id}` , pData)
+          axios.put(`https://localhost:7205/api/User/`+`${pData.id}` , pData)
           .then(response => {
             // Handle success, maybe update local state or dispatch an action
             console.log('Patient updated successfully:', response.data);
@@ -162,7 +177,7 @@ try {
   const handleEditClickOpen = (row) => {
     // setType(`Edit ${buttonNumber}`);
     setFormData({...formData,id: row.id, name: row.name,role:row.role, fullName: row.fullName, nic: row.nic,address: row.address,contactNumber:row.contactNumber,email:row.email,age:row.age,gender:row.gender,qualifications:row.qualifications});
-
+console.log(pData.id)
     // setSelectedPaper(row);
     setEditOpen(true);
     setIsDisabled(true);
@@ -181,11 +196,21 @@ try {
       [field]: value,
     });
   };
-
-  const handleRemove =()=>{
-    
-  }
-
+  const handleRemove = () => {
+    console.log('removed'+formData.id)
+    axios.delete(`https://localhost:7205/api/User/${pData.id}`)
+      .then(res => {
+        forceUpdate(prevCount => prevCount + 1); // Trigger a re-render
+        console.log("success", formData);
+      })
+      .catch(error => {
+        console.error("Error deleting user:", error);
+      });
+  
+    setEditOpen(false);
+  };
+  
+  const [Gender, setGender] = React.useState('');
 
 
 
@@ -250,7 +275,24 @@ try {
           <TextField label="Role" fullWidth sx={{ mb: 1 }} onChange={(e) => handleInputChange("role", e.target.value)}/>
           <TextField label="E-mail" fullWidth sx={{ mb: 1 }} onChange={(e) => handleInputChange("email", e.target.value)}/>
           <TextField label="Date of Birth" sx={{ mb: 1 }} onChange={(e) => handleInputChange("age", e.target.value)}/>
-          <TextField label="Gender" sx={{ ml: 4, mb: 1 }} onChange={(e) => handleInputChange("gender", e.target.value)}/>
+          {/* <TextField label="Gender" sx={{ ml: 4, mb: 1 }} onChange={(e) => handleInputChange("gender", e.target.value)}/> */}
+          <Box sx={{ minWidth: 120 }}>
+      <FormControl fullWidth>
+        <InputLabel id="demo-simple-select-label">Gender</InputLabel>
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={Gender}
+          label="Gender"
+          onChange={(e) => handleInputChange("gender", e.target.value)}
+        >
+          <MenuItem value={'Female'}>Female</MenuItem>
+          <MenuItem value={'Male'}>Male</MenuItem>
+
+        </Select>
+      </FormControl>
+    </Box>
+    
           {/* Add more fields as needed */}
         </DialogContent>
         <DialogActions>
@@ -330,6 +372,22 @@ try {
             onChange={(e) => setFormData({...formData,role:e.target.value})}
             disabled={isDisabled}
           />
+                    <FormControl sx={{m:2,ml:4}}>
+           <InputLabel id="demo-simple-select-label">Gender</InputLabel>
+  <Select
+    labelId="gender-label"
+    id="gender"
+    value={formData.gender}
+    onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
+    label="Gender"
+    disabled={isDisabled}
+    // sx={{m:1,ml:1}}
+  >
+    <MenuItem value="Male">Male</MenuItem>
+    <MenuItem value="Female">Female</MenuItem>
+    {/* <MenuItem value="other">Other</MenuItem> */}
+  </Select>
+           </FormControl>
           <TextField
             label="Email Address"
             fullWidth
@@ -338,20 +396,10 @@ try {
             onChange={(e) => setFormData({...formData,email:e.target.value})}
             disabled={isDisabled}
           />
-          <TextField
-            label="Date of birth"
-            margin="normal"
-            value={formData.age}
-            onChange={(e) => setFormData({...formData,age:e.target.value})}
-            disabled={isDisabled}
-          />
-          <TextField
-            label="gender"
-            margin="normal"
-            value={formData.gender}
-            onChange={(e) => setFormData({...formData,gender:e.target.value})}
-            disabled={isDisabled}
-          />
+
+
+
+
          
         </DialogContent>
         <DialogActions>
@@ -362,7 +410,7 @@ try {
           color="error"
           sx={{ m: 2 }}
         >
-          Remove
+          Delete
         </Button>
       )}
           <Button

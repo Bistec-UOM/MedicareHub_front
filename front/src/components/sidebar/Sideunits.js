@@ -56,7 +56,7 @@ function Sideunit_Patient({id,name,status,time,selected,setSelect}) {
 
 function Sideunit_Test({id,name,test,setSelectedT,selectedT}) {
     return (
-      <div style={{width:'90%',margin:'3px',cursor:'pointer',backgroundColor: selectedT==id?'#79CCBE':'#ffffff',padding:'5px',paddingTop:'0',color: selectedT==id?'#FFFFFF':'',borderRadius:'8px',boxShadow:'0 0 4px rgba(0, 0, 0, .2)'}} onClick={()=>setSelectedT(id)}>
+      <div style={{width:'90%',margin:'5px',cursor:'pointer',backgroundColor: selectedT==id?'#4A7C73':'#ffffff',padding:'5px',paddingTop:'0',color: selectedT==id?'#FFFFFF':'',borderRadius:'8px',boxShadow:'0 0 1.5px rgb(82, 90, 89) '}} onClick={()=>setSelectedT(id)}>
           <Typography sx={{fontSize:'17px'}}>{name}</Typography>
           {
             test.map((el)=>{
