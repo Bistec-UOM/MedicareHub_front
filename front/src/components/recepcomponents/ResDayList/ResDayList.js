@@ -162,6 +162,8 @@ const ResDayList = (props) => {
             }).map((item) => (
               <div key={item.nic}>
                 <AppointmentCard  
+                  appointlist={props.appointlist}
+                  setAppointList={props.setAppointList}
                   handleNotification={handleNotification}
                   delcount={delcount}
                   setDelcount={setDelcount}

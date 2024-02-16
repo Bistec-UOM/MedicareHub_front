@@ -22,7 +22,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Grid, Stack } from "@mui/material";
 import ErrorIcon from "@mui/icons-material/Error";
 
-export default function AppDeletePopup({handleNotification,item,delcount,setDelcount, daopen, setDaopen,filteredAppointments,setFilteredAppointments,isDisabled,setIsDisabled }) {
+export default function AppDeletePopup({appointlist,setAppointList,handleNotification,item,delcount,setDelcount, daopen, setDaopen,filteredAppointments,setFilteredAppointments,isDisabled,setIsDisabled }) {
   // const [enameError,seteNameError]=useState(false)
   // const [eaddressError,seteAddressError]=useState(false)
   // const [enicError,seteNicError]=useState(false)
@@ -34,9 +34,9 @@ export default function AppDeletePopup({handleNotification,item,delcount,setDelc
   const [timevalue, setTimeValue] = useState("");
   const [rdelete,setRdelete]=useState(false);
 
-  const handleRealDelete=()=>
+  const handleRealDelete=(item)=>
   {
-    setFilteredAppointments(filteredAppointments.filter((itemf)=>itemf.nic!==item.nic));
+    setAppointList(appointlist.filter((itemf)=>itemf.nic!==item.nic));
     //setIsDisabled(true);
     setDelcount(delcount+1);
     setDaopen(false);
@@ -84,7 +84,7 @@ export default function AppDeletePopup({handleNotification,item,delcount,setDelc
             </Typography>
           </Box>
           <Box sx={{display:'flex',justifyContent:'flex-end',paddingRight:'5%'}}>
-            <Button onClick={handleRealDelete}
+            <Button onClick={()=>handleRealDelete(item)}
               sx={{
                 backgroundColor: "#F44336", // Replace with your desired color
                 "&:hover": {
