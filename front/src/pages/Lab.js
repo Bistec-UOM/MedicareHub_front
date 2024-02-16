@@ -90,7 +90,15 @@ export default function Lab() {
     }
 
     const FloadSet=(xLoad)=>{
-      setFload({...Fload,[Tload.length-1]:xLoad})
+      setFload({...Fload,[Tload.length]:xLoad})
+    }
+
+    const TloadEdit=(id,xLoad)=>{
+
+    }
+
+    const FloadEdit=(id,xLoad)=>{
+      setFload({...Fload,[id]:xLoad})
     }
 
  const [select,setSelect]=useState(null)
@@ -175,7 +183,7 @@ export default function Lab() {
 
               :page==2?<LabTestList settId={settId} setPage={setPage} Tdata={Tload}></LabTestList>
               :page==3?<CreateLabTemplate setPage={setPage} TloadSet={TloadSet} FloadSet={FloadSet} PK={Tload.length}></CreateLabTemplate>
-              :page==4?<Edittemplate setPage={setPage} data={Fload[tId]}></Edittemplate>
+              :page==4?<Edittemplate setPage={setPage} Fdata={Fload[tId]} tId={tId} Tdata={Tload[tId]} FloadEdit={FloadEdit}></Edittemplate>
               :''
       }
 

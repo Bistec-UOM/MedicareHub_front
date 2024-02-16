@@ -7,7 +7,7 @@ import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrow
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
-export default function CreateLabTemplate({setPage,FloadSet,TloadSet,PK}) {
+export default function CreateLabTemplate({setPage,FloadSet,TloadSet,tId}) {
 
     useEffect(()=>{
         document.body.style.margin = '0';
@@ -85,13 +85,14 @@ export default function CreateLabTemplate({setPage,FloadSet,TloadSet,PK}) {
         }
         TloadSet(T)
         FloadSet(testField)
+        setPage(2)
       }
     
     
 
   return (
     <div>
-        <Toolbar sx={{position:'fixed',width:{xs:'100%',sm:'70%'},justifyContent:'space-between',alignItems:'center',p:'0',pt:{xs:'10px'},backgroundColor:'yellow'}}>
+        <Toolbar sx={{position:'fixed',width:{xs:'100%',sm:'70%'},justifyContent:'space-between',alignItems:'center',p:'0',pt:{xs:'10px'},backgroundColor:'white'}}>
             <ArrowBackIcon sx={{cursor:'pointer'}} onClick={()=>setPage(2)}></ArrowBackIcon>
 
             <Box sx={{width:'100%',display:'flex',flexDirection:{xs:'column',sm:'row'},alignItems:'center',ml:{xs:'2px',sm:'8%'}}} square>
