@@ -42,9 +42,9 @@ function Sideunit_Doctor({ name, title ,selectedTab,index}) {
 }
 
 
-function Sideunit_Patient({name,status,time,selected}) {
+function Sideunit_Patient({id,name,status,time,selected,setSelect}) {
     return (
-      <div style={{width:'90%',margin:'3px',cursor:'pointer',backgroundColor: selected==true?'#79CCBE':'',padding:'5px',paddingTop:'0',}}>
+      <div style={{width:'90%',margin:'3px',cursor:'pointer',backgroundColor: selected==true?'#79CCBE':'',padding:'5px',paddingTop:'0',color: selected==true?'#FFFFFF':'',borderRadius:'5px'}} onClick={()=>setSelect(id)}>
           <Typography sx={{fontSize:'17px'}}>{name}</Typography>
           <div style={{display:'flex',alignContent:'space-between'}}>
                   <div style={{display:'inline',border:selected==true?'1px solid white':'1px solid grey',paddingLeft:'4px',paddingRight:'4px',borderRadius:'5px',marginLeft:'4px',color: selected==true?'white':'grey'}}>{time}</div>

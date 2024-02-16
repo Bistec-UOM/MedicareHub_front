@@ -17,11 +17,12 @@ import DoctorAddDrugs from '../components/DoctorComponents/DoctorAddDrugs';
 import AnaliticalReports from '../components/DoctorComponents/AnaliticalReports';
 import '../components/CustomScroll.css'
 import LabRequest from '../components/DoctorComponents/LabRequest';
+import { Sideunit_Patient } from '../components/sidebar/Sideunits';
 
 export default function Doctor() {
+  const [select,setSelect]=useState(null)
   useEffect(() => {
     document.body.style.margin = '0';
-
   }, [])
 
   const Item = styled(Paper)(({ theme }) => ({
@@ -58,15 +59,104 @@ export default function Doctor() {
   const handleAddButtonClick = () => {
     setOpenpopBox(true);
   };
+
+ 
+  let x=[
+    {
+      "id": 1,
+      "name": "Alice",
+      "time": "09:00",
+      "status": "done"
+    },
+    {
+      "id": 2,
+      "name": "Bob",
+      "time": "10:30",
+      "status": "done"
+    },
+    {
+      "id": 3,
+      "name": "Charlie",
+      "time": "11:45",
+      "status": "done"
+    },
+    {
+      "id": 4,
+      "name": "David",
+      "time": "13:15",
+      "status": "done"
+    },
+    {
+      "id": 5,
+      "name": "Eve",
+      "time": "14:30",
+      "status": "done"
+    },
+    {
+      "id": 6,
+      "name": "Frank",
+      "time": "15:45",
+      "status": "done"
+    },
+    {
+      "id": 7,
+      "name": "Grace",
+      "time": "16:30",
+      "status": "done"
+    },
+    {
+      "id": 8,
+      "name": "Henry",
+      "time": "17:15",
+      "status": "done"
+    },
+    {
+      "id": 9,
+      "name": "Isabel",
+      "time": "18:00",
+      "status": "done"
+    },
+    {
+      "id": 10,
+      "name": "Jack",
+      "time": "19:00",
+      "status": "done"
+    },
+    {
+      "id": 11,
+      "name": "Kelly",
+      "time": "20:00",
+      "status": "done"
+    },
+    {
+      "id": 12,
+      "name": "Liam",
+      "time": "21:00",
+      "status": "done"
+    }
+  ]
+  
+  
+
   return (
     <div>
       <Navbar></Navbar>
-      <Grid container spacing={0} sx={{ paddingTop: '64px', height: '100vh' }}>
-        <Grid item xs={3} style={{ height: '100%' }}>
-          <SidebarContainer>
+      <Grid container spacing={0} sx={{ paddingTop: '64px', height: '100vh'}}>
+        <Grid item xs={3} style={{ height: '100%',backgroundColor:'#DEF4F2'}}>
+          <SidebarContainer sx={{backgroundColor:'#DEF4F2'}}>
             <SidebarTop>
             </SidebarTop>
             <SidebarList>
+            {
+         x.map((elm,ind)=>{
+            return(
+             <>
+              <Sideunit_Patient key={ind} id={elm.id} name={elm["name"]} time={elm["time"]} status={elm["status"]}  setSelect={setSelect} selected={elm.id==select?true:''}></Sideunit_Patient>
+              <div style={{borderBottom:'1px solid #c2c8d1',height:'1px',width:'90%'}}></div>
+             </>
+            )
+         })
+       }
             </SidebarList>
           </SidebarContainer>
         </Grid>
