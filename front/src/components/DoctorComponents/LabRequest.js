@@ -69,7 +69,7 @@ const handleDeleteLabRequest = (index) => {
      </DialogContent>  
      
       </Dialog>
-
+ 
      <div >
       {rep.map((drug, index) => (
       <Grid key={index} container spacing={1} sx={{ marginTop: "5px",}}>
@@ -79,7 +79,7 @@ const handleDeleteLabRequest = (index) => {
                             </Card>
                         </Grid>
                         <Grid item xs={8}>
-                            <DoNotDisturbOnIcon sx={{ color: 'red', fontSize: '30px', float: 'Left' }}  onClick={() => handleDeleteLabRequest(index)}/>
+                            <DoNotDisturbOnIcon sx={{ color: 'red', fontSize: '30px', float: 'Left',cursor: 'pointer' }}  onClick={() => handleDeleteLabRequest(index)}/>
                         </Grid>
                     </Grid>
       ))}
