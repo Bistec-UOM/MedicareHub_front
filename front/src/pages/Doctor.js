@@ -64,73 +64,73 @@ export default function Doctor() {
   let x=[
     {
       "id": 1,
-      "name": "Alice",
+      "name": "Nethmi Eranga Wijeweera",
       "time": "09:00",
       "status": "done"
     },
     {
       "id": 2,
-      "name": "Bob",
+      "name": "Amal Rathnayake",
       "time": "10:30",
       "status": "done"
     },
     {
       "id": 3,
-      "name": "Charlie",
+      "name": "Chathumini Wanasignhe",
       "time": "11:45",
       "status": "done"
     },
     {
       "id": 4,
-      "name": "David",
+      "name": "Thushari Fernando",
       "time": "13:15",
       "status": "done"
     },
     {
       "id": 5,
-      "name": "Eve",
+      "name": "Infas Mohomad",
       "time": "14:30",
       "status": "done"
     },
     {
       "id": 6,
-      "name": "Frank",
+      "name": "Dhammika Mahendra",
       "time": "15:45",
       "status": "done"
     },
     {
       "id": 7,
-      "name": "Grace",
+      "name": "Yasiru Ramosh",
       "time": "16:30",
       "status": "done"
     },
     {
       "id": 8,
-      "name": "Henry",
+      "name": "Chathura Ishara",
       "time": "17:15",
       "status": "done"
     },
     {
       "id": 9,
-      "name": "Isabel",
+      "name": "Yasiru Ramosh",
       "time": "18:00",
       "status": "done"
     },
     {
       "id": 10,
-      "name": "Jack",
+      "name": "Chathura Ishara",
       "time": "19:00",
       "status": "done"
     },
     {
       "id": 11,
-      "name": "Kelly",
+      "name": "Infas Mohomad",
       "time": "20:00",
       "status": "done"
     },
     {
       "id": 12,
-      "name": "Liam",
+      "name": "Thushari Fernando",
       "time": "21:00",
       "status": "done"
     }
