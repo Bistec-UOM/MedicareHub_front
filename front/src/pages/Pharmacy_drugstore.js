@@ -15,7 +15,7 @@ import '../components/CustomScroll.css'
 import Box from '@mui/material/Box';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-
+import { Sideunit_Bill } from '../components/sidebar/Sideunits';
 
 function createData(
   ID,
@@ -28,14 +28,7 @@ function createData(
   return { ID, drug, brand, dosage, quantity, price };
 }
 
-const rows = [
-  createData(1,'Paracetamole',"Panadol",["10 mg"],120,20.00),
-  createData(2,'Veniloflaxin',"Veniz",["37.5 mg","75 mg","150 mg"],[34,12,90],[35.00,45.00,60.00]),
-  createData(3,'Flucanzole',"Diflucan",["10 mg"],15,12.00),
-  createData(4,'Paracetamole',"Panadol",["10 mg"],120,20.00),
 
-  
-];
 
 
 export default function Pharmacy_drugstore() {
@@ -61,7 +54,27 @@ export default function Pharmacy_drugstore() {
   const handleClose =() => {
     setOpen(false)
   }; 
+  const [brand, setBrand] = useState('');
+  const [drug, setDrug] = useState('');
+  const [quantity, setQuantity] = useState('');
+  const [dosage, setDosage] = useState('');
+  const [price, setPrice] = useState('');
+  const rowdata = [
+    {id:1,drug:'Paracetamole',brand:"Panadol",dosage:["10 mg"],quantity:[120],price:[20.00]},
+    {id:1,drug:'Veniloflaxin',brand:"Veniz",dosage:["37.5 mg","75 mg","150 mg"],quantity:[34,12,90],price:[35.00,45.00,60.00]},
+    {id:1,drug:'Flucanzole',brand:"Diflucan",dosage:["10 mg"],quantity:[15],price:[12.00]}
+    
+  ];
+  const [rows, setRows] = useState(rowdata);
+
   const handleConfirm =() => {
+    const newDrug = { drug, brand,dosage, quantity,price };
+    setRows([...rows, newDrug]);
+    setDrug('');
+        setBrand('');
+        setDosage('');
+        setQuantity('');
+        setPrice('');
     handleClose();
     setConfirm(false)
   };
@@ -89,20 +102,106 @@ export default function Pharmacy_drugstore() {
       [fieldName]: value
     }));
   };
+  const [select,setSelect]=useState(null)
+  let x=[
+    {
+      "id": 1,
+      "name": "Dhammika Mahendra Wijesingha",
+      "time": "09:00"
+      
+    },
+    {
+      "id": 2,
+      "name": "Bob",
+      "time": "10:30"
+      
+    },
+    {
+      "id": 3,
+      "name": "Charlie",
+      "time": "11:45"
+      
+    },
+    {
+      "id": 4,
+      "name": "David",
+      "time": "13:15"
+    
+    },
+    {
+      "id": 5,
+      "name": "Eve",
+      "time": "14:30"
+      
+    },
+    {
+      "id": 6,
+      "name": "Frank",
+      "time": "15:45"
+      
+    },
+    {
+      "id": 7,
+      "name": "Grace",
+      "time": "16:30"
+      
+    },
+    {
+      "id": 8,
+      "name": "Henry",
+      "time": "17:15"
+      
+    },
+    {
+      "id": 9,
+      "name": "Isabel",
+      "time": "18:00"
+      
+    },
+    {
+      "id": 10,
+      "name": "Jack",
+      "time": "19:00"
+    
+    },
+    {
+      "id": 11,
+      "name": "Kelly",
+      "time": "20:00"
+      
+    },
+    {
+      "id": 12,
+      "name": "Liam",
+      "time": "21:00"
+      
+    }
+  ]
+  
   return (
+    
     
     <div>
       
     <Navbar></Navbar>
 
     <Grid container spacing={0} sx={{paddingTop:'64px',height:'100vh'}}>
-      <Grid item xs={3} style={{height:'100%'}}>
+      <Grid item xs={3} style={{height:'100%',backgroundColor:'#DEF4F2'}}>
         <SidebarContainer>
           <SidebarTop>
 
           </SidebarTop>
           <SidebarList>
-            
+          {
+         x.map((elm,ind)=>{
+            return(
+             <>
+              <Sideunit_Bill key={ind} id={elm.id} name={elm["name"]} time={elm["time"]}  setSelect={setSelect} selected={elm.id==select?true:''}></Sideunit_Bill>
+              <div style={{borderBottom:'1px solid #c2c8d1',height:'1px',width:'90%'}}></div>
+             </>
+            )
+         })
+       }
           </SidebarList>
         </SidebarContainer>
       </Grid>
@@ -167,17 +266,18 @@ export default function Pharmacy_drugstore() {
           <CloseIcon onClick={handleClose} sx={{cursor:'pointer'}}/>
         </DialogTitle>
         <DialogContent>
-          <TextField label="Genaric name" fullWidth sx={{ mb: 1, mt: 3 }} />
-          <TextField label="Brand Name" sx={{ mb: 1 }} />
-          <TextField label="dossage" sx={{ ml: 4, mb: 1 }} />
-          <TextField label="unit price" fullWidth sx={{ mb: 1 }} />
-          <TextField label="Amount" sx={{ mb: 1 }} />
+          <TextField label="Genaric name" fullWidth sx={{ mb: 1, mt: 3 }} value={drug} onChange={(e) => setDrug(e.target.value)} />
+          <TextField label="Brand Name" sx={{ mb: 1 }}value={brand} onChange={(e) => setBrand(e.target.value)} />
+          <TextField label="dossage" sx={{ ml: 4, mb: 1 }} value={dosage} onChange={(e) => setDosage(e.target.value)}/>
+          <TextField label="unit price" fullWidth sx={{ mb: 1 }}value={quantity} onChange={(e) => setQuantity(e.target.value)} />
+          <TextField label="Amount" sx={{ mb: 1 }} value={price} onChange={(e) => setPrice(e.target.value)}/>
         </DialogContent>
         <DialogActions>
           <Button
             onClick={handleConfirm}
             variant="contained"
             sx={{ backgroundColor: "rgb(121, 204, 190)", m: 2 }}
+            
           >
             confirm
           </Button>
@@ -205,7 +305,7 @@ export default function Pharmacy_drugstore() {
                       <List key={index}>{dosage}</List>
                     ))
                   ) : (
-                    <List>{row.dosages}</List>
+                    <List>{row.dosage}</List>
                   )}
                 </Typography>
   </Grid>
