@@ -54,14 +54,14 @@ function Sideunit_Patient({id,name,status,time,selected,setSelect}) {
     )
 }
 
-function Sideunit_Test({id,name,test,setSelect,selected}) {
+function Sideunit_Test({id,name,test,setSelectedT,selectedT}) {
     return (
-      <div style={{width:'90%',margin:'3px',cursor:'pointer',backgroundColor: selected==true?'#79CCBE':'',padding:'5px',paddingTop:'0',color: selected==true?'#FFFFFF':'',borderRadius:'5px'}} onClick={()=>setSelect(id)}>
+      <div style={{width:'90%',margin:'3px',cursor:'pointer',backgroundColor: selectedT==id?'#79CCBE':'',padding:'5px',paddingTop:'0',color: selectedT==id?'#FFFFFF':'',borderRadius:'5px'}} onClick={()=>setSelectedT(id)}>
           <Typography sx={{fontSize:'17px'}}>{name}</Typography>
           {
             test.map((el)=>{
               return(
-              <div key={el} style={{display:'inline',backgroundColor: selected==true?'#60a398':'#adaaaa',color:'white',paddingRight:'4px',paddingLeft:'4px',paddingTop:'2px',paddingBottom:'2px',borderRadius:'15px',marginRight:'4px'}}>{el}</div>
+              <div key={el} style={{display:'inline',backgroundColor: selectedT==true?'#60a398':'#adaaaa',color:'white',paddingRight:'4px',paddingLeft:'4px',paddingTop:'2px',paddingBottom:'2px',borderRadius:'15px',marginRight:'4px'}}>{el}</div>
               )
             })
           }
