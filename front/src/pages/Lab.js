@@ -11,47 +11,67 @@ import ResNavBar from '../components/recepcomponents/ResNavBar/ResNabBar';
 import Edittemplate from '../components/Lab/Edittemplate';
 
 export default function Lab() {
+
+  const [select,setSelect]=useState(null)
+  const [date,setDate]=useState(1)
+  const [loadIn,setLoadIn]=useState([]) 
+
   useEffect(()=>{
     document.body.style.margin = '0';
-    setLoadIn(x)
-   },[])
+    console.log(x[date])
+    setLoadIn(x[date])
+   },[date])
 
   {/*to navigate between pages   1:fill test   2:test list   3:create tmplt   4:edit tmplt*/}
   const [page,setPage]=useState(1)
   const [tId,settId]=useState()
+  const [RId,setRId]=useState()
 
   let x=[
-    {id:1,"name": "Hande ercel", "test": ['Thyroxin']},
-    {id:2,"name": "Hazal kaya", "test":['FBC','hCG']},
-    {id:3,"name": "Ozge yagiz", "test": ['FBC']},
-    {id:4,"name": "Ozge gurel", "test": ['BMT']},
-    {id:5,"name": "Turkan sorey", "test":['HBC','Thyroxin']},
-    {id:6,"name": "Saadet akzoy", "test": ['Urine']},
-    {id:7,"name": "Ezgi mola", "test": ['FBC']},
-    {id:8,"name": "Deniz beysal", "test":['FBC']},
-    {id:9,"name": "Ozgu kaya", "test": ['FBC']},
-    {id:10,"name": "Zehra yilmaz", "test": ['Lipid']},
-    {id:11,"name": "Serenay Sarikaya", "test":['Lipid','Glucose']},
-    {id:12,"name": "Yuzra geyik", "test": ['FBC']}
+    [{id:13,"name": "Olivia Anderson", "test":['hCG'],"testId":[]},
+    {id:14,"name": "Joshua Taylor", "test": ['FBC'],"testId":[1]},
+    {id:15,"name": "Sophia Thomas", "test": ['FBC'],"testId":[1]},
+    {id:16,"name": "Ethan Walker", "test":['HBC','Thyroxin'],"testId":[2,3]},
+    {id:17,"name": "Isabella Clark", "test": ['Urine'],"testId":[5]},
+    {id:18,"name": "James Young", "test": ['FBC'],"testId":[1]}],
+
+    [{id:1,"name": "Sarah Johnson", "test": ['Thyroxin'],"testId":[3]},
+    {id:2,"name": "Michael Smith", "test":['FBC','hCG'],"testId":[1,7]},
+    {id:3,"name": "Lisa Brown", "test": ['FBC'],"testId":[1]},
+    {id:4,"name": "John Davis", "test": ['BMT'],"testId":[8]},
+    {id:5,"name": "Emily Wilson", "test":['HBC','Thyroxin'],"testId":[2,3]},
+    {id:6,"name": "David Martinez", "test": ['Urine'],"testId":[5]},
+    {id:7,"name": "Jessica Anderson", "test": ['FBC'],"testId":[1]},
+    {id:8,"name": "William Thompson", "test":['FBC'],"testId":[1]},
+    {id:9,"name": "Jennifer Garcia", "test": ['FBC'],"testId":[1]},
+    {id:10,"name": "Robert Rodriguez", "test": ['Lipid'],"testId":[6]},
+    {id:11,"name": "Ashley Lopez", "test":['Lipid','Glucose'],"testId":[6,4]},
+    {id:12,"name": "Matthew Lee", "test": ['FBC'],"testId":[1]}],
+
+    [{id:6,"name": "Jacob Baker", "test": ['Urine'],"testId":[5]},
+    {id:7,"name": "Ava Green", "test": ['FBC'],"testId":[1]},
+    {id:8,"name": "Alexander Adams", "test":['FBC'],"testId":[1]},
+    {id:9,"name": "Charlotte Hill", "test": ['FBC'],"testId":[1]},
+    {id:10,"name": "William Murphy", "test": ['Lipid'],"testId":[6]}]
    ]
 
    const [Tload,setTload]=useState([
-    {name:'Full blood test',provider:'Hemas',price:500.00},
-    {name:'Half blood test',provider:'Hemas',price:500.00},
-    {name:'Thyroxin test',provider:'Durdance',price:2400.00},
-    {name:'Glucose test',provider:'Hemas',price:750.00},
-    {name:'Urine test',provider:'Hemas',price:1200.00},
-    {name:'Lipid profile',provider:'Asiri',price:1500.00},
-    {name:'hCG test',provider:'Durdance',price:500.00},
-    {name:'Basic metabolic test',provider:'Asiri',price:1700.00},
-    {name:'Full blood test',provider:'Hemas',price:500.00},
-    {name:'Half blood test',provider:'Hemas',price:500.00},
-    {name:'Thyroxin test',provider:'Durdance',price:2400.00},
-    {name:'Glucose test',provider:'Hemas',price:750.00},
-    {name:'Urine test',provider:'Hemas',price:1200.00},
-    {name:'Lipid profile',provider:'Asiri',price:1500.00},
-    {name:'hCG test',provider:'Durdance',price:500.00},
-    {name:'Basic metabolic test',provider:'Asiri',price:1700.00}
+    {id:1,name:'Full blood test',provider:'Hemas',price:500.00},
+    {id:2,name:'Half blood test',provider:'Hemas',price:500.00},
+    {id:3,name:'Thyroxin test',provider:'Durdance',price:2400.00},
+    {id:4,name:'Glucose test',provider:'Hemas',price:750.00},
+    {id:5,name:'Urine test',provider:'Hemas',price:1200.00},
+    {id:6,name:'Lipid profile',provider:'Asiri',price:1500.00},
+    {id:7,name:'hCG test',provider:'Durdance',price:500.00},
+    {id:8,name:'Basic metabolic test',provider:'Asiri',price:1700.00},
+    {id:9,name:'Full blood test',provider:'Hemas',price:500.00},
+    {id:10,name:'Half blood test',provider:'Hemas',price:500.00},
+    {id:11,name:'Thyroxin test',provider:'Durdance',price:2400.00},
+    {id:12,name:'Glucose test',provider:'Hemas',price:750.00},
+    {id:13,name:'Urine test',provider:'Hemas',price:1200.00},
+    {id:14,name:'Lipid profile',provider:'Asiri',price:1500.00},
+    {id:15,name:'hCG test',provider:'Durdance',price:500.00},
+    {id:16,name:'Basic metabolic test',provider:'Asiri',price:1700.00}
 ])
 
    const [Fload,setFload]=useState({
@@ -101,10 +121,11 @@ export default function Lab() {
       setFload({...Fload,[id]:xLoad})
     }
 
- const [select,setSelect]=useState(null)
- const [loadIn,setLoadIn]=useState([])
+
+  const [selectedT,setSelectedT]=useState()
 
  function showSelect(id){
+
   const matchingItem = loadIn.find(item => item.id === id);
   return matchingItem ? matchingItem.name : null;
  }
@@ -126,14 +147,15 @@ export default function Lab() {
   <Grid  item spacing={0} style={{paddingTop:'64px',backgroundColor:'#DEF4F2',height:'100%'}}>
     <SidebarContainer>
       <SidebarTop>
-         <LabSearch setPage={setPage}></LabSearch>
+         <LabSearch setPage={setPage} setDate={setDate} date={date}></LabSearch>
       </SidebarTop>
       <SidebarList>
       {
          loadIn.map((elm)=>{
             return(
              <>
-              <Sideunit_Test key={elm.id} id={elm.id} name={elm.name} test={elm.test} setSelect={setSelect} selected={elm.id==select?true:''}></Sideunit_Test>
+              <Sideunit_Test key={elm.id} id={elm.id} name={elm.name} test={elm.test} setSelectedT={setSelectedT} selectedT={selectedT}></Sideunit_Test>
+
               <div style={{borderBottom:'1px solid #c2c8d1',height:'1px',width:'90%'}}></div>
              </>
             )
