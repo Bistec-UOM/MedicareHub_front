@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import {SidebarContainer,SidebarTop,SidebarList} from '../components/sidebar/Sidebar'
 import Navbar from '../components/navbar/Navbar'
-import { Grid,Card, Typography,Button, CardContent } from '@mui/material'
+import { Grid,Card, Typography,Dialog, DialogTitle, DialogContent, DialogActions,Button, CardContent } from '@mui/material'
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -18,6 +18,15 @@ import { Sideunit_Bill } from '../components/sidebar/Sideunits';
 
 export default function Pharmacy() {
  
+  const [open, setOpen] = useState(false);
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   const dividerStyle = {
     backgroundColor: '#0099cc',
     height: '2px',
@@ -218,14 +227,14 @@ const result = 10 * 15
     </div>
       
       
-       <Card sx={{marginTop:'2px',}}>
+       <Card sx={{marginTop:'2px',marginLeft:'6px',}}>
        <Grid container spacing={2}>
        <Grid item xs={8}>
         <Typography>Service charge
         <IconButton aria-label="edit" color='secondary'
-        sx={{color:'#CFDB1A'}}>
+        sx={{color:'#CFDB1A'}}onClick={handleOpen}>
       <EditIcon />
-    </IconButton>
+    </IconButton >
         </Typography>
       </Grid>
       <Grid item xs={4}>
@@ -234,6 +243,18 @@ const result = 10 * 15
        
     </Grid>
        </Card>
+       <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Edit Service Charge</DialogTitle>
+        <DialogContent>
+          
+          <TextField label="Service Charge" variant="outlined" />
+          
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleClose} color="primary">Save</Button>
+        </DialogActions>
+      </Dialog>
        <div style={{ textAlign: 'right' }}>
       <Typography sx={{marginRight:'237px',}}><b>495.00</b></Typography>
     </div>
