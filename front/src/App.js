@@ -34,7 +34,7 @@ function App() {
       <Route path="play" element={<Stest></Stest>}></Route>
       <Route path="res" element={<ResponseAppCalender></ResponseAppCalender>}></Route>
       <Route path='/resday' element={<ResDay/>}></Route>
-      <Route path="/test" element={<TestPractise/>}></Route>
+     
      
 
       </Routes>
