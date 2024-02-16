@@ -86,6 +86,9 @@ export default function Pharmacy_drugstore() {
     handleEditClose();
     setConfirm(false)
   };
+  const handleDelete =() => {
+    setConfirm(false)
+  };
   const handleEditOpen =(row) => {
     setSelectedCard(row);
     setEditOpen(true);
@@ -384,6 +387,14 @@ export default function Pharmacy_drugstore() {
           
         </DialogContent>
         <DialogActions>
+          
+          <Button
+            onClick={handleDelete}
+            variant="contained"
+            sx={{ backgroundColor: "rgb(121, 204, 190)", m: 2 }}
+          >
+            Delete
+          </Button>
           <Button
             onClick={handleEdit}
             variant="contained"
