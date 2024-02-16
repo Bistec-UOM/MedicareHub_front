@@ -156,7 +156,6 @@ export default function Lab() {
              <>
               <Sideunit_Test key={elm.id} id={elm.id} name={elm.name} test={elm.test} setSelectedT={setSelectedT} selectedT={selectedT}></Sideunit_Test>
 
-              <div style={{borderBottom:'1px solid #c2c8d1',height:'1px',width:'90%'}}></div>
              </>
             )
          })
