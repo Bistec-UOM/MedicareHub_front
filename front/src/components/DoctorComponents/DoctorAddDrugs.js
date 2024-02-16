@@ -46,13 +46,12 @@ export default function DoctorAddDrugs(props) {
                 <DialogContent dividers 
                     sx={{ '&::before': { content: "''", position: 'absolute', top: 0, right: 0, width: '35px', height: '100%', background: 'hsl(0, 0%, 90%)', }, }}>
 
-                    <CloseIcon onClick={handleClose} style={{ position: 'absolute', right: '8px', top: '8px', cursor: 'pointer' }} />
-                    <SearchIcon sx={{ position: 'absolute', left: '41%', top: '43px', cursor: 'pointer' }} />
+                    <CloseIcon onClick={handleClose} style={{ position: 'absolute', right: '8px', top: '8px', cursor: 'pointer', }} />                   
       
                     <TextField variant="outlined" size="small"
-                     sx={{ m: 1, width: '45%', top: '10px', '& .MuiOutlinedInput-root': { '& fieldset': { borderColor: '#0099cc', borderWidth: '2px', borderRadius: '25px', }, }, }} 
+                     sx={{ m: 1, width: '43%', top: '10px', '& .MuiOutlinedInput-root': { '& fieldset': { borderColor: '#0099cc', borderWidth: '2px', borderRadius: '25px', }, }, }} 
                      value={name} onChange={(e) => setName(e.target.value)} />
-
+                    <SearchIcon sx={{ position: 'absolute', left: '39%', top: '43px', cursor: 'pointer', }} />
                     <TextField variant="outlined" size="small" 
                     sx={{ m: 1, width: '10%', top: '10px', '& .MuiOutlinedInput-root': { '& fieldset': { borderColor: '#0099cc', borderWidth: '2px', }, }, }}
                      value={quantity} onChange={(e) => setQuantity(e.target.value)} />
@@ -65,7 +64,7 @@ export default function DoctorAddDrugs(props) {
                         ))}
                     </Select>
                     <Select
-                     sx={{ m: 1, top: '10px', border: '2px solid #0099cc', width: '55px', height: '40px', }}
+                     sx={{ m: 1, top: '10px', border: '2px solid #0099cc', width: '65px', height: '40px', }}
                       variant="standard" value={hour} onChange={(e) => setHour(e.target.value)}>
                         {hourOptions.map((option, index) => (
                             <MenuItem key={index} value={option}>{option}</MenuItem>
@@ -87,7 +86,7 @@ export default function DoctorAddDrugs(props) {
                             </Card>
                         </Grid>
                         <Grid item xs={4}>
-                            <DoNotDisturbOnIcon sx={{ color: 'red', marginLeft: '5px', fontSize: '30px', float: 'Left' }} onClick={() => handleDeleteDrug(index)} />
+                            <DoNotDisturbOnIcon sx={{ color: 'red', marginLeft: '5px', fontSize: '30px', float: 'Left',cursor: 'pointer' }} onClick={() => handleDeleteDrug(index)} />
                         </Grid>
                     </Grid>
                 ))}

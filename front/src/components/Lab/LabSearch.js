@@ -7,7 +7,7 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 
-export default function LabSearch({setPage}) {
+export default function LabSearch({setPage,setDate,date}) {
   return (
       <div style={{display:'flex',justifyContent:'space-between'}}>
 
@@ -17,9 +17,9 @@ export default function LabSearch({setPage}) {
     
       {/* ----------date navigator-------------------------------------- */}
       <div style={{display:'flex',justifyContent:'center'}}>
-          <ArrowBackIosIcon fontSize='small' sx={{mr:'15px',cursor:'pointer'}}></ArrowBackIosIcon>
-          <Typography sx={{fontSize:'14px',mb:'6px'}}>21 Nov 2024</Typography>
-          <ArrowForwardIosIcon fontSize='small' sx={{ml:'15px',cursor:'pointer'}}></ArrowForwardIosIcon>
+          <ArrowBackIosIcon fontSize='small' sx={{mr:'15px',cursor:'pointer'}} onClick={()=>setDate(date-1)}></ArrowBackIosIcon>
+          <Typography sx={{fontSize:'14px',mb:'6px'}}>2{date} Nov 2024</Typography>
+          <ArrowForwardIosIcon fontSize='small' sx={{ml:'15px',cursor:'pointer'}} onClick={()=>setDate(date+1)}></ArrowForwardIosIcon>
       </div>
   
     {/*---------------------searchbar---------------------------------------*/}

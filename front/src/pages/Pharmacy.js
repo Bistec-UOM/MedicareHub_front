@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import {SidebarContainer,SidebarTop,SidebarList} from '../components/sidebar/Sidebar'
 import Navbar from '../components/navbar/Navbar'
 import { Grid,Card, Typography,Button, CardContent } from '@mui/material'
@@ -13,6 +13,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
 import Divider from '@mui/material/Divider';
 import PrintIcon from '@mui/icons-material/Print';
+import { Sideunit_Bill } from '../components/sidebar/Sideunits';
 
 
 export default function Pharmacy() {
@@ -23,6 +24,7 @@ export default function Pharmacy() {
     width:'230px', // Adjust height as needed
     marginLeft: '550px', // Remove default margin
   };
+
   
   const data =[{name:"Dhammika Mahendra Wijesingha",age:"36",gender:"male"},
 ];
@@ -44,21 +46,107 @@ const medicine =[{name:"Acetaminophe",quantity:"10",hour:"BID",value:"10",unit_p
 const result = 10 * 15
   useEffect(()=>{
     document.body.style.margin = '0';
-
    },[]) 
+
+   const [select,setSelect]=useState(null)
+
+   let x=[
+    {
+      "id": 1,
+      "name": "Dhammika Mahendra Wijesingha",
+      "time": "09:00"
+      
+    },
+    {
+      "id": 2,
+      "name": "Bob",
+      "time": "10:30"
+      
+    },
+    {
+      "id": 3,
+      "name": "Charlie",
+      "time": "11:45"
+      
+    },
+    {
+      "id": 4,
+      "name": "David",
+      "time": "13:15"
+    
+    },
+    {
+      "id": 5,
+      "name": "Eve",
+      "time": "14:30"
+      
+    },
+    {
+      "id": 6,
+      "name": "Frank",
+      "time": "15:45"
+      
+    },
+    {
+      "id": 7,
+      "name": "Grace",
+      "time": "16:30"
+      
+    },
+    {
+      "id": 8,
+      "name": "Henry",
+      "time": "17:15"
+      
+    },
+    {
+      "id": 9,
+      "name": "Isabel",
+      "time": "18:00"
+      
+    },
+    {
+      "id": 10,
+      "name": "Jack",
+      "time": "19:00"
+    
+    },
+    {
+      "id": 11,
+      "name": "Kelly",
+      "time": "20:00"
+      
+    },
+    {
+      "id": 12,
+      "name": "Liam",
+      "time": "21:00"
+      
+    }
+  ]
+  
   
   return (
     <div>
     <Navbar></Navbar>
 
     <Grid container spacing={0} sx={{paddingTop:'64px',height:'100vh'}}>
-      <Grid item xs={3} style={{height:'100%'}}>
-        <SidebarContainer>
+      <Grid item xs={3} style={{height:'100%',backgroundColor:'#DEF4F2'}}>
+        <SidebarContainer >
           <SidebarTop>
 
           </SidebarTop>
           <SidebarList>
-            
+          {
+         x.map((elm,ind)=>{
+            return(
+             <>
+              <Sideunit_Bill key={ind} id={elm.id} name={elm["name"]} time={elm["time"]}  setSelect={setSelect} selected={elm.id==select?true:''}></Sideunit_Bill>
+              <div style={{borderBottom:'1px solid #c2c8d1',height:'1px',width:'90%'}}></div>
+             </>
+            )
+         })
+       }
           </SidebarList>
         </SidebarContainer>
       </Grid>

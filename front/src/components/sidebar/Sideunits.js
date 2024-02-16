@@ -42,9 +42,9 @@ function Sideunit_Doctor({ name, title ,selectedTab,index}) {
 }
 
 
-function Sideunit_Patient({name,status,time,selected}) {
+function Sideunit_Patient({id,name,status,time,selected,setSelect}) {
     return (
-      <div style={{width:'90%',margin:'3px',cursor:'pointer',backgroundColor: selected==true?'#79CCBE':'',padding:'5px',paddingTop:'0',}}>
+      <div style={{width:'90%',margin:'3px',cursor:'pointer',backgroundColor: selected==true?'#79CCBE':'',padding:'5px',paddingTop:'0',color: selected==true?'#FFFFFF':'',borderRadius:'5px'}} onClick={()=>setSelect(id)}>
           <Typography sx={{fontSize:'17px'}}>{name}</Typography>
           <div style={{display:'flex',alignContent:'space-between'}}>
                   <div style={{display:'inline',border:selected==true?'1px solid white':'1px solid grey',paddingLeft:'4px',paddingRight:'4px',borderRadius:'5px',marginLeft:'4px',color: selected==true?'white':'grey'}}>{time}</div>
@@ -54,14 +54,14 @@ function Sideunit_Patient({name,status,time,selected}) {
     )
 }
 
-function Sideunit_Test({id,name,test,setSelect,selected}) {
+function Sideunit_Test({id,name,test,setSelectedT,selectedT}) {
     return (
-      <div style={{width:'90%',margin:'3px',cursor:'pointer',backgroundColor: selected==true?'#79CCBE':'',padding:'5px',paddingTop:'0',color: selected==true?'#FFFFFF':'',borderRadius:'5px'}} onClick={()=>setSelect(id)}>
+      <div style={{width:'90%',margin:'3px',cursor:'pointer',backgroundColor: selectedT==id?'#79CCBE':'#ffffff',padding:'5px',paddingTop:'0',color: selectedT==id?'#FFFFFF':'',borderRadius:'8px',boxShadow:'0 0 4px rgba(0, 0, 0, .2)'}} onClick={()=>setSelectedT(id)}>
           <Typography sx={{fontSize:'17px'}}>{name}</Typography>
           {
             test.map((el)=>{
               return(
-              <div key={el} style={{display:'inline',backgroundColor: selected==true?'#60a398':'#adaaaa',color:'white',paddingRight:'4px',paddingLeft:'4px',paddingTop:'2px',paddingBottom:'2px',borderRadius:'15px',marginRight:'4px'}}>{el}</div>
+              <div key={el} style={{display:'inline',backgroundColor: selectedT==id?'#60a398':'#adaaaa',color:'white',paddingRight:'4px',paddingLeft:'4px',paddingTop:'2px',paddingBottom:'2px',borderRadius:'15px',marginRight:'4px'}}>{el}</div>
               )
             })
           }
@@ -69,9 +69,9 @@ function Sideunit_Test({id,name,test,setSelect,selected}) {
     )
 }
 
-function Sideunit_Bill({name,time,selected}) {
+function Sideunit_Bill({id,name,time,setSelect,selected}) {
   return (
-    <div style={{width:'90%',margin:'3px',padding:'5px',paddingTop:'0',cursor:'pointer',backgroundColor: selected==true?'#79CCBE':'',color: selected==true?'#FFFFFF':''}}>
+    <div style={{width:'90%',margin:'3px',padding:'5px',paddingTop:'0',cursor:'pointer',backgroundColor: selected==true?'#79CCBE':'',color: selected==true?'#FFFFFF':''}} onClick={()=>setSelect(id)}>
         <Typography sx={{fontSize:'17px'}}>{name}</Typography>
         <div>
                 <div style={{display:'inline',border:selected==true?'1px solid white':'1px solid grey',color:selected==true?'white':'grey',paddingLeft:'4px',paddingRight:'4px',borderRadius:'5px'}}>{time}</div>
@@ -79,4 +79,4 @@ function Sideunit_Bill({name,time,selected}) {
     </div>
   )
 }
-export {Sideunit_Doctor,Sideunit_Patient,Sideunit_Test}
+export {Sideunit_Doctor,Sideunit_Patient,Sideunit_Test,Sideunit_Bill}
