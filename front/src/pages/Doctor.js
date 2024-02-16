@@ -171,9 +171,10 @@ export default function Doctor() {
                   color: 'rgb(0, 153, 255)', 
                   float: 'right', 
                   marginRight: '10px', 
-                  fontSize: '30px' }} 
+                  fontSize: '30px',
+                  cursor: 'pointer', }} 
                   onClick={handleAddIconClick} />
-                  <UpdateIcon sx={{ color: 'rgb(255, 153, 0)', float: 'right', marginRight: '10px', fontSize: '30px' }}
+                  <UpdateIcon sx={{ color: 'rgb(255, 153, 0)', float: 'right', marginRight: '10px', fontSize: '30px', cursor: 'pointer', }}
                   onClick={handleViewReporsClick} />
                   <AnaliticalReports openAreports={openAreports} setOpenAreports={setOpenAreports} /> 
                   <Typography gutterBottom variant="h6">{docdata.name}</Typography>
@@ -193,14 +194,17 @@ export default function Doctor() {
             marginLeft: '10%',
             fontSize: '30px', 
             float: 'Left',
-            marginTop: '27px' }}
+            marginTop: '27px',
+            cursor: 'pointer', }}
            onClick={handleAddDrugsClick}/>           
           </div>
           
           <ThermostatIcon sx={{ color: '#33cc33',
                                 marginLeft: '74%', 
                                 fontSize: '45px', 
-                                marginTop: '48px' }} 
+                                marginTop: '48px',
+                                cursor: 'pointer',
+                               }} 
                                 onClick={handleAddButtonClick}
                                />                                                                
                    <LabRequest openpopBox={openpopBox} setOpenpopBox={setOpenpopBox} />
