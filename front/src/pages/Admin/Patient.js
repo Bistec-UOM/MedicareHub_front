@@ -25,7 +25,7 @@ const [update,forceUpdate]=useState(0);
     axios.get('https://localhost:7205/api/Patient')
       .then(response => {
         const apiData = response.data.map((data, index) => createData(
-          index+1,
+          data.id,
           data.name,
           data.nic,
           data.address,
@@ -81,8 +81,9 @@ const [update,forceUpdate]=useState(0);
 
   const handleAddSaveClose = () => {
       // Create a data object to send in the POST request
-  
-  axios.post('https://localhost:7205/api/Patient', pData)
+  let tmp = pData
+  tmp.id = 0;
+  axios.post('https://localhost:7205/api/Patient', tmp)
   .then(response => {
     console.log('Data added successfully:', response.data);
     forceUpdate(prevCount => prevCount + 1); // Trigger a re-render
@@ -94,7 +95,14 @@ const [update,forceUpdate]=useState(0);
 
   setOpen(false);
   };
-  
+  const handleRemove =()=>{
+    axios.delete(`https://localhost:7205/api/patient/`+`${pData.id}`)
+    .then(res=>{
+      console.log("success")
+      forceUpdate(prevCount => prevCount + 1); // Trigger a re-render
+    });
+    setEditOpen(false);
+  }
 
 
 
@@ -112,7 +120,7 @@ const [isDisabled, setIsDisabled] = useState(true);
 try {
   console.log(pData)
           // Assuming you have an API endpoint for updating a patient
-          axios.put('https://localhost:7205/api/Patient/'+ `${formData.id}` , pData)
+          axios.put('https://localhost:7205/api/patient/'+ `${pData.id}` , pData)
           .then(response => {
             // Handle success, maybe update local state or dispatch an action
             console.log('Patient updated successfully:', response.data);
@@ -385,17 +393,33 @@ const Filter = (event) => {
               value={formData.dob }
               onChange={(e) => setFormData({...formData,dob:e.target.value})}
             />
-            <TextField
-              disabled={isDisabled}
-              label="Gender"
-              margin="dense"
-              value={formData.gender}
-              onChange={(e) =>setFormData({...formData,gender:e.target.value})}
-            />
+  <Select
+    labelId="gender-label"
+    id="gender"
+    value={formData.gender}
+    onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
+    label="Gender"
+    disabled={isDisabled}
+    sx={{m:1,ml:1}}
+  >
+    <MenuItem value="Male">Male</MenuItem>
+    <MenuItem value="Female">Female</MenuItem>
+    {/* <MenuItem value="other">Other</MenuItem> */}
+  </Select>
 
            
           </DialogContent>
           <DialogActions>
+          {!isDisabled && (
+        <Button
+          onClick={handleRemove}
+          variant="outlined"
+          color="error"
+          sx={{ m: 2 }}
+        >
+          Delete
+        </Button>
+      )}
             <Button
               onClick={isDisabled ? handleEditClick : handleEditSave}
               variant="contained"
