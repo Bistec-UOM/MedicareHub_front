@@ -13,46 +13,47 @@ import Edittemplate from '../components/Lab/Edittemplate';
 export default function Lab() {
 
   const [select,setSelect]=useState(null)
-  const [date,setDate]=useState(1)
+  const [date,setDate]=useState(0)
   const [loadIn,setLoadIn]=useState([]) 
 
   useEffect(()=>{
     document.body.style.margin = '0';
-    console.log(x[date])
-    setLoadIn(x[date])
+    let a=x.filter((el)=>{
+      return el.date==date
+    })
+    setLoadIn(a)
    },[date])
 
   {/*to navigate between pages   1:fill test   2:test list   3:create tmplt   4:edit tmplt*/}
   const [page,setPage]=useState(1)
   const [tId,settId]=useState()
-  const [RId,setRId]=useState()
 
   let x=[
-    [{id:13,"name": "Olivia Anderson", "test":['hCG'],"testId":[]},
-    {id:14,"name": "Joshua Taylor", "test": ['FBC'],"testId":[1]},
-    {id:15,"name": "Sophia Thomas", "test": ['FBC'],"testId":[1]},
-    {id:16,"name": "Ethan Walker", "test":['HBC','Thyroxin'],"testId":[2,3]},
-    {id:17,"name": "Isabella Clark", "test": ['Urine'],"testId":[5]},
-    {id:18,"name": "James Young", "test": ['FBC'],"testId":[1]}],
+    {date:0,id:13,"name": "Olivia Anderson", "test":['hCG'],"testId":[]},
+    {date:0,id:14,"name": "Joshua Taylor", "test": ['FBC'],"testId":[1]},
+    {date:0,id:15,"name": "Sophia Thomas", "test": ['FBC'],"testId":[1]},
+    {date:0,id:16,"name": "Ethan Walker", "test":['HBC','Thyroxin'],"testId":[2,3]},
+    {date:0,id:17,"name": "Isabella Clark", "test": ['Urine'],"testId":[5]},
+    {date:0,id:18,"name": "James Young", "test": ['FBC'],"testId":[1]},
 
-    [{id:1,"name": "Sarah Johnson", "test": ['Thyroxin'],"testId":[3]},
-    {id:2,"name": "Michael Smith", "test":['FBC','hCG'],"testId":[1,7]},
-    {id:3,"name": "Lisa Brown", "test": ['FBC'],"testId":[1]},
-    {id:4,"name": "John Davis", "test": ['BMT'],"testId":[8]},
-    {id:5,"name": "Emily Wilson", "test":['HBC','Thyroxin'],"testId":[2,3]},
-    {id:6,"name": "David Martinez", "test": ['Urine'],"testId":[5]},
-    {id:7,"name": "Jessica Anderson", "test": ['FBC'],"testId":[1]},
-    {id:8,"name": "William Thompson", "test":['FBC'],"testId":[1]},
-    {id:9,"name": "Jennifer Garcia", "test": ['FBC'],"testId":[1]},
-    {id:10,"name": "Robert Rodriguez", "test": ['Lipid'],"testId":[6]},
-    {id:11,"name": "Ashley Lopez", "test":['Lipid','Glucose'],"testId":[6,4]},
-    {id:12,"name": "Matthew Lee", "test": ['FBC'],"testId":[1]}],
+    {date:1,id:1,"name": "Sarah Johnson", "test": ['Thyroxin'],"testId":[3]},
+    {date:1,id:2,"name": "Michael Smith", "test":['FBC','hCG'],"testId":[1,7]},
+    {date:1,id:3,"name": "Lisa Brown", "test": ['FBC'],"testId":[1]},
+    {date:1,id:4,"name": "John Davis", "test": ['BMT'],"testId":[8]},
+    {date:1,id:5,"name": "Emily Wilson", "test":['HBC','Thyroxin'],"testId":[2,3]},
+    {date:1,id:6,"name": "David Martinez", "test": ['Urine'],"testId":[5]},
+    {date:1,id:7,"name": "Jessica Anderson", "test": ['FBC'],"testId":[1]},
+    {date:1,id:8,"name": "William Thompson", "test":['FBC'],"testId":[1]},
+    {date:1,id:9,"name": "Jennifer Garcia", "test": ['FBC'],"testId":[1]},
+    {date:1,id:10,"name": "Robert Rodriguez", "test": ['Lipid'],"testId":[6]},
+    {date:1,id:11,"name": "Ashley Lopez", "test":['Lipid','Glucose'],"testId":[6,4]},
+    {date:1,id:12,"name": "Matthew Lee", "test": ['FBC'],"testId":[1]},
 
-    [{id:6,"name": "Jacob Baker", "test": ['Urine'],"testId":[5]},
-    {id:7,"name": "Ava Green", "test": ['FBC'],"testId":[1]},
-    {id:8,"name": "Alexander Adams", "test":['FBC'],"testId":[1]},
-    {id:9,"name": "Charlotte Hill", "test": ['FBC'],"testId":[1]},
-    {id:10,"name": "William Murphy", "test": ['Lipid'],"testId":[6]}]
+    {date:2,id:6,"name": "Jacob Baker", "test": ['Urine'],"testId":[5]},
+    {date:2,id:7,"name": "Ava Green", "test": ['FBC'],"testId":[1]},
+    {date:2,id:8,"name": "Alexander Adams", "test":['FBC'],"testId":[1]},
+    {date:2,id:9,"name": "Charlotte Hill", "test": ['FBC'],"testId":[1]},
+    {date:2,id:10,"name": "William Murphy", "test": ['Lipid'],"testId":[6]}
    ]
 
    const [Tload,setTload]=useState([
@@ -111,10 +112,6 @@ export default function Lab() {
 
     const FloadSet=(xLoad)=>{
       setFload({...Fload,[Tload.length]:xLoad})
-    }
-
-    const TloadEdit=(id,xLoad)=>{
-
     }
 
     const FloadEdit=(id,xLoad)=>{
@@ -194,10 +191,10 @@ export default function Lab() {
     {
               page==1?
 
-              select ? 
+              selectedT!=null ? 
               <Card sx={{width:'100%',height:'30px'}} square>
                 <Typography variant='h6'>{
-                  showSelect(select)
+                  
                 }</Typography>
               </Card>
               : ''

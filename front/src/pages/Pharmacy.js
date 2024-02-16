@@ -142,7 +142,6 @@ const result = 10 * 15
             return(
              <>
               <Sideunit_Bill key={ind} id={elm.id} name={elm["name"]} time={elm["time"]}  setSelect={setSelect} selected={elm.id==select?true:''}></Sideunit_Bill>
-              <div style={{borderBottom:'1px solid #c2c8d1',height:'1px',width:'90%'}}></div>
              </>
             )
          })
