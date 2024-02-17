@@ -86,6 +86,9 @@ export default function Pharmacy_drugstore() {
     handleEditClose();
     setConfirm(false)
   };
+  const handleDelete =() => {
+    setConfirm(false)
+  };
   const handleEditOpen =(row) => {
     setSelectedCard(row);
     setEditOpen(true);
@@ -197,7 +200,6 @@ export default function Pharmacy_drugstore() {
             return(
              <>
               <Sideunit_Bill key={ind} id={elm.id} name={elm["name"]} time={elm["time"]}  setSelect={setSelect} selected={elm.id==select?true:''}></Sideunit_Bill>
-              <div style={{borderBottom:'1px solid #c2c8d1',height:'1px',width:'90%'}}></div>
              </>
             )
          })
@@ -385,6 +387,14 @@ export default function Pharmacy_drugstore() {
           
         </DialogContent>
         <DialogActions>
+          
+          <Button
+            onClick={handleDelete}
+            variant="contained"
+            sx={{ backgroundColor: "rgb(121, 204, 190)", m: 2 }}
+          >
+            Delete
+          </Button>
           <Button
             onClick={handleEdit}
             variant="contained"

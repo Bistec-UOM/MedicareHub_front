@@ -152,7 +152,6 @@ export default function Doctor() {
             return(
              <>
               <Sideunit_Patient key={ind} id={elm.id} name={elm["name"]} time={elm["time"]} status={elm["status"]}  setSelect={setSelect} selected={elm.id==select?true:''}></Sideunit_Patient>
-              <div style={{borderBottom:'1px solid #c2c8d1',height:'1px',width:'90%'}}></div>
              </>
             )
          })
