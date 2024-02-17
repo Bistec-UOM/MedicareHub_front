@@ -12,9 +12,13 @@ import Edittemplate from '../components/Lab/Edittemplate';
 
 export default function Lab() {
 
-  const [select,setSelect]=useState(null)
+  const [page,setPage]=useState(1)//Navigate pages  [1:dashboard  2:testlist  3:createtetmplt  4:edittmplt]
+
   const [date,setDate]=useState(2)
-  const [loadIn,setLoadIn]=useState([]) 
+  const [tId,settId]=useState()//selected test <----------- from LabTestList
+  const [selectedT,setSelectedT]=useState()//selected report <---------- from Sideunit
+
+  const [loadIn,setLoadIn]=useState([]) //selected reports by a date
 
   useEffect(()=>{
     document.body.style.margin = '0';
@@ -23,11 +27,6 @@ export default function Lab() {
     })
     setLoadIn(a)
    },[date])
-
-  {/*to navigate between pages   1:fill test   2:test list   3:create tmplt   4:edit tmplt*/}
-  const [page,setPage]=useState(1)
-  {/*Store current selected Test id*/}
-  const [tId,settId]=useState()
 
   let x=[
     {date:1,id:1,"name": "Sarah Johnson", "test": ['Thyroxin'],"testId":[3]},
@@ -98,27 +97,20 @@ export default function Lab() {
     ]
     })
 
-    const TloadSet=(xLoad)=>{
+    const TloadSet=(xLoad)=>{//Add newly created test
       setTload([...Tload,xLoad])
     }
 
-    const FloadSet=(xLoad)=>{
+    const FloadSet=(xLoad)=>{//set created field data <----- from CreatLabtemplate
       setFload({...Fload,[Tload.length]:xLoad})
     }
 
-    const FloadEdit=(id,xLoad)=>{
+    const FloadEdit=(id,xLoad)=>{//set edited field data <----- from Edittemplate
       setFload({...Fload,[id]:xLoad})
     }
 
 
-  const [selectedT,setSelectedT]=useState()
-
- function showSelect(id){
-
-  const matchingItem = loadIn.find(item => item.id === id);
-  return matchingItem ? matchingItem.name : null;
- }
-
+//Responsive drawer==================================================================================
  const drawerW=320
  const [mobileOpen, setMobileOpen] = useState(false)
  const [isClosing, setIsClosing] = useState(false)
@@ -153,7 +145,7 @@ export default function Lab() {
     </SidebarContainer>
   </Grid>
  )
-
+//============================================================================================================
   return (
    <div>
     <Box sx={{ display: 'flex' ,height:'100%'}}>

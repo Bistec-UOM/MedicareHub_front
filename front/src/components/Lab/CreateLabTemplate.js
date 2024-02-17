@@ -7,7 +7,7 @@ import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrow
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
-export default function CreateLabTemplate({setPage,FloadSet,TloadSet,tId}) {
+export default function CreateLabTemplate({setPage,FloadSet,TloadSet}) {
 
     useEffect(()=>{
         document.body.style.margin = '0';
@@ -60,7 +60,6 @@ export default function CreateLabTemplate({setPage,FloadSet,TloadSet,tId}) {
       }
     
       const swapElement = (indexToSwap, newIndex) => {
-    
         const updatedList = [...testField];
         if (
           indexToSwap >= 0 &&
@@ -76,15 +75,15 @@ export default function CreateLabTemplate({setPage,FloadSet,TloadSet,tId}) {
         }
       }
 
-      //Finalizing
+      //Finalizing---------------------------------------------------------------
       const createTemplate=()=>{
         let T={
           'name':testData.name,
           'provider':testData.provider,
           'price':testData.price
         }
-        TloadSet(T)
-        FloadSet(testField)
+        TloadSet(T)//Send test to test list
+        FloadSet(testField)//Send fileds list to corrsp. field set
         setPage(2)
       }
     

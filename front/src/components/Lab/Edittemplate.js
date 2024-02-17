@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {Button, Paper, TextField, Toolbar, Typography,Box} from "@mui/material"
+import {Button, Paper,Toolbar, Typography,Box} from "@mui/material"
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
@@ -14,7 +14,6 @@ export default function CreateLabTemplate({setPage,Fdata,tId,Tdata,FloadEdit}) {
        },[])
       
       //Field values--------------------------------------------------------------
-      const [testData,setTestData]=useState({name:'',provider:'',price:0})
       const [testField,setTestField]=useState(Fdata)
       const [fieldName,setFieldName]=useState()
       const [refMin,setRefMin]=useState()
@@ -59,8 +58,7 @@ export default function CreateLabTemplate({setPage,Fdata,tId,Tdata,FloadEdit}) {
         setEditMode(false)
       }
     
-      const swapElement = (indexToSwap, newIndex) => {
-    
+      const swapElement = (indexToSwap, newIndex) => {   
         const updatedList = [...testField];
         if (
           indexToSwap >= 0 &&
@@ -76,9 +74,9 @@ export default function CreateLabTemplate({setPage,Fdata,tId,Tdata,FloadEdit}) {
         }
       }
 
-      //Finalizing
-      const createTemplate=()=>{
-        FloadEdit(tId,testField)
+      //Finalizing--------------------------------------------------
+      const saveTemplate=()=>{
+        FloadEdit(tId,testField)//send to Lab.js
         setPage(2)
       }
     
@@ -90,7 +88,7 @@ export default function CreateLabTemplate({setPage,Fdata,tId,Tdata,FloadEdit}) {
 
             <Typography sx={{fontSize:{xs:'17px'}}}>{Tdata.name}</Typography>
         
-            <Button variant='contained' size='small' onClick={()=>createTemplate()} sx={{mr:{xs:'5px',sm:'15px'}}}>Save</Button>
+            <Button variant='contained' size='small' onClick={()=>saveTemplate()} sx={{mr:{xs:'5px',sm:'15px'}}}>Save</Button>
         </Toolbar>
 
         <Box sx={{display:'flex',flexDirection:'column',alignItems:'center', paddingTop:{xs:'80px',sm:'80px'}}}>
