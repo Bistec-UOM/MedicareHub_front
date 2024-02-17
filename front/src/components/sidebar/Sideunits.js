@@ -1,6 +1,6 @@
 import React, {useState } from 'react'
 import Typography from '@mui/material/Typography'
-import { Chip , Box} from '@mui/material'
+import { Chip , Box, Paper} from '@mui/material'
 import CheckIcon from '@mui/icons-material/Check';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import Divider from '@mui/material/Divider';
@@ -57,8 +57,29 @@ function Sideunit_Patient({id,name,status,time,selected,setSelect}) {
 
 function Sideunit_Test({id,name,test,setSelectedT,selectedT}) {
     return (
-      <div style={{width:'90%',margin:'3px',cursor:'pointer',backgroundColor: selectedT==id?'#79CCBE':'#ffffff',padding:'5px',paddingTop:'0',color: selectedT==id?'#FFFFFF':'',borderRadius:'8px',boxShadow:'0 0 4px rgba(0, 0, 0, .2)'}} onClick={()=>setSelectedT(id)}>
-          <Typography sx={{fontSize:'17px'}}>{name}</Typography>
+      // <div >
+<Paper
+  style={{
+    width: '90%',
+    margin: '5px',
+    cursor: 'pointer',
+    padding: '8px',
+    paddingTop:'10px',
+    borderRadius: '8px',
+  }}
+  sx={{
+    backgroundColor: selectedT === id ? 'rgb(121, 204, 190)' : '#ffffff',
+    boxShadow: 2,
+    "&:hover": {
+      boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
+      backgroundColor: selectedT === id ? 'rgb(121, 204, 190)' : 'rgb(231, 255, 249)',
+    },
+  }}
+  onClick={() => setSelectedT(id)}
+>
+  {/* Your Paper content goes here */}
+
+<Typography sx={{fontSize:'17px'}}>{name}</Typography>
           {
             test.map((el)=>{
               return(
@@ -66,7 +87,8 @@ function Sideunit_Test({id,name,test,setSelectedT,selectedT}) {
               )
             })
           }
-      </div>
+</Paper>
+      // </div>
     )
 }
 

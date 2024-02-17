@@ -76,7 +76,7 @@ function ResponseAppCalender() {
     {'name':'Amal Rathnayaka','title':'MBBS, MD, MRCP(UK)'},
     {'name':'Bimasara Herath','title':'MBBS, MD, MRCP(UK), PRCP-E'},
     {'name':'Tharushi Fernando','title':'MBBS, MD'},
-    {'name':'Infas Mohomad','title':'MBBS, FCGP(SL), MD-CH(UK), MBS-CH(UK), C.ht(USA)'}
+    {'name':'Ankmal saruken','title':'MBBS, FCGP(SL), MD-CH(UK), MBS-CH(UK), C.ht(USA)'}
     
     
    

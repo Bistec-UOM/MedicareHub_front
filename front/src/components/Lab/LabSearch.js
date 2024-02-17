@@ -24,13 +24,13 @@ export default function LabSearch({setPage,setDate,date}) {
   
     {/*---------------------searchbar---------------------------------------*/}
      <Paper component="form"
-     sx={{p: "2px 4px",display: "flex",alignItems: "center",height:'30px',width: "90%",borderRadius: "20px",
+     sx={{p:2.3,display: "flex",alignItems: "center",height:'40px',width: "90%",borderRadius: "13px",
        boxShadow: 1}}>
     
-     <InputBase type="text" className="form-control" sx={{ flex: 1 }} placeholder="Search"/>
-     <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-     <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
-       <SearchIcon />
+     <InputBase type="text" className="form-control" sx={{ flex: 1 }} placeholder="Search by Patient"/>
+     <Divider sx={{ height: 20,position:'relative',left:'10px'}} orientation="vertical" />
+     <IconButton type="button"  aria-label="search">
+       <SearchIcon sx={{position:'relative',left:'10px'}}/>
      </IconButton>
      </Paper>  
      </div>

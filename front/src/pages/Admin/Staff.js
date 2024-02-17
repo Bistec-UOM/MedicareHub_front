@@ -1,8 +1,13 @@
-import {Paper,Typography,Button,Dialog,DialogTitle,DialogContent,DialogActions,TextField,FormControl,InputLabel,Select,MenuItem} from "@mui/material";
+import {Paper,Typography,Button,Dialog,DialogTitle,DialogContent,DialogActions,TextField,FormControl,InputLabel,Select,MenuItem, Box} from "@mui/material";
 import * as React from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import { useState,useEffect } from "react";
 import axios from "axios";
+import dayjs from 'dayjs';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DateField } from '@mui/x-date-pickers/DateField';
 
 
 
@@ -53,7 +58,8 @@ const [isDisabled, setIsDisabled] = useState(true);
     axios.get(`https://localhost:7205/api/User`)
     .then(res => {
       const apiData = res.data.map((data,index) => createData(
-        index+1,
+        // index+1,
+        data.id,
         data.fullName,
         data.name,
         data.nic,
@@ -65,6 +71,7 @@ const [isDisabled, setIsDisabled] = useState(true);
         data.age,
         data.gender,
         data.role,
+        
         // data.age
       ));
       setStaffData(apiData);
@@ -74,7 +81,6 @@ const [isDisabled, setIsDisabled] = useState(true);
     });
     
   }, [update]);
-  
 
   const [row2, setStaffData] = useState([]);
 
@@ -93,10 +99,26 @@ const [isDisabled, setIsDisabled] = useState(true);
     qualifications:formData.qualifications,
     role:formData.role
   };
-
+  // const p2Data = {
+  //   // id:formData.id,
+  //   name: formData.name,
+  //   fullName: formData.fullName,
+  //   nic: formData.nic,
+  //   address: formData.address,
+  //   contactNumber: formData.contactNumber,
+  //   email: formData.email,
+  //   age: formData.age,
+  //   gender: formData.gender,
+  //   qualifications:formData.qualifications,
+  //   role:formData.role
+  // };
+const [Role, setRole] = useState("");
   const handleAddSaveClose = () =>{
-    
-    axios.post(`https://localhost:7205/api/User`,pData)
+    let temp = pData
+    temp.id = 0;
+    temp.role = Role;
+    console.log(temp.role)
+    axios.post(`https://localhost:7205/api/User`,temp)
     .then(res => {
       console.log('success')
           forceUpdate(prevCount => prevCount + 1); // Trigger a re-render
@@ -109,21 +131,27 @@ const [isDisabled, setIsDisabled] = useState(true);
 
   const handleAddClickOpen = (buttonNumber) => {
     setType(`Add ${buttonNumber}`);
+    setRole(buttonNumber);
+    console.log(Role)
     setOpen(true);
   };
 
 
   const [open, setOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  
   const [selectedPaper, setSelectedPaper] = useState(null);
   const [Type, setType] = useState('');
 
   const handleClose = () => {
     setOpen(false);
+    setEditOpen(false);
+    setDeleteOpen(false);
   };
 
 
-
+  // const [value, setValue] = React.useState(dayjs('2022-04-17'));
 
 
 
@@ -136,10 +164,10 @@ const [isDisabled, setIsDisabled] = useState(true);
 
     
 try {
-  console.log(pData,"fid",formData.id);
+  console.log(pData,"fid",pData.id);
 
           // Assuming you have an API endpoint for updating a patient
-          axios.put(`https://localhost:7205/api/User/`+`${formData.id}` , pData)
+          axios.put(`https://localhost:7205/api/User/`+`${pData.id}` , pData)
           .then(response => {
             // Handle success, maybe update local state or dispatch an action
             console.log('Patient updated successfully:', response.data);
@@ -162,7 +190,7 @@ try {
   const handleEditClickOpen = (row) => {
     // setType(`Edit ${buttonNumber}`);
     setFormData({...formData,id: row.id, name: row.name,role:row.role, fullName: row.fullName, nic: row.nic,address: row.address,contactNumber:row.contactNumber,email:row.email,age:row.age,gender:row.gender,qualifications:row.qualifications});
-
+console.log(pData.id)
     // setSelectedPaper(row);
     setEditOpen(true);
     setIsDisabled(true);
@@ -181,12 +209,25 @@ try {
       [field]: value,
     });
   };
-
-  const handleRemove =()=>{
-    
-  }
-
-
+  const handleRemove = () => {
+    console.log('removed'+formData.id)
+    axios.delete(`https://localhost:7205/api/User/${pData.id}`)
+      .then(res => {
+        forceUpdate(prevCount => prevCount + 1); // Trigger a re-render
+        console.log("success", formData);
+      })
+      .catch(error => {
+        console.error("Error deleting user:", error);
+      });
+  
+    setEditOpen(false);
+    setDeleteOpen(false);
+  };
+  
+  // const [Gender, setGender] = React.useState('');
+const deletePopUp = () =>{
+  setDeleteOpen(true);
+}
 
 
 
@@ -241,16 +282,48 @@ try {
         </DialogTitle>
         <DialogContent>
           {/* Add form fields or other content here */}
-          <TextField label="Name" fullWidth sx={{ mb: 1, mt: 3 }} onChange={(e) => handleInputChange("name", e.target.value)}/>
-          <TextField label="Full Name" sx={{ mb: 1 }} onChange={(e) => handleInputChange("fullName", e.target.value)}/>
-          <TextField label="NIC" sx={{ ml: 4, mb: 1 }} onChange={(e) => handleInputChange("NIC", e.target.value)}/>
-          <TextField label="Address" fullWidth sx={{ mb: 1 }} onChange={(e) => handleInputChange("address", e.target.value)}/>
-          <TextField label="Contact Number" sx={{ mb: 1 }} onChange={(e) => handleInputChange("contactNumber", e.target.value)}/>
-          <TextField label="qualifications" sx={{ ml: 4, mb: 1 }} onChange={(e) => handleInputChange("qualifications", e.target.value)}/>
-          <TextField label="Role" fullWidth sx={{ mb: 1 }} onChange={(e) => handleInputChange("role", e.target.value)}/>
-          <TextField label="E-mail" fullWidth sx={{ mb: 1 }} onChange={(e) => handleInputChange("email", e.target.value)}/>
-          <TextField label="Date of Birth" sx={{ mb: 1 }} onChange={(e) => handleInputChange("age", e.target.value)}/>
-          <TextField label="Gender" sx={{ ml: 4, mb: 1 }} onChange={(e) => handleInputChange("gender", e.target.value)}/>
+          <TextField required label="Full Name" fullWidth sx={{mb:2}}  onChange={(e) => handleInputChange("fullName", e.target.value)}/>
+          <TextField required label="Usual Name"  sx={{ mb: 1 }} onChange={(e) => handleInputChange("name", e.target.value)}/>
+          <TextField required  label="NIC" sx={{ ml: 4, mb: 1 }} onChange={(e) => handleInputChange("NIC", e.target.value)}/>
+          <TextField required label="Address" fullWidth sx={{ mb: 1 }} onChange={(e) => handleInputChange("address", e.target.value)}/>
+          <TextField required label="Contact Number" sx={{ mb: 1 }} onChange={(e) => handleInputChange("contactNumber", e.target.value)}/>
+          <TextField required label="qualifications" sx={{ ml: 4, mb: 1 }} onChange={(e) => handleInputChange("qualifications", e.target.value)}/>
+          {/* <TextField label="Role" fullWidth sx={{ mb: 1 }} onChange={(e) => handleInputChange("role", e.target.value)}/> */}
+          <TextField required label="E-mail" fullWidth sx={{ mb: 1 }} onChange={(e) => handleInputChange("email", e.target.value)}/>
+          {/* <TextField label="Date of Birth" sx={{ mb: 1 }} onChange={(e) => handleInputChange("age", e.target.value)}/> */}
+          <div style={{display:'flex'}}>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <DemoContainer components={['DateField']}>
+        <DateField
+          label="Date Of Birth"
+          style={{width:'200px'}}
+          required
+          // value={value}
+          onChange={(newValue) => handleInputChange('age', newValue)}
+          renderInput={(props) => <TextField {...props} />} // You may need to import TextField from '@mui/material/TextField'
+          // format="YYYY/MM/DD"
+        />
+      </DemoContainer>
+    </LocalizationProvider>
+          {/* <TextField label="Gender" sx={{ ml: 4, mb: 1 }} onChange={(e) => handleInputChange("gender", e.target.value)}/> */}
+          <Box>
+  <FormControl style={{ width: '200px',margin:'9px',marginLeft:'40px' }}>
+    <InputLabel id="demo-simple-select-label">Gender</InputLabel>
+    <Select
+      labelId="demo-simple-select-label"
+      id="demo-simple-select"
+      required
+      // value={handleInputChange("gender", e.target.value)} // Ensure you're using the correct value here
+      label="Gender"
+      onChange={(e) => handleInputChange("gender", e.target.value)}
+    >
+      <MenuItem value={'Female'}>Female</MenuItem>
+      <MenuItem value={'Male'}>Male</MenuItem>
+    </Select>
+  </FormControl>
+</Box>
+          </div>
+    
           {/* Add more fields as needed */}
         </DialogContent>
         <DialogActions>
@@ -323,46 +396,63 @@ try {
             onChange={(e) => setFormData({...formData,qualifications:e.target.value})}
             disabled={isDisabled}
           />
-          <TextField
-            label="Role"
-            margin="normal"
-            value={formData.role}
-            onChange={(e) => setFormData({...formData,role:e.target.value})}
-            disabled={isDisabled}
-          />
-          <TextField
+                              <FormControl sx={{m:2,ml:4}}>
+           <InputLabel id="demo-simple-select-label">Gender</InputLabel>
+
+           </FormControl>
+<div style={{display:'flex'}}>
+<TextField
             label="Email Address"
-            fullWidth
             margin="normal"
             value={formData.email}
             onChange={(e) => setFormData({...formData,email:e.target.value})}
             disabled={isDisabled}
           />
-          <TextField
-            label="Date of birth"
-            margin="normal"
-            value={formData.age}
-            onChange={(e) => setFormData({...formData,age:e.target.value})}
-            disabled={isDisabled}
-          />
-          <TextField
-            label="gender"
-            margin="normal"
-            value={formData.gender}
-            onChange={(e) => setFormData({...formData,gender:e.target.value})}
-            disabled={isDisabled}
-          />
+<LocalizationProvider dateAdapter={AdapterDayjs}>
+  <DemoContainer components={['DateField']}>
+    <DateField
+      label="Date Of Birth"
+      value={formData.age ? dayjs(formData.age) : null} // Ensure formData.age is a valid date or null
+      onChange={(newValue) => handleInputChange('age', newValue)}
+      renderInput={(props) => <TextField {...props} />}
+      style={{width:'200px',marginLeft:'35px',marginTop:'9px'}}
+      disabled= {isDisabled}
+      // format="YYYY/MM/DD" // You can add this line back if it's needed
+    />
+  </DemoContainer>
+</LocalizationProvider>
+</div>
+<Select
+    labelId="gender-label"
+    id="gender"
+    value={formData.gender}
+    onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
+    label="Gender"
+    disabled={isDisabled}
+    style={{width:"200px"}}
+    // sx={{m:1,ml:1}}
+  >
+    <MenuItem value="Male">Male</MenuItem>
+    <MenuItem value="Female">Female</MenuItem>
+    {/* <MenuItem value="other">Other</MenuItem> */}
+  </Select>
+
+
+
+
+
+
          
         </DialogContent>
         <DialogActions>
         {!isDisabled && (
         <Button
-          onClick={handleRemove}
+          onClick={deletePopUp}
           variant="outlined"
           color="error"
           sx={{ m: 2 }}
         >
-          Remove
+          Delete
         </Button>
       )}
           <Button
@@ -377,7 +467,7 @@ try {
       </Dialog>
 
       {/* Dr Data Paper */}
-      {row2.filter(row=>row.role === 'doctor').map((row)=>
+      {row2.filter(row=>row.role === 'Doctor').map((row)=>
       <Paper
       key={row.Id}
       
@@ -449,7 +539,7 @@ try {
         </Button>
       </Paper>
       {/* recep Paper */}
-      {row2.filter(row=>row.role === 'recep').map((row)=>
+      {row2.filter(row=>row.role === 'Receptionist').map((row)=>
       <Paper
       key={row.Id}
       
@@ -522,7 +612,7 @@ try {
   </Button>
 </Paper>
 {/* recep Paper */}
-{row2.filter(row=>row.role === 'lab').map((row)=>
+{row2.filter(row=>row.role === 'Lab Asistant').map((row)=>
 <Paper
 key={row.Id}
 
@@ -557,6 +647,26 @@ key={row.Id}
   </Typography>
 </Paper>)}
 </div>
+
+
+<React.Fragment>
+      <Dialog
+        open={deleteOpen}
+        onClose={handleClose}
+        // PaperComponent={PaperComponent}
+        aria-labelledby="draggable-dialog-title"
+      >
+        <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
+          are you shure do you want to delete this ?
+        </DialogTitle>
+        <DialogActions>
+          <Button autoFocus onClick={handleClose}>
+            Cancel
+          </Button>
+          <Button onClick={handleRemove} style={{color:"red"}}>Remove</Button>
+        </DialogActions>
+      </Dialog>
+    </React.Fragment>
     </div>
   );
 }

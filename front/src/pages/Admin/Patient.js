@@ -10,6 +10,11 @@ import { Button } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import axios from 'axios';
 import { useEffect } from "react";
+import dayjs from 'dayjs';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DateField } from '@mui/x-date-pickers/DateField';
 
 
 function createData(id, name, nic, address,dob, email,gender,fullName,contactNumber) {
@@ -25,7 +30,7 @@ const [update,forceUpdate]=useState(0);
     axios.get('https://localhost:7205/api/Patient')
       .then(response => {
         const apiData = response.data.map((data, index) => createData(
-          index+1,
+          data.id,
           data.name,
           data.nic,
           data.address,
@@ -81,8 +86,9 @@ const [update,forceUpdate]=useState(0);
 
   const handleAddSaveClose = () => {
       // Create a data object to send in the POST request
-  
-  axios.post('https://localhost:7205/api/Patient', pData)
+  let tmp = pData
+  tmp.id = 0;
+  axios.post('https://localhost:7205/api/Patient', tmp)
   .then(response => {
     console.log('Data added successfully:', response.data);
     forceUpdate(prevCount => prevCount + 1); // Trigger a re-render
@@ -94,7 +100,14 @@ const [update,forceUpdate]=useState(0);
 
   setOpen(false);
   };
-  
+  const handleRemove =()=>{
+    axios.delete(`https://localhost:7205/api/patient/`+`${pData.id}`)
+    .then(res=>{
+      console.log("success")
+      forceUpdate(prevCount => prevCount + 1); // Trigger a re-render
+    });
+    setEditOpen(false);
+  }
 
 
 
@@ -112,7 +125,7 @@ const [isDisabled, setIsDisabled] = useState(true);
 try {
   console.log(pData)
           // Assuming you have an API endpoint for updating a patient
-          axios.put('https://localhost:7205/api/Patient/'+ `${formData.id}` , pData)
+          axios.put('https://localhost:7205/api/patient/'+ `${pData.id}` , pData)
           .then(response => {
             // Handle success, maybe update local state or dispatch an action
             console.log('Patient updated successfully:', response.data);
@@ -254,14 +267,47 @@ const Filter = (event) => {
         </DialogTitle>
         <DialogContent>
           {/* Add form fields or other content here */}
-          <TextField label="Full Name" fullWidth sx={{ mb: 1, mt: 3 }} onChange={(e) => handleInputChange("fullName", e.target.value)}/>
-          <TextField label="Name" sx={{ mb: 1 }}  onChange={(e) => handleInputChange("name", e.target.value)}/>
-          <TextField label="NIC" sx={{ ml: 4, mb: 1 }}  onChange={(e) => handleInputChange("nic", e.target.value)}/>
-          <TextField label="Address" fullWidth sx={{ mb: 1 }}  onChange={(e) => handleInputChange("address", e.target.value)}/>
-          <TextField label="Contact Number" sx={{ mb: 1 }}  onChange={(e) => handleInputChange("contactNumber", e.target.value)}/>
-          <TextField label="E-mail" fullWidth sx={{ mb: 1 }} onChange={(e) => handleInputChange("email", e.target.value)}/>
-          <TextField label="dob" sx={{ mb: 1 }}  onChange={(e) => handleInputChange("dob", e.target.value)}/>
-          <TextField label="Gender" sx={{ ml: 4, mb: 1 }} onChange={(e) => handleInputChange("gender", e.target.value)}/>
+          <TextField required label="Full Name" fullWidth sx={{ mb: 1, mt: 3 }} onChange={(e) => handleInputChange("fullName", e.target.value)}/>
+          <TextField required label="Name" sx={{ mb: 1 }}  onChange={(e) => handleInputChange("name", e.target.value)}/>
+          <TextField required label="NIC" sx={{ ml: 4, mb: 1 }}  onChange={(e) => handleInputChange("nic", e.target.value)}/>
+          <TextField required label="Address" fullWidth sx={{ mb: 1 }}  onChange={(e) => handleInputChange("address", e.target.value)}/>
+          <TextField required label="Contact Number" sx={{ mb: 1 }}  onChange={(e) => handleInputChange("contactNumber", e.target.value)}/>
+          <TextField required label="E-mail" fullWidth sx={{ mb: 1 }} onChange={(e) => handleInputChange("email", e.target.value)}/>
+          {/* <TextField label="dob" sx={{ mb: 1 }}  onChange={(e) => handleInputChange("dob", e.target.value)}/> */}
+          <div style={{display:'flex'}}>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <DemoContainer  components={['DateField']}>
+        <DateField
+        
+          label="Date Of Birth"
+          style={{width:'200px'}}
+          required
+          // value={value}
+          onChange={(newValue) => handleInputChange('dob', newValue)}
+          renderInput={(props) => <TextField {...props} />} // You may need to import TextField from '@mui/material/TextField'
+          // format="YYYY/MM/DD"
+        />
+      </DemoContainer>
+    </LocalizationProvider>
+          {/* <TextField label="Gender" sx={{ ml: 4, mb: 1 }} onChange={(e) => handleInputChange("gender", e.target.value)}/> */}
+          <FormControl style={{marginLeft:'15px',marginTop:'8px'}}>
+        <InputLabel id="demo-simple-select-label">Gender</InputLabel>
+        <Select
+        required
+        style={{width:'200px'}}
+        labelId="demo-simple-select-label"
+          // labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          // value={handleInputChange("gender", e.target.value)}
+          label="Gender"
+          onChange={(e) => handleInputChange("gender", e.target.value)}
+        >
+          <MenuItem value={'Female'}>Female</MenuItem>
+          <MenuItem value={'Male'}>Male</MenuItem>
+
+        </Select>
+      </FormControl>
+          </div>
           {/* Add more fields as needed */}
         </DialogContent>
         <DialogActions>
@@ -378,24 +424,48 @@ const Filter = (event) => {
               sx={{ml:1}}
               onChange={(e) => setFormData({...formData,email:e.target.value})}
               />
-            <TextField
-              disabled={isDisabled}
-              label="dob"
-              margin="dense"
-              value={formData.dob }
-              onChange={(e) => setFormData({...formData,dob:e.target.value})}
-            />
-            <TextField
-              disabled={isDisabled}
-              label="Gender"
-              margin="dense"
-              value={formData.gender}
-              onChange={(e) =>setFormData({...formData,gender:e.target.value})}
-            />
+<div style={{display:'flex'}}>
+<LocalizationProvider dateAdapter={AdapterDayjs}>
+  <DemoContainer components={['DateField']}>
+    <DateField
+      label="Date Of Birth"
+      value={formData.dob ? dayjs(formData.dob) : null} // Ensure formData.age is a valid date or null
+      onChange={(newValue) => handleInputChange('dob', newValue)}
+      renderInput={(props) => <TextField {...props} />}
+      style={{width:'225px'}}
+      disabled= {isDisabled}
+      // format="YYYY/MM/DD" // You can add this line back if it's needed
+    />
+  </DemoContainer>
+</LocalizationProvider>
+  <Select
+    labelId="gender-label"
+    id="gender"
+    value={formData.gender}
+    onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
+    label="Gender"
+    disabled={isDisabled}
+    sx={{m:1,ml:1}}
+  >
+    <MenuItem value="Male">Male</MenuItem>
+    <MenuItem value="Female">Female</MenuItem>
+    {/* <MenuItem value="other">Other</MenuItem> */}
+  </Select>
+</div>
 
            
           </DialogContent>
           <DialogActions>
+          {!isDisabled && (
+        <Button
+          onClick={handleRemove}
+          variant="outlined"
+          color="error"
+          sx={{ m: 2 }}
+        >
+          Delete
+        </Button>
+      )}
             <Button
               onClick={isDisabled ? handleEditClick : handleEditSave}
               variant="contained"

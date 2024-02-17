@@ -28,14 +28,7 @@ function createData(
   return { ID, drug, brand, dosage, quantity, price };
 }
 
-const rows = [
-  createData(1,'Paracetamole',"Panadol",["10 mg"],[120],[20.00]),
-  createData(2,'Veniloflaxin',"Veniz",["37.5 mg","75 mg","150 mg"],[34,12,90],[35.00,45.00,60.00]),
-  createData(3,'Flucanzole',"Diflucan",["10 mg"],[15],[12.00]),
-  createData(4,'Paracetamole',"Panadol",["10 mg"],[120],[20.00]),
 
-  
-];
 
 
 export default function Pharmacy_drugstore() {
@@ -61,7 +54,27 @@ export default function Pharmacy_drugstore() {
   const handleClose =() => {
     setOpen(false)
   }; 
+  const [brand, setBrand] = useState('');
+  const [drug, setDrug] = useState('');
+  const [quantity, setQuantity] = useState('');
+  const [dosage, setDosage] = useState('');
+  const [price, setPrice] = useState('');
+  const rowdata = [
+    {id:1,drug:'Paracetamole',brand:"Panadol",dosage:["10 mg"],quantity:[120],price:[20.00]},
+    {id:1,drug:'Veniloflaxin',brand:"Veniz",dosage:["37.5 mg","75 mg","150 mg"],quantity:[34,12,90],price:[35.00,45.00,60.00]},
+    {id:1,drug:'Flucanzole',brand:"Diflucan",dosage:["10 mg"],quantity:[15],price:[12.00]}
+    
+  ];
+  const [rows, setRows] = useState(rowdata);
+
   const handleConfirm =() => {
+    const newDrug = { drug, brand,dosage, quantity,price };
+    setRows([...rows, newDrug]);
+    setDrug('');
+        setBrand('');
+        setDosage('');
+        setQuantity('');
+        setPrice('');
     handleClose();
     setConfirm(false)
   };
@@ -71,6 +84,9 @@ export default function Pharmacy_drugstore() {
   };
   const handleEdit =() => {
     handleEditClose();
+    setConfirm(false)
+  };
+  const handleDelete =() => {
     setConfirm(false)
   };
   const handleEditOpen =(row) => {
@@ -252,17 +268,18 @@ export default function Pharmacy_drugstore() {
           <CloseIcon onClick={handleClose} sx={{cursor:'pointer'}}/>
         </DialogTitle>
         <DialogContent>
-          <TextField label="Genaric name" fullWidth sx={{ mb: 1, mt: 3 }} />
-          <TextField label="Brand Name" sx={{ mb: 1 }} />
-          <TextField label="dossage" sx={{ ml: 4, mb: 1 }} />
-          <TextField label="unit price" fullWidth sx={{ mb: 1 }} />
-          <TextField label="Amount" sx={{ mb: 1 }} />
+          <TextField label="Genaric name" fullWidth sx={{ mb: 1, mt: 3 }} value={drug} onChange={(e) => setDrug(e.target.value)} />
+          <TextField label="Brand Name" sx={{ mb: 1 }}value={brand} onChange={(e) => setBrand(e.target.value)} />
+          <TextField label="dossage" sx={{ ml: 4, mb: 1 }} value={dosage} onChange={(e) => setDosage(e.target.value)}/>
+          <TextField label="unit price" fullWidth sx={{ mb: 1 }}value={quantity} onChange={(e) => setQuantity(e.target.value)} />
+          <TextField label="Amount" sx={{ mb: 1 }} value={price} onChange={(e) => setPrice(e.target.value)}/>
         </DialogContent>
         <DialogActions>
           <Button
             onClick={handleConfirm}
             variant="contained"
             sx={{ backgroundColor: "rgb(121, 204, 190)", m: 2 }}
+            
           >
             confirm
           </Button>
@@ -290,7 +307,7 @@ export default function Pharmacy_drugstore() {
                       <List key={index}>{dosage}</List>
                     ))
                   ) : (
-                    <List>{row.dosages}</List>
+                    <List>{row.dosage}</List>
                   )}
                 </Typography>
   </Grid>
@@ -370,6 +387,14 @@ export default function Pharmacy_drugstore() {
           
         </DialogContent>
         <DialogActions>
+          
+          <Button
+            onClick={handleDelete}
+            variant="contained"
+            sx={{ backgroundColor: "rgb(121, 204, 190)", m: 2 }}
+          >
+            Delete
+          </Button>
           <Button
             onClick={handleEdit}
             variant="contained"

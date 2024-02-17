@@ -132,7 +132,7 @@ function ResDay() {
    {
      name:'namal',
      city:'Colombo',
-     today:'January 6, 2024',
+     today:'February 14, 2024',
      nic:'452452343',
      phone:'0774733245',
      time:'9.30 AM',
@@ -143,7 +143,7 @@ function ResDay() {
    {
      name:'sachith',
      city:'Colombo',
-     today:'January 6, 2024',
+     today:'February 14, 2024',
      nic:'4524543223',
      phone:'0774733245',
      time:'10.00 AM',
@@ -154,7 +154,7 @@ function ResDay() {
    {
      name:'vihanga',
      city:'Colombo',
-     today:'January 6, 2024',
+     today:'February 14, 2024',
      nic:'45244332523',
      phone:'0774733245',
      time:'10.30 AM',
@@ -165,7 +165,7 @@ function ResDay() {
    {
      name:'ranil',
      city:'Moratuwa',
-     today:'January 6, 2024',
+     today:'February 14, 2024',
      nic:'54325324',
      phone:'0742314567',
      time:'11.00 AM',
@@ -176,10 +176,10 @@ function ResDay() {
    {
      name:'saman',
      city:'kandy',
-     today:'January 6, 2024',
+     today:'February 14, 2024',
      nic:'54243252',
      phone:'0774733245',
-     time:'9.30 AM',
+     time:'11.30 AM',
      did:0,
 
    },
@@ -187,10 +187,10 @@ function ResDay() {
    {
      name:'nipun',
      city:'galle',
-     today:'January 6, 2024',
+     today:'February 14, 2024',
      nic:'5243525',
      phone:'0774733245',
-     time:'9.30 AM',
+     time:'12.30 AM',
      did:0
    }
  ]);
