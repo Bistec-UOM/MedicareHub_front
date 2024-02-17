@@ -1,19 +1,19 @@
-import { Grid,Card, Typography, CssBaseline, Box, Drawer } from '@mui/material'
+import { Grid,Card, Typography, CssBaseline, Box, Drawer, Button } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import {SidebarContainer,SidebarTop,SidebarList} from '../components/sidebar/Sidebar'
 import { Sideunit_Test } from '../components/sidebar/Sideunits';
 import LabSearch from '../components/Lab/LabSearch';
-import LabTestList from '../components/Lab/LabTestList';
+import LabTestList from '../components/Lab/TestList/LabTestList';
 import CreateLabTemplate from '../components/Lab/CreateLabTemplate';
 import '../components/CustomScroll.css'
-import '../components/Lab/Lab.css'
 import ResNavBar from '../components/recepcomponents/ResNavBar/ResNabBar';
 import Edittemplate from '../components/Lab/Edittemplate';
+
 
 export default function Lab() {
 
   const [select,setSelect]=useState(null)
-  const [date,setDate]=useState(0)
+  const [date,setDate]=useState(2)
   const [loadIn,setLoadIn]=useState([]) 
 
   useEffect(()=>{
@@ -26,19 +26,12 @@ export default function Lab() {
 
   {/*to navigate between pages   1:fill test   2:test list   3:create tmplt   4:edit tmplt*/}
   const [page,setPage]=useState(1)
+  {/*Store current selected Test id*/}
   const [tId,settId]=useState()
 
   let x=[
-    {date:0,id:13,"name": "Olivia Anderson", "test":['hCG'],"testId":[]},
-    {date:0,id:14,"name": "Joshua Taylor", "test": ['FBC'],"testId":[1]},
-    {date:0,id:15,"name": "Sophia Thomas", "test": ['FBC'],"testId":[1]},
-    {date:0,id:16,"name": "Ethan Walker", "test":['HBC','Thyroxin'],"testId":[2,3]},
-    {date:0,id:17,"name": "Isabella Clark", "test": ['Urine'],"testId":[5]},
-    {date:0,id:18,"name": "James Young", "test": ['FBC'],"testId":[1]},
-
     {date:1,id:1,"name": "Sarah Johnson", "test": ['Thyroxin'],"testId":[3]},
-    {date:1,id:2,"name": "Michael Smith", "test":['FBC','hCG'],"testId":[1,7]},
-    {date:1,id:3,"name": "Lisa Brown", "test": ['FBC'],"testId":[1]},
+    {date:1,id:2,"name": "Michael Smith", "test":['FBC','urine'],"testId":[1,5]},
     {date:1,id:4,"name": "John Davis", "test": ['BMT'],"testId":[8]},
     {date:1,id:5,"name": "Emily Wilson", "test":['HBC','Thyroxin'],"testId":[2,3]},
     {date:1,id:6,"name": "David Martinez", "test": ['Urine'],"testId":[5]},
@@ -49,11 +42,18 @@ export default function Lab() {
     {date:1,id:11,"name": "Ashley Lopez", "test":['Lipid','Glucose'],"testId":[6,4]},
     {date:1,id:12,"name": "Matthew Lee", "test": ['FBC'],"testId":[1]},
 
-    {date:2,id:6,"name": "Jacob Baker", "test": ['Urine'],"testId":[5]},
-    {date:2,id:7,"name": "Ava Green", "test": ['FBC'],"testId":[1]},
-    {date:2,id:8,"name": "Alexander Adams", "test":['FBC'],"testId":[1]},
-    {date:2,id:9,"name": "Charlotte Hill", "test": ['FBC'],"testId":[1]},
-    {date:2,id:10,"name": "William Murphy", "test": ['Lipid'],"testId":[6]}
+    {date:2,id:13,"name": "Jacob Baker", "test": ['Urine'],"testId":[5]},
+    {date:2,id:14,"name": "Ava Green", "test": ['FBC'],"testId":[1]},
+    {date:2,id:15,"name": "Alexander Adams", "test":['FBC'],"testId":[1]},
+    {date:2,id:16,"name": "Charlotte Hill", "test": ['FBC'],"testId":[1]},
+    {date:2,id:17,"name": "William Murphy", "test": ['Lipid'],"testId":[6]},
+
+    {date:3,id:18,"name": "Olivia Anderson", "test":['hCG'],"testId":[7]},
+    {date:3,id:19,"name": "Joshua Taylor", "test": ['FBC'],"testId":[1]},
+    {date:3,id:20,"name": "Sophia Thomas", "test": ['FBC'],"testId":[1]},
+    {date:3,id:21,"name": "Ethan Walker", "test":['HBC','Thyroxin'],"testId":[2,3]},
+    {date:3,id:22,"name": "Isabella Clark", "test": ['Urine'],"testId":[5]},
+    {date:3,id:23,"name": "James Young", "test": ['FBC'],"testId":[1]}
    ]
 
    const [Tload,setTload]=useState([
@@ -64,19 +64,11 @@ export default function Lab() {
     {id:5,name:'Urine test',provider:'Hemas',price:1200.00},
     {id:6,name:'Lipid profile',provider:'Asiri',price:1500.00},
     {id:7,name:'hCG test',provider:'Durdance',price:500.00},
-    {id:8,name:'Basic metabolic test',provider:'Asiri',price:1700.00},
-    {id:9,name:'Full blood test',provider:'Hemas',price:500.00},
-    {id:10,name:'Half blood test',provider:'Hemas',price:500.00},
-    {id:11,name:'Thyroxin test',provider:'Durdance',price:2400.00},
-    {id:12,name:'Glucose test',provider:'Hemas',price:750.00},
-    {id:13,name:'Urine test',provider:'Hemas',price:1200.00},
-    {id:14,name:'Lipid profile',provider:'Asiri',price:1500.00},
-    {id:15,name:'hCG test',provider:'Durdance',price:500.00},
-    {id:16,name:'Basic metabolic test',provider:'Asiri',price:1700.00}
+    {id:8,name:'Basic metabolic test',provider:'Asiri',price:1700.00}
 ])
 
    const [Fload,setFload]=useState({
-    0:
+    1:
     [{'field':'Himoglobin','min':11.5,'max':13.5,'unit':'g/DL'},
     {'field':'Himatocrit','min':34,'max':40,'unit':'%'},
     {'field':'Red blod cell','min':3.9,'max':5.3,'unit':'10^6/ML'},
@@ -87,13 +79,13 @@ export default function Lab() {
     {'field':'Eesinophil','min':0,'max':4,'unit':''},
     {'field':'Neutrophil','min':3,'max':5,'unit':'%'},
     {'field':'Monocyte','min':300,'max':308,'unit':'%'}],
-    4:
+    5:
     [{'field':'Epinephrine','min':0,'max':20,'unit':'mg/L'},
     {'field':'Metanephrine','min':0,'max':1000,'unit':'%'},
     {'field':'Nerophineprine','min':15,'max':80,'unit':'ug/L'},
     {'field':'Normetanaphrine','min':108,'max':500,'unit':'%'},
     {'field':'Dopamine','min':65,'max':450,'unit':'%'}],
-    7:
+    8:
     [{'field':'Glucose','min':65,'max':99,'unit':'mg/DL'},
     {'field':'Glucose','min':65,'max':99,'unit':'mg/DL'},
     {'field':'BUN','min':6,'max':20,'unit':'mg/DL'},
@@ -192,11 +184,18 @@ export default function Lab() {
               page==1?
 
               selectedT!=null ? 
-              <Card sx={{width:'100%',height:'30px'}} square>
-                <Typography variant='h6'>{
-                  
-                }</Typography>
+              <div>
+              <Card sx={{width:'100%',height:'30px',pl:'35px',height:'50px',pt:'20px',position:'fixed',zIndex:'10'}} square>
+                  {loadIn.map((x)=>{
+                    if(x.id==selectedT){return <Typography>{x.name}</Typography>}
+                  })
+                }
               </Card>
+              <Box sx={{width:'100%',padding:'40px',paddingTop:'90px'}}>
+
+    
+              </Box>
+             </div>
               : ''
 
               :page==2?<LabTestList settId={settId} setPage={setPage} Tdata={Tload}></LabTestList>

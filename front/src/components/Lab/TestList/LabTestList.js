@@ -4,9 +4,6 @@ import React, { useState } from 'react'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import SearchIcon from "@mui/icons-material/Search";
 import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import TestDialogBox from './TestDialogBox';
 import CloseIcon from "@mui/icons-material/Close";
@@ -18,11 +15,12 @@ export default function LabTestList({setPage,settId,Tdata}) {
     const handleClickOpen = (x) => {
         setOpen(true)
         settId(x)
-        setSelected({...selected,ind:x,fLoad:Tdata[x]})
+        let t= Tdata.filter((e)=>{return e.id==x})
+        setTest(t[0])
     }
     const handleClose = () => {setOpen(false)}  
 
-    const [selected,setSelected]=useState({ind:0,fLoad:[]})
+    const [test,setTest]=useState()
     //----------------------------------------------------------------------------
 
   return (
@@ -46,10 +44,10 @@ export default function LabTestList({setPage,settId,Tdata}) {
 
         <Stack sx={{paddingTop:{xs:'60px',sm:'80px'},paddingLeft:{xs:'5%',sm:'8%'}}}>
             {
-                Tdata.map((el,ind)=>{
+                Tdata.map((el)=>{
                     return(
                     <Paper sx={{display:'flex',width:{xs:'95%',sm:'80%'},justifyContent:'space-between',cursor:'pointer',padding:{xs:1,sm:2},borderRadius:'12px',mb:'10px'}} 
-                    onClick={()=>handleClickOpen(ind)}>
+                    onClick={()=>handleClickOpen(el.id)}>
                         <Typography sx={{fontSize:'16px',flex:{xs:3,sm:1}}}>{el.name}</Typography>
                         <Typography sx={{fontSize:'16px',flex:{xs:2,sm:1}}}>{el.provider}</Typography>
                         <Typography sx={{fontSize:'16px',flex:{xs:1,sm:1}, textAlign:'right'}}>{el.price}</Typography>
@@ -63,7 +61,7 @@ export default function LabTestList({setPage,settId,Tdata}) {
             Edit test
           <CloseIcon onClick={handleClose} sx={{cursor:'pointer'}} />
           </DialogTitle>
-       <TestDialogBox data={selected.fLoad} setPage={setPage}></TestDialogBox>
+       <TestDialogBox test={test} setPage={setPage}></TestDialogBox>
       </Dialog>
 
     </div>
