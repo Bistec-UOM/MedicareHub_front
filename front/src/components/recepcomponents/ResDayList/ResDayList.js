@@ -49,6 +49,8 @@ const ResDayList = (props) => {
 
   const [isDisabled, setIsDisabled] = useState(true);
 
+  const [selectedDay,setSelectedDay]=useState(props.selectedDay);
+
   const handleDeleteAll = () => {
     setDopen(true);
   };
@@ -61,11 +63,30 @@ const ResDayList = (props) => {
     props.setRenderVal(true);
   };
   useEffect(() => {
+    console.log("use effect",props.docid)
+    console.log("use effect",selectedDay)
     document.body.style.margin = "0";
-    const appointments = props.appointlist.filter((item) => item.today === loc.today);
-    const newappointments=appointments.filter((item)=>item.did===props.docid)
-    setFilteredAppointments(newappointments);
+    fetch("https://localhost:7205/api/Appointment/doctor/1/day/2024-02-20")
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then((responseData) => {
+      console.log("use effect appointments", responseData.result);
+      setFilteredAppointments(responseData.result);
+    })
+    .catch((error) => {
+      console.error('Error fetching appointments:', error);
+    });
+      const newappointments=filteredAppointments;
+      console.log("hook",newappointments);
+    // const appointments = props.appointlist.filter((item) => item.today === selectedDay);
+    // const newappointments=appointments.filter((item)=>item.did===props.docid)
+    // setFilteredAppointments(newappointments);
     setIsDisabled(newappointments.length === 0);
+    console.log("in res day list",props.docid)
   }, [delcount]);
 
   return (
@@ -157,7 +178,7 @@ const ResDayList = (props) => {
 
         {
           <Box sx={{ width: "80%",marginTop:{xs:'40%',sm:'20%',md:'7%'}}}>
-            {filteredAppointments.filter((item)=>{
+            {Array.isArray(filteredAppointments) && filteredAppointments.filter((item)=>{
               return search.toLowerCase()===''?item:item.name.toLowerCase().includes(search.toLowerCase())
             }).map((item) => (
               <div key={item.nic}>
