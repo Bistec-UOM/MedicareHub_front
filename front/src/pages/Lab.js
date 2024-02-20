@@ -93,16 +93,21 @@ export default function Lab() {
     {'field':'Potassium','min':3.5,'max':5.2,'unit':'mol/L'},
     {'field':'Chloride','min':96,'max':106,'unit':'mol/L'},
     {'field':'Calsium','min':20,'max':29,'unit':'mol/L'},
-    {'field':'Chloride','min':8.7,'max':10.2,'unit':'mol/L'},
-    ]
+    {'field':'Chloride','min':8.7,'max':10.2,'unit':'mol/L'}]
     })
 
     const TloadSet=(xLoad)=>{//Add newly created test
-      setTload([...Tload,xLoad])
+      let T={
+        id:Tload.length+1,
+        name:xLoad.name,
+        provider:xLoad.provider,
+        price:xLoad.price
+      }
+      setTload([...Tload,T])
     }
 
     const FloadSet=(xLoad)=>{//set created field data <----- from CreatLabtemplate
-      setFload({...Fload,[Tload.length]:xLoad})
+      setFload({...Fload,[Tload.length+1]:xLoad})
     }
 
     const FloadEdit=(id,xLoad)=>{//set edited field data <----- from Edittemplate
@@ -192,7 +197,7 @@ export default function Lab() {
 
               :page==2?<LabTestList settId={settId} setPage={setPage} Tdata={Tload}></LabTestList>
               :page==3?<CreateLabTemplate setPage={setPage} TloadSet={TloadSet} FloadSet={FloadSet} PK={Tload.length}></CreateLabTemplate>
-              :page==4?<Edittemplate setPage={setPage} Fdata={Fload[tId]} tId={tId} Tdata={Tload[tId]} FloadEdit={FloadEdit}></Edittemplate>
+              :page==4?<Edittemplate setPage={setPage} Fdata={Fload[tId]} tId={tId} Tdata={Tload[tId-1]} FloadEdit={FloadEdit}></Edittemplate>
               :''
       }
 

@@ -7,10 +7,11 @@ import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrow
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
-export default function CreateLabTemplate({setPage,Fdata,tId,Tdata,FloadEdit}) {
+export default function Edittemplate({setPage,Fdata,tId,Tdata,FloadEdit}) {
 
     useEffect(()=>{
         document.body.style.margin = '0';
+        console.log(Tdata);
        },[])
       
       //Field values--------------------------------------------------------------
@@ -86,7 +87,7 @@ export default function CreateLabTemplate({setPage,Fdata,tId,Tdata,FloadEdit}) {
         <Toolbar sx={{position:'fixed',width:{xs:'100%',sm:'70%'},justifyContent:'space-between',alignItems:'center',p:'0',pt:{xs:'10px'},backgroundColor:'white'}}>
             <ArrowBackIcon sx={{cursor:'pointer'}} onClick={()=>setPage(2)}></ArrowBackIcon>
 
-            <Typography sx={{fontSize:{xs:'17px'}}}>{Tdata.name}</Typography>
+            <Typography sx={{fontSize:{xs:'17px'}}}>{}</Typography>
         
             <Button variant='contained' size='small' onClick={()=>saveTemplate()} sx={{mr:{xs:'5px',sm:'15px'}}}>Save</Button>
         </Toolbar>
