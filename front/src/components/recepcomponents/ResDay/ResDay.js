@@ -98,6 +98,7 @@ function ResDay() {
 
  const location=useLocation();
  const {doctorid}=location.state;
+ const {selectedDay}=location.state
 
 
  const [doctorList,setDoctorList]=useState(location.state.doctorList);
@@ -203,10 +204,11 @@ function ResDay() {
    }
  ]);
 
-//  useEffect=()=>
-//  {
-//   console.log(doctorList.doctorList)
-//  }
+ useEffect(()=>
+ {
+  console.log("Hello fuck",doctorid);
+  console.log("Hi day",selectedDay)
+ },[])
 
 
 
@@ -365,7 +367,7 @@ function ResDay() {
           sm:'35px',
           xs:'30px'
         },width:'100%', height:'100%'}} item xs={9} sm={11} md={9}>
-        {renderVal ?  <SearchPatientPage renderVal={renderVal} setRenderVal={setRenderVal}/> :<ResDayList  docid={docid} setAppointList={setAppointList} appointlist={appointlist} renderVal={renderVal} setRenderVal={setRenderVal}/>}   
+        {renderVal ?  <SearchPatientPage renderVal={renderVal} setRenderVal={setRenderVal}/> :<ResDayList selectedDay={selectedDay}  docid={doctorid} setAppointList={setAppointList} appointlist={appointlist} renderVal={renderVal} setRenderVal={setRenderVal}/>}   
           </Grid>
         
       </Box>

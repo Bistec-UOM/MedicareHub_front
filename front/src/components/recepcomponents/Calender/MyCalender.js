@@ -51,7 +51,7 @@ const MyCalendar = ({doctorId,selectedTab,setSelectedTab}) => {
     console.log(selectedMonth);
     console.log(currentMonth);
     if (selectedMonth === currentMonth) {
-      navigate('/resday', { state: { today: today ,doctorid:doctorId,doctorList:doctorList} });
+      navigate('/resday', { state: { selectedDay: today ,doctorid:doctorId,doctorList:doctorList} });
     }
   };
 
