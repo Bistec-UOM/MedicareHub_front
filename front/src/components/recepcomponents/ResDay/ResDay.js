@@ -92,10 +92,18 @@ function ResDay() {
 
  const [renderVal,setRenderVal]=useState(false);
 
+
+
  
 
  const location=useLocation();
  const {doctorid}=location.state;
+
+
+ const [doctorList,setDoctorList]=useState(location.state.doctorList);
+ const [doctorCount,setDoctorCount]=useState(0);
+
+// const {doctorList}=location.state;
 
  const [docid,setDocid]=useState(doctorid)
  console.log(doctorid);
@@ -195,17 +203,40 @@ function ResDay() {
    }
  ]);
 
- const data=[
-   {'name':'Amal Rathnayaka','title':'MBBS, MD, MRCP(UK)'},
-   {'name':'Bimasara Herath','title':'MBBS, MD, MRCP(UK), PRCP-E'},
-   {'name':'Tharushi Fernando','title':'MBBS, MD'},
-   {'name':'Infas Mohomad','title':'MBBS, FCGP(SL), MD-CH(UK), MBS-CH(UK), C.ht(USA)'},
-   {'name':'Amal Rathnayaka','title':'MBBS, MD, MRCP(UK)'},
-   {'name':'Bimasara Herath','title':'MBBS, MD, MRCP(UK), PRCP-E'},
-   {'name':'Tharushi Fernando','title':'MBBS, MD'},
-   {'name':'Infas Mohomad','title':'MBBS, FCGP(SL), MD-CH(UK), MBS-CH(UK), C.ht(USA)'}
+//  useEffect=()=>
+//  {
+//   console.log(doctorList.doctorList)
+//  }
+
+
+
+
+
+//  useEffect(()=>
+//  {
+//    fetch("https://localhost:7205/api/Appointment/doctors").then((response)=>
+//    {
+//      return response.json();
+//    }).then((responseData)=>
+//    {
+//      setDoctorCount(doctorCount+1);
+//      console.log(responseData.result);
+//      setDoctorList(responseData.result);
+//    })
+
+//  },[]);
+
+//  const data=[
+//    {'name':'Amal Rathnayaka','title':'MBBS, MD, MRCP(UK)'},
+//    {'name':'Bimasara Herath','title':'MBBS, MD, MRCP(UK), PRCP-E'},
+//    {'name':'Tharushi Fernando','title':'MBBS, MD'},
+//    {'name':'Infas Mohomad','title':'MBBS, FCGP(SL), MD-CH(UK), MBS-CH(UK), C.ht(USA)'},
+//    {'name':'Amal Rathnayaka','title':'MBBS, MD, MRCP(UK)'},
+//    {'name':'Bimasara Herath','title':'MBBS, MD, MRCP(UK), PRCP-E'},
+//    {'name':'Tharushi Fernando','title':'MBBS, MD'},
+//    {'name':'Infas Mohomad','title':'MBBS, FCGP(SL), MD-CH(UK), MBS-CH(UK), C.ht(USA)'}
    
-] 
+// ] 
 
 
 
@@ -243,7 +274,7 @@ function ResDay() {
               
               </Tabs>
               <div style={{width:'100%',marginTop:'2%'}}>
-              {data.filter((item)=>{
+              {Array.isArray(doctorList) && doctorList.filter((item)=>{
                   return search.toLowerCase()===''?item:item.name.toLowerCase().includes(search.toLowerCase());
               }).map((item,index)=>(
                 <div
@@ -257,7 +288,7 @@ function ResDay() {
                   borderRadius:'8px'
                 }}
               >
-                <Sideunit_Doctor selectedTab={docid} name={item.name} title={item.title} index={index} key={index}></Sideunit_Doctor>
+                <Sideunit_Doctor selectedTab={docid} name={item.fullName} title={item.qualifications} index={index} key={index}></Sideunit_Doctor>
               </div>
                
                 

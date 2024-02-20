@@ -162,6 +162,7 @@ const ResDayList = (props) => {
             }).map((item) => (
               <div key={item.nic}>
                 <AppointmentCard  
+                  docid={props.docid}
                   appointlist={props.appointlist}
                   setAppointList={props.setAppointList}
                   handleNotification={handleNotification}
