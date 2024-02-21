@@ -7,7 +7,7 @@ import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrow
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
-export default function CreateLabTemplate({setPage,Fdata,tId,Tdata,FloadEdit}) {
+export default function Edittemplate({setPage,Fdata,tId,Tdata,FloadEdit}) {
 
     useEffect(()=>{
         document.body.style.margin = '0';
@@ -22,7 +22,7 @@ export default function CreateLabTemplate({setPage,Fdata,tId,Tdata,FloadEdit}) {
 
       const addTestField=()=>{
         let data_set={
-          'field':fieldName,'min':refMin,'max':refMax,'unit':unit
+          field:fieldName,min:refMin,max:refMax,unit:unit
         }
         setTestField([...testField,data_set])
         setFieldName('')
@@ -42,7 +42,6 @@ export default function CreateLabTemplate({setPage,Fdata,tId,Tdata,FloadEdit}) {
       const setEditModeData=(indx)=>{
         setEditMode(true)
         setEditData({...editData,ind:indx,field:testField[indx].field,min:testField[indx].min,max:testField[indx].max,unit:testField[indx].unit})
-        console.log(editData);
       }
 
       const addEditData=()=>{
@@ -91,7 +90,7 @@ export default function CreateLabTemplate({setPage,Fdata,tId,Tdata,FloadEdit}) {
             <Button variant='contained' size='small' onClick={()=>saveTemplate()} sx={{mr:{xs:'5px',sm:'15px'}}}>Save</Button>
         </Toolbar>
 
-        <Box sx={{display:'flex',flexDirection:'column',alignItems:'center', paddingTop:{xs:'80px',sm:'80px'}}}>
+        <Box sx={{display:'flex',flexDirection:'column',alignItems:'center',paddingTop:{xs:'80px',sm:'80px'}}}>
 
            {/*--------------------------------------------------------------------------------------*/}
            {/*---------- Printed lab sheet----------------------------------------------------------*/}

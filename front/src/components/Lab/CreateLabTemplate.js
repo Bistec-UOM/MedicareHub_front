@@ -6,6 +6,7 @@ import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp
 import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import DoneIcon from '@mui/icons-material/Done';
 
 export default function CreateLabTemplate({setPage,FloadSet,TloadSet}) {
 
@@ -23,7 +24,7 @@ export default function CreateLabTemplate({setPage,FloadSet,TloadSet}) {
 
       const addTestField=()=>{
         let data_set={
-          'field':fieldName,'min':refMin,'max':refMax,'unit':unit
+          field:fieldName,min:refMin,max:refMax,unit:unit
         }
         setTestField([...testField,data_set])
         setFieldName('')
@@ -43,7 +44,6 @@ export default function CreateLabTemplate({setPage,FloadSet,TloadSet}) {
       const setEditModeData=(indx)=>{
         setEditMode(true)
         setEditData({...editData,ind:indx,field:testField[indx].field,min:testField[indx].min,max:testField[indx].max,unit:testField[indx].unit})
-        console.log(editData);
       }
 
       const addEditData=()=>{
@@ -78,9 +78,9 @@ export default function CreateLabTemplate({setPage,FloadSet,TloadSet}) {
       //Finalizing---------------------------------------------------------------
       const createTemplate=()=>{
         let T={
-          'name':testData.name,
-          'provider':testData.provider,
-          'price':testData.price
+          name:testData.name,
+          provider:testData.provider,
+          price:testData.price
         }
         TloadSet(T)//Send test to test list
         FloadSet(testField)//Send fileds list to corrsp. field set
@@ -96,15 +96,15 @@ export default function CreateLabTemplate({setPage,FloadSet,TloadSet}) {
 
             <Box sx={{width:'100%',display:'flex',flexDirection:{xs:'column',sm:'row'},alignItems:'center',ml:{xs:'2px',sm:'8%'}}} square>
               <Typography sx={{fontSize:{xs:'17px'}}}>Test</Typography>
-              <TextField size='small' sx={{m:'0px',ml:{xs:'0',sm:'10px'},padding:'2px',width:{xs:'100px'}}} onChange={(e)=>setTestData({...testData,'name':e.target.value})}></TextField>
+              <TextField size='small' sx={{m:'0px',ml:{xs:'0',sm:'10px'},padding:'2px',width:{xs:'80px',sm:'200px'}}} onChange={(e)=>setTestData({...testData,'name':e.target.value})}></TextField>
             </Box>
-            <Box sx={{width:'100%',display:'flex',flexDirection:{xs:'column',sm:'row'},alignItems:'center',ml:{xs:'2px',sm:'8%'}}} square>
+            <Box sx={{width:'100%',display:'flex',flexDirection:{xs:'column',sm:'row'},alignItems:'center',ml:{xs:'2px',sm:'20px'}}} square>
               <Typography sx={{fontSize:{xs:'17px'}}}>Provider</Typography>
-              <TextField size='small' sx={{m:'0px',ml:{xs:'0',sm:'10px'},padding:'2px',width:{xs:'100px'}}} onChange={(e)=>setTestData({...testData,'provider':e.target.value})}></TextField>
+              <TextField size='small' sx={{m:'0px',ml:{xs:'0',sm:'5px'},padding:'2px',width:{xs:'80px',sm:'120px'}}} onChange={(e)=>setTestData({...testData,'provider':e.target.value})}></TextField>
             </Box>
-            <Box sx={{width:'100%',display:'flex',flexDirection:{xs:'column',sm:'row'},alignItems:'center',ml:{xs:'2px',sm:'8%'}}} square>
+            <Box sx={{width:'100%',display:'flex',flexDirection:{xs:'column',sm:'row'},alignItems:'center',ml:{xs:'2px',sm:'20px'}}} square>
               <Typography sx={{fontSize:{xs:'17px'}}}>Price</Typography>
-              <TextField size='small' sx={{m:'0px',ml:{xs:'0',sm:'10px'},padding:'2px',width:{xs:'100px'}}} onChange={(e)=>setTestData({...testData,'price':e.target.value})}></TextField>
+              <TextField size='small' sx={{m:'0px',ml:{xs:'0',sm:'5px'},padding:'2px',width:{xs:'80px',sm:'120px'}}} onChange={(e)=>setTestData({...testData,'price':e.target.value})}></TextField>
             </Box>
         
             <Button variant='contained' size='small' onClick={()=>createTemplate()} sx={{mr:{xs:'5px',sm:'15px'}}}>Create</Button>
