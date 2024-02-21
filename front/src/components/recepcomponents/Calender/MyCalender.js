@@ -8,12 +8,33 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { Typography } from '@mui/material';
 import LinearProgress from '@mui/material/LinearProgress';
 import {Box} from '@mui/material';
+import { useEffect } from 'react';
 import '../../../recep.css'
 
 const localizer = momentLocalizer(moment);
 let today;
 
 const MyCalendar = ({doctorId,selectedTab,setSelectedTab}) => {
+
+  const [doctorList,setDoctorList]=useState([]);
+  const [doctorCount,setDoctorCount]=useState(0);
+ 
+  useEffect(()=>
+  {
+    fetch("https://localhost:7205/api/Appointment/doctors").then((response)=>
+    {
+      return response.json();
+    }).then((responseData)=>
+    {
+      setDoctorCount(doctorCount+1);
+      console.log(responseData.result);
+      setDoctorList(responseData.result);
+    })
+ 
+  },[]);
+
+
+
   const navigate = useNavigate();
   const [displayedRange, setDisplayedRange] = useState({
     start: moment().startOf('month'),
@@ -22,13 +43,15 @@ const MyCalendar = ({doctorId,selectedTab,setSelectedTab}) => {
 
   const handleDateClick = (event) => {
     const selectedDate = moment(event.start);
+    console.log("hello",selectedDate);
     today = selectedDate.format('MMMM D, YYYY');
+    console.log("hello",today);
     const selectedMonth = selectedDate.format('MMMM');
     const currentMonth = displayedRange.start.format('MMMM');
     console.log(selectedMonth);
     console.log(currentMonth);
     if (selectedMonth === currentMonth) {
-      navigate('/resday', { state: { today: today ,doctorid:doctorId} });
+      navigate('/resday', { state: { selectedDay: today ,doctorid:doctorId,doctorList:doctorList} });
     }
   };
 

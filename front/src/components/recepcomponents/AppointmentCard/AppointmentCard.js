@@ -13,9 +13,18 @@ import {IconButton} from "@mui/material";
 import Steper from "../Setper/Steper";
 import AppAddPopup from "../AppAddPopup/AppAddPopup";
 import AppDeletePopup from "../AppDeletePopup/AppDeletePopup";
+import AppEditPopup from "../AppEditPopup/AppEditPopup";
 
-const AppointmentCard = ({appointlist,setAppointList,handleNotification,filteredAppointments,setFilteredAppointments, item ,delcount,setDelcount}) => {
+const AppointmentCard = ({docid,appointlist,setAppointList,handleNotification,filteredAppointments,setFilteredAppointments, item ,delcount,setDelcount}) => {
   const [daopen,setDaopen]=useState(false);
+  const [appEditOpen,setAppEditOpen]=useState(false);
+
+  const handleEditAppointment=()=>
+  {
+    setAppEditOpen(true);
+  }
+
+  
 
  
 
@@ -59,7 +68,7 @@ const AppointmentCard = ({appointlist,setAppointList,handleNotification,filtered
                 <Box>
         
                  <IconButton onClick={handleDeleteAppointment}><DeleteIcon  sx={{ marginLeft: "auto", color: "#E60000" }} /></IconButton>
-                  <IconButton onClick={handleEdit}><EditIcon  sx={{ color: "#F66444", }} /></IconButton>
+                  <IconButton onClick={handleEditAppointment}><EditIcon  sx={{ color: "#F66444", }} /></IconButton>
         
         
                 </Box>
@@ -87,6 +96,7 @@ const AppointmentCard = ({appointlist,setAppointList,handleNotification,filtered
          
         </Box>
         <AppDeletePopup appointlist={appointlist} setAppointList={setAppointList} handleNotification={handleNotification} delcount={delcount} setDelcount={setDelcount} item={item} daopen={daopen} setDaopen={setDaopen} filteredAppointments={filteredAppointments} setFilteredAppointments={setFilteredAppointments}/>
+        <AppEditPopup item={item} appEditOpen={appEditOpen} setAppEditOpen={setAppEditOpen}  setAppointList={setAppointList} handleNotification={handleNotification} appointlist={appointlist} docid={docid} item={item} />
       
     </div>
    

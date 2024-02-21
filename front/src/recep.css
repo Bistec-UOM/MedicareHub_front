@@ -73,6 +73,16 @@ body > div.MuiDrawer-root.MuiDrawer-modal.MuiModal-root.css-hjb2rp-MuiModal-root
   background-color: #DEF4F2 !important; 
 }
 
+#root > div > div > nav > div > div > div > div.MuiGrid-root.MuiGrid-item.MuiGrid-grid-xs-3.MuiGrid-grid-sm-1.MuiGrid-grid-md-3.css-mcxjgr-MuiGrid-root > div > div:nth-child(2) > div.style
+{
+  width:'100%';
+}
+
+.css-15mwa8c
+{
+  width:100% !important;
+}
+
 
 
   
