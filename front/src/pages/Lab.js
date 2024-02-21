@@ -20,14 +20,6 @@ export default function Lab() {
 
   const [loadIn,setLoadIn]=useState([]) //selected reports by a date
 
-  useEffect(()=>{
-    document.body.style.margin = '0';
-    let a=x.filter((el)=>{
-      return el.date==date
-    })
-    setLoadIn(a)
-   },[date])
-
   let x=[
     {date:1,id:1,"name": "Sarah Johnson", "test": ['Thyroxin'],"testId":[3]},
     {date:1,id:2,"name": "Michael Smith", "test":['FBC','urine'],"testId":[1,5]},
@@ -66,8 +58,8 @@ export default function Lab() {
     {id:8,name:'Basic metabolic test',provider:'Asiri',price:1700.00}
 ])
 
-   const [Fload,setFload]=useState({
-    1:
+   const [Fload,setFload]=useState([
+    {id:1,load:
     [{'field':'Himoglobin','min':11.5,'max':13.5,'unit':'g/DL'},
     {'field':'Himatocrit','min':34,'max':40,'unit':'%'},
     {'field':'Red blod cell','min':3.9,'max':5.3,'unit':'10^6/ML'},
@@ -77,14 +69,14 @@ export default function Lab() {
     {'field':'MHC','min':31,'max':37,'unit':'pG'},
     {'field':'Eesinophil','min':0,'max':4,'unit':''},
     {'field':'Neutrophil','min':3,'max':5,'unit':'%'},
-    {'field':'Monocyte','min':300,'max':308,'unit':'%'}],
-    5:
+    {'field':'Monocyte','min':300,'max':308,'unit':'%'}]},
+    {id:5,load:
     [{'field':'Epinephrine','min':0,'max':20,'unit':'mg/L'},
     {'field':'Metanephrine','min':0,'max':1000,'unit':'%'},
     {'field':'Nerophineprine','min':15,'max':80,'unit':'ug/L'},
     {'field':'Normetanaphrine','min':108,'max':500,'unit':'%'},
-    {'field':'Dopamine','min':65,'max':450,'unit':'%'}],
-    8:
+    {'field':'Dopamine','min':65,'max':450,'unit':'%'}]},
+    {id:8,load:
     [{'field':'Glucose','min':65,'max':99,'unit':'mg/DL'},
     {'field':'Glucose','min':65,'max':99,'unit':'mg/DL'},
     {'field':'BUN','min':6,'max':20,'unit':'mg/DL'},
@@ -93,8 +85,11 @@ export default function Lab() {
     {'field':'Potassium','min':3.5,'max':5.2,'unit':'mol/L'},
     {'field':'Chloride','min':96,'max':106,'unit':'mol/L'},
     {'field':'Calsium','min':20,'max':29,'unit':'mol/L'},
-    {'field':'Chloride','min':8.7,'max':10.2,'unit':'mol/L'}]
-    })
+    {'field':'Chloride','min':8.7,'max':10.2,'unit':'mol/L'}]}
+   ])
+
+    const [Fields,setFields]=useState([])//store set of fields by the selected test
+    const [Tests,setTests]=useState([])//store the selected test
 
     const TloadSet=(xLoad)=>{//Add newly created test
       let T={
@@ -107,13 +102,28 @@ export default function Lab() {
     }
 
     const FloadSet=(xLoad)=>{//set created field data <----- from CreatLabtemplate
-      setFload({...Fload,[Tload.length+1]:xLoad})
+      let T={
+        id:(Tload.length+1),
+        load:xLoad
+      }
+      setFload([...Fload,T])
     }
 
     const FloadEdit=(id,xLoad)=>{//set edited field data <----- from Edittemplate
       setFload({...Fload,[id]:xLoad})
     }
 
+    useEffect(()=>{
+      document.body.style.margin = '0';
+      let a=x.filter((el)=>{
+        return el.date==date
+      })
+      let f= Fload.filter((e)=>{return e.id==tId})
+      let t= Tload.filter((e)=>{return e.id==tId})
+      setFields(f[0])
+      setTests(t[0])
+      setLoadIn(a)
+     },[date,tId])
 
 //Responsive drawer==================================================================================
  const drawerW=320
@@ -197,7 +207,7 @@ export default function Lab() {
 
               :page==2?<LabTestList settId={settId} setPage={setPage} Tdata={Tload}></LabTestList>
               :page==3?<CreateLabTemplate setPage={setPage} TloadSet={TloadSet} FloadSet={FloadSet} PK={Tload.length}></CreateLabTemplate>
-              :page==4?<Edittemplate setPage={setPage} Fdata={Fload[tId]} tId={tId} Tdata={Tload[tId-1]} FloadEdit={FloadEdit}></Edittemplate>
+              :page==4?<Edittemplate setPage={setPage} Fdata={Fields.load} tId={tId} Tdata={Tests} FloadEdit={FloadEdit}></Edittemplate>
               :''
       }
 

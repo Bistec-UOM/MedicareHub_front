@@ -44,7 +44,6 @@ export default function CreateLabTemplate({setPage,FloadSet,TloadSet}) {
       const setEditModeData=(indx)=>{
         setEditMode(true)
         setEditData({...editData,ind:indx,field:testField[indx].field,min:testField[indx].min,max:testField[indx].max,unit:testField[indx].unit})
-        console.log(editData);
       }
 
       const addEditData=()=>{
