@@ -21,30 +21,30 @@ export default function Lab() {
   const [loadIn,setLoadIn]=useState([]) //selected reports by a date
 
   let x=[
-    {date:1,id:1,"name": "Sarah Johnson", "test": ['Thyroxin'],"testId":[3]},
-    {date:1,id:2,"name": "Michael Smith", "test":['FBC','urine'],"testId":[1,5]},
-    {date:1,id:4,"name": "John Davis", "test": ['BMT'],"testId":[8]},
-    {date:1,id:5,"name": "Emily Wilson", "test":['HBC','Thyroxin'],"testId":[2,3]},
-    {date:1,id:6,"name": "David Martinez", "test": ['Urine'],"testId":[5]},
-    {date:1,id:7,"name": "Jessica Anderson", "test": ['FBC'],"testId":[1]},
-    {date:1,id:8,"name": "William Thompson", "test":['FBC'],"testId":[1]},
-    {date:1,id:9,"name": "Jennifer Garcia", "test": ['FBC'],"testId":[1]},
-    {date:1,id:10,"name": "Robert Rodriguez", "test": ['Lipid'],"testId":[6]},
-    {date:1,id:11,"name": "Ashley Lopez", "test":['Lipid','Glucose'],"testId":[6,4]},
-    {date:1,id:12,"name": "Matthew Lee", "test": ['FBC'],"testId":[1]},
+    {date:1,id:51,name: "Sarah Johnson", test: ['Thyroxin'],testId:[3]},
+    {date:1,id:52,name: "Michael Smith", test:['FBC','urine'],testId:[1,5]},
+    {date:1,id:54,name: "John Davis", test: ['BMT'],testId:[8]},
+    {date:1,id:55,name: "Emily Wilson", test:['HBC','Thyroxin'],testId:[2,3]},
+    {date:1,id:56,name: "David Martinez", test: ['Urine'],testId:[5]},
+    {date:1,id:57,name: "Jessica Anderson", test: ['FBC'],testId:[1]},
+    {date:1,id:58,name: "William Thompson", test:['FBC'],testId:[1]},
+    {date:1,id:59,name: "Jennifer Garcia", test: ['FBC'],testId:[1]},
+    {date:1,id:60,name: "Robert Rodriguez", test: ['Lipid'],testId:[6]},
+    {date:1,id:61,name: "Ashley Lopez", test:['Lipid','Glucose'],testId:[6,4]},
+    {date:1,id:62,name: "Matthew Lee", test: ['FBC'],testId:[1]},
 
-    {date:2,id:13,"name": "Jacob Baker", "test": ['Urine'],"testId":[5]},
-    {date:2,id:14,"name": "Ava Green", "test": ['FBC'],"testId":[1]},
-    {date:2,id:15,"name": "Alexander Adams", "test":['FBC'],"testId":[1]},
-    {date:2,id:16,"name": "Charlotte Hill", "test": ['FBC'],"testId":[1]},
-    {date:2,id:17,"name": "William Murphy", "test": ['Lipid'],"testId":[6]},
+    {date:2,id:73,name: "Jacob Baker", test: ['Urine'],testId:[5]},
+    {date:2,id:74,name: "Ava Green", test: ['FBC'],testId:[1]},
+    {date:2,id:75,name: "Alexander Adams", test:['FBC'],testId:[1]},
+    {date:2,id:76,name: "Charlotte Hill", test: ['FBC'],testId:[1]},
+    {date:2,id:77,name: "William Murphy", test: ['Lipid'],testId:[6]},
 
-    {date:3,id:18,"name": "Olivia Anderson", "test":['hCG'],"testId":[7]},
-    {date:3,id:19,"name": "Joshua Taylor", "test": ['FBC'],"testId":[1]},
-    {date:3,id:20,"name": "Sophia Thomas", "test": ['FBC'],"testId":[1]},
-    {date:3,id:21,"name": "Ethan Walker", "test":['HBC','Thyroxin'],"testId":[2,3]},
-    {date:3,id:22,"name": "Isabella Clark", "test": ['Urine'],"testId":[5]},
-    {date:3,id:23,"name": "James Young", "test": ['FBC'],"testId":[1]}
+    {date:3,id:88,name: "Olivia Anderson", test:['hCG'],testId:[7]},
+    {date:3,id:89,name: "Joshua Taylor", test: ['FBC'],testId:[1]},
+    {date:3,id:90,name: "Sophia Thomas", test: ['FBC'],testId:[1]},
+    {date:3,id:91,name: "Ethan Walker", test:['HBC','Thyroxin'],testId:[2,3]},
+    {date:3,id:92,name: "Isabella Clark", test: ['Urine'],testId:[5]},
+    {date:3,id:93,name: "James Young", test: ['FBC'],testId:[1]}
    ]
 
    const [Tload,setTload]=useState([
@@ -60,32 +60,32 @@ export default function Lab() {
 
    const [Fload,setFload]=useState([
     {id:1,load:
-    [{'field':'Himoglobin','min':11.5,'max':13.5,'unit':'g/DL'},
-    {'field':'Himatocrit','min':34,'max':40,'unit':'%'},
-    {'field':'Red blod cell','min':3.9,'max':5.3,'unit':'10^6/ML'},
-    {'field':'White blod cell','min':150,'max':450,'unit':'10/uL'},
-    {'field':'Paletes','min':75,'max':87,'unit':'g/DL'},
-    {'field':'MCV','min':24,'max':30,'unit':'fL'},
-    {'field':'MHC','min':31,'max':37,'unit':'pG'},
-    {'field':'Eesinophil','min':0,'max':4,'unit':''},
-    {'field':'Neutrophil','min':3,'max':5,'unit':'%'},
-    {'field':'Monocyte','min':300,'max':308,'unit':'%'}]},
+    [{field:'Himoglobin',min:11.5,max:13.5,unit:'g/DL'},
+    {field:'Himatocrit',min:34,max:40,unit:'%'},
+    {field:'Red blod cell',min:3.9,max:5.3,unit:'10^6/ML'},
+    {field:'White blod cell',min:150,max:450,unit:'10/uL'},
+    {field:'Paletes',min:75,max:87,unit:'g/DL'},
+    {field:'MCV',min:24,max:30,unit:'fL'},
+    {field:'MHC',min:31,max:37,unit:'pG'},
+    {field:'Eesinophil',min:0,max:4,unit:''},
+    {field:'Neutrophil',min:3,max:5,unit:'%'},
+    {field:'Monocyte',min:300,max:308,unit:'%'}]},
     {id:5,load:
-    [{'field':'Epinephrine','min':0,'max':20,'unit':'mg/L'},
-    {'field':'Metanephrine','min':0,'max':1000,'unit':'%'},
-    {'field':'Nerophineprine','min':15,'max':80,'unit':'ug/L'},
-    {'field':'Normetanaphrine','min':108,'max':500,'unit':'%'},
-    {'field':'Dopamine','min':65,'max':450,'unit':'%'}]},
+    [{field:'Epinephrine',min:0,max:20,unit:'mg/L'},
+    {field:'Metanephrine',min:0,max:1000,unit:'%'},
+    {field:'Nerophineprine',min:15,max:80,unit:'ug/L'},
+    {field:'Normetanaphrine',min:108,max:500,unit:'%'},
+    {field:'Dopamine',min:65,max:450,unit:'%'}]},
     {id:8,load:
-    [{'field':'Glucose','min':65,'max':99,'unit':'mg/DL'},
-    {'field':'Glucose','min':65,'max':99,'unit':'mg/DL'},
-    {'field':'BUN','min':6,'max':20,'unit':'mg/DL'},
-    {'field':'Creatinine','min':0.57,'max':1,'unit':'mg/DL'},
-    {'field':'Sodium','min':134,'max':144,'unit':'mol/L'},
-    {'field':'Potassium','min':3.5,'max':5.2,'unit':'mol/L'},
-    {'field':'Chloride','min':96,'max':106,'unit':'mol/L'},
-    {'field':'Calsium','min':20,'max':29,'unit':'mol/L'},
-    {'field':'Chloride','min':8.7,'max':10.2,'unit':'mol/L'}]}
+    [{field:'Glucose',min:65,max:99,unit:'mg/DL'},
+    {field:'Glucose',min:65,max:99,unit:'mg/DL'},
+    {field:'BUN',min:6,max:20,unit:'mg/DL'},
+    {field:'Creatinine',min:0.57,max:1,unit:'mg/DL'},
+    {field:'Sodium',min:134,max:144,unit:'mol/L'},
+    {field:'Potassium',min:3.5,max:5.2,unit:'mol/L'},
+    {field:'Chloride',min:96,max:106,unit:'mol/L'},
+    {field:'Calsium',min:20,max:29,unit:'mol/L'},
+    {field:'Chloride',min:8.7,max:10.2,unit:'mol/L'}]}
    ])
 
     const [Fields,setFields]=useState([])//store set of fields by the selected test

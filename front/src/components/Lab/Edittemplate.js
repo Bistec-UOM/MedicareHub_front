@@ -22,7 +22,7 @@ export default function Edittemplate({setPage,Fdata,tId,Tdata,FloadEdit}) {
 
       const addTestField=()=>{
         let data_set={
-          'field':fieldName,'min':refMin,'max':refMax,'unit':unit
+          field:fieldName,min:refMin,max:refMax,unit:unit
         }
         setTestField([...testField,data_set])
         setFieldName('')

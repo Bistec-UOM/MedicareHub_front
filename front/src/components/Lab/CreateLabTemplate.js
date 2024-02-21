@@ -24,7 +24,7 @@ export default function CreateLabTemplate({setPage,FloadSet,TloadSet}) {
 
       const addTestField=()=>{
         let data_set={
-          'field':fieldName,'min':refMin,'max':refMax,'unit':unit
+          field:fieldName,min:refMin,max:refMax,unit:unit
         }
         setTestField([...testField,data_set])
         setFieldName('')
@@ -78,9 +78,9 @@ export default function CreateLabTemplate({setPage,FloadSet,TloadSet}) {
       //Finalizing---------------------------------------------------------------
       const createTemplate=()=>{
         let T={
-          'name':testData.name,
-          'provider':testData.provider,
-          'price':testData.price
+          name:testData.name,
+          provider:testData.provider,
+          price:testData.price
         }
         TloadSet(T)//Send test to test list
         FloadSet(testField)//Send fileds list to corrsp. field set
