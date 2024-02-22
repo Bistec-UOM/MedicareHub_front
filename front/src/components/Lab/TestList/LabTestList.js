@@ -47,10 +47,10 @@ export default function LabTestList({setPage,settId,Tdata}) {
                 Tdata.map((el)=>{
                     return(
                     <Paper sx={{display:'flex',width:{xs:'95%',sm:'80%'},justifyContent:'space-between',cursor:'pointer',padding:{xs:1,sm:2},borderRadius:'12px',mb:'10px'}} 
-                    onClick={()=>handleClickOpen(el.id)}>
-                        <Typography sx={{fontSize:'16px',flex:{xs:3,sm:1}}}>{el.name}</Typography>
+                    onClick={()=>handleClickOpen(el.testId)}>
+                        <Typography sx={{fontSize:'16px',flex:{xs:3,sm:2}}}>{el.testName}</Typography>
                         <Typography sx={{fontSize:'16px',flex:{xs:2,sm:1}}}>{el.provider}</Typography>
-                        <Typography sx={{fontSize:'16px',flex:{xs:1,sm:1}, textAlign:'right'}}>{el.price}</Typography>
+                        <Typography sx={{fontSize:'16px',flex:{xs:1,sm:1}, textAlign:'right'}}>Rs.{' '+el.price}</Typography>
                     </Paper>
                     )
                 })

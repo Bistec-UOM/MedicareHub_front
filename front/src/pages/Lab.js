@@ -8,7 +8,7 @@ import CreateLabTemplate from '../components/Lab/CreateLabTemplate';
 import '../components/CustomScroll.css'
 import ResNavBar from '../components/recepcomponents/ResNavBar/ResNabBar';
 import Edittemplate from '../components/Lab/Edittemplate';
-
+import axios from 'axios'
 
 export default function Lab() {
 
@@ -48,18 +48,18 @@ export default function Lab() {
    ]
 
    const [Tload,setTload]=useState([
-    {id:1,name:'Full blood test',provider:'Hemas',price:500.00},
-    {id:2,name:'Half blood test',provider:'Hemas',price:500.00},
-    {id:3,name:'Thyroxin test',provider:'Durdance',price:2400.00},
-    {id:4,name:'Glucose test',provider:'Hemas',price:750.00},
-    {id:5,name:'Urine test',provider:'Hemas',price:1200.00},
-    {id:6,name:'Lipid profile',provider:'Asiri',price:1500.00},
-    {id:7,name:'hCG test',provider:'Durdance',price:500.00},
-    {id:8,name:'Basic metabolic test',provider:'Asiri',price:1700.00}
+    {id:58,name:'Full blood test',provider:'Hemas',price:500.00},
+    {id:59,name:'Half blood test',provider:'Hemas',price:500.00},
+    {id:60,name:'Thyroxin test',provider:'Durdance',price:2400.00},
+    {id:61,name:'Glucose test',provider:'Hemas',price:750.00},
+    {id:62,name:'Urine test',provider:'Hemas',price:1200.00},
+    {id:63,name:'Lipid profile',provider:'Asiri',price:1500.00},
+    {id:64,name:'hCG test',provider:'Durdance',price:500.00},
+    {id:65,name:'Basic metabolic test',provider:'Asiri',price:1700.00}
 ])
 
    const [Fload,setFload]=useState([
-    {id:1,load:
+    {id:58,load:
     [{field:'Himoglobin',min:11.5,max:13.5,unit:'g/DL'},
     {field:'Himatocrit',min:34,max:40,unit:'%'},
     {field:'Red blod cell',min:3.9,max:5.3,unit:'10^6/ML'},
@@ -70,13 +70,13 @@ export default function Lab() {
     {field:'Eesinophil',min:0,max:4,unit:''},
     {field:'Neutrophil',min:3,max:5,unit:'%'},
     {field:'Monocyte',min:300,max:308,unit:'%'}]},
-    {id:5,load:
+    {id:62,load:
     [{field:'Epinephrine',min:0,max:20,unit:'mg/L'},
     {field:'Metanephrine',min:0,max:1000,unit:'%'},
     {field:'Nerophineprine',min:15,max:80,unit:'ug/L'},
     {field:'Normetanaphrine',min:108,max:500,unit:'%'},
     {field:'Dopamine',min:65,max:450,unit:'%'}]},
-    {id:8,load:
+    {id:65,load:
     [{field:'Glucose',min:65,max:99,unit:'mg/DL'},
     {field:'Glucose',min:65,max:99,unit:'mg/DL'},
     {field:'BUN',min:6,max:20,unit:'mg/DL'},
@@ -115,15 +115,21 @@ export default function Lab() {
 
     useEffect(()=>{
       document.body.style.margin = '0';
+      if(page==2){
+        axios.get('https://localhost:44346/api/Test')
+        .then(res=>{setTload(res.data)})
+        .catch(er=>{})
+      }
       let a=x.filter((el)=>{
         return el.date==date
       })
       let f= Fload.filter((e)=>{return e.id==tId})
-      let t= Tload.filter((e)=>{return e.id==tId})
+      let t= Tload.filter((e)=>{return e.testId==tId})
       setFields(f[0])
       setTests(t[0])
       setLoadIn(a)
-     },[date,tId])
+
+     },[date,tId,page])
 
 //Responsive drawer==================================================================================
  const drawerW=320
@@ -253,3 +259,4 @@ export default function Lab() {
 </Grid>
 </CustomScroll>
 } */
+
