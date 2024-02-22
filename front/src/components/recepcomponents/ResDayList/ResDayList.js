@@ -13,6 +13,7 @@ import AppAddPopup from "../AppAddPopup/AppAddPopup";
 import AllAppDeletePopup from "../AllAppDeletePopup/AllAppDeletePopup";
 import '../../../recep.css'
 import SuccessNotification from "../SnackBar/SuccessNotification";
+import axios from "axios";
 
 
 
@@ -38,6 +39,7 @@ const ResDayList = (props) => {
 
 
   const [dayapp, setDayApp] = useState([]);
+  const [doctorid,setDoctorid]=useState(props.docid);
  
   const [filteredAppointments, setFilteredAppointments] = useState([]);
   const [search,setSearch]=useState("")
@@ -63,31 +65,22 @@ const ResDayList = (props) => {
     props.setRenderVal(true);
   };
   useEffect(() => {
-    console.log("use effect",props.docid)
-    console.log("use effect",selectedDay)
+    console.log("use effect doctorid", props.docid);
+    console.log("use effect", selectedDay);
     document.body.style.margin = "0";
-    fetch("https://localhost:7205/api/Appointment/doctor/1/day/2024-02-20")
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return response.json();
-    })
-    .then((responseData) => {
-      console.log("use effect appointments", responseData.result);
-      setFilteredAppointments(responseData.result);
-    })
-    .catch((error) => {
-      console.error('Error fetching appointments:', error);
-    });
-      const newappointments=filteredAppointments;
-      console.log("hook",newappointments);
-    // const appointments = props.appointlist.filter((item) => item.today === selectedDay);
-    // const newappointments=appointments.filter((item)=>item.did===props.docid)
-    // setFilteredAppointments(newappointments);
-    setIsDisabled(newappointments.length === 0);
-    console.log("in res day list",props.docid)
-  }, [delcount]);
+
+    axios.get(`https://localhost:7205/api/Appointment/doctor/${props.docid}/day/${selectedDay}`)
+        .then((response) => {
+            console.log("response data",response.data)
+            const responseData = response.data;
+            setFilteredAppointments(responseData);
+            setIsDisabled(responseData.length === 0); // Update isDisabled based on the fetched appointments
+            console.log("use effect appointments", responseData.result);
+        })
+        .catch((error) => {
+            console.error('Error fetching appointments:', error);
+        });
+}, [props.docid, selectedDay, delcount]); // Ensure dependencies are included in the dependency array
 
   return (
     

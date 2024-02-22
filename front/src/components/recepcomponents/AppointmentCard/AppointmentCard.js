@@ -24,6 +24,7 @@ const AppointmentCard = ({docid,appointlist,setAppointList,handleNotification,fi
     setAppEditOpen(true);
   }
 
+ 
   
 
  
@@ -62,7 +63,7 @@ const AppointmentCard = ({docid,appointlist,setAppointList,handleNotification,fi
               <Stack direction={'row'} sx={{justifyContent:'space-between',alignItem:'center'}}>
         
                   <Typography variant="h5" >
-                    {item.name}
+                    kamal
                   </Typography>
         
                 <Box>
@@ -75,13 +76,13 @@ const AppointmentCard = ({docid,appointlist,setAppointList,handleNotification,fi
               </Stack>
               <Stack sx={{justifyContent:'space-between',alignItem:'center',flexDirection:{xs:'column',md:'row'}}} >
                 <Typography variant="body2" color="text.secondary">
-                  {item.city}
+                 Colombo
                 </Typography>
                 <Typography  color="text.secondary">
-                  {item.nic}
+                 200106203699
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  {item.phone}
+                 0775645123
                 </Typography>
                 <Typography sx={{display:{xs:'flex',sm:'flex',md:'none'}}} variant="body2" color="text.secondary">
                   {item.time}
