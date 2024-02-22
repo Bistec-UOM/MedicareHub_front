@@ -15,7 +15,7 @@ export default function LabTestList({setPage,settId,Tdata}) {
     const handleClickOpen = (x) => {
         setOpen(true)
         settId(x)
-        let t= Tdata.filter((e)=>{return e.id==x})
+        let t= Tdata.filter((e)=>{return e.testId==x})
         setTest(t[0])
     }
     const handleClose = () => {setOpen(false)}  

@@ -47,16 +47,7 @@ export default function Lab() {
     {date:3,id:93,name: "James Young", test: ['FBC'],testId:[1]}
    ]
 
-   const [Tload,setTload]=useState([
-    {id:58,name:'Full blood test',provider:'Hemas',price:500.00},
-    {id:59,name:'Half blood test',provider:'Hemas',price:500.00},
-    {id:60,name:'Thyroxin test',provider:'Durdance',price:2400.00},
-    {id:61,name:'Glucose test',provider:'Hemas',price:750.00},
-    {id:62,name:'Urine test',provider:'Hemas',price:1200.00},
-    {id:63,name:'Lipid profile',provider:'Asiri',price:1500.00},
-    {id:64,name:'hCG test',provider:'Durdance',price:500.00},
-    {id:65,name:'Basic metabolic test',provider:'Asiri',price:1700.00}
-])
+   const [Tload,setTload]=useState(null)
 
    const [Fload,setFload]=useState([
     {id:58,load:
