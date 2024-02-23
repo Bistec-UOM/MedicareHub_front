@@ -9,7 +9,6 @@ import '../components/CustomScroll.css'
 import ResNavBar from '../components/recepcomponents/ResNavBar/ResNabBar';
 import Edittemplate from '../components/Lab/Edittemplate';
 
-
 export default function Lab() {
 
   const [page,setPage]=useState(1)//Navigate pages  [1:dashboard  2:testlist  3:createtetmplt  4:edittmplt]
@@ -47,48 +46,11 @@ export default function Lab() {
     {date:3,id:93,name: "James Young", test: ['FBC'],testId:[1]}
    ]
 
-   const [Tload,setTload]=useState([
-    {id:1,name:'Full blood test',provider:'Hemas',price:500.00},
-    {id:2,name:'Half blood test',provider:'Hemas',price:500.00},
-    {id:3,name:'Thyroxin test',provider:'Durdance',price:2400.00},
-    {id:4,name:'Glucose test',provider:'Hemas',price:750.00},
-    {id:5,name:'Urine test',provider:'Hemas',price:1200.00},
-    {id:6,name:'Lipid profile',provider:'Asiri',price:1500.00},
-    {id:7,name:'hCG test',provider:'Durdance',price:500.00},
-    {id:8,name:'Basic metabolic test',provider:'Asiri',price:1700.00}
-])
+   const [Tload,setTload]=useState([])
 
-   const [Fload,setFload]=useState([
-    {id:1,load:
-    [{field:'Himoglobin',min:11.5,max:13.5,unit:'g/DL'},
-    {field:'Himatocrit',min:34,max:40,unit:'%'},
-    {field:'Red blod cell',min:3.9,max:5.3,unit:'10^6/ML'},
-    {field:'White blod cell',min:150,max:450,unit:'10/uL'},
-    {field:'Paletes',min:75,max:87,unit:'g/DL'},
-    {field:'MCV',min:24,max:30,unit:'fL'},
-    {field:'MHC',min:31,max:37,unit:'pG'},
-    {field:'Eesinophil',min:0,max:4,unit:''},
-    {field:'Neutrophil',min:3,max:5,unit:'%'},
-    {field:'Monocyte',min:300,max:308,unit:'%'}]},
-    {id:5,load:
-    [{field:'Epinephrine',min:0,max:20,unit:'mg/L'},
-    {field:'Metanephrine',min:0,max:1000,unit:'%'},
-    {field:'Nerophineprine',min:15,max:80,unit:'ug/L'},
-    {field:'Normetanaphrine',min:108,max:500,unit:'%'},
-    {field:'Dopamine',min:65,max:450,unit:'%'}]},
-    {id:8,load:
-    [{field:'Glucose',min:65,max:99,unit:'mg/DL'},
-    {field:'Glucose',min:65,max:99,unit:'mg/DL'},
-    {field:'BUN',min:6,max:20,unit:'mg/DL'},
-    {field:'Creatinine',min:0.57,max:1,unit:'mg/DL'},
-    {field:'Sodium',min:134,max:144,unit:'mol/L'},
-    {field:'Potassium',min:3.5,max:5.2,unit:'mol/L'},
-    {field:'Chloride',min:96,max:106,unit:'mol/L'},
-    {field:'Calsium',min:20,max:29,unit:'mol/L'},
-    {field:'Chloride',min:8.7,max:10.2,unit:'mol/L'}]}
-   ])
+   const [Fload,setFload]=useState([])
 
-    const [Fields,setFields]=useState([])//store set of fields by the selected test
+    //const [Fields,setFields]=useState([])//store set of fields by the selected test
     const [Tests,setTests]=useState([])//store the selected test
 
     const TloadSet=(xLoad)=>{//Add newly created test
@@ -110,20 +72,27 @@ export default function Lab() {
     }
 
     const FloadEdit=(id,xLoad)=>{//set edited field data <----- from Edittemplate
-      setFload({...Fload,[id]:xLoad})
+      let obj={
+        id:id,
+        load:xLoad
+      }
+      console.log(obj)
     }
 
     useEffect(()=>{
       document.body.style.margin = '0';
+      //selcted date's req
       let a=x.filter((el)=>{
         return el.date==date
-      })
-      let f= Fload.filter((e)=>{return e.id==tId})
-      let t= Tload.filter((e)=>{return e.id==tId})
-      setFields(f[0])
-      setTests(t[0])
+      }) 
       setLoadIn(a)
-     },[date,tId])
+      //selected test name
+      let t=Tload.filter(el=>{
+        return el.testId==tId
+      })
+      setTests(t[0])
+
+     },[date,tId,page])
 
 //Responsive drawer==================================================================================
  const drawerW=320
@@ -205,9 +174,9 @@ export default function Lab() {
              </div>
               : ''
 
-              :page==2?<LabTestList settId={settId} setPage={setPage} Tdata={Tload}></LabTestList>
+              :page==2?<LabTestList settId={settId} setPage={setPage} Tload={Tload} setTload={setTload}></LabTestList>
               :page==3?<CreateLabTemplate setPage={setPage} TloadSet={TloadSet} FloadSet={FloadSet} PK={Tload.length}></CreateLabTemplate>
-              :page==4?<Edittemplate setPage={setPage} Fdata={Fields.load} tId={tId} Tdata={Tests} FloadEdit={FloadEdit}></Edittemplate>
+              :page==4?<Edittemplate setPage={setPage} tId={tId} Tdata={Tests} FloadEdit={FloadEdit}></Edittemplate>
               :''
       }
 
@@ -253,3 +222,4 @@ export default function Lab() {
 </Grid>
 </CustomScroll>
 } */
+

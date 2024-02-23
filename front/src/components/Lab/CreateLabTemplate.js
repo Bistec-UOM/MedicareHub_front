@@ -12,6 +12,7 @@ export default function CreateLabTemplate({setPage,FloadSet,TloadSet}) {
 
     useEffect(()=>{
         document.body.style.margin = '0';
+        
        },[])
       
       //Field values--------------------------------------------------------------
@@ -121,16 +122,16 @@ export default function CreateLabTemplate({setPage,FloadSet,TloadSet}) {
                        return(
                        <Box sx={{display:'flex',justifyContent:'space-between',alignItems:'center',width:{xs:'90%',sm:'80%'},height:'30px',borderBottom:'1px solid #0488b0',mt:'5px'}}>
                            <Box sx={{width:{xs:'40%',sm:'45%'},height:'100%'}}>
-                             <Typography sx={{fontSize:'16px',cursor:'pointer'}} onDoubleClick={()=>setEditModeData(indx)}>{elm.field}</Typography>
+                             <Typography sx={{fontSize:'16px',cursor:'pointer'}} onDoubleClick={()=>setEditModeData(indx)}>{elm.Fieldname}</Typography>
                            </Box>
                            <Box sx={{width:{xs:'10%',sm:'15%'},height:'100%'}}>
-                             <Typography sx={{fontSize:'16px',textAlign:'right'}}>{elm.min}</Typography>
+                             <Typography sx={{fontSize:'16px',textAlign:'right'}}>{elm.MinRef}</Typography>
                            </Box>
                            <Box sx={{width:{xs:'10%',sm:'15%'},height:'100%'}}>
-                             <Typography sx={{fontSize:'16px',pl:'4px'}}>{elm.max}</Typography>
+                             <Typography sx={{fontSize:'16px',pl:'4px'}}>{elm.MaxRef}</Typography>
                            </Box>
                            <Box sx={{width:'10%',height:'100%'}}>
-                             <Typography sx={{fontSize:'16px'}}>{elm.unit}</Typography>
+                             <Typography sx={{fontSize:'16px'}}>{elm.Unit}</Typography>
                            </Box>
                            {/* nav icons & close icon*/}
                            <Box sx={{width:{xs:'10%',sm:'5%'},height:'100%',display:'flex',justifyContent:'flex-end',ml:'5px'}}>

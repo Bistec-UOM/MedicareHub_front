@@ -8,7 +8,7 @@ export default function TestDialogBox({test,setPage}) {
 
   return (
     <div style={{padding:'20px',display:'flex',flexDirection:'column'}}>
-        <TextField disabled={isDisabled} label="Name" margin="dense" value={test.name}/>
+        <TextField disabled={isDisabled} label="Name" margin="dense" value={test.testName}/>
         <TextField disabled={isDisabled} label="Provider" margin="dense" value={test.provider}/>
         <TextField disabled={isDisabled} label="Price" margin="dense" value={test.price}/>
         <div style={{paddingTop:'10px',display:'flex',justifyContent:'flex-end',alignItems:'center'}} >
