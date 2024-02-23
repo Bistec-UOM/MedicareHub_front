@@ -50,7 +50,7 @@ export default function Lab() {
 
    const [Fload,setFload]=useState([])
 
-    const [Fields,setFields]=useState([])//store set of fields by the selected test
+    //const [Fields,setFields]=useState([])//store set of fields by the selected test
     const [Tests,setTests]=useState([])//store the selected test
 
     const TloadSet=(xLoad)=>{//Add newly created test
@@ -72,15 +72,25 @@ export default function Lab() {
     }
 
     const FloadEdit=(id,xLoad)=>{//set edited field data <----- from Edittemplate
-      setFload({...Fload,[id]:xLoad})
+      let obj={
+        id:id,
+        load:xLoad
+      }
+      console.log(obj)
     }
 
     useEffect(()=>{
       document.body.style.margin = '0';
+      //selcted date's req
       let a=x.filter((el)=>{
         return el.date==date
-      })
+      }) 
       setLoadIn(a)
+      //selected test name
+      let t=Tload.filter(el=>{
+        return el.testId==tId
+      })
+      setTests(t[0])
 
      },[date,tId,page])
 
