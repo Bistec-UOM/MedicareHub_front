@@ -8,7 +8,6 @@ import CreateLabTemplate from '../components/Lab/CreateLabTemplate';
 import '../components/CustomScroll.css'
 import ResNavBar from '../components/recepcomponents/ResNavBar/ResNabBar';
 import Edittemplate from '../components/Lab/Edittemplate';
-import axios from 'axios'
 
 export default function Lab() {
 
@@ -78,18 +77,9 @@ export default function Lab() {
 
     useEffect(()=>{
       document.body.style.margin = '0';
-      if(page==2){
-        axios.get('https://localhost:44346/api/Test')
-        .then(res=>{setTload(res.data)})
-        .catch(er=>{})
-      }
       let a=x.filter((el)=>{
         return el.date==date
       })
-      //let f= Fload.filter((e)=>{return e.id==tId})
-      //let t= Tload.filter((e)=>{return e.testId==tId})
-      //setFields(f[0])
-      //setTests(t[0])
       setLoadIn(a)
 
      },[date,tId,page])
@@ -174,7 +164,7 @@ export default function Lab() {
              </div>
               : ''
 
-              :page==2?<LabTestList settId={settId} setPage={setPage} Tdata={Tload}></LabTestList>
+              :page==2?<LabTestList settId={settId} setPage={setPage} Tload={Tload} setTload={setTload}></LabTestList>
               :page==3?<CreateLabTemplate setPage={setPage} TloadSet={TloadSet} FloadSet={FloadSet} PK={Tload.length}></CreateLabTemplate>
               :page==4?<Edittemplate setPage={setPage} tId={tId} Tdata={Tests} FloadEdit={FloadEdit}></Edittemplate>
               :''

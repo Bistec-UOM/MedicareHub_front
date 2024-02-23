@@ -1,27 +1,37 @@
 import { Paper, Toolbar, Typography,InputBase,Divider,IconButton, Button } from '@mui/material'
 import { Stack } from '@mui/system'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import SearchIcon from "@mui/icons-material/Search";
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import TestDialogBox from './TestDialogBox';
 import CloseIcon from "@mui/icons-material/Close";
+import axios from 'axios'
 
-export default function LabTestList({setPage,settId,Tdata}) {
+
+export default function LabTestList({setPage,settId,Tload,setTload}) {
 
     //Pop up dialog box------------------------------------------------------------
     const [open, setOpen] = useState(false)
     const handleClickOpen = (x) => {
         setOpen(true)
         settId(x)
-        let t= Tdata.filter((e)=>{return e.testId==x})
+        let t= Tload.filter((e)=>{return e.testId==x})
         setTest(t[0])
     }
     const handleClose = () => {setOpen(false)}  
 
     const [test,setTest]=useState()
     //----------------------------------------------------------------------------
+
+    useEffect(()=>{
+      if(Tload.length==0){
+        axios.get('https://localhost:44346/api/Test')
+        .then(res=>{setTload(res.data)})
+        .catch(er=>{})
+      }
+    },[Tload])
 
   return (
     <div>
@@ -44,7 +54,7 @@ export default function LabTestList({setPage,settId,Tdata}) {
 
         <Stack sx={{paddingTop:{xs:'60px',sm:'80px'},paddingLeft:{xs:'5%',sm:'8%'}}}>
             {
-                Tdata.map((el)=>{
+                Tload.map((el)=>{
                     return(
                     <Paper sx={{display:'flex',width:{xs:'95%',sm:'80%'},justifyContent:'space-between',cursor:'pointer',padding:{xs:1,sm:2},borderRadius:'12px',mb:'10px'}} 
                     onClick={()=>handleClickOpen(el.testId)}>
