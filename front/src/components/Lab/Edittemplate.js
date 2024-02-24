@@ -89,7 +89,7 @@ export default function Edittemplate({setPage,tId,Tdata,FloadEdit}) {
       const [loading,setLoading]=useState(true)
       useEffect(()=>{
         document.body.style.margin = '0';
-          axios.get('https://localhost:44346/api/Template/'+`${tId}`)
+          axios.get('http://localhost:5220/api/Template/'+`${tId}`)
           .then(res=>{setTestField(res.data); setLoading(false)})
           .catch(er=>{})
        },[])
