@@ -178,7 +178,7 @@ export default function AppEditPopup({
                           }}
                         >
                           <Typography sx={{ padding: "2%" }} variant="h5">
-                            {item?.name}
+                          Kamal
                           </Typography>
                         </Stack>
                         <Stack>
@@ -186,7 +186,7 @@ export default function AppEditPopup({
                             sx={{ padding: "2%" }}
                             color="text.secondary"
                           >
-                            {item?.nic}
+                            200106203699
                           </Typography>
                         </Stack>
                         <Stack
@@ -201,11 +201,11 @@ export default function AppEditPopup({
                             variant="body2"
                             color="text.secondary"
                           >
-                            {item?.city}
+                            Colombo
                           </Typography>
 
                           <Typography variant="body2" color="text.secondary">
-                            {item?.phone}
+                            0774733245
                           </Typography>
                         </Stack>
                       </Stack>
