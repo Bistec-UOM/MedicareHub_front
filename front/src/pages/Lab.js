@@ -48,36 +48,8 @@ export default function Lab() {
 
    const [Tload,setTload]=useState([])
 
-   const [Fload,setFload]=useState([])
-
     //const [Fields,setFields]=useState([])//store set of fields by the selected test
     const [Tests,setTests]=useState([])//store the selected test
-
-    const TloadSet=(xLoad)=>{//Add newly created test
-      let T={
-        id:Tload.length+1,
-        name:xLoad.name,
-        provider:xLoad.provider,
-        price:xLoad.price
-      }
-      setTload([...Tload,T])
-    }
-
-    const FloadSet=(xLoad)=>{//set created field data <----- from CreatLabtemplate
-      let T={
-        id:(Tload.length+1),
-        load:xLoad
-      }
-      setFload([...Fload,T])
-    }
-
-    const FloadEdit=(id,xLoad)=>{//set edited field data <----- from Edittemplate
-      let obj={
-        id:id,
-        load:xLoad
-      }
-      console.log(obj)
-    }
 
     useEffect(()=>{
       document.body.style.margin = '0';
@@ -92,7 +64,7 @@ export default function Lab() {
       })
       setTests(t[0])
 
-     },[date,tId,page])
+     },[date,tId,page,Tload])
 
 //Responsive drawer==================================================================================
  const drawerW=320
@@ -175,8 +147,8 @@ export default function Lab() {
               : ''
 
               :page==2?<LabTestList settId={settId} setPage={setPage} Tload={Tload} setTload={setTload}></LabTestList>
-              :page==3?<CreateLabTemplate setPage={setPage} TloadSet={TloadSet} FloadSet={FloadSet} PK={Tload.length}></CreateLabTemplate>
-              :page==4?<Edittemplate setPage={setPage} tId={tId} Tdata={Tests} FloadEdit={FloadEdit}></Edittemplate>
+              :page==3?<CreateLabTemplate setPage={setPage} setTload={setTload}></CreateLabTemplate>
+              :page==4?<Edittemplate setPage={setPage} tId={tId} Tdata={Tests} setTload={setTload}></Edittemplate>
               :''
       }
 

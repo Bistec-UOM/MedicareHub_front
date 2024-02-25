@@ -8,7 +8,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import axios from 'axios'
 
-export default function Edittemplate({setPage,tId,Tdata,FloadEdit}) {
+export default function Edittemplate({setPage,tId,Tdata,setTload}) {
       
       //Field values--------------------------------------------------------------
       const [testField,setTestField]=useState([])
@@ -19,7 +19,7 @@ export default function Edittemplate({setPage,tId,Tdata,FloadEdit}) {
 
       const addTestField=()=>{
         let data_set={
-          fieldname:Fieldname,minRef:MinRef,maxRef:MaxRef,unit:Unit
+          fieldname:Fieldname,index:'',minRef:MinRef,maxRef:MaxRef,unit:Unit
         }
         setTestField([...testField,data_set])
         setFieldName('')
@@ -34,12 +34,11 @@ export default function Edittemplate({setPage,tId,Tdata,FloadEdit}) {
 
       //Edit fields---------------------------------------------------------------
       const[editMode,setEditMode]=useState(false)
-      const[editData,setEditData]=useState({id:'',fieldname:'',index:'',minRef:'',maxRef:'',unit:''})
+      const[editData,setEditData]=useState({fieldname:'',index:'',minRef:'',maxRef:'',unit:''})
 
       const setEditModeData=(indx,id)=>{
         setEditMode(true)
         setEditData({...editData,
-          id:id,
           fieldname:testField[indx].fieldname,
           index:indx,
           minRef:testField[indx].minRef,
@@ -51,7 +50,6 @@ export default function Edittemplate({setPage,tId,Tdata,FloadEdit}) {
       const addEditData=()=>{
         let arr=[...testField]
         let e_data={
-          id:editData.id,
           fieldname:editData.fieldname,
           index:editData.index,
           minRef:editData.minRef,
@@ -81,15 +79,25 @@ export default function Edittemplate({setPage,tId,Tdata,FloadEdit}) {
 
       //Finalizing--------------------------------------------------
       const saveTemplate=()=>{
-        FloadEdit(tId,testField)//send to Lab.js
-        setPage(2)
+        let ld=testField
+        ld.map((el,ind)=>{el.index=ind})
+        let obj={
+          TestId:tId,
+          Fields:ld
+        }
+        axios.put('http://localhost:5220/api/Template',obj)
+        .then(res=>{
+          setTload([])//make test list empty to reload again
+          setPage(2)
+        })
+        .catch(er=>{})
       }
     
 
       const [loading,setLoading]=useState(true)
       useEffect(()=>{
         document.body.style.margin = '0';
-          axios.get('https://localhost:44346/api/Template/'+`${tId}`)
+          axios.get('http://localhost:5220/api/Template/'+`${tId}`)
           .then(res=>{setTestField(res.data); setLoading(false)})
           .catch(er=>{})
        },[])
