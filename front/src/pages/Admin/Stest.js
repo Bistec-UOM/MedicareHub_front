@@ -13,6 +13,7 @@ const Stest = () => {
       drugType: [
         {name: "amoxilin", quantity: 12},
         {name: "dopamine", quantity: 23},
+        {name: "dopaminec", quantity: 23},
       ] 
     },
     { 
