@@ -48,20 +48,8 @@ export default function Lab() {
 
    const [Tload,setTload]=useState([])
 
-   const [Fload,setFload]=useState([])
-
     //const [Fields,setFields]=useState([])//store set of fields by the selected test
     const [Tests,setTests]=useState([])//store the selected test
-
-    const TloadSet=(xLoad)=>{//Add newly created test
-      let T={
-        id:Tload.length+1,
-        name:xLoad.name,
-        provider:xLoad.provider,
-        price:xLoad.price
-      }
-      setTload([...Tload,T])
-    }
 
     useEffect(()=>{
       document.body.style.margin = '0';

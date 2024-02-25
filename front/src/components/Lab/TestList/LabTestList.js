@@ -71,7 +71,7 @@ export default function LabTestList({setPage,settId,Tload,setTload}) {
             Edit test
           <CloseIcon onClick={handleClose} sx={{cursor:'pointer'}} />
           </DialogTitle>
-       <TestDialogBox test={test} setPage={setPage}></TestDialogBox>
+       <TestDialogBox test={test} setPage={setPage} setTload={setTload} handleClose={handleClose}></TestDialogBox>
       </Dialog>
 
     </div>
