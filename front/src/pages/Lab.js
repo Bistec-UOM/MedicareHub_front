@@ -63,22 +63,6 @@ export default function Lab() {
       setTload([...Tload,T])
     }
 
-    const FloadSet=(xLoad)=>{//set created field data <----- from CreatLabtemplate
-      let T={
-        id:(Tload.length+1),
-        load:xLoad
-      }
-      setFload([...Fload,T])
-    }
-
-    const FloadEdit=(id,xLoad)=>{//set edited field data <----- from Edittemplate
-      let obj={
-        id:id,
-        load:xLoad
-      }
-      console.log(obj)
-    }
-
     useEffect(()=>{
       document.body.style.margin = '0';
       //selcted date's req
@@ -92,7 +76,7 @@ export default function Lab() {
       })
       setTests(t[0])
 
-     },[date,tId,page])
+     },[date,tId,page,Tload])
 
 //Responsive drawer==================================================================================
  const drawerW=320
@@ -176,7 +160,7 @@ export default function Lab() {
 
               :page==2?<LabTestList settId={settId} setPage={setPage} Tload={Tload} setTload={setTload}></LabTestList>
               :page==3?<CreateLabTemplate setPage={setPage} setTload={setTload}></CreateLabTemplate>
-              :page==4?<Edittemplate setPage={setPage} tId={tId} Tdata={Tests} FloadEdit={FloadEdit}></Edittemplate>
+              :page==4?<Edittemplate setPage={setPage} tId={tId} Tdata={Tests} setTload={setTload}></Edittemplate>
               :''
       }
 
