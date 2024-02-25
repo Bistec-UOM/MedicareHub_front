@@ -163,7 +163,14 @@ try {
   };
   
   
-  
+  const formFields = [
+    { label: "Full Name", key: "fullName" },
+    { label: "Name", key: "name" },
+    { label: "NIC", key: "nic", sx: { ml: 1 } },
+    { label: "Address", key: "address" },
+    { label: "Contact Number", key: "contactNumber" },
+    { label: "Email", key: "email", sx: { ml: 1 } },
+  ];
   
 //selecting paper content
   // const [selectedPaper, setSelectedPaper] = useState({
@@ -378,52 +385,19 @@ const Filter = (event) => {
             <CloseIcon onClick={handleEditClose} sx={{cursor:'pointer'}} />
           </DialogTitle>
           <DialogContent>
-            <TextField
-              disabled={isDisabled}
-              label="Full Name"
-              fullWidth
-              margin="dense"
-              value={ formData.fullName }
-              onChange={(e) =>setFormData({...formData,fullName:e.target.value})}
-              />
-            <TextField
-              disabled={isDisabled}
-              label="Name"
-              margin="dense"
-              value={ formData.name }
-              onChange={(e) => setFormData({...formData,name:e.target.value})}
-              />
-            <TextField
-              disabled={isDisabled}
-              sx={{ml:1}}
-              label="NIC"
-              margin="dense"
-              value={ formData.nic }
-              onChange={(e) => setFormData({...formData,nic:e.target.value})}
-              />
-            <TextField
-              disabled={isDisabled}
-              label="Address"
-              fullWidth
-              margin="dense"
-              value={ formData.address}
-              onChange={(e) => setFormData({...formData,address:e.target.value})}
-              />
-            <TextField
-              disabled={isDisabled}
-              label="Contact Number"
-              margin="dense"
-              value={ formData.contactNumber }
-              onChange={(e) => setFormData({...formData,contactNumber:e.target.value})}
-              />
-            <TextField
-              disabled={isDisabled}
-              label="Email"
-              margin="dense"
-              value={ formData.email}
-              sx={{ml:1}}
-              onChange={(e) => setFormData({...formData,email:e.target.value})}
-              />
+          {formFields.map((field) => (
+      <TextField
+        disabled={isDisabled}
+        label={field.label}
+        fullWidth
+        margin="dense"
+        value={formData[field.key]}
+        onChange={(e) =>
+          setFormData({ ...formData, [field.key]: e.target.value })
+        }
+        sx={field.sx}
+      />
+    ))}
 <div style={{display:'flex'}}>
 <LocalizationProvider dateAdapter={AdapterDayjs}>
   <DemoContainer components={['DateField']}>
@@ -449,7 +423,6 @@ const Filter = (event) => {
   >
     <MenuItem value="Male">Male</MenuItem>
     <MenuItem value="Female">Female</MenuItem>
-    {/* <MenuItem value="other">Other</MenuItem> */}
   </Select>
 </div>
 

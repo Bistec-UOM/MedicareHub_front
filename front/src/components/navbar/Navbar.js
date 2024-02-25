@@ -83,13 +83,10 @@ const Navbar = () => {
                               }}
                               open={Boolean(anchorEl)}
                               onClose={handleClose}
-                              PaperProps={{
-                                sx: {
-                                  backgroundColor: '#ffff', // Set the background color of the Menu
-                                  paddingRight:'3%'
-                                  
-                                },
-                              }}
+                              
+                                sx= {{backgroundColor:'#ffffff' , // Set the background color of the Menu
+                                  paddingRight:'3%'}}
+                           
                           >
                               <MenuItem onClick={handleClose}><HelpOutlineIcon sx={{ paddingRight: '10%' }} />Help</MenuItem>
                               <MenuItem onClick={handleClose}><SettingsIcon sx={{ paddingRight: '10%' }} /> Settings</MenuItem>
