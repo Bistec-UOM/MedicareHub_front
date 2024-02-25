@@ -84,5 +84,21 @@ body > div.MuiDrawer-root.MuiDrawer-modal.MuiModal-root.css-hjb2rp-MuiModal-root
 }
 
 
+fc .fc-daygrid-day-frame ,.fc .fc-daygrid-day-top, .fc .fc-daygrid-day-number
+{
+  width:100%;
+  height:100%
+}
+
+
+
+
+
+
+
+.fc-col-header-cell.fc-day-sun {
+  color: red; /* Apply red color to Sunday header */
+}
+
 
   
