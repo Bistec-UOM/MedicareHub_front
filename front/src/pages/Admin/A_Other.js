@@ -8,16 +8,16 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
-function createData(name, attendance) {
-  return { name, attendance };
+function createData(name,peratten, attendance,reason) {
+  return { name,peratten, attendance,reason };
 }
 
 const rows = [
-  createData('chamath', 159),
-  createData('kasun', 237),
-  createData('wimal', 262),
-  createData('kanchana', 305),
-  createData('manula', 356),
+  createData('chamath','80%', 159 ,12),
+  createData('kasun','90%', 237 ,5),
+  createData('wimal','94%', 262 ,12),
+  createData('kanchana','98%', 305 ,2),
+  createData('manula','100%', 356 ,0),
 ];
 
 const AOther = () => {
@@ -27,8 +27,10 @@ const AOther = () => {
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>Name </TableCell>
-            <TableCell align="right">Attendance</TableCell>
+            <TableCell align='center'>Name </TableCell>
+          <TableCell align='center'>Attendance(%)</TableCell>
+          <TableCell align="center">Attendance</TableCell>
+          <TableCell align="center">Reasonable Leaves</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -37,10 +39,12 @@ const AOther = () => {
               key={row.name}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
-              <TableCell component="th" scope="row">
+              <TableCell align='center' component="th" scope="row">
                 {row.name}
               </TableCell>
-              <TableCell align="right">{row.attendance}</TableCell>
+              <TableCell align="center">{row.attendance}</TableCell>
+              <TableCell align="center">{row.peratten}</TableCell>
+              <TableCell align="center">{row.reason}</TableCell>
 
             </TableRow>
           ))}
