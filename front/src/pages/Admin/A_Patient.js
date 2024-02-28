@@ -9,7 +9,8 @@ const pdata = [
   { datefor: "2024.02.23", child_male: 12, child_female: 9, adult_male: 12, adult_female: 2, old_male: 12, old_female: 2 },
   { datefor: "2024.02.24", child_male: 12, child_female: 2, adult_male: 12, adult_female: 2, old_male: 12, old_female: 2 },
   { datefor: "2024.02.25", child_male: 12, child_female: 2, adult_male: 12, adult_female: 2, old_male: 12, old_female: 2 },
-  { datefor: "2024.02.27", child_male: 1, child_female: 2, adult_male: 1, adult_female: 2, old_male: 2, old_female: 2 }
+  { datefor: "2024.02.27", child_male: 1, child_female: 2, adult_male: 1, adult_female: 2, old_male: 2, old_female: 2 },
+  { datefor: "2024.02.28", child_male: 11, child_female: 26, adult_male: 1, adult_female: 25, old_male: 22, old_female: 24 },
 ];
 
 const APatient = () => {
@@ -175,11 +176,10 @@ const handletypeChange = (event) => {
 
     return (
         <div>
-          <Typography fontSize={25} fontWeight={10} sx={{textAlign:'center'}}>Patient</Typography>
           <Grid container spacing={2}>
             <Grid item xs={4}>
               <Paper style={{textAlign:'center', paddingTop:"6%"}} >
-                <Typography fontSize={30}>Patient count within today</Typography>
+                <Typography fontSize={20}>Patient count within today</Typography>
                 <Typography fontSize={90}>{count}</Typography>
               </Paper>
             </Grid>
@@ -188,7 +188,7 @@ const handletypeChange = (event) => {
               <Typography fontSize={20} sx={{textAlign:'center'}}>Patient count within a time period</Typography>
                 <ResponsiveContainer aspect={3} style={{textAlign:'right'}}>
                 <FormControl sx={{ width: '20%',marginRight:'2vw' }}>
-        <InputLabel>Gap1</InputLabel>
+        <InputLabel>Gap</InputLabel>
         <Select
           style={{ textAlign: 'left' }}
           id="demo-simple-select"
@@ -220,7 +220,9 @@ const handletypeChange = (event) => {
           </Grid>
           <Grid>
           <Paper style={{padding:'15px 5px 60px 5px',textAlign:'right',marginTop:'20px'}}>
+              <Typography fontSize={20} sx={{textAlign:'center',margin:'20px'}}>Patient count within today</Typography>
               <ResponsiveContainer width="90%" height={400}>
+
       <FormControl sx={{ width: '20%',marginRight:'2vw' }}>
         <InputLabel>Gap</InputLabel>
         <Select
