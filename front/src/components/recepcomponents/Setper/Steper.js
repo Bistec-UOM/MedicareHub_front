@@ -39,10 +39,10 @@ export default function Steper(props) {
     <Box >
       <Stepper orientation='vertical' activeStep={0} >
         {props.items && props.items.filter((item)=>{
-           return props.search.toLowerCase()===''?item:item.name.toLowerCase().includes(props.search.toLowerCase())
+           return props.search.toLowerCase()===''?item:item.patient.fullName.toLowerCase().includes(props.search.toLowerCase())
         }).map((label) => (
-          <Step key={label.nic}>
-            <StepLabel >{getTime(label.time)}</StepLabel>
+          <Step key={label.patient.nic}>
+            <StepLabel >{getTime(label.appointment?.time)}</StepLabel>
 
 
           </Step>

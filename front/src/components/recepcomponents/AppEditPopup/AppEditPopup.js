@@ -1,5 +1,6 @@
 import * as React from "react";
 import BasicTimePicker from "../TimePicker/TimePicker";
+import axios from "axios";
 
 import Moment from "react-moment";
 
@@ -70,7 +71,7 @@ export default function AppEditPopup({
 
   const [activeData, setActiveData] = useState({});
 
-  function formatAMPM(date) {
+  function formatAMPM(date) {  //this function for display the selected date using am and pm,not used 24 based hours
     var hours = dayjs(date).get("hour");
     var minutes = dayjs(date).get("minute");
     var ampm = hours >= 12 ? 'pm' : 'am';
@@ -82,6 +83,24 @@ export default function AppEditPopup({
     setAppTime({...appTime,hours:hours,minutes:minutes,ampm:ampm})
   }
 
+
+  function getRealTime(timeObject)  //this is used for converting the displayed time to the pasing body time in the backend
+  {
+    let hours = parseInt(timeObject.hours, 10);
+    if (timeObject.ampm === 'pm' && hours !== 12) {
+      hours += 12;
+  } else if (timeObject.ampm === 'am' && hours === 12) {
+      hours = 0;
+  }
+
+  const date = new Date();
+  date.setHours(hours, timeObject.minutes, 0, 0);
+  return date;
+
+
+
+  }
+
   // useEffect=(()=>{
   //   console.log("sele",formatAMPM(selectedTime))
   // },[selectedTime])
@@ -89,7 +108,7 @@ export default function AppEditPopup({
 
   const handleTimeChange = (time) => {
     setSelectedTime("inse time", time);
-    console.log(selectedTime);
+   // console.log(appTime);
   };
 
   const handleClickOpen = () => {
@@ -107,6 +126,60 @@ export default function AppEditPopup({
     setAppEditOpen(false);
     handleNotification("Appointment Edited succesfully!");
   }
+
+  const updateAppointment = async (id, appointment) => {
+    try {
+      setAppEditOpen(false);
+      handleNotification("Appointment Edited succesfully!");
+      const response = await axios.put(`https://localhost:7205/api/Appointment/${id}`, appointment);
+      return response.data; // You may handle the response data as needed
+    } catch (error) {
+      // Handle error
+      console.error('Error updating appointment:', error);
+      throw error; // You can choose to handle errors differently based on your application's requirements
+    }
+  };
+
+
+  async function handleUpdate(event)
+  {
+   event.preventDefault();
+   console.log("inside handle update");
+   var finalTime=getRealTime(appTime);
+   var formattedDateString = finalTime.toISOString();
+   console.log(formattedDateString);
+
+  try
+      {
+       
+          await axios.put(`https://localhost:7205/api/Appointment/${item.appointment.id}`,
+      {
+       
+        id:item.appointment.id,
+        newtime:formattedDateString,
+         status: item.appointment.status,
+         patitenId:item.appointment.patitenId,
+         doctorId:item.appointment.doctorId,
+         recepId:item.appointment.recepId
+      
+      });
+     // console.log()
+     // setAppEditOpen(false);
+     // handleNotification("Appointment Edited succesfully!");
+      // setSuccessState("Student succesfully updated!")
+      // navigate('/');
+       
+
+       
+      
+      }
+  catch(err)
+      {
+        //setNerror(err.response.data);
+      }
+ }
+
+
   useEffect(() => {
     //console.log("sele",formatAMPM(selectedTime))
     // console.log(activeId);
@@ -128,7 +201,7 @@ export default function AppEditPopup({
     <React.Fragment>
       <Dialog open={appEditOpen} onClose={handleClose}>
         <Box sx={{ width: { sm: "600px", xs: "280px" } }}>
-          <form autoComplete="false" noValidate onSubmit={handleSubmit}>
+          <form autoComplete="false" noValidate onSubmit={handleUpdate} >
             <Box>
               <Box
                 sx={{
@@ -178,7 +251,7 @@ export default function AppEditPopup({
                           }}
                         >
                           <Typography sx={{ padding: "2%" }} variant="h5">
-                          Kamal
+                          {item.patient.name}
                           </Typography>
                         </Stack>
                         <Stack>
@@ -186,7 +259,7 @@ export default function AppEditPopup({
                             sx={{ padding: "2%" }}
                             color="text.secondary"
                           >
-                            200106203699
+                           {item.patient.nic}
                           </Typography>
                         </Stack>
                         <Stack
@@ -201,11 +274,11 @@ export default function AppEditPopup({
                             variant="body2"
                             color="text.secondary"
                           >
-                            Colombo
+                            {item.patient.address}
                           </Typography>
 
                           <Typography variant="body2" color="text.secondary">
-                            0774733245
+                          {item.patient.contactNumber}
                           </Typography>
                         </Stack>
                       </Stack>
@@ -288,6 +361,7 @@ export default function AppEditPopup({
                 />
               
                 <Button
+                 
                   sx={{
                     backgroundColor: "#79CCBE",
                     "&:hover": {

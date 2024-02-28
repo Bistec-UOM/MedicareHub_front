@@ -5,6 +5,7 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import { useNavigate } from 'react-router-dom';
 
 import { useEffect } from 'react';
+import moment from 'moment';
 
 import interactionPlugin from '@fullcalendar/interaction';
 
@@ -49,18 +50,22 @@ function MyFullCalendar({doctorId,selectedTab,setSelectedTab}) {
 
 
     const handleDateClick = (arg) => {
-        const selectedDate =  arg.dateStr;
-        // console.log("hello",selectedDate);
-        // today = selectedDate.format('MMMM D, YYYY');
-        // console.log("hello",today);
-        // const selectedMonth = selectedDate.format('MMMM');
-        // const currentMonth = displayedRange.start.format('MMMM');
-        // console.log(selectedMonth);
-        // console.log(currentMonth);
-        // if (selectedMonth === currentMonth) {
-        //   navigate('/resday', { state: { selectedDay: today ,doctorid:doctorId,doctorList:doctorList} });
-        // }
-      };
+      const selectedDate = moment(arg.dateStr);
+      console.log("hello",selectedDate);
+      today = selectedDate.format('MMMM D, YYYY');
+      console.log("hello",today);
+
+      const displayedDate = arg.view.currentStart;
+      const selectedMonth = selectedDate.month();
+      const currentMonth = displayedDate.getMonth(); 
+      console.log("dd",selectedMonth);
+      console.log(currentMonth);
+      console.log("new",today)
+      if (selectedMonth === currentMonth) {
+        navigate('/resday', { state: { selectedDay: today ,doctorid:doctorId,doctorList:doctorList} });
+      }
+    };
+  
     
     //   const handleNavigate = (newDate) => {
     //     const startDate = moment(newDate).startOf('month');
@@ -138,7 +143,7 @@ function MyFullCalendar({doctorId,selectedTab,setSelectedTab}) {
   function renderDayCellContent(dayCell) {
     return (
       <div >
-        {dayCell.dayNumberText} 
+        <div>{dayCell.dayNumberText} </div>
         
         <LinearProgress variant="determinate" value={50} style={{ width:'90%', height: '10px',position:'absolute',bottom:'5%' }}  color="success" />
              

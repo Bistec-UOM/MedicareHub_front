@@ -96,6 +96,10 @@ fc .fc-daygrid-day-frame ,.fc .fc-daygrid-day-top, .fc .fc-daygrid-day-number
 
 
 
+
+
+
+
 .fc-col-header-cell.fc-day-sun {
   color: red; /* Apply red color to Sunday header */
 }

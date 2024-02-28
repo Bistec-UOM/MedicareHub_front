@@ -1,5 +1,6 @@
 import * as React from "react";
 import BasicTimePicker from "../TimePicker/TimePicker";
+import axios from "axios";
 
 import Moment from "react-moment";
 
@@ -26,6 +27,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Grid, Stack } from "@mui/material";
 
 export default function AppAddPopup({
+  selectedDay,
   handleNotification,
   docid,
   appointmentList,
@@ -90,6 +92,25 @@ export default function AppAddPopup({
     console.log(selectedTime);
   };
 
+  function getRealTime(timeObject)  //this is used for converting the displayed time to the pasing body time in the backend
+  {
+    let hours = parseInt(timeObject.hours, 10);
+    if (timeObject.ampm === 'pm' && hours !== 12) {
+      hours += 12;
+  } else if (timeObject.ampm === 'am' && hours === 12) {
+      hours = 0;
+  }
+  console.log("selected",selectedDay)
+
+  const date = new Date(selectedDay);
+ // console.log()
+  date.setHours(hours, timeObject.minutes, 0, 0);
+  return date;
+
+
+
+  }
+
   const handleClickOpen = () => {
     setApopen(true);
   };
@@ -105,6 +126,51 @@ export default function AppAddPopup({
     setApopen(false);
     handleNotification("A new appointment added succesfully!");
   }
+
+  async function handleSubmit(event)
+  {
+      event.preventDefault();
+      var finalTime=getRealTime(appTime);
+      var date=finalTime;
+      const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}T${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}.${date.getMilliseconds().toString().padStart(3, '0')}`;
+     // console.log("final time",finalTime)
+     // const dateobject=finalTime.toISOString();
+      
+     // var formattedDateString = finalTime.toISOString();
+      console.log("isostring",formattedDate);
+      console.log(activeData.id)
+      console.log(docid);
+
+      let obj= {
+        id: 0,
+        time:formattedDate,
+        status:"new",
+        patitenId: activeData.id,
+        doctorId: docid,
+        recepId:0
+      }
+
+
+      try{
+          await axios.post("https://localhost:7205/api/Appointment",obj
+         );
+         console.log(obj);
+          setApopen(false);
+          handleNotification("Appointment Added succesfully!");
+         
+      }
+      catch(err)
+      {
+      var msg=err.response.data;
+         console.log(err.response.data);
+         //setError(msg);
+      }
+      
+
+  }
+
+
+
   useEffect(() => {
     //console.log("sele",formatAMPM(selectedTime))
     // console.log(activeId);
@@ -176,7 +242,7 @@ export default function AppAddPopup({
                           }}
                         >
                           <Typography sx={{ padding: "2%" }} variant="h5">
-                            {activeData?.name}
+                            {activeData?.fullName}
                           </Typography>
                         </Stack>
                         <Stack>

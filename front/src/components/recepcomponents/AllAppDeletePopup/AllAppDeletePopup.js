@@ -1,4 +1,5 @@
 import * as React from "react";
+import axios from "axios";
 
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -22,7 +23,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Grid, Stack } from "@mui/material";
 import ErrorIcon from "@mui/icons-material/Error";
 
-export default function AllAppDeletePopup({handleNotification, dopen, setDopen,filteredAppointments,setFilteredAppointments,isDisabled,setIsDisabled }) {
+export default function AllAppDeletePopup({selectedDay,delcount,setDelcount,docid,handleNotification, dopen, setDopen,filteredAppointments,setFilteredAppointments,isDisabled,setIsDisabled }) {
   // const [enameError,seteNameError]=useState(false)
   // const [eaddressError,seteAddressError]=useState(false)
   // const [enicError,seteNicError]=useState(false)
@@ -36,12 +37,29 @@ export default function AllAppDeletePopup({handleNotification, dopen, setDopen,f
 
   const handleRealAllDelete=()=>
   {
-    setFilteredAppointments([]);
-    setIsDisabled(true);
-    setDopen(false);
-    handleNotification("All appointment deleted succesfully!")
+
+    axios.delete(`https://localhost:7205/api/Appointment/doctor/${docid}/day/${selectedDay}`)
+    .then(response => {
+      console.log('Resource deleted successfully:', response.data);
+      setDelcount(delcount+1);
+      setDopen(false);
+      handleNotification("All appointments deleted succesfully!");
+    })
+    .catch(error => {
+      console.error('Error deleting resource:', error);
+    });
+  
+
+
+
+    // setFilteredAppointments([]);
+    // setIsDisabled(true);
+    // setDopen(false);
+    // handleNotification("All appointment deleted succesfully!")
 
   }
+
+
 
   const handleClickOpen = () => {
     setDopen(true);

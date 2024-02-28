@@ -61,57 +61,23 @@ const SearchPatientPage = (props) => {
     setRegopen(true);
   }
 
-  const [patientList,setPatientList] = useState([
-    {
-      name: "Dammika jayalath",
-      city: "Colombo",
-      nic: "21433454325",
-      phone: "0774733245",
-    },
-    {
-      name: "Saman Perera",
-      city: "Colombo",
-      nic: "4524523",
-      phone: "0774733245",
-    },
-    {
-      name: "Namal Sanka",
-      city: "Colombo",
-      nic: "452452343",
-      phone: "0774733245",
-    },
-    {
-      name: "Sachith Perera",
-      city: "Colombo",
-      nic: "4524543223",
-      phone: "0774733245",
-    },
-    {
-      name: "Vihanga Madugalla",
-      city: "Colombo",
-      nic: "45244332523",
-      phone: "0774733245",
-    },
-    {
-      name: "Ranil Charuka",
-      city: "Moratuwa",
-      nic: "54325324",
-      phone: "0742314567",
-    },
-    {
-      name: "Kasun Amnda",
-      city: "kandy",
-      nic: "54243252",
-      phone: "0774733245",
-    },
+  useEffect(()=>
+  {
+   fetch(`https://localhost:7205/api/Appointment/patients`).then((response)=>
+   {
+     return response.json();
+   }).then((responseData)=>
+   {
+     console.log("Hello docid",props.docid)
+     console.log(responseData);
+     console.log("insied searchpa",props.selectedDay)
+     setPatientList(responseData);
 
-    {
-      name: "Nipun Madushan",
-      city: "galle",
-      nic: "5243525",
-      phone: "0774733245",
-    },
-  ]);
+   })
+
+  },[]);
+
+  const [patientList,setPatientList] = useState(null);
 
   const handleDeleteAll = () => {
     setDopen(true);
@@ -222,7 +188,7 @@ const SearchPatientPage = (props) => {
       >
         {
           <Box sx={{ width: "80%" ,marginTop:{xs:'20%',sm:'0%'}}}>
-            {patientList.filter((item)=>{
+            {Array.isArray(patientList) && patientList.filter((item)=>{
               return search.toLowerCase() ===''?item:item.name.toLowerCase().includes(search.toLowerCase());
             }).map((item) => (
               <div key={item.nic}>
@@ -238,7 +204,7 @@ const SearchPatientPage = (props) => {
             ))}
           </Box>
         }
-        <AppAddPopup handleNotification={handleNotification} doci={props.docid} appointmentList={props.appointlist} setAppointmentList={props.setAppointmentList} appAddPopupCount={appAddPopupCount} setAppAddPopupCount={setAppAddPopupCount} patientList={patientList} activeId={activeId} apopen={apopen} setApopen={setApopen} />
+        <AppAddPopup selectedDay={props.selectedDay} handleNotification={handleNotification} docid={props.docid} appointmentList={props.appointlist} setAppointmentList={props.setAppointmentList} appAddPopupCount={appAddPopupCount} setAppAddPopupCount={setAppAddPopupCount} patientList={patientList} activeId={activeId} apopen={apopen} setApopen={setApopen} />
         <PatientRegpopup handleNotification={handleNotification} patientList={patientList} setPatientList={setPatientList} regopen={regopen} setRegopen={setRegopen}></PatientRegpopup>
       </div>
       <SuccessNotification setNotificationOpen={setNotificationOpen} notiMessage={notiMessage} notificationOpen={notificationOpen}/>

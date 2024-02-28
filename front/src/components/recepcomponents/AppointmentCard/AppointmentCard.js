@@ -14,15 +14,31 @@ import Steper from "../Setper/Steper";
 import AppAddPopup from "../AppAddPopup/AppAddPopup";
 import AppDeletePopup from "../AppDeletePopup/AppDeletePopup";
 import AppEditPopup from "../AppEditPopup/AppEditPopup";
+import { useEffect } from "react";
+import axios from "axios";
 
 const AppointmentCard = ({docid,appointlist,setAppointList,handleNotification,filteredAppointments,setFilteredAppointments, item ,delcount,setDelcount}) => {
   const [daopen,setDaopen]=useState(false);
   const [appEditOpen,setAppEditOpen]=useState(false);
 
+  const [patientData,setPatientData]=useState(null);
+
   const handleEditAppointment=()=>
   {
     setAppEditOpen(true);
   }
+
+  // useEffect(() => {
+  //   axios.get(`https://localhost:7205/api/User/${item.patitenId}`)
+  //     .then((response) => {
+  //       console.log(response);
+  //       setPatientData(response.data);
+  //      // console.log(patientData)
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }, []);
 
  
   
@@ -63,7 +79,7 @@ const AppointmentCard = ({docid,appointlist,setAppointList,handleNotification,fi
               <Stack direction={'row'} sx={{justifyContent:'space-between',alignItem:'center'}}>
         
                   <Typography variant="h5" >
-                    kamal
+                    {item.patient?.fullName}
                   </Typography>
         
                 <Box>
@@ -76,16 +92,16 @@ const AppointmentCard = ({docid,appointlist,setAppointList,handleNotification,fi
               </Stack>
               <Stack sx={{justifyContent:'space-between',alignItem:'center',flexDirection:{xs:'column',md:'row'}}} >
                 <Typography variant="body2" color="text.secondary">
-                 Colombo
+                {item.patient?.address}
                 </Typography>
                 <Typography  color="text.secondary">
-                 200106203699
+                {item.patient?.nic}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                 0775645123
+                {item.patient?.contactNumber}
                 </Typography>
                 <Typography sx={{display:{xs:'flex',sm:'flex',md:'none'}}} variant="body2" color="text.secondary">
-                  {item.time}
+                  {item.appointment.time}
                 </Typography>
         
               </Stack>
@@ -97,7 +113,7 @@ const AppointmentCard = ({docid,appointlist,setAppointList,handleNotification,fi
          
         </Box>
         <AppDeletePopup appointlist={appointlist} setAppointList={setAppointList} handleNotification={handleNotification} delcount={delcount} setDelcount={setDelcount} item={item} daopen={daopen} setDaopen={setDaopen} filteredAppointments={filteredAppointments} setFilteredAppointments={setFilteredAppointments}/>
-        <AppEditPopup item={item} appEditOpen={appEditOpen} setAppEditOpen={setAppEditOpen}  setAppointList={setAppointList} handleNotification={handleNotification} appointlist={appointlist} docid={docid} item={item} />
+        <AppEditPopup  appEditOpen={appEditOpen} setAppEditOpen={setAppEditOpen}  setAppointList={setAppointList} handleNotification={handleNotification} appointlist={appointlist} docid={docid} item={item} />
       
     </div>
    

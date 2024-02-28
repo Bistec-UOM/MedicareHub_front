@@ -53,6 +53,8 @@ const ResDayList = (props) => {
 
   const [selectedDay,setSelectedDay]=useState(props.selectedDay);
 
+  const [patientDataList,setPatientDataList]=useState([]);
+
   const handleDeleteAll = () => {
     setDopen(true);
   };
@@ -66,7 +68,7 @@ const ResDayList = (props) => {
   };
   useEffect(() => {
     console.log("use effect doctorid", props.docid);
-    console.log("use effect", selectedDay);
+    console.log("use effect selected", selectedDay);
     document.body.style.margin = "0";
 
     axios.get(`https://localhost:7205/api/Appointment/doctor/${props.docid}/day/${selectedDay}`)
@@ -80,6 +82,8 @@ const ResDayList = (props) => {
         .catch((error) => {
             console.error('Error fetching appointments:', error);
         });
+  
+
 }, [props.docid, selectedDay, delcount]); // Ensure dependencies are included in the dependency array
 
   return (
@@ -172,7 +176,7 @@ const ResDayList = (props) => {
         {
           <Box sx={{ width: "80%",marginTop:{xs:'40%',sm:'20%',md:'7%'}}}>
             {Array.isArray(filteredAppointments) && filteredAppointments.filter((item)=>{
-              return search.toLowerCase()===''?item:item.name.toLowerCase().includes(search.toLowerCase())
+              return search.toLowerCase()===''?item:item.patient.fullName.toLowerCase().includes(search.toLowerCase())
             }).map((item) => (
               <div key={item.nic}>
                 <AppointmentCard  
@@ -193,6 +197,10 @@ const ResDayList = (props) => {
       </div>
       <AppAddPopup apopen={apopen} setApopen={setApopen} />
       <AllAppDeletePopup
+        selectedDay={selectedDay}
+        delcount={delcount}
+        setDelcount={setDelcount}
+        docid={props.docid}
         handleNotification={handleNotification}
         isDisabled={isDisabled}
         setIsDisabled={setIsDisabled}
