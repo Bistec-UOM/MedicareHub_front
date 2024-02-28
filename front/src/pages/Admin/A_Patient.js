@@ -2,7 +2,6 @@ import { Grid, Paper,MenuItem,FormControl,InputLabel,Select, Typography } from '
 import React, { useEffect } from 'react';
 import { LineChart,BarChart,Bar, ResponsiveContainer, Legend, Tooltip, Line, XAxis, YAxis, Label } from "recharts";
 
-
 const pdata = [
   { datefor: "2022.02.20", child_male: 12, child_female: 2, adult_male: 12, adult_female: 2, old_male: 12, old_female: 2 },
   { datefor: "2023.04.21", child_male: 12, child_female: 2, adult_male: 12, adult_female: 2, old_male: 12, old_female: 2 },
@@ -10,7 +9,8 @@ const pdata = [
   { datefor: "2024.02.23", child_male: 12, child_female: 9, adult_male: 12, adult_female: 2, old_male: 12, old_female: 2 },
   { datefor: "2024.02.24", child_male: 12, child_female: 2, adult_male: 12, adult_female: 2, old_male: 12, old_female: 2 },
   { datefor: "2024.02.25", child_male: 12, child_female: 2, adult_male: 12, adult_female: 2, old_male: 12, old_female: 2 },
-  { datefor: "2024.02.26", child_male: 1, child_female: 2, adult_male: 1, adult_female: 2, old_male: 2, old_female: 2 }
+  { datefor: "2024.02.27", child_male: 1, child_female: 2, adult_male: 1, adult_female: 2, old_male: 2, old_female: 2 },
+  { datefor: "2024.02.28", child_male: 11, child_female: 26, adult_male: 1, adult_female: 25, old_male: 22, old_female: 24 },
 ];
 
 const APatient = () => {
@@ -27,10 +27,7 @@ const APatient = () => {
     setValue(event.target.value);
     // change(event.target.value); // Call change function with selected value
   };
-  const handleChange1 = (event) => {
-    setValue1(event.target.value);
-    // change(event.target.value); // Call change function with selected value
-  };
+
 useEffect(() => {
   const change = (Gap) => {
     const newTimeGap = new Date(currentDate);
@@ -46,9 +43,10 @@ useEffect(() => {
     setTimeGap(newTimeGap);
   };
   change(Value);
-  change(Value1);
-}, [Value,Value1]); // Run the effect whenever Value changes
- 
+  // change(Value1);
+}, [Value]); // Run the effect whenever Value changes
+
+
   const filteredData = pdata.filter(entry => {
     const entryDate = new Date(entry.datefor);
     return entryDate >= TimeGap && entryDate <= currentDate;
@@ -70,24 +68,6 @@ const [Type, setType] = React.useState('child');
 const [Agemale, setAgemale] = React.useState('');
 const [Agefemale, setAgefemale] = React.useState('');
 
-useEffect(() => {
-  const change = (Gap) => {
-    const newTimeGap = new Date(currentDate);
-    if (Gap === 'day') {
-      newTimeGap.setDate(currentDate.getDate() - 1);
-    } else if (Gap === 'month') {
-      newTimeGap.setMonth(currentDate.getMonth() - 1);
-    } else if (Gap === 'year') {
-      newTimeGap.setFullYear(currentDate.getFullYear() - 1);
-    } else if (Gap === '5') {
-      newTimeGap.setFullYear(currentDate.getFullYear() - 5);
-    }
-    setTimeGap(newTimeGap);
-  };
-
-  change(Value);
-  change(Value1);
-}, [Value,Value1]); // Run the effect whenever Value changes
 
 useEffect(() => {
   const changed = (gap) => {
@@ -110,6 +90,36 @@ useEffect(() => {
 }, [Type]);
 
 
+const [TimeGap1, setTimeGap1] = React.useState(new Date(currentDate)); // Initialize TimeGap1 with current date
+
+const handleChange1 = (event) => {
+  setValue1(event.target.value);
+  change1(event.target.value); // Call change1 function with selected value
+};
+
+const change1 = (Gap) => {
+  const newTimeGap = new Date(currentDate);
+  if (Gap === 'day') {
+    newTimeGap.setDate(currentDate.getDate() - 1);
+  } else if (Gap === 'month') {
+    newTimeGap.setMonth(currentDate.getMonth() - 1);
+  } else if (Gap === 'year') {
+    newTimeGap.setFullYear(currentDate.getFullYear() - 1);
+  } else if (Gap === '5') {
+    newTimeGap.setFullYear(currentDate.getFullYear() - 5);
+  }
+  setTimeGap1(newTimeGap);
+};
+
+useEffect(() => {
+  change1(Value1);
+}, [Value1]); // Run the effect whenever Value1 changes
+
+const filteredData1 = pdata.filter(entry => {
+  const entryDate = new Date(entry.datefor);
+  return entryDate >= TimeGap1 && entryDate <= currentDate;
+});
+
 
 
 const handletypeChange = (event) => {
@@ -125,22 +135,25 @@ const handletypeChange = (event) => {
   let currentDate1 = new Date().toISOString().slice(0,10).replace(/-/g, '.');
   pdata.forEach((data) => {
     const date = data.datefor;
-    console.log(currentDate1,'amd',data.datefor,'0',currentDate)
     const total = data.child_male + data.child_female + data.adult_female + data.adult_male + data.old_male + data.old_female;
-    if (data.datefor === currentDate1) {
-      setcount(total)
-      console.log('count is',count)
-    }
     // Check if the date already exists in totalperday, if not, initialize it to 0
     if (!totalperday[date]) {
       totalperday[date] = 0;
     }
+      totalperday[date] = total;
+    });
+    useEffect(() => {
+      const totalPatientsForCurrentDay = pdata.reduce((total, data) => {
+        if (data.datefor === currentDate1) {
+          return total + data.child_male + data.child_female + data.adult_female + data.adult_male + data.old_male + data.old_female;
+        }
+        return total;
+      }, 0);
     
-    console.log('tot is',total)
-    totalperday[date] = total;
-  });
-
-
+      setcount(totalPatientsForCurrentDay); // Set the count state to the total patients for the current day
+    
+      console.log('Total patients for current day:', totalPatientsForCurrentDay);
+    }, [pdata, currentDate1]);
   useEffect(() => {
     const totalPatientsForCurrentDay = pdata.reduce((total, data) => {
       if (data.datefor === currentDate1) {
@@ -155,7 +168,7 @@ const handletypeChange = (event) => {
   
   console.log(totalperday,'current date',currentDate1,'data','total')
 
-     const dataForChart = pdata.map(data => ({
+     const dataForChart = filteredData1.map(data => ({
       totalPatients: totalperday[data.datefor], // Add total patients for the corresponding day
       datefor : data.datefor
     }));
@@ -163,20 +176,19 @@ const handletypeChange = (event) => {
 
     return (
         <div>
-          <Typography fontSize={25} fontWeight={10} sx={{textAlign:'center'}}>Patient</Typography>
           <Grid container spacing={2}>
             <Grid item xs={4}>
               <Paper style={{textAlign:'center', paddingTop:"6%"}} >
-                <Typography fontSize={30}>Patient count within day</Typography>
-                <Typography fontSize={90}>{}</Typography>
+                <Typography fontSize={20}>Patient count within today</Typography>
+                <Typography fontSize={90}>{count}</Typography>
               </Paper>
             </Grid>
             <Grid item xs={8}>
               <Paper sx={{padding:'10px'}}>
               <Typography fontSize={20} sx={{textAlign:'center'}}>Patient count within a time period</Typography>
-                <ResponsiveContainer aspect={3}>
+                <ResponsiveContainer aspect={3} style={{textAlign:'right'}}>
                 <FormControl sx={{ width: '20%',marginRight:'2vw' }}>
-        <InputLabel>Gap1</InputLabel>
+        <InputLabel>Gap</InputLabel>
         <Select
           style={{ textAlign: 'left' }}
           id="demo-simple-select"
@@ -208,7 +220,9 @@ const handletypeChange = (event) => {
           </Grid>
           <Grid>
           <Paper style={{padding:'15px 5px 60px 5px',textAlign:'right',marginTop:'20px'}}>
+              <Typography fontSize={20} sx={{textAlign:'center',margin:'20px'}}>Patient count within today</Typography>
               <ResponsiveContainer width="90%" height={400}>
+
       <FormControl sx={{ width: '20%',marginRight:'2vw' }}>
         <InputLabel>Gap</InputLabel>
         <Select

@@ -74,7 +74,6 @@ const AIncome = () => {
   };
   return (
     <div>
-      <Typography fontSize={25} fontWeight={10} sx={{textAlign:'center'}}>Income</Typography>
       <Grid container spacing={3}>
         <Grid item xs={4}>
           <Paper style={{textAlign:'center',height:'35vh', paddingTop:"6%"}} >
