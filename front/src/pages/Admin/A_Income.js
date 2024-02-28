@@ -25,16 +25,17 @@ const pdata = [
   { datefor: "2024.02.24 16:26:00", income: 5130.00 },
   { datefor: "2024.02.24 17:26:00", income: 5130.00 },
 ];
+const currentDate = new Date();
+let TimeGap = new Date(currentDate);
+TimeGap.setDate(currentDate.getDate() - 1);
+
 const totalIncome = pdata.reduce((total, entry) => {
-  if (entry.datefor.startsWith("2024.02.24")) {
+  if (entry.datefor.startsWith(currentDate)) {
     return total + entry.income;
   }
   return total;
 }, 0);
 
-const currentDate = new Date();
-let TimeGap = new Date(currentDate);
-TimeGap.setDate(currentDate.getDate() - 1);
 
 const AIncome = () => {
   const [Value, setValue] = React.useState('day'); // Initialize Value state with 'day'
@@ -73,7 +74,6 @@ const AIncome = () => {
   };
   return (
     <div>
-      <Typography fontSize={25} fontWeight={10} sx={{textAlign:'center'}}>Income</Typography>
       <Grid container spacing={3}>
         <Grid item xs={4}>
           <Paper style={{textAlign:'center',height:'35vh', paddingTop:"6%"}} >
