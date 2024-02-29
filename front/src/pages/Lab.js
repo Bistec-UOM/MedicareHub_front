@@ -49,13 +49,13 @@ export default function Lab() {
     const [RLoad,setRLoad]=useState(x)
 
     //const [Fields,setFields]=useState([])//store set of fields by the selected test
-    const [Tests,setTests]=useState([])//store the selected test
+    const [Test,setTest]=useState([])//store the selected test
     const [loadIn,setLoadIn]=useState([]) //selected reports by a date
     const [report,setReport]=useState()//store selected reports details
 
     useEffect(()=>{
       document.body.style.margin = '0';
-      //selcted date's req
+      //selcted date's request
       let a=RLoad.filter((el)=>{
         return el.date==date
       }) 
@@ -65,7 +65,7 @@ export default function Lab() {
       let t=Tload.filter(el=>{
         return el.testId==tId
       })
-      setTests(t[0])
+      setTest(t[0])
 
       //select a lab request
       loadIn.map((x)=>{
@@ -143,7 +143,7 @@ export default function Lab() {
               page==1 && report!=null ? <SubmitPage report={report}></SubmitPage>
               :page==2?<LabTestList settId={settId} setPage={setPage} Tload={Tload} setTload={setTload}></LabTestList>
               :page==3?<CreateLabTemplate setPage={setPage} setTload={setTload}></CreateLabTemplate>
-              :page==4?<Edittemplate setPage={setPage} tId={tId} Tdata={Tests} setTload={setTload}></Edittemplate>
+              :page==4?<Edittemplate setPage={setPage} tId={tId} Tdata={Test} setTload={setTload}></Edittemplate>
               :''
       }
 
