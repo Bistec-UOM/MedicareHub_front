@@ -27,6 +27,9 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Grid, Stack } from "@mui/material";
 
 export default function AppEditPopup({
+  delcount,
+  setDelcount,
+  selectedDay,
     appEditOpen,setAppEditOpen,
   handleNotification,
   docid,
@@ -93,7 +96,7 @@ export default function AppEditPopup({
       hours = 0;
   }
 
-  const date = new Date();
+  const date = new Date(selectedDay);
   date.setHours(hours, timeObject.minutes, 0, 0);
   return date;
 
@@ -146,8 +149,11 @@ export default function AppEditPopup({
    event.preventDefault();
    console.log("inside handle update");
    var finalTime=getRealTime(appTime);
-   var formattedDateString = finalTime.toISOString();
-   console.log(formattedDateString);
+   var date=finalTime;
+   const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}T${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}.${date.getMilliseconds().toString().padStart(3, '0')}`;
+  // console.log("final time",finalTime)
+  // var formattedDateString = finalTime.toISOString();
+   console.log(formattedDate);
 
   try
       {
@@ -156,13 +162,16 @@ export default function AppEditPopup({
       {
        
         id:item.appointment.id,
-        newtime:formattedDateString,
-         status: item.appointment.status,
-         patitenId:item.appointment.patitenId,
+        time:formattedDate,
+        status: item.appointment.status,
+         patientId:item.appointment.patientId,
          doctorId:item.appointment.doctorId,
          recepId:item.appointment.recepId
       
       });
+      setDelcount(delcount+1);
+      setAppEditOpen(false);
+      handleNotification("Appointment Edited succesfully!");
      // console.log()
      // setAppEditOpen(false);
      // handleNotification("Appointment Edited succesfully!");

@@ -27,6 +27,8 @@ const SearchPatientPage = (props) => {
   const [notificationOpen,setNotificationOpen]=useState(false);
   const [notiMessage,setNotiMessage]=useState("");
 
+  const [patientCount,setPatientCount]=useState(0); //use for patient rendering useffect
+
 
   const [search,setSearch]=useState("")
   const [dayapp, setDayApp] = useState([]);
@@ -75,7 +77,7 @@ const SearchPatientPage = (props) => {
 
    })
 
-  },[]);
+  },[patientCount]);
 
   const [patientList,setPatientList] = useState(null);
 
@@ -205,7 +207,7 @@ const SearchPatientPage = (props) => {
           </Box>
         }
         <AppAddPopup selectedDay={props.selectedDay} handleNotification={handleNotification} docid={props.docid} appointmentList={props.appointlist} setAppointmentList={props.setAppointmentList} appAddPopupCount={appAddPopupCount} setAppAddPopupCount={setAppAddPopupCount} patientList={patientList} activeId={activeId} apopen={apopen} setApopen={setApopen} />
-        <PatientRegpopup handleNotification={handleNotification} patientList={patientList} setPatientList={setPatientList} regopen={regopen} setRegopen={setRegopen}></PatientRegpopup>
+        <PatientRegpopup patientCount={patientCount} setPatientCount={setPatientCount} handleNotification={handleNotification} patientList={patientList} setPatientList={setPatientList} regopen={regopen} setRegopen={setRegopen}></PatientRegpopup>
       </div>
       <SuccessNotification setNotificationOpen={setNotificationOpen} notiMessage={notiMessage} notificationOpen={notificationOpen}/>
     

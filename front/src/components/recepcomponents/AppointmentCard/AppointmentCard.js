@@ -17,7 +17,7 @@ import AppEditPopup from "../AppEditPopup/AppEditPopup";
 import { useEffect } from "react";
 import axios from "axios";
 
-const AppointmentCard = ({docid,appointlist,setAppointList,handleNotification,filteredAppointments,setFilteredAppointments, item ,delcount,setDelcount}) => {
+const AppointmentCard = ({selectedDay,docid,appointlist,setAppointList,handleNotification,filteredAppointments,setFilteredAppointments, item ,delcount,setDelcount}) => {
   const [daopen,setDaopen]=useState(false);
   const [appEditOpen,setAppEditOpen]=useState(false);
 
@@ -113,7 +113,7 @@ const AppointmentCard = ({docid,appointlist,setAppointList,handleNotification,fi
          
         </Box>
         <AppDeletePopup appointlist={appointlist} setAppointList={setAppointList} handleNotification={handleNotification} delcount={delcount} setDelcount={setDelcount} item={item} daopen={daopen} setDaopen={setDaopen} filteredAppointments={filteredAppointments} setFilteredAppointments={setFilteredAppointments}/>
-        <AppEditPopup  appEditOpen={appEditOpen} setAppEditOpen={setAppEditOpen}  setAppointList={setAppointList} handleNotification={handleNotification} appointlist={appointlist} docid={docid} item={item} />
+        <AppEditPopup delcount={delcount} setDelcount={setDelcount} selectedDay={selectedDay} appEditOpen={appEditOpen} setAppEditOpen={setAppEditOpen}  setAppointList={setAppointList} handleNotification={handleNotification} appointlist={appointlist} docid={docid} item={item} />
       
     </div>
    

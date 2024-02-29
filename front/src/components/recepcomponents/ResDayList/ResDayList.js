@@ -73,11 +73,17 @@ const ResDayList = (props) => {
 
     axios.get(`https://localhost:7205/api/Appointment/doctor/${props.docid}/day/${selectedDay}`)
         .then((response) => {
+            // console.log("do",props.docid);
+            // console.log(selectedDay);
+            // console.log("pure",response);
             console.log("response data",response.data)
             const responseData = response.data;
-            setFilteredAppointments(responseData);
+           // setFilteredAppointments(responseData);
             setIsDisabled(responseData.length === 0); // Update isDisabled based on the fetched appointments
             console.log("use effect appointments", responseData.result);
+            const sortedAppointments = responseData.slice().sort((a, b) => new Date(a.appointment.time) - new Date(b.appointment.time));  //this is used for sorting appointments based on their arrival time
+            setFilteredAppointments(sortedAppointments);
+            console.log("sorted appointments",sortedAppointments)
         })
         .catch((error) => {
             console.error('Error fetching appointments:', error);
@@ -175,11 +181,15 @@ const ResDayList = (props) => {
 
         {
           <Box sx={{ width: "80%",marginTop:{xs:'40%',sm:'20%',md:'7%'}}}>
-            {Array.isArray(filteredAppointments) && filteredAppointments.filter((item)=>{
+            {Array.isArray(filteredAppointments) && filteredAppointments.sort((a,b)=>{
+              return new Date(a.time)-new Date(b.time);
+            })
+            .filter((item)=>{
               return search.toLowerCase()===''?item:item.patient.fullName.toLowerCase().includes(search.toLowerCase())
             }).map((item) => (
               <div key={item.nic}>
                 <AppointmentCard  
+                selectedDay={selectedDay}
                   docid={props.docid}
                   appointlist={props.appointlist}
                   setAppointList={props.setAppointList}

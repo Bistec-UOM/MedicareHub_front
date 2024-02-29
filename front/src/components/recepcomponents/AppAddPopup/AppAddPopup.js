@@ -145,9 +145,9 @@ export default function AppAddPopup({
         id: 0,
         time:formattedDate,
         status:"new",
-        patitenId: activeData.id,
+        patientId: activeData.id,
         doctorId: docid,
-        recepId:0
+        recepId:3
       }
 
 
@@ -162,6 +162,7 @@ export default function AppAddPopup({
       catch(err)
       {
       var msg=err.response.data;
+      console.log("Inseide error");
          console.log(err.response.data);
          //setError(msg);
       }
