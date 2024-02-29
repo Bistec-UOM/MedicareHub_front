@@ -19,6 +19,7 @@
   import { Sideunit_Doctor } from '../../sidebar/Sideunits';
 
   import ResNavBar from '../ResNavBar/ResNabBar';
+import MyFullCalendar from '../MyFullCalendar/MyFullCalendar';
 
   const drawerWidth = 358.4;
 
@@ -227,7 +228,7 @@
         
           
           <Grid sx={{paddingLeft:'10px',paddingRight:'10px',paddingTop:'64px',width:'100%', height:'100%'}} item xs={9} sm={11} md={9}>
-            <MyCalendar doctorId={selectedTab}/>
+            <MyFullCalendar doctorId={selectedTab}/>
             </Grid>
           
         </Box>

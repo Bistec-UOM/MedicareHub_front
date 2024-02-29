@@ -50,7 +50,7 @@ const PatientDetailCard = ({ appAddPopupCount,setAppAddPopupCount,setActiveId,it
               <Stack direction={'row'} sx={{justifyContent:'space-between',alignItem:'center'}}>
         
                   <Typography variant="h5" >
-                    {item.name}
+                    {item.fullName}
                   </Typography>
         
                 <Box>
@@ -63,13 +63,13 @@ const PatientDetailCard = ({ appAddPopupCount,setAppAddPopupCount,setActiveId,it
               </Stack>
               <Stack sx={{justifyContent:'space-between',alignItem:'center',flexDirection:{xs:'column',sm:'column',md:'row'}}} >
                 <Typography variant="body2" color="text.secondary">
-                  {item.city}
+                  {item.address}
                 </Typography>
                 <Typography  color="text.secondary">
                   {item.nic}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  {item.phone}
+                  {item.contactNumber}
                 </Typography>
         
               </Stack>
