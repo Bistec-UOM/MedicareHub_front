@@ -89,7 +89,6 @@ export default function CreateLabTemplate({setPage,setTload}) {
           price:testData.price,
           reportFields:ar
         }
-        console.log(T)
         axios.post('http://localhost:5220/api/Template',T)
         .then(res=>{
           setTload([])//make test list empty to reload again

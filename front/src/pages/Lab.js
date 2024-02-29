@@ -45,12 +45,12 @@ export default function Lab() {
     {date:3,id:93,name: "James Young", test: ['FBC'],testId:[1]}
    ]
 
-    const [Tload,setTload]=useState([])
+    const [Tload,setTload]=useState([])//Lab test list <----- from back end
     const [RLoad,setRLoad]=useState(x)
 
     //const [Fields,setFields]=useState([])//store set of fields by the selected test
     const [Test,setTest]=useState([])//store the selected test
-    const [loadIn,setLoadIn]=useState([]) //selected reports by a date
+    const [loadIn,setLoadIn]=useState([])//selected reports by a date
     const [report,setReport]=useState()//store selected reports details
 
     useEffect(()=>{
@@ -63,18 +63,17 @@ export default function Lab() {
 
       //selected test name
       let t=Tload.filter(el=>{
-        return el.testId==tId
+        return el.id==tId
       })
+      console.log(t)
       setTest(t[0])
 
       //select a lab request
       loadIn.map((x)=>{
         if(x.id==selectedT){
-          console.log(x)
           setReport(x)
         }
       })
-      console.log(report)
      },[date,tId,page,Tload,selectedT])
 
 //Responsive drawer==================================================================================

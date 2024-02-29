@@ -17,7 +17,7 @@ export default function LabTestList({setPage,settId,Tload,setTload}) {
     const handleClickOpen = (x) => {
         setOpen(true)
         settId(x)
-        let t= Tload.filter((e)=>{return e.testId==x})
+        let t= Tload.filter((e)=>{return e.id==x})
         setTest(t[0])
     }
     const handleClose = () => {setOpen(false)}  
@@ -57,7 +57,7 @@ export default function LabTestList({setPage,settId,Tload,setTload}) {
                 Tload.map((el)=>{
                     return(
                     <Paper sx={{display:'flex',width:{xs:'95%',sm:'80%'},justifyContent:'space-between',cursor:'pointer',padding:{xs:1,sm:2},borderRadius:'12px',mb:'10px'}} 
-                    onClick={()=>handleClickOpen(el.testId)}>
+                    onClick={()=>handleClickOpen(el.id)}>
                         <Typography sx={{fontSize:'16px',flex:{xs:3,sm:2}}}>{el.testName}</Typography>
                         <Typography sx={{fontSize:'16px',flex:{xs:2,sm:1}}}>{el.provider}</Typography>
                         <Typography sx={{fontSize:'16px',flex:{xs:1,sm:1}, textAlign:'right'}}>Rs.{' '+el.price}</Typography>
