@@ -3,7 +3,6 @@ import Dialog from '@mui/material/Dialog';
 import { TextField } from '@mui/material';
 import DialogContent from '@mui/material/DialogContent';
 import CloseIcon from '@mui/icons-material/Close';
-import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import SearchIcon from '@mui/icons-material/Search';
@@ -18,19 +17,65 @@ export default function DoctorAddDrugs(props) {
     const [quantitytype, setQuantitytype] = useState('');
     const [hour, setHour] = useState('');
     const [pres, setPres] = useState([]);
-
+    const [nameError, setNameError] = useState(false);
+    const [quantityError, setQuantityError] = useState(false);
+    const [quantitytypeError, setQuantitytypeError] = useState(false);
+    const [hourError, setHourError] = useState(false);
+    const validate = () => {
+        let isValid = true;
+        if (name.trim() === '') {
+          setNameError(true);
+          isValid = false;
+        } else {
+          setNameError(false);
+        }
+        if (quantity.trim() === '') {
+          setQuantityError(true);
+          isValid = false;
+        } else {
+          setQuantityError(false);
+        }
+        if (quantitytype.trim() === '') {
+          setQuantitytypeError(true);
+          isValid = false;
+        } else {
+          setQuantitytypeError(false);
+        }
+        if (hour.trim() === '') {
+          setHourError(true);
+          isValid = false;
+        } else {
+          setHourError(false);
+        }
+        return isValid;
+      };
+      const handleSubmit = (e) => {
+        e.preventDefault();
+        if (validate()) {
+          // Proceed with form submission
+          console.log('Form submitted successfully!');
+        } else {
+          console.log('Form submission failed. Please check the fields.');
+        }
+      };
     const handleClose = () => {
         setOpenBox(false);
     };
 
     const handleAddDrug = () => {
-        const newDrug = { name, quantity,quantitytype, hour };
+        // Perform validation
+        if (name.trim() === '' || quantity.trim() === '' || quantitytype.trim() === '' || hour.trim() === '') {          
+          return;
+        }
+      
+        // If all fields are filled, add the drug
+        const newDrug = { name, quantity, quantitytype, hour };
         setPres([...pres, newDrug]);
         setName('');
         setQuantity('');
         setQuantitytype('');
         setHour('');
-    };
+      };
     const handleDeleteDrug = (index) => {
       const updatedPres = [...pres];
       updatedPres.splice(index, 1);
@@ -42,38 +87,53 @@ export default function DoctorAddDrugs(props) {
 
     return (
         <div>
-            <Dialog open={openBox}>
-                <DialogContent dividers 
-                    sx={{ '&::before': { content: "''", position: 'absolute', top: 0, right: 0, width: '35px', height: '100%', background: 'hsl(0, 0%, 90%)', }, }}>
+      <Dialog open={openBox}>
+      <DialogContent dividers>
+        <CloseIcon onClick={handleClose} style={{ position: 'absolute', right: '8px', top: '8px', cursor: 'pointer' }} />
+        <SearchIcon sx={{ position: 'absolute', left: '30%', top: '35px', cursor: 'pointer', }} />
 
-                    <CloseIcon onClick={handleClose} style={{ position: 'absolute', right: '8px', top: '8px', cursor: 'pointer', }} />                   
-      
-                    <TextField variant="outlined" size="small"
-                     sx={{ m: 1, width: '43%', top: '10px', '& .MuiOutlinedInput-root': { '& fieldset': { borderColor: '#0099cc', borderWidth: '2px', borderRadius: '25px', }, }, }} 
-                     value={name} onChange={(e) => setName(e.target.value)} />
-                    <SearchIcon sx={{ position: 'absolute', left: '39%', top: '43px', cursor: 'pointer', }} />
-                    <TextField variant="outlined" size="small" 
-                    sx={{ m: 1, width: '10%', top: '10px', '& .MuiOutlinedInput-root': { '& fieldset': { borderColor: '#0099cc', borderWidth: '2px', }, }, }}
-                     value={quantity} onChange={(e) => setQuantity(e.target.value)} />
-
-                    <Select 
-                    sx={{ m: 1, top: '10px', border: '2px solid #0099cc', width: '50px', height: '40px', }}
-                     variant="standard" value={quantitytype} onChange={(e) => setQuantitytype(e.target.value)}>
-                        {quantityOptions.map((option, index) => (
-                            <MenuItem key={index} value={option}>{option}</MenuItem>
-                        ))}
-                    </Select>
-                    <Select
-                     sx={{ m: 1, top: '10px', border: '2px solid #0099cc', width: '65px', height: '40px', }}
-                      variant="standard" value={hour} onChange={(e) => setHour(e.target.value)}>
-                        {hourOptions.map((option, index) => (
-                            <MenuItem key={index} value={option}>{option}</MenuItem>
-                        ))}
-                    </Select>
-
-                    <Button variant="outlined" sx={{ top: '10px', color: 'Green', borderColor: 'Green', borderWidth: '3px', }} onClick={handleAddDrug}>OK</Button>
-                </DialogContent>
-            </Dialog>
+        <form onSubmit={handleSubmit}>
+          <TextField variant="outlined" size="small"
+             sx={{ m: 1, width: '33%', top: '1px', '& .MuiOutlinedInput-root': { '& fieldset': { borderColor: '#0099cc', borderWidth: '2px', borderRadius: '25px', }, }, }} 
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            error={nameError}
+            helperText={nameError ? 'Name is required' : ''}
+          />
+          <TextField variant="outlined" size="small"
+                     sx={{ m: 1, width: '13%', top: '1px', '& .MuiOutlinedInput-root': { '& fieldset': { borderColor: '#0099cc', borderWidth: '2px',  }, }, }} 
+            value={quantity}
+            onChange={(e) => setQuantity(e.target.value)}
+            error={quantityError}
+            helperText={quantityError ? ' required' : ''}
+          />
+          <Select sx={{ m: 1, top: '1px', border: '2px solid #0099cc', width: '75px', height: '40px', }}
+            size="small"
+            value={quantitytype}
+            onChange={(e) => setQuantitytype(e.target.value)}
+            error={quantitytypeError}
+            helperText={quantitytypeError ? ' required' : ''}
+          >
+            {quantityOptions.map((option, index) => (
+              <MenuItem key={index} value={option}>{option}</MenuItem>
+            ))}
+          </Select>
+          <Select  sx={{ m: 1, top: '1px', border: '2px solid #0099cc', width: '75px', height: '40px', }}
+            size="small"                       
+            value={hour}
+            onChange={(e) => setHour(e.target.value)}
+            error={hourError}
+            helperText={hourError ? ' required' : ''}
+          >
+            {hourOptions.map((option, index) => (
+              <MenuItem key={index} value={option}>{option}</MenuItem>
+            ))}
+          </Select>
+          <button type="submit"   style={{cursor: 'pointer',top: '10px', color: 'Green', borderColor: 'Green', borderWidth: '2px', height: '45px', width: '53px',  }} onClick={handleAddDrug}>OK</button>
+        </form>
+      </DialogContent>
+    </Dialog>
+  
 
             <div>
                 {pres.map((drug, index) => (

@@ -21,7 +21,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Grid, Stack } from "@mui/material";
 import ErrorIcon from "@mui/icons-material/Error";
 
-export default function DoctorAppDeletePopup({doctorAppDeleteOpen,setDoctorAppDeleteOpen,handleNotification}) {
+export default function DoctorAppDeletePopup({doctorAppDeleteOpen,setDoctorAppDeleteOpen,setNotificationOpen,setNotiMessage,notiMessage}) {
   // const [enameError,seteNameError]=useState(false)
   // const [eaddressError,seteAddressError]=useState(false)
   // const [enicError,seteNicError]=useState(false)
@@ -32,6 +32,28 @@ export default function DoctorAppDeletePopup({doctorAppDeleteOpen,setDoctorAppDe
   // const [enic,setENic]=useState(item.nic)
   const [timevalue, setTimeValue] = useState("");
   const [rdelete,setRdelete]=useState(false);
+
+
+  const handleNotification=(msg)=>
+  {
+      //console.log(msg)
+      setDoctorAppDeleteOpen(false);
+      setNotiMessage(msg);
+     setNotificationOpen(true);
+     console.log(notiMessage);
+    
+     
+  }
+
+
+  const handleRealAllDelete=(msg)=>
+  {
+    setDoctorAppDeleteOpen(false);
+    handleNotification(msg);
+   
+    
+
+  }
 
   const handleRealDelete=(item)=>
   {
@@ -79,7 +101,7 @@ export default function DoctorAppDeletePopup({doctorAppDeleteOpen,setDoctorAppDe
             </Typography>
           </Box>
           <Box sx={{display:'flex',justifyContent:'flex-end',paddingRight:'5%'}}>
-            <Button onClick={()=>handleNotification("All appointemnts are Cancelled Successfully!")}
+            <Button onClick={()=>handleRealAllDelete("All appointemnts are Cancelled Successfully!")}
               sx={{
                 backgroundColor: "#F44336", // Replace with your desired color
                 "&:hover": {
