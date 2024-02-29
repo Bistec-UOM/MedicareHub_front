@@ -84,9 +84,11 @@ export default function CreateLabTemplate({setPage,setTload}) {
           el.index=ind
         })
         let T={
+          id:test.id,
           testName:testData.name,
-          provider:testData.provider,
+          abb:'',
           price:testData.price,
+          provider:testData.provider,
           reportFields:ar
         }
         axios.post('http://localhost:5220/api/Template',T)
