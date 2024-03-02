@@ -1,4 +1,4 @@
-import { Paper, Toolbar, Typography,InputBase,Divider,IconButton, Button } from '@mui/material'
+import { Paper, Toolbar, Typography,InputBase,Divider,IconButton, Button,Box } from '@mui/material'
 import { Stack } from '@mui/system'
 import React, { useEffect, useState } from 'react'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -39,13 +39,13 @@ export default function LabTestList({setPage,settId,Tload,setTload}) {
             <ArrowBackIcon sx={{cursor:'pointer'}} onClick={()=>setPage(1)}></ArrowBackIcon>
 
             {/*-------Search bar--------------- */}
-            <Paper component="form" sx={{p: "2px 4px",display: "flex",alignItems: "center",height:'30px',width:{xs:'40%',sm:'40%'},borderRadius: "20px",boxShadow: 1}}>
+            <Box component="form" sx={{p: "2px 4px",display: "flex",alignItems: "center",height:'30px',width:{xs:'40%',sm:'40%'},borderRadius: "20px",boxShadow: 1}}>
             <InputBase type="text" className="form-control" sx={{ flex: 1 }} placeholder="Search"/>
             <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
             <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
               <SearchIcon />
             </IconButton>
-            </Paper>  
+            </Box>  
 
             {/*-------Add new button--------------- */}
             <Button size='small' variant='contained' onClick={()=>setPage(3)} sx={{mr:{xs:'5px',sm:'10%'}}} >Add new</Button>
