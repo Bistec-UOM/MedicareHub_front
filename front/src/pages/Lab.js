@@ -8,6 +8,7 @@ import CreateLabTemplate from '../components/Lab/CreateLabTemplate';
 import '../components/CustomScroll.css'
 import ResNavBar from '../components/recepcomponents/ResNavBar/ResNabBar';
 import Edittemplate from '../components/Lab/Edittemplate';
+import SubmitPage from '../components/Lab/TestSubmit/SubmitPage';
 
 export default function Lab() {
 
@@ -17,9 +18,7 @@ export default function Lab() {
   const [tId,settId]=useState()//selected test <----------- from LabTestList
   const [selectedT,setSelectedT]=useState()//selected report <---------- from Sideunit
 
-  const [loadIn,setLoadIn]=useState([]) //selected reports by a date
-
-  let x=[
+  const x=[
     {date:1,id:51,name: "Sarah Johnson", test: ['Thyroxin'],testId:[3]},
     {date:1,id:52,name: "Michael Smith", test:['FBC','urine'],testId:[1,5]},
     {date:1,id:54,name: "John Davis", test: ['BMT'],testId:[8]},
@@ -46,25 +45,36 @@ export default function Lab() {
     {date:3,id:93,name: "James Young", test: ['FBC'],testId:[1]}
    ]
 
-   const [Tload,setTload]=useState([])
+    const [Tload,setTload]=useState([])//Lab test list <----- from back end
+    const [RLoad,setRLoad]=useState(x)
 
     //const [Fields,setFields]=useState([])//store set of fields by the selected test
-    const [Tests,setTests]=useState([])//store the selected test
+    const [Test,setTest]=useState([])//store the selected test
+    const [loadIn,setLoadIn]=useState([])//selected reports by a date
+    const [report,setReport]=useState()//store selected reports details
 
     useEffect(()=>{
       document.body.style.margin = '0';
-      //selcted date's req
-      let a=x.filter((el)=>{
+      //selcted date's request
+      let a=RLoad.filter((el)=>{
         return el.date==date
       }) 
       setLoadIn(a)
+
       //selected test name
       let t=Tload.filter(el=>{
-        return el.testId==tId
+        return el.id==tId
       })
-      setTests(t[0])
+      console.log(t)
+      setTest(t[0])
 
-     },[date,tId,page,Tload])
+      //select a lab request
+      loadIn.map((x)=>{
+        if(x.id==selectedT){
+          setReport(x)
+        }
+      })
+     },[date,tId,page,Tload,selectedT])
 
 //Responsive drawer==================================================================================
  const drawerW=320
@@ -129,26 +139,10 @@ export default function Lab() {
 
     <Grid item sm={9} spacing={0} sx={{height:'100%',marginLeft:{sm:'320px',xs:'0px'},width:{xs:'100vw',sm:'60vw'}}}>
     {
-              page==1?
-
-              selectedT!=null ? 
-              <div>
-              <Card sx={{width:'100%',height:'30px',pl:'35px',height:'50px',pt:'20px',position:'fixed',zIndex:'10'}} square>
-                  {loadIn.map((x)=>{
-                    if(x.id==selectedT){return <Typography>{x.name}</Typography>}
-                  })
-                }
-              </Card>
-              <Box sx={{width:'100%',padding:'40px',paddingTop:'90px'}}>
-
-    
-              </Box>
-             </div>
-              : ''
-
+              page==1 && report!=null ? <SubmitPage report={report}></SubmitPage>
               :page==2?<LabTestList settId={settId} setPage={setPage} Tload={Tload} setTload={setTload}></LabTestList>
               :page==3?<CreateLabTemplate setPage={setPage} setTload={setTload}></CreateLabTemplate>
-              :page==4?<Edittemplate setPage={setPage} tId={tId} Tdata={Tests} setTload={setTload}></Edittemplate>
+              :page==4?<Edittemplate setPage={setPage} tId={tId} Tdata={Test} setTload={setTload}></Edittemplate>
               :''
       }
 

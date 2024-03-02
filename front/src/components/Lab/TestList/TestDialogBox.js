@@ -15,10 +15,11 @@ export default function TestDialogBox({test,setPage,setTload,handleClose}) {
       setIsDisabled(false)
     }else{
       let obj={
-        testId:test.testId,
+        id:test.id,
         testName:testName,
-        provider:provider,
+        abb:test.abb,
         price:price,
+        provider:provider
       }
       axios.put('http://localhost:5220/api/Test',obj)
       .then(res=>{
