@@ -58,8 +58,10 @@ const DoctorAppList = (props) => {
 
   const [patientDataList,setPatientDataList]=useState([]);
 
-  const handleDeleteAll = () => {
-    setDopen(true);
+  const [cancelAll,setCancelAll]=useState(false);
+
+  const handleCancelAll = () => {
+    setCancelAll(true);
   };
 
   var location = useLocation();
@@ -74,9 +76,9 @@ const DoctorAppList = (props) => {
     console.log("use effect selected", selectedDay);
     document.body.style.margin = "0";
 
-    axios.get(`https://localhost:7205/api/Appointment/doctor/${props.doctorId}/day/${selectedDay}`)
+    axios.get(`https://localhost:7205/api/Appointment/doctor/${props.docid}/day/${selectedDay}`)
         .then((response) => {
-            // console.log("do",props.docid);
+             console.log("do",props.docid);
             // console.log(selectedDay);
             // console.log("pure",response);
             console.log("response data",response.data)
@@ -149,7 +151,7 @@ const DoctorAppList = (props) => {
             Add
           </Button> */}
           <Button
-            onClick={handleDeleteAll}
+            onClick={handleCancelAll}
             disabled={isDisabled}
             sx={{
               backgroundColor: "#F44336",
@@ -219,8 +221,8 @@ const DoctorAppList = (props) => {
         setIsDisabled={setIsDisabled}
         filteredAppointments={filteredAppointments}
         setFilteredAppointments={setFilteredAppointments}
-        dopen={dopen}
-        setDopen={setDopen}
+        cancelAll={cancelAll}
+        setCancelAll={setCancelAll}
       />
        <SuccessNotification setNotificationOpen={setNotificationOpen} notiMessage={notiMessage} notificationOpen={notificationOpen}/>
     

@@ -23,7 +23,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Grid, Stack } from "@mui/material";
 import ErrorIcon from "@mui/icons-material/Error";
 
-export default function DoctorAllAppDeletePopup({selectedDay,delcount,setDelcount,docid,handleNotification, dopen, setDopen,filteredAppointments,setFilteredAppointments,isDisabled,setIsDisabled }) {
+export default function DoctorAllAppDeletePopup({cancelAll,setCancelAll,selectedDay,delcount,setDelcount,docid,handleNotification, dopen, setDopen,filteredAppointments,setFilteredAppointments,isDisabled,setIsDisabled }) {
   // const [enameError,seteNameError]=useState(false)
   // const [eaddressError,seteAddressError]=useState(false)
   // const [enicError,seteNicError]=useState(false)
@@ -35,30 +35,37 @@ export default function DoctorAllAppDeletePopup({selectedDay,delcount,setDelcoun
   const [timevalue, setTimeValue] = useState("");
   const [rdelete,setRdelete]=useState(false);
 
-  const handleRealAllDelete=()=>
+  async function  handleAllAppDelete()
   {
 
-    axios.delete(`https://localhost:7205/api/Appointment/doctor/${docid}/day/${selectedDay}`)
-    .then(response => {
-      console.log('Resource deleted successfully:', response.data);
-      setDelcount(delcount+1);
-      setDopen(false);
-      handleNotification("All appointments deleted succesfully!");
-    })
-    .catch(error => {
-      console.error('Error deleting resource:', error);
-    });
-  
+    try
+    {
+        // console.log(item.appointment.id)
+        // console.log(item.appointment.dateTime)
+        // console.log(item.appointment.doctorId)
+        console.log("docid",docid);
+        console.log("selectedday",selectedDay);
+        await axios.put(`https://localhost:7205/api/Appointment/doctor/${docid}/day/${selectedDay}`);
+        setDelcount(delcount+1);
+        setCancelAll(false);
+        handleNotification("All appointment Cancelled succesfully!");
+   // console.log()
+   // setAppEditOpen(false);
+   // handleNotification("Appointment Edited succesfully!");
+    // setSuccessState("Student succesfully updated!")
+    // navigate('/');
+     
 
-
-
-    // setFilteredAppointments([]);
-    // setIsDisabled(true);
-    // setDopen(false);
-    // handleNotification("All appointment deleted succesfully!")
+     
+    
+    }
+catch(err)
+    {
+      //setNerror(err.response.data);
+    }
+    
 
   }
-
 
 
   const handleClickOpen = () => {
@@ -66,7 +73,7 @@ export default function DoctorAllAppDeletePopup({selectedDay,delcount,setDelcoun
   };
 
   const handleClose = () => {
-    setDopen(false);
+    setCancelAll(false);
   };
 
   async function handleSubmit(event) {
@@ -75,7 +82,7 @@ export default function DoctorAllAppDeletePopup({selectedDay,delcount,setDelcoun
 
   return (
     <React.Fragment>
-      <Dialog open={dopen} onClose={handleClose}>
+      <Dialog open={cancelAll} onClose={handleClose}>
         <Box sx={{ width: {xs:"100%",sm:"500px"}, height: "150px" }}>
           <Box>
             <Box
@@ -101,7 +108,7 @@ export default function DoctorAllAppDeletePopup({selectedDay,delcount,setDelcoun
             </Typography>
           </Box>
           <Box sx={{display:'flex',justifyContent:'flex-end',paddingRight:'5%'}}>
-            <Button onClick={handleRealAllDelete}
+            <Button onClick={handleAllAppDelete}
               sx={{
                 backgroundColor: "#F44336", // Replace with your desired color
                 "&:hover": {
