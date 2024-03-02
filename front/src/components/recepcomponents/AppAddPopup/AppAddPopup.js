@@ -192,9 +192,6 @@ export default function AppAddPopup({
   return (
     <React.Fragment>
       <Dialog open={apopen} onClose={handleClose}>
-        <Box sx={{ width: { sm: "600px", xs: "280px" } }}>
-          <form autoComplete="false" noValidate onSubmit={handleSubmit}>
-            <Box>
               <Box
                 sx={{
                   backgroundColor: "#DEF4F2",
@@ -208,11 +205,14 @@ export default function AppAddPopup({
                   <CloseIcon />
                 </IconButton>
               </Box>
+        <Box sx={{ width: { sm: "600px", xs: "280px",  padding: "20px", }}}>
+          <form autoComplete="false" noValidate onSubmit={handleSubmit}>
+            <Box>
               <Stack
                 direction={"column"}
                 sx={{
                   justifyContent: "space-between",
-                  padding: "20px",
+                 
                   alignItem: "center",
                 }}
               >
@@ -225,21 +225,23 @@ export default function AppAddPopup({
                         padding: "2%",
                         border: "1px solid #3B877A",
                         borderRadius: 5,
-                        height: { md: "125px", xs: "180px" },
+                        height: { md: "125px", sm: "100px" },
                         marginBottom: { xs: "5%", sm: 0 },
                         width: "100%",
                         marginRight: {
                           sm: 0,
                           xs: 5,
                         },
+                    
                       }}
                     >
-                      <Stack direction={"column"}>
+                      <Stack direction={"column"} sx={{height:{xs:"100px",md:"100%"}}}>
                         <Stack
                           direction={"row"}
                           sx={{
                             justifyContent: "space-between",
                             alignItem: "center",
+                            height:{xs:"100px",md:"100%"}
                           }}
                         >
                           <Typography sx={{ padding: "2%" }} variant="h5">
@@ -335,14 +337,19 @@ export default function AppAddPopup({
               </Stack>
             </Box>
             <DialogActions>
-              <Stack
-                direction="row"
+              <Stack direction={{xs:"column",sm:"row"}}
+               
                 sx={{
                   justifyContent: "space-between",
                   alignItems: "baseline",
                   width: "100%",
+                //  flexDirection:{
+                //     sm:"column",
+                //     md :"row"
+                //   }
                 }}
               >
+               
                 <BasicTimePicker
                 sx={{overflow:{xs:'hidden'}}}
                   selectedTime={selectedTime}
@@ -351,19 +358,26 @@ export default function AppAddPopup({
                   // setSelectedTimeH={(value) => setTimeValue({...timevalue,hour:value})}
                   // setSelectedTimeM={(value) => setTimeValue({...timevalue,minutes:value})}
                 />
-              
+               
+                  
                 <Button
                   sx={{
+                    marginTop:{xs:'20px !important',md:'0px'},
                     backgroundColor: "#79CCBE",
                     "&:hover": {
                       backgroundColor: "#79CCBE",
                     },
+                    
+                   
                   }}
                   variant="contained"
                   type="submit"
                 >
                   Confirm
                 </Button>
+                
+               
+              
               </Stack>
             </DialogActions>
           </form>

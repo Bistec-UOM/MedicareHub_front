@@ -41,6 +41,27 @@ const AppointmentCard = ({selectedDay,docid,appointlist,setAppointList,handleNot
   //     });
   // }, []);
 
+  function getTime(dateTimeString) {
+    // Create a Date object from the date-time string
+    const dateTime = new Date(dateTimeString);
+  
+    // Get hours
+    let hours = dateTime.getHours();
+    // Convert hours to 12-hour format
+    hours = hours % 12 || 12; // Convert 0 to 12
+  
+    // Get minutes
+    const minutes = dateTime.getMinutes();
+  
+    // Get AM or PM
+    const amOrPm = dateTime.getHours() >= 12 ? 'PM' : 'AM';
+  
+    // Format the time string
+    const timeString = `${hours}:${minutes < 10 ? '0' : ''}${minutes} ${amOrPm}`;
+  
+    return timeString;
+  }
+
  
   
 
@@ -85,7 +106,7 @@ const AppointmentCard = ({selectedDay,docid,appointlist,setAppointList,handleNot
                   <Typography variant="h5" >
                     {item.patient?.fullName}
                   </Typography>
-                  <CheckCircleIcon color="success"/>
+                  
         
                 <Box>
         
@@ -106,7 +127,7 @@ const AppointmentCard = ({selectedDay,docid,appointlist,setAppointList,handleNot
                 {item.patient?.contactNumber}
                 </Typography>
                 <Typography sx={{display:{xs:'flex',sm:'flex',md:'none'}}} variant="body2" color="text.secondary">
-                  {item.appointment.dateTime}
+                {getTime(item.appointment?.dateTime)}
                 </Typography>
         
               </Stack>

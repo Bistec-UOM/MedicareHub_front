@@ -91,7 +91,7 @@ catch(err)
   return (
     <React.Fragment>
       <Dialog open={markOpen} onClose={handleClose} >
-        <Box sx={{ width: {xs:"100%",sm:"500px"}, height: "160px" }}>
+        <Box sx={{ width: {xs:"100%",sm:"500px"}, height: "160px",paddingBottom:'20px' }}>
           <Box>
             <Box
               sx={{
@@ -108,20 +108,20 @@ catch(err)
             </Box>
           </Box>
           <Box  sx={{display:'flex',flexDirection:'row' ,alignItem: "center", margin: "3%" }}>
-            <ErrorIcon
-              sx={{ color: "red", marginRight: "2%",fontSize:'2rem' }}
+            <ErrorIcon color="success"
+              sx={{ marginRight: "2%",fontSize:'2rem' }}
             />
             <Typography  sx={{ marginTop:'1%',color:'#000000' }}>
               Are you sure you want mark as completed the appointment?
             </Typography>
           </Box>
           <Box sx={{display:'flex',justifyContent:'flex-end',paddingRight:'5%'}}>
-            <Button onClick={()=>handleMarkAsCompelted(item)}
+            <Button onClick={()=>handleMarkAsCompelted(item)} color="success"
               sx={{
-                backgroundColor: "#2BA658", // Replace with your desired color
-                "&:hover": {
-                  backgroundColor: "#2BA658", // Replace with your desired hover color
-                },
+                // backgroundColor: "#2BA658", // Replace with your desired color
+                // "&:hover": {
+                //   backgroundColor: "#2BA658", // Replace with your desired hover color
+                // },
                 marginLeft: "20px",
                 marginBottom:"20px"
               }}
