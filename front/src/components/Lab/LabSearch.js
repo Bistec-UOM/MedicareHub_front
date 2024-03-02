@@ -11,7 +11,7 @@ export default function LabSearch({setPage,setDate,date}) {
   return (
       <div style={{display:'flex',justifyContent:'space-between'}}>
 
-      <ViewListIcon sx={{cursor:'pointer',ml:'10px'}}></ViewListIcon>
+      <ViewListIcon sx={{cursor:'pointer',ml:'10px'}} onClick={()=>setPage(5)}></ViewListIcon>
 
       <div style={{display:'flex',flexDirection:'column',alignItems:'center'}}>
     
