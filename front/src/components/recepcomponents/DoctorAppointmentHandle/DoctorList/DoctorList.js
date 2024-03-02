@@ -19,8 +19,10 @@ import '../../../../components/CustomScroll.css'
 import LabRequest from '../../../DoctorComponents/LabRequest';
 import { Sideunit_Patient } from '../../../../components/sidebar/Sideunits';
 import DoctorAppCalender from '../DoctorAppCalender/DoctorAppCalender';
+import DoctorAppList from '../DoctorAppList/DoctorAppList';
+import { useLocation } from 'react-router-dom';
 
-export default function DoctorPage() {
+export default function DoctorList() {
   const [select,setSelect]=useState(null)
   useEffect(() => {
     document.body.style.margin = '0';
@@ -32,6 +34,10 @@ export default function DoctorPage() {
     textAlign: 'center',
 
   }));
+
+  const location=useLocation();
+  const {doctorid}=location.state;
+  const {selectedDay}=location.state
 
   const load = [
     { name: 'Nethmi Eranga Wijeweera', age: '30', gender: 'Female' },
@@ -162,7 +168,7 @@ export default function DoctorPage() {
         </Grid>
         
         <Grid item xs={9} style={{ height: '100%', overflowY: 'scroll' }}>
-        <DoctorAppCalender doctorId={2}/>
+        <DoctorAppList selectedDay={selectedDay} doctorId={2}/>
           
          
         </Grid>

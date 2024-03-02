@@ -162,7 +162,7 @@ export default function AppEditPopup({
       {
        
         id:item.appointment.id,
-        time:formattedDate,
+        Datetime:formattedDate,
         status: item.appointment.status,
          patientId:item.appointment.patientId,
          doctorId:item.appointment.doctorId,

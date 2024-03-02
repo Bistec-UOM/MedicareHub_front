@@ -81,7 +81,7 @@ const ResDayList = (props) => {
            // setFilteredAppointments(responseData);
             setIsDisabled(responseData.length === 0); // Update isDisabled based on the fetched appointments
             console.log("use effect appointments", responseData.result);
-            const sortedAppointments = responseData.slice().sort((a, b) => new Date(a.appointment.time) - new Date(b.appointment.time));  //this is used for sorting appointments based on their arrival time
+            const sortedAppointments = responseData.slice().sort((a, b) => new Date(a.appointment.dateTime) - new Date(b.appointment.dateTime));  //this is used for sorting appointments based on their arrival time
             setFilteredAppointments(sortedAppointments);
             console.log("sorted appointments",sortedAppointments)
         })
