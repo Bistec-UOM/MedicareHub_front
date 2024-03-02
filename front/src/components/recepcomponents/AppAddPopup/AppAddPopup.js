@@ -143,11 +143,11 @@ export default function AppAddPopup({
 
       let obj= {
         id: 0,
-        time:formattedDate,
+        dateTime:formattedDate,
         status:"new",
         patientId: activeData.id,
         doctorId: docid,
-        recepId:3
+        recepId:7
       }
 
 

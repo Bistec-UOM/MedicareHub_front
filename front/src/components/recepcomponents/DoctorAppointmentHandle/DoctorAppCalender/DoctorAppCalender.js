@@ -36,8 +36,10 @@ const localizer = momentLocalizer(moment);
 
 
 
-const DoctorAppCalender=()=>
+const DoctorAppCalender=({doctorId})=>
 {
+
+
     const [doctorList,setDoctorList]=useState([]);
     const [doctorCount,setDoctorCount]=useState(0);
 
@@ -58,6 +60,7 @@ const DoctorAppCalender=()=>
 
 
     let newselectedDay;
+    let today;
 
 
 
@@ -158,18 +161,18 @@ const DoctorAppCalender=()=>
   const handleDateClick = (arg) => {
     const selectedDate = moment(arg.dateStr);
     console.log("hello",selectedDate);
-    // today = selectedDate.format('MMMM D, YYYY');
-    // console.log("hello",today);
+    today = selectedDate.format('MMMM D, YYYY');
+    console.log("hello",today);
 
     const displayedDate = arg.view.currentStart;
     const selectedMonth = selectedDate.month();
     const currentMonth = displayedDate.getMonth(); 
     console.log("dd",selectedMonth);
     console.log(currentMonth);
-  //  console.log("new",today)
-    // if (selectedMonth === currentMonth) {
-    //   navigate('/resday', { state: { selectedDay: today ,doctorid:doctorId,doctorList:doctorList} });
-    // }
+    //console.log("new",today)
+    if (selectedMonth === currentMonth) {
+      navigate('/dappList', { state: { selectedDay: today ,doctorid:doctorId,doctorList:doctorList} });
+    }
   };
 
   const handleNavigate = (newDate) => {
@@ -240,7 +243,7 @@ const DoctorAppCalender=()=>
       //  events={events}
         eventContent={renderEventContent}
         dayCellContent={renderDayCellContent}
-      //  dateClick={handleDateClick}
+        dateClick={handleDateClick}
         datesSet ={handleDatesSet}
         selectable={false}
         headerToolbar={{

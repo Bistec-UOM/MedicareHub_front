@@ -69,12 +69,18 @@ function ResDay() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const location=useLocation();
+  const {doctorid}=location.state;
+  const {selectedDay}=location.state
   
 
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [isClosing, setIsClosing] = React.useState(false);
 
-  const [selectedTab, setSelectedTab] = useState(0);
+  const [doctorList,setDoctorList]=useState(location.state.doctorList);
+
+  const [selectedTab, setSelectedTab] = useState(doctorid);
 
   const handleDrawerClose = () => {
     setIsClosing(true);
@@ -96,13 +102,11 @@ function ResDay() {
 
  
 
- const location=useLocation();
- const {doctorid}=location.state;
- const {selectedDay}=location.state
 
 
 
- const [doctorList,setDoctorList]=useState(location.state.doctorList);
+
+ 
  const [doctorCount,setDoctorCount]=useState(0);
 
 // const {doctorList}=location.state;
@@ -282,16 +286,16 @@ function ResDay() {
               }).map((item,index)=>(
                 <div
                 key={index}
-               // onClick={() => setSelectedTab(index)}
+                onClick={() => setSelectedTab(item.id)}
                 style={{
-                  backgroundColor: docid === index ? '#79CCBE' : 'transparent',
+                  backgroundColor: docid === item.id ? '#79CCBE' : 'transparent',
                    padding: '10px',
                    margin: '5px',
                   cursor: 'pointer',
                   borderRadius:'8px'
                 }}
               >
-                <Sideunit_Doctor selectedTab={docid} name={item.fullName} title={item.qualifications} index={index} key={index}></Sideunit_Doctor>
+                <Sideunit_Doctor selectedTab={docid} name={item.fullName} title={item.qualifications} index={item.id} key={index}></Sideunit_Doctor>
               </div>
                
                 

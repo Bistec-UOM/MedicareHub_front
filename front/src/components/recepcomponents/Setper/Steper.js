@@ -42,7 +42,7 @@ export default function Steper(props) {
            return props.search.toLowerCase()===''?item:item.patient.fullName.toLowerCase().includes(props.search.toLowerCase())
         }).map((label) => (
           <Step key={label.patient.nic}>
-            <StepLabel >{getTime(label.appointment?.time)}</StepLabel>
+            <StepLabel  >{getTime(label.appointment?.dateTime)}</StepLabel>
 
 
           </Step>

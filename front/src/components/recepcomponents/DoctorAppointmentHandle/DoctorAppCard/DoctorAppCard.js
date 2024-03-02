@@ -10,23 +10,29 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { useState } from "react";
 import { Stack } from "@mui/material";
 import {IconButton} from "@mui/material";
-import Steper from "../Setper/Steper";
-import AppAddPopup from "../AppAddPopup/AppAddPopup";
-import AppDeletePopup from "../AppDeletePopup/AppDeletePopup";
-import AppEditPopup from "../AppEditPopup/AppEditPopup";
+import Steper from "../../Setper/Steper";
+import AppAddPopup from "../../AppAddPopup/AppAddPopup";
+import AppDeletePopup from "../../AppDeletePopup/AppDeletePopup";
+import AppEditPopup from "../../AppEditPopup/AppEditPopup";
 import { useEffect } from "react";
 import axios from "axios";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import HighlightOffRoundedIcon from '@mui/icons-material/HighlightOffRounded';
+import TaskAltRoundedIcon from '@mui/icons-material/TaskAltRounded';
+import MarkAsCompleted from "../MarkAsCompletedPopup/MarkAsCompleted";
+import AppCancelPopup from "../AppCancelPoplup/AppCancelPopup";
 
-const AppointmentCard = ({selectedDay,docid,appointlist,setAppointList,handleNotification,filteredAppointments,setFilteredAppointments, item ,delcount,setDelcount}) => {
+const DoctorAppCard = ({selectedDay,docid,appointlist,setAppointList,handleNotification,filteredAppointments,setFilteredAppointments, item ,delcount,setDelcount}) => {
   const [daopen,setDaopen]=useState(false);
-  const [appEditOpen,setAppEditOpen]=useState(false);
+  const [markAsCompleted,setMarkAsCompleted]=useState(false);
+
+  const [cancelOpen,setCancelOpen]=useState(false);
 
   const [patientData,setPatientData]=useState(null);
 
-  const handleEditAppointment=()=>
+  const handleMarkAsCompelted=()=>
   {
-    setAppEditOpen(true);
+    setMarkAsCompleted(true);
   }
 
   // useEffect(() => {
@@ -46,8 +52,8 @@ const AppointmentCard = ({selectedDay,docid,appointlist,setAppointList,handleNot
 
  
 
-  const handleDeleteAppointment = () => {
-    setDaopen(true)
+  const handleCancelAppointment = () => {
+    setCancelOpen(true)
     
     
   };
@@ -85,12 +91,18 @@ const AppointmentCard = ({selectedDay,docid,appointlist,setAppointList,handleNot
                   <Typography variant="h5" >
                     {item.patient?.fullName}
                   </Typography>
-                  <CheckCircleIcon color="success"/>
+
+                  <Typography variant="body2" >
+                    {item.appointment?.status}
+                  </Typography>
+                
         
                 <Box>
+
+                <IconButton onClick={handleMarkAsCompelted}><TaskAltRoundedIcon color="success"  /></IconButton>
         
-                 <IconButton onClick={handleDeleteAppointment}><DeleteIcon  sx={{ marginLeft: "auto", color: "#E60000" }} /></IconButton>
-                  <IconButton onClick={handleEditAppointment}><EditIcon  sx={{ color: "#F66444", }} /></IconButton>
+                 <IconButton onClick={handleCancelAppointment}><HighlightOffRoundedIcon  sx={{ marginLeft: "auto", color: "#E60000" }} /></IconButton>
+                 
         
         
                 </Box>
@@ -117,12 +129,14 @@ const AppointmentCard = ({selectedDay,docid,appointlist,setAppointList,handleNot
           
          
         </Box>
-        <AppDeletePopup appointlist={appointlist} setAppointList={setAppointList} handleNotification={handleNotification} delcount={delcount} setDelcount={setDelcount} item={item} daopen={daopen} setDaopen={setDaopen} filteredAppointments={filteredAppointments} setFilteredAppointments={setFilteredAppointments}/>
-        <AppEditPopup delcount={delcount} setDelcount={setDelcount} selectedDay={selectedDay} appEditOpen={appEditOpen} setAppEditOpen={setAppEditOpen}  setAppointList={setAppointList} handleNotification={handleNotification} appointlist={appointlist} docid={docid} item={item} />
+        <MarkAsCompleted handleNotification={handleNotification} delcount={delcount} setDelcount={setDelcount} item={item} markOpen={markAsCompleted} setMarkAsCompleted={setMarkAsCompleted}/>
+        <AppCancelPopup  handleNotification={handleNotification}  item={item} delcount={delcount} setDelcount={setDelcount} cancelOpen={cancelOpen} setCancelOpen={setCancelOpen}></AppCancelPopup>
+       
+       
       
     </div>
    
   );
 };
 
-export default AppointmentCard;
+export default DoctorAppCard;

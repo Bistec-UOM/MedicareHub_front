@@ -29,7 +29,7 @@ import MyFullCalendar from '../MyFullCalendar/MyFullCalendar';
     },[])
 
     const [doctorList,setDoctorList]=useState([]);
-    const [doctorCount,setDoctorCount]=useState(0);
+    const [doctorCount,setDoctorCount]=useState(1);
 
     useEffect(()=>
     {
@@ -39,8 +39,11 @@ import MyFullCalendar from '../MyFullCalendar/MyFullCalendar';
       }).then((responseData)=>
       {
         setDoctorCount(doctorCount+1);
-        console.log(responseData.result);
+        console.log("in response calender",responseData.result);
+        //console.log
         setDoctorList(responseData.result);
+        setSelectedTab(responseData.result[0].id)
+
       })
 
     },[]);
@@ -142,16 +145,17 @@ import MyFullCalendar from '../MyFullCalendar/MyFullCalendar';
                   }).map((item,index)=>(
                     <div
                     key={index}
-                    onClick={() => setSelectedTab(index)}
+                    onClick={() => setSelectedTab(item.id)}
                     style={{
-                      backgroundColor: selectedTab === index ? '#79CCBE' : 'transparent',
+                      backgroundColor: selectedTab === item.id? '#79CCBE' : 'transparent',
+                      color:selectedTab === item.id? 'white' : 'black',
                       padding: '10px',
                       margin: '5px',
                       cursor: 'pointer',
                       borderRadius:'8px'
                     }}
                   >
-                    <Sideunit_Doctor selectedTab={selectedTab}  name={item.fullName} title={item.qualifications} index={index} key={index}></Sideunit_Doctor>
+                    <Sideunit_Doctor selectedTab={selectedTab}  name={item.fullName} title={item.qualifications} index={item.id} key={selectedTab}></Sideunit_Doctor>
                   </div>
 
                   
