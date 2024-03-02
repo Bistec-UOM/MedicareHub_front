@@ -8,14 +8,13 @@ import CreateLabTemplate from '../components/Lab/CreateLabTemplate';
 import '../components/CustomScroll.css'
 import ResNavBar from '../components/recepcomponents/ResNavBar/ResNabBar';
 import Edittemplate from '../components/Lab/Edittemplate';
-import SubmitPage from '../components/Lab/TestSubmit/SubmitPage';
+import SubmitPage from '../components/Lab/TestSubmit/Submit/SubmitPage';
 import Accept from '../components/Lab/TestSubmit/Accept';
 
 export default function Lab() {
 
   const [page,setPage]=useState(1)//Navigate pages  [1:dashboard  2:testlist  3:createtetmplt  4:edittmplt
                                   //                 5:submit list]
-
   const [date,setDate]=useState(2)
   const [tId,settId]=useState()//selected test <----------- from LabTestList
   const [selectedT,setSelectedT]=useState()//selected report <---------- from Sideunit

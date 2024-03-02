@@ -66,6 +66,9 @@ export default function LabTestList({setPage,settId,Tload,setTload}) {
                 })
             }
         </Stack>
+
+      {/*------------------ Enter values pop up box ---------------------------------------------- */}
+
       <Dialog open={open} onClose={handleClose}>
           <DialogTitle sx={{backgroundColor: "rgb(222, 244, 242)",display: "flex",justifyContent: "space-between"}}>
             Edit test

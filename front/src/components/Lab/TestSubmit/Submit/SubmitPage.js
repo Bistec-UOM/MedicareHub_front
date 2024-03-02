@@ -1,16 +1,21 @@
-import { Button, Paper, Typography,Box, InputBase, IconButton, Divider, Toolbar,Stack} from '@mui/material'
-import React, { useEffect } from 'react'
+import { Paper, Typography, InputBase, IconButton, Divider, Toolbar,Stack, Dialog, DialogTitle} from '@mui/material'
+import React, { useState } from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import SearchIcon from "@mui/icons-material/Search";
+import CloseIcon from "@mui/icons-material/Close";
+import Testcom from './Testcom';
 
 export default function SubmitPage({load,setpage}) {
-/* 
-  const [ld,setLd]=useEffect([])
-  useEffect(()=>{
-    if(loadIn){
-      setLd(loadIn)
+
+    //Pop up dialog box------------------------------------------------------------
+    const [open, setOpen] = useState(false)
+    const handleClickOpen = (x) => {
+        setOpen(true)
     }
-  },loadIn) */
+    const handleClose = () => {setOpen(false)}  
+
+    //----------------------------------------------------------------------------
+
 
   return (
     <div>
@@ -29,10 +34,12 @@ export default function SubmitPage({load,setpage}) {
 
         </Toolbar>
 
+      {/*------------------ List of accepted samples ---------------------------------------------- */}
+
         <Stack sx={{paddingTop:{xs:'60px',sm:'80px'},paddingLeft:{xs:'5%',sm:'8%'}}}>
         {
-            load.map((i,ind)=>{
-                return <Paper sx={{width:'70%',display:'flex',justifyContent:'space-between',alignItems:'center',mt:'10px',p:'10px',cursor:'pointer'}}>
+            load.map((i)=>{
+                return <Paper sx={{width:'70%',display:'flex',justifyContent:'space-between',alignItems:'center',mt:'10px',p:'10px',cursor:'pointer'}} onClick={()=>handleClickOpen(i.id)}>
                     <Typography sx={{fontSize:'18px',flex:'1'}}>{i.id}</Typography>
                     <Typography sx={{fontSize:'18px',flex:'1'}}>{i.date}</Typography>
                     <Typography sx={{fontSize:'15px',flex:'2'}}>{i.name}</Typography>
@@ -42,6 +49,16 @@ export default function SubmitPage({load,setpage}) {
         }
         </Stack>
 
+      {/*------------------ Enter values pop up box ---------------------------------------------- */}
+
+      <Dialog open={open} onClose={handleClose}>
+          <DialogTitle sx={{backgroundColor: "rgb(222, 244, 242)",display: "flex",justifyContent: "space-between"}}>
+            Edit test
+          <CloseIcon onClick={handleClose} sx={{cursor:'pointer'}} />
+          </DialogTitle>
+      <Testcom handleClose={handleClose} Fload={"pending"} detail={"njkjn"}></Testcom>
+      </Dialog>
+        
     </div>
   )
 }
