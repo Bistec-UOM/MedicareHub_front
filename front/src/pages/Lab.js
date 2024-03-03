@@ -8,14 +8,13 @@ import CreateLabTemplate from '../components/Lab/CreateLabTemplate';
 import '../components/CustomScroll.css'
 import ResNavBar from '../components/recepcomponents/ResNavBar/ResNabBar';
 import Edittemplate from '../components/Lab/Edittemplate';
-import SubmitPage from '../components/Lab/TestSubmit/SubmitPage';
+import SubmitPage from '../components/Lab/TestSubmit/Submit/SubmitPage';
 import Accept from '../components/Lab/TestSubmit/Accept';
 
 export default function Lab() {
 
   const [page,setPage]=useState(1)//Navigate pages  [1:dashboard  2:testlist  3:createtetmplt  4:edittmplt
                                   //                 5:submit list]
-
   const [date,setDate]=useState(2)
   const [tId,settId]=useState()//selected test <----------- from LabTestList
   const [selectedT,setSelectedT]=useState()//selected report <---------- from Sideunit
@@ -50,18 +49,18 @@ export default function Lab() {
    let y=[
     {date:1,id:54,name: "John Davis", test: 'BMT',testId:8},
     {date:1,id:55,name: "Emily Wilson", test:'HBC',testId:23},
-    {date:1,id:56,name: "David Martinez", test: 'Urine',testId:5},
+    {date:1,id:56,name: "David Martinez", test: 'Urine',testId:2},
     {date:1,id:57,name: "Jessica Anderson", test: 'FBC',testId:1},
     {date:1,id:58,name: "William Thompson", test:'FBC',testId:1},
     {date:1,id:59,name: "Jennifer Garcia", test: 'FBC',testId:1},
-    {date:1,id:60,name: "Robert Rodriguez", test: 'Lipid',testId:6},
-    {date:1,id:61,name: "Ashley Lopez", test:'Lipid',testId:6},
+    {date:1,id:60,name: "Robert Rodriguez", test: 'Lipid',testId:7},
+    {date:1,id:61,name: "Ashley Lopez", test:'Lipid',testId:7},
     {date:1,id:62,name: "Matthew Lee", test: 'FBC',testId:1},
-    {date:2,id:73,name: "Jacob Baker", test: 'Urine',testId:5},
+    {date:2,id:73,name: "Jacob Baker", test: 'Urine',testId:2},
     {date:2,id:74,name: "Ava Green", test: 'FBC',testId:1},
     {date:2,id:75,name: "Alexander Adams", test:'FBC',testId:1},
     {date:2,id:76,name: "Charlotte Hill", test: 'FBC',testId:1},
-    {date:2,id:77,name: "William Murphy", test: 'Lipid',testId:6}
+    {date:2,id:77,name: "William Murphy", test: 'Lipid',testId:7}
    ]
 
     const [Tload,setTload]=useState([])//Lab test list <----- from back end
