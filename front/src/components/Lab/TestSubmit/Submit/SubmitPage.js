@@ -4,18 +4,22 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
 import Testcom from './Testcom';
+import axios from 'axios';
 
 export default function SubmitPage({load,setpage}) {
 
     //Pop up dialog box------------------------------------------------------------
     const [open, setOpen] = useState(false)
     const handleClickOpen = (x) => {
+        let t= load.filter((e)=>{return e.id==x})
+        settest(t);
         setOpen(true)
     }
     const handleClose = () => {setOpen(false)}  
 
     //----------------------------------------------------------------------------
 
+    const [test,settest]=useState(0)//selected test (out of accepted tests)
 
   return (
     <div>
@@ -53,10 +57,10 @@ export default function SubmitPage({load,setpage}) {
 
       <Dialog open={open} onClose={handleClose}>
           <DialogTitle sx={{backgroundColor: "rgb(222, 244, 242)",display: "flex",justifyContent: "space-between"}}>
-            Edit test
+            Submit test results
           <CloseIcon onClick={handleClose} sx={{cursor:'pointer'}} />
           </DialogTitle>
-      <Testcom handleClose={handleClose} Fload={"pending"} detail={"njkjn"}></Testcom>
+      <Testcom handleClose={handleClose} test={test} detail={"njkjn"}></Testcom>
       </Dialog>
         
     </div>
