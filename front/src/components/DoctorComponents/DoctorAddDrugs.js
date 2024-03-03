@@ -7,7 +7,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import SearchIcon from '@mui/icons-material/Search';
 import DoNotDisturbOnIcon from '@mui/icons-material/DoNotDisturbOn';
-import { Grid, Card, Typography } from '@mui/material';
+import { Grid, Card, Typography,Button } from '@mui/material';
 
 
 export default function DoctorAddDrugs(props) {
@@ -112,13 +112,13 @@ export default function DoctorAddDrugs(props) {
             value={quantitytype}
             onChange={(e) => setQuantitytype(e.target.value)}
             error={quantitytypeError}
-            helperText={quantitytypeError ? ' required' : ''}
+            helperText={quantitytypeError ? ' required fields' : ''}
           >
             {quantityOptions.map((option, index) => (
               <MenuItem key={index} value={option}>{option}</MenuItem>
             ))}
           </Select>
-          <Select  sx={{ m: 1, top: '1px', border: '2px solid #0099cc', width: '75px', height: '40px', }}
+           <Select  sx={{ m: 1, top: '1px', border: '2px solid #0099cc', width: '75px', height: '40px', }}
             size="small"                       
             value={hour}
             onChange={(e) => setHour(e.target.value)}
@@ -129,7 +129,7 @@ export default function DoctorAddDrugs(props) {
               <MenuItem key={index} value={option}>{option}</MenuItem>
             ))}
           </Select>
-          <button type="submit"   style={{cursor: 'pointer',top: '10px', color: 'Green', borderColor: 'Green', borderWidth: '2px', height: '45px', width: '53px',  }} onClick={handleAddDrug}>OK</button>
+          <Button type="submit" variant="outlined"  sx={{ top: '0.5px', color: 'Green', borderColor: 'Green', borderWidth:'3px'}} onClick={handleAddDrug}>OK</Button>
         </form>
       </DialogContent>
     </Dialog>
