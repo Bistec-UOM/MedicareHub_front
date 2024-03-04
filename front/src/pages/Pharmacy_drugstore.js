@@ -16,6 +16,7 @@ import Box from '@mui/material/Box';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import { Sideunit_Bill } from '../components/sidebar/Sideunits';
+import axios from 'axios';
 
 function createData(
   ID,
@@ -33,11 +34,48 @@ function createData(
 
 export default function Pharmacy_drugstore() {
 
+   const [data, setData] =useState([]);
+
+  useEffect(()=>{
+    getData();
+  },[])
+
+  const [brand, setBrand] = useState('');
+  const [drug, setDrug] = useState('');
+  const [quantity, setQuantity] = useState('');
+  const [dosage, setDosage] = useState('');
+  const [price, setPrice] = useState('');
+  const rowdata = [
+    {id:1,drug:'Paracetamole',brand:"Panadol",dosage:["10 mg"],quantity:[120],price:[20.00]},
+    {id:1,drug:'Veniloflaxin',brand:"Veniz",dosage:["37.5 mg","75 mg","150 mg"],quantity:[34,12,90],price:[35.00,45.00,60.00]},
+    {id:1,drug:'Flucanzole',brand:"Diflucan",dosage:["10 mg"],quantity:[15],price:[12.00]}
+    
+  ];
+
+  
+  const getData = () => {
+    axios.get('https://localhost:44346/api/Drugs')
+    .then((result) => {
+        const drugs = result.data.map(drug => ({
+            ID: drug.id,
+            drug: drug.genericN,
+            brand: drug.brandN,
+            dosage: drug.weight,
+            quantity: drug.avaliable,
+            price: drug.price
+        }));
+        setRows(drugs);
+    })
+    .catch((error) => {
+        console.log(error)
+    })
+}
+ 
   const [searchValue, setSearchValue] = useState('');
 
   const handleInputChange = (event) => {
     setSearchValue(event.target.value);
-    // You can perform additional filtering logic here if needed
+    
   };
   
 
@@ -54,30 +92,32 @@ export default function Pharmacy_drugstore() {
   const handleClose =() => {
     setOpen(false)
   }; 
-  const [brand, setBrand] = useState('');
-  const [drug, setDrug] = useState('');
-  const [quantity, setQuantity] = useState('');
-  const [dosage, setDosage] = useState('');
-  const [price, setPrice] = useState('');
-  const rowdata = [
-    {id:1,drug:'Paracetamole',brand:"Panadol",dosage:["10 mg"],quantity:[120],price:[20.00]},
-    {id:1,drug:'Veniloflaxin',brand:"Veniz",dosage:["37.5 mg","75 mg","150 mg"],quantity:[34,12,90],price:[35.00,45.00,60.00]},
-    {id:1,drug:'Flucanzole',brand:"Diflucan",dosage:["10 mg"],quantity:[15],price:[12.00]}
-    
-  ];
+
   const [rows, setRows] = useState(rowdata);
 
-  const handleConfirm =() => {
-    const newDrug = { drug, brand,dosage, quantity,price };
-    setRows([...rows, newDrug]);
-    setDrug('');
-        setBrand('');
-        setDosage('');
-        setQuantity('');
-        setPrice('');
+
+
+
+  const handleConfirm=()=>{
     handleClose();
-    setConfirm(false)
-  };
+      setConfirm(false)
+    const data={
+      "genericN": drug,
+      "brandN": brand,
+      "weight": dosage,
+      "avaliable": quantity,
+      "price": price,
+      
+      
+    }
+    axios.post('https://localhost:44346/api/Drugs',data)
+    .then((result)=>{
+      getData() 
+    })
+    .catch((error)=>{
+      console.log(error)
+    })
+  }
   const handleEditClose = () => {
     setSelectedCard(null);
     setEditOpen(false);
@@ -276,7 +316,7 @@ export default function Pharmacy_drugstore() {
         </DialogContent>
         <DialogActions>
           <Button
-            onClick={handleConfirm}
+             onClick={handleConfirm}
             variant="contained"
             sx={{ backgroundColor: "rgb(121, 204, 190)", m: 2 }}
             
