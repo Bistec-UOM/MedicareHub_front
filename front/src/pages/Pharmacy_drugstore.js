@@ -101,7 +101,27 @@ export default function Pharmacy_drugstore() {
       });
   };
 
-
+  const handleEdit = () => {
+    handleEditClose();
+    let updatedData = {
+      genericN: selectedCard.drug,
+      brandN: selectedCard.brand,
+      weight: selectedCard.dosage,
+      avaliable: selectedCard.quantity,
+      price: selectedCard.price
+    };
+    console.log('check this')
+    console.log('check',updatedData)
+    axios.put(`https://localhost:44346/api/Drugs/${selectedCard.ID}`, updatedData)
+      .then((response) => {
+        getData(); // Refresh data after edit
+        console.log("sent ",updatedData)
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  
   const [searchValue, setSearchValue] = useState('');
 
   const handleInputChange = (event) => {
@@ -134,14 +154,15 @@ export default function Pharmacy_drugstore() {
     setSelectedCard(null);
     setEditOpen(false);
   };
-  const handleEdit =() => {
-    handleEditClose();
-    setConfirm(false)
-  };
+  // const handleEdit =() => {
+  //   handleEditClose();
+  //   setConfirm(false)
+  // };
+  //////
   // const handleDelete =() => {
   //   setConfirm(false)
   // };
-  
+
   const handleEditOpen =(row) => {
     setSelectedCard(row);
     setEditOpen(true);
@@ -153,6 +174,7 @@ export default function Pharmacy_drugstore() {
 
    },[]) 
    const handleFieldChange = (fieldName, value) => {
+    console.log(`Updating ${fieldName} to ${value}`);
     setSelectedCard(prevState => ({
       ...prevState,
       [fieldName]: value
@@ -355,32 +377,15 @@ export default function Pharmacy_drugstore() {
   </Grid>
   <Grid item xs={2}>
   <Typography sx={{flex:1}}>
-                  {Array.isArray(row.dosage) ? (
-                    row.dosage.map((dosage, index) => (
-                      <List key={index}>{dosage}</List>
-                    ))
-                  ) : (
-                    <List>{row.dosage}</List>
-                  )}
+                  {row.dosage}
+                 
                 </Typography>
   </Grid>
   <Grid item xs={2}>
-  <Typography sx={{flex:1}}> {Array.isArray(row.quantity) ? (
-                    row.quantity.map((quantity, index) => (
-                      <List key={index}>{quantity}</List>
-                    ))
-                  ) : (
-                    <List>{row.quantity}</List>
-                  )}</Typography>
+  <Typography sx={{flex:1}}> {row.quantity}</Typography>
   </Grid>
   <Grid item xs={2}>
-  <Typography sx={{flex:1}}>{Array.isArray(row.price) ? (
-                    row.price.map((price, index) => (
-                      <List key={index}>{price}</List>
-                    ))
-                  ) : (
-                    <List>{row.price}</List>
-                  )}</Typography>
+  <Typography sx={{flex:1}}>{row.price}</Typography>
   </Grid>
 </Grid>
     </Card>
