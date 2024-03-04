@@ -16,7 +16,7 @@ export default function DoctorAddDrugs(props) {
     const [quantity, setQuantity] = useState('');
     const [quantitytype, setQuantitytype] = useState('');
     const [hour, setHour] = useState('');
-    const [pres, setPres] = useState([]);
+    const [pres, setPres] = useState([]);//---------------------------prescription array------------------------
     const [nameError, setNameError] = useState(false);
     const [quantityError, setQuantityError] = useState(false);
     const [quantitytypeError, setQuantitytypeError] = useState(false);
@@ -133,8 +133,6 @@ export default function DoctorAddDrugs(props) {
         </form>
       </DialogContent>
     </Dialog>
-  
-
             <div>
                 {pres.map((drug, index) => (
                     <Grid key={index} container spacing={1} sx={{ marginTop: "5px",}}>
