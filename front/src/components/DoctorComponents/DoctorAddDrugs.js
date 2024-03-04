@@ -11,12 +11,12 @@ import { Grid, Card, Typography,Button } from '@mui/material';
 
 
 export default function DoctorAddDrugs(props) {
-    const { openBox, setOpenBox } = props;
+    const { openBox, setOpenBox ,pres , setPres} = props;
     const [name, setName] = useState('');
     const [quantity, setQuantity] = useState('');
     const [quantitytype, setQuantitytype] = useState('');
     const [hour, setHour] = useState('');
-    const [pres, setPres] = useState([]);//---------------------------prescription array------------------------
+    //const [pres, setPres] = useState([]);//---------------------------prescription array------------------------
     const [nameError, setNameError] = useState(false);
     const [quantityError, setQuantityError] = useState(false);
     const [quantitytypeError, setQuantitytypeError] = useState(false);

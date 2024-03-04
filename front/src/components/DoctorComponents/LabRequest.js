@@ -7,8 +7,8 @@ import DialogContent from '@mui/material/DialogContent';
 
 
 export default function LabRequest(props) {
-  const { openpopBox, setOpenpopBox } = props;   
-  const [rep, setrep] = useState([]);
+  const { openpopBox, setOpenpopBox ,rep, setrep} = props;   
+  //const [rep, setrep] = useState([]);
   const [name, setName] = useState('');
   const [nameError, setNameError] = useState(false);
 
