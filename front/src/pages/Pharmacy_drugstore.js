@@ -70,7 +70,38 @@ export default function Pharmacy_drugstore() {
         console.log(error)
     })
 }
- 
+ const handleConfirm=()=>{
+    handleClose();
+      setConfirm(false)
+    const data={
+      "genericN": drug,
+      "brandN": brand,
+      "weight": dosage,
+      "avaliable": quantity,
+      "price": price,
+      
+      
+    }
+    axios.post('https://localhost:44346/api/Drugs',data)
+    .then((result)=>{
+      getData() 
+    })
+    .catch((error)=>{
+      console.log(error)
+    })
+  }
+  const handleDelete = (id) => {
+    axios.delete(`https://localhost:44346/api/Drugs/${id}`)
+      .then(() => {
+        getData(); // Refresh data after delete
+        handleEditClose(); // Close the dialog
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+
   const [searchValue, setSearchValue] = useState('');
 
   const handleInputChange = (event) => {
@@ -98,26 +129,7 @@ export default function Pharmacy_drugstore() {
 
 
 
-  const handleConfirm=()=>{
-    handleClose();
-      setConfirm(false)
-    const data={
-      "genericN": drug,
-      "brandN": brand,
-      "weight": dosage,
-      "avaliable": quantity,
-      "price": price,
-      
-      
-    }
-    axios.post('https://localhost:44346/api/Drugs',data)
-    .then((result)=>{
-      getData() 
-    })
-    .catch((error)=>{
-      console.log(error)
-    })
-  }
+ 
   const handleEditClose = () => {
     setSelectedCard(null);
     setEditOpen(false);
@@ -126,9 +138,10 @@ export default function Pharmacy_drugstore() {
     handleEditClose();
     setConfirm(false)
   };
-  const handleDelete =() => {
-    setConfirm(false)
-  };
+  // const handleDelete =() => {
+  //   setConfirm(false)
+  // };
+  
   const handleEditOpen =(row) => {
     setSelectedCard(row);
     setEditOpen(true);
@@ -429,7 +442,7 @@ export default function Pharmacy_drugstore() {
         <DialogActions>
           
           <Button
-            onClick={handleDelete}
+            onClick={() => handleDelete(selectedCard.ID)}
             variant="contained"
             sx={{ backgroundColor: "rgb(121, 204, 190)", m: 2 }}
           >
