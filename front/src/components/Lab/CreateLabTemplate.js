@@ -84,13 +84,13 @@ export default function CreateLabTemplate({setPage,setTload}) {
           el.index=ind
         })
         let T={
-          id:test.id,
           testName:testData.name,
-          abb:'',
+          abb:'ABC',
           price:testData.price,
           provider:testData.provider,
           reportFields:ar
         }
+        console.log(JSON.stringify(T))
         axios.post('http://localhost:5220/api/Template',T)
         .then(res=>{
           setTload([])//make test list empty to reload again
