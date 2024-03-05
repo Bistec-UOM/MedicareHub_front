@@ -27,6 +27,7 @@ export default function Doctor() {
   const [openpopBox, setOpenpopBox] = useState(false);
   const [openAreports, setOpenAreports] = useState(false);
   const [description,setDescription] = useState ("");
+  
   useEffect(() => {
     document.body.style.margin = '0';
   }, [])
@@ -57,9 +58,11 @@ export default function Doctor() {
   // Remove after click the confirm buttun
   const confirmRemoving = () => {
     if (select !== null) {
-        const updatedAppointments = x.filter(appointment => appointment.id !== select); // Filter out the selected appointment
-        setSelect(null); // Clear the selected patient
-        setX(updatedAppointments); // Update the appointments array
+        const updatedAppointments = x.filter(appointment => appointment.id !== select); // Filter out the selected appointment    
+        setX(updatedAppointments); // remove the selected patient in the appointments array
+        setSelect(null); // Clear the selected patient account   
+        
+      
     }
 };
 const handleClick = () => {
@@ -134,8 +137,8 @@ const handleClick = () => {
     
   ]
 
-  const [pres,setPres]=useState([])
-  const [rep,setrep]=useState([])
+  const [pres,setPres]=useState([]) // hold the pres details from doctoradd drug component
+  const [rep,setrep]=useState([]) // hold the  lab request from doctoradd drug component
 
   const [x,setX]=useState(data)
   const selectedAppointment = select ? x.filter(appointment => appointment.id === select) : [];//------------filter  the selected patient----------
@@ -165,7 +168,7 @@ const handleClick = () => {
               <>
                   <div sx={{ display: 'flex' }}>
                       {selectedAppointment.map((index) => (
-                          <Card key={index} sx={{ maxWidth: '100%', height: '100px' }}>
+                          <Card key={index} sx={{ maxWidth: '100%', height: '100px'}}>
                               <CardContent>
                                   <AudioFileIcon sx={{ color: 'rgb(0, 153, 255)', float: 'right', marginRight: '10px', fontSize: '30px', cursor: 'pointer', }} onClick={handleAddIconClick} />
                                   <UpdateIcon sx={{ color: 'rgb(255, 153, 0)', float: 'right', marginRight: '10px', fontSize: '30px', cursor: 'pointer', }} onClick={handleViewReporsClick} />
@@ -191,12 +194,12 @@ const handleClick = () => {
                       <Box
                           component="form"
                           sx={{
-                              '& .MuiTextField-root': { m: 1, width: '90%' }, marginLeft: '8%',
+                              '& .MuiTextField-root': { m: 1, width: '95%' }, marginLeft: '1%',
                           }}
                           noValidate
                           autoComplete="off">
                           <TextField id="outlined-multiline-flexible" placeholder="Patient extra details" multiline rows={7} onChange={(event) => setDescription(event.target.value)}
-                          InputProps={{ style: { backgroundColor: 'rgb(209, 224, 250)', borderRadius: '25px', fontSize: '22px', color: 'blue', textAlign: 'center', }, }} />
+                          InputProps={{ style: { backgroundColor: 'rgb(209, 224, 250)', borderRadius: '15px', fontSize: '22px', color: 'blue', textAlign: 'center', }, }} />
                       </Box>
                       <br></br>
                       <Button variant="contained" sx={{ backgroundColor: '#00cca3', left: '80%' }} onClick={handleClick}>Confirm</Button>
