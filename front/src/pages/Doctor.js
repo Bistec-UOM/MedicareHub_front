@@ -27,6 +27,10 @@ export default function Doctor() {
   const [openpopBox, setOpenpopBox] = useState(false);
   const [openAreports, setOpenAreports] = useState(false);
   const [description,setDescription] = useState ("");
+
+  //display date
+  const currentDate = new Date();
+  const formattedDate = currentDate.toDateString();
   
   useEffect(() => {
     document.body.style.margin = '0';
@@ -66,7 +70,7 @@ export default function Doctor() {
     }
 };
 const handleClick = () => {
-  let obj = { //strore the data in this object after click the confirm button
+  let obj = { //strore the all data in this object after click the confirm button
     id: select,
     drugs: pres, // drug array: from DoctorAddDrugs component
     labs: rep,  // lab test array: from Labrequest component
@@ -142,7 +146,7 @@ const handleClick = () => {
 
   const [x,setX]=useState(data)
   const selectedAppointment = select ? x.filter(appointment => appointment.id === select) : [];//------------filter  the selected patient----------
-
+  
   
  return (
   <div>
@@ -151,6 +155,7 @@ const handleClick = () => {
       <Grid item xs={3} style={{ height: '100%', backgroundColor: '#DEF4F2' }}>
           <SidebarContainer sx={{ backgroundColor: '#DEF4F2' }}>
               <SidebarTop>
+                <Typography sx={{ fontWeight:'Bold',color:'grey' }}>{formattedDate}</Typography>
               </SidebarTop>
               <SidebarList>
                   {x.map((elm, ind) => {
@@ -166,9 +171,9 @@ const handleClick = () => {
       <Grid item xs={9} style={{ height: '100%', overflowY: 'scroll' }}>
           {select ? (
               <>
-                  <div sx={{ display: 'flex' }}>
-                      {selectedAppointment.map((index) => (
-                          <Card key={index} sx={{ maxWidth: '100%', height: '100px'}}>
+                  <div sx={{ display: 'flex' ,}}>
+                     {selectedAppointment.map((index) => (
+                          <Card key={index} sx={{ maxWidth: '100%', height: '100px',}}>
                               <CardContent>
                                   <AudioFileIcon sx={{ color: 'rgb(0, 153, 255)', float: 'right', marginRight: '10px', fontSize: '30px', cursor: 'pointer', }} onClick={handleAddIconClick} />
                                   <UpdateIcon sx={{ color: 'rgb(255, 153, 0)', float: 'right', marginRight: '10px', fontSize: '30px', cursor: 'pointer', }} onClick={handleViewReporsClick} />
@@ -182,8 +187,7 @@ const handleClick = () => {
                               <PatientsRecords openPopup={openPopup} setOpenPopup={setOpenPopup} />
                           </Card>
                       ))}
-                  </div>
-
+                      </div>
                   <div>
                       <DoctorAddDrugs pres={pres} setPres={setPres} openBox={openBox} setOpenBox={setOpenBox} />
                       <AddCircleIcon sx={{ color: '#00cc66', marginLeft: '10%', fontSize: '30px', float: 'left', marginTop: '27px', cursor: 'pointer' }} onClick={handleAddDrugsClick} />
