@@ -160,7 +160,7 @@ const result = 10 * 15
       </Grid>
 
       <Grid item xs={9} style={{height:'100%',overflowY:'scroll'}}>
-        <div>
+      <div style={{ position: 'sticky', top: 0, zIndex: 1000 }}>
           {data.map((patientdata, id) => (
       <Card  key={id} sx={{ minWidth: 275 }}>
         <CardContent>
@@ -257,15 +257,13 @@ const result = 10 * 15
        <div style={{ textAlign: 'right' }}>
       <Typography sx={{marginRight:'237px',}}><b>495.00</b></Typography>
     </div>
-    <div>
-    <PrintIcon sx={{position: 'absolute',
-  width: '60px',
-  height: '50px',
-  left: '766px',
-  top: '603px',
-  }} />
-  <Button variant="contained" sx={{ position: 'absolute',backgroundColor: '#00cca3', left: '960px' }}>Confirm</Button>
-    </div>
+    
+    <div style={{ textAlign: 'right', marginTop: '20px', marginBottom: '20px' }}>
+    <PrintIcon sx={{ width: '60px', height: '50px', marginRight: '20px' }} />
+    <Button variant="contained" sx={{ backgroundColor: '#00cca3' }}>
+      Confirm
+    </Button>
+  </div>
 <br></br>
       </Grid>
     </Grid>
