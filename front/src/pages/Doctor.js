@@ -26,7 +26,7 @@ export default function Doctor() {
   const [openBox, setOpenBox] = useState(false);
   const [openpopBox, setOpenpopBox] = useState(false);
   const [openAreports, setOpenAreports] = useState(false);
-
+  const [description,setDescription] = useState ("");
   useEffect(() => {
     document.body.style.margin = '0';
   }, [])
@@ -53,18 +53,36 @@ export default function Doctor() {
   const handleAddButtonClick = () => {
     setOpenpopBox(true);
   };
-  
-  
+
+  // Remove after click the confirm buttun
+  const confirmRemoving = () => {
+    if (select !== null) {
+        const updatedAppointments = x.filter(appointment => appointment.id !== select); // Filter out the selected appointment
+        setSelect(null); // Clear the selected patient
+        setX(updatedAppointments); // Update the appointments array
+    }
+};
+const handleClick = () => {
+  let obj = { //strore the data in this object after click the confirm button
+    id: select,
+    drugs: pres, // drug array: from DoctorAddDrugs component
+    labs: rep,  // lab test array: from Labrequest component
+    descript: description
+  }
+  console.log(obj)
+  confirmRemoving(); // Call the confirmRemoving function
+};
  
  //-------------------------->patients appointments Array<--------------------------------------------------------//
-  let x=[
-    {
-      date:1,
+
+ const data=[
+   {
+     date:1,
       id:51,  // -----------------------------------> appointment Id-------  
       patient:{
           name:"dhgwhjdbjhw",
-          age:28,
-          gender:"female"
+          age:30,
+          gender:"male"
         },
         time: "13:15",
         status: "done"
@@ -74,10 +92,10 @@ export default function Doctor() {
       id:52,    
       patient:{
           name:"nethmi",
-          age:28,
+          age:18,
           gender:"female"
         },
-        time: "13:15",
+        time: "14:15",
         status: "done"
     },
     {
@@ -85,8 +103,8 @@ export default function Doctor() {
       id:53,    
       patient:{
           name:"eranga",
-          age:28,
-          gender:"female",
+          age:8,
+          gender:"male",
         },
         time: "13:15",
         status: "done"
@@ -96,7 +114,7 @@ export default function Doctor() {
       id:54,    
       patient:{
           name:"wijeweera",
-          age:28,
+          age:22,
           gender:"female"
         },
         time: "13:15",
@@ -107,14 +125,19 @@ export default function Doctor() {
       id:55,    
       patient:{
           name:"mihiran",
-          age:28,
-          gender:"female"
+          age:38,
+          gender:"male"
         },
         time: "13:15",
         status: "done"
     },
     
   ]
+
+  const [pres,setPres]=useState([])
+  const [rep,setrep]=useState([])
+
+  const [x,setX]=useState(data)
   const selectedAppointment = select ? x.filter(appointment => appointment.id === select) : [];//------------filter  the selected patient----------
 
   
@@ -159,11 +182,11 @@ export default function Doctor() {
                   </div>
 
                   <div>
-                      <DoctorAddDrugs openBox={openBox} setOpenBox={setOpenBox} />
+                      <DoctorAddDrugs pres={pres} setPres={setPres} openBox={openBox} setOpenBox={setOpenBox} />
                       <AddCircleIcon sx={{ color: '#00cc66', marginLeft: '10%', fontSize: '30px', float: 'left', marginTop: '27px', cursor: 'pointer' }} onClick={handleAddDrugsClick} />
                   </div>
-                  <ThermostatIcon sx={{ color: '#33cc33', marginLeft: '74%', fontSize: '45px', marginTop: '48px', cursor: 'pointer' }} onClick={handleAddButtonClick} />
-                  <LabRequest openpopBox={openpopBox} setOpenpopBox={setOpenpopBox} />
+                  <ThermostatIcon sx={{ color: '#33cc33', marginLeft: '74%', fontSize: '45px', marginTop: '48px', cursor: 'pointer' }} onClick={() =>handleAddButtonClick(selectedAppointment)} />
+                  <LabRequest openpopBox={openpopBox} setOpenpopBox={setOpenpopBox} rep={rep} setrep={setrep}/>
                   <div sx={{ display: 'flex' }}>
                       <Box
                           component="form"
@@ -172,10 +195,11 @@ export default function Doctor() {
                           }}
                           noValidate
                           autoComplete="off">
-                          <TextField id="outlined-multiline-flexible" placeholder="Patient extra details" multiline rows={7} InputProps={{ style: { backgroundColor: 'rgb(209, 224, 250)', borderRadius: '25px', fontSize: '22px', color: 'blue', textAlign: 'center', }, }} />
+                          <TextField id="outlined-multiline-flexible" placeholder="Patient extra details" multiline rows={7} onChange={(event) => setDescription(event.target.value)}
+                          InputProps={{ style: { backgroundColor: 'rgb(209, 224, 250)', borderRadius: '25px', fontSize: '22px', color: 'blue', textAlign: 'center', }, }} />
                       </Box>
                       <br></br>
-                      <Button variant="contained" sx={{ backgroundColor: '#00cca3', left: '80%' }}>Confirm</Button>
+                      <Button variant="contained" sx={{ backgroundColor: '#00cca3', left: '80%' }} onClick={handleClick}>Confirm</Button>
                   </div>
               </>
           ) : (
