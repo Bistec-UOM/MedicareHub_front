@@ -19,8 +19,7 @@ export default function DoctorAddDrugs(props) {
     //const [pres, setPres] = useState([]);//---------------------------prescription array------------------------
     const [nameError, setNameError] = useState(false);
     const [quantityError, setQuantityError] = useState(false);
-    const [quantitytypeError, setQuantitytypeError] = useState(false);
-    const [hourError, setHourError] = useState(false);
+ 
     const validate = () => {
         let isValid = true;
         if (name.trim() === '') {
@@ -34,19 +33,7 @@ export default function DoctorAddDrugs(props) {
           isValid = false;
         } else {
           setQuantityError(false);
-        }
-        if (quantitytype.trim() === '') {
-          setQuantitytypeError(true);
-          isValid = false;
-        } else {
-          setQuantitytypeError(false);
-        }
-        if (hour.trim() === '') {
-          setHourError(true);
-          isValid = false;
-        } else {
-          setHourError(false);
-        }
+        }        
         return isValid;
       };
       const handleSubmit = (e) => {
@@ -64,7 +51,7 @@ export default function DoctorAddDrugs(props) {
 
     const handleAddDrug = () => {
         // Perform validation
-        if (name.trim() === '' || quantity.trim() === '' || quantitytype.trim() === '' || hour.trim() === '') {          
+        if (name.trim() === '' || quantity.trim() === '') {          
           return;
         }
       
@@ -73,8 +60,7 @@ export default function DoctorAddDrugs(props) {
         setPres([...pres, newDrug]);
         setName('');
         setQuantity('');
-        setQuantitytype('');
-        setHour('');
+        
       };
     const handleDeleteDrug = (index) => {
       const updatedPres = [...pres];
@@ -107,41 +93,40 @@ export default function DoctorAddDrugs(props) {
             error={quantityError}
             helperText={quantityError ? ' required' : ''}
           />
-          <Select sx={{ m: 1, top: '1px', border: '2px solid #0099cc', width: '75px', height: '40px', }}
-            size="small"
-            value={quantitytype}
-            onChange={(e) => setQuantitytype(e.target.value)}
-            error={quantitytypeError}
-            helperText={quantitytypeError ? ' required fields' : ''}
-          >
-            {quantityOptions.map((option, index) => (
-              <MenuItem key={index} value={option}>{option}</MenuItem>
-            ))}
-          </Select>
-           <Select  sx={{ m: 1, top: '1px', border: '2px solid #0099cc', width: '75px', height: '40px', }}
-            size="small"                       
-            value={hour}
-            onChange={(e) => setHour(e.target.value)}
-            error={hourError}
-            helperText={hourError ? ' required' : ''}
-          >
-            {hourOptions.map((option, index) => (
-              <MenuItem key={index} value={option}>{option}</MenuItem>
-            ))}
-          </Select>
-          <Button type="submit" variant="outlined"  sx={{ top: '0.5px', color: 'Green', borderColor: 'Green', borderWidth:'3px'}} onClick={handleAddDrug}>OK</Button>
-        </form>
-      </DialogContent>
-    </Dialog>
+          <Select 
+                    sx={{ m: 1, top: '1px', border: '2px solid #0099cc', width: '70px', height: '40px', }}
+                     variant="standard" value={quantitytype} onChange={(e) => setQuantitytype(e.target.value)}>
+                        {quantityOptions.map((option, index) => (
+                            <MenuItem key={index} value={option}>{option}</MenuItem>
+                        ))}
+                    </Select>
+                    <Select
+                     sx={{ m: 1, top: '1px', border: '2px solid #0099cc', width: '70px', height: '40px', }}
+                      variant="standard" value={hour} onChange={(e) => setHour(e.target.value)}>
+                        {hourOptions.map((option, index) => (
+                            <MenuItem key={index} value={option}>{option}</MenuItem>
+                        ))}
+                    </Select>
+          <Button type="submit" variant="outlined"  sx={{ top: '0.5px', color: 'Green', borderColor: 'Green', borderWidth:'3px'}}  onClick={() => {
+             handleAddDrug();
+              handleClose()}}>OK</Button>
+          </form>
+          </DialogContent>
+          </Dialog>
             <div>
                 {pres.map((drug, index) => (
                     <Grid key={index} container spacing={1} sx={{ marginTop: "5px",}}>
-                        <Grid item xs={7} sx={{ marginLeft: "15px",}}>
-                            <Card sx={{ backgroundColor: '#0099cc', color: 'white', fontSize: '19px',height:'30px',}}>
-                                <Typography gutterBottom variant="p" sx={{ marginLeft: '10px', }}>{drug.name}</Typography>                               
-                                <Typography gutterBottom variant="p" sx={{ marginLeft: '100px', }}>{drug.quantity}  {drug.quantitytype}</Typography>                            
-                               <Typography gutterBottom variant="p" sx={{ marginLeft: '150px', }}>{drug.hour}</Typography>                                
-                            </Card>
+                        <Grid item xs={12} sm={7} sx={{ marginLeft: '50px', width: 'auto', }}>
+
+                        <Card style={{ display: 'flex', flexDirection: 'row',backgroundColor: '#0099cc', color: 'white',fontSize: '18px' }}>
+                          
+                          <Typography gutterBottom variant="p" sx={{ flex: '3', marginLeft: '10px' }}>{drug.name}</Typography>
+    
+                          <Typography gutterBottom variant="p" sx={{ flex: '2', marginLeft: '100px' }}>{drug.quantity} {drug.quantitytype}</Typography>
+    
+                          <Typography gutterBottom variant="p" sx={{ flex: '1', marginLeft: '150px' }}>{drug.hour}</Typography>
+    
+                          </Card>
                         </Grid>
                         <Grid item xs={4}>
                             <DoNotDisturbOnIcon sx={{ color: 'red', marginLeft: '5px', fontSize: '30px', float: 'Left',cursor: 'pointer' }} onClick={() => handleDeleteDrug(index)} />
