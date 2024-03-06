@@ -4,7 +4,11 @@ import React from 'react'
 export default function Accept({req,setAccLoad,accLoad}) {
 
   const addToAcc=(x)=>{
-
+    req.load.map((i)=>{
+        if(i.repId==x){
+           setAccLoad([...accLoad,i]) 
+        }
+      })
   }
 
   return (
@@ -24,7 +28,7 @@ export default function Accept({req,setAccLoad,accLoad}) {
                     <Typography sx={{fontSize:'15px'}}>Token no: 24</Typography>
                     <Typography sx={{fontSize:'22px'}}>Rs. 1200</Typography>
                 </Box>
-                <Button variant='contained' onClick={()=>addToAcc()}>Accept</Button>
+                <Button variant='contained' onClick={()=>addToAcc(i.repId)}>Accept</Button>
             </Paper>
             })
         }
