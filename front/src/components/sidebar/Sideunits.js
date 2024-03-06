@@ -55,7 +55,7 @@ function Sideunit_Patient({id,name,status,time,selected,setSelect}) {
     )
 }
 
-function Sideunit_Test({id,name,test,setSelectedT,selectedT}) {
+function Sideunit_Test({id,name,load,setSelectedT,selectedT}) {
     return (
     <Paper sx={{width: '90%',margin: '5px',cursor: 'pointer',padding:'8px',borderRadius: '8px',
       backgroundColor: selectedT === id ? 'rgb(121, 204, 190)' : '#ffffff',boxShadow: 2,
@@ -65,9 +65,9 @@ function Sideunit_Test({id,name,test,setSelectedT,selectedT}) {
       onClick={() => setSelectedT(id)}>
       <Typography sx={{fontSize:'17px'}}>{name}</Typography>
           {
-            test.map((el)=>{
+            load.map((el)=>{
               return(
-              <div key={el} style={{display:'inline',backgroundColor: selectedT==id?'#60a398':'#adaaaa',color:'white',paddingRight:'4px',paddingLeft:'4px',paddingTop:'2px',paddingBottom:'2px',borderRadius:'15px',marginRight:'4px'}}>{el}</div>
+              <div key={el} style={{display:'inline',backgroundColor: selectedT==id?'#60a398':'#adaaaa',color:'white',paddingRight:'4px',paddingLeft:'4px',paddingTop:'2px',paddingBottom:'2px',borderRadius:'15px',marginRight:'4px'}}>{el.test}</div>
               )
             })
           }

@@ -17,50 +17,44 @@ export default function Lab() {
                                   //                 5:submit list]
   const [date,setDate]=useState(2)
   const [tId,settId]=useState()//selected test <----------- from LabTestList
-  const [selectedT,setSelectedT]=useState()//selected report <---------- from Sideunit
+  const [selectedT,setSelectedT]=useState()//selected req <---------- from Sideunit
 
   const x=[
-    {date:1,id:51,name: "Sarah Johnson", test: ['Thyroxin'],testId:[3]},
-    {date:1,id:52,name: "Michael Smith", test:['FBC','urine'],testId:[1,5]},
-    {date:1,id:54,name: "John Davis", test: ['BMT'],testId:[8]},
-    {date:1,id:55,name: "Emily Wilson", test:['HBC','Thyroxin'],testId:[2,3]},
-    {date:1,id:56,name: "David Martinez", test: ['Urine'],testId:[5]},
-    {date:1,id:57,name: "Jessica Anderson", test: ['FBC'],testId:[1]},
-    {date:1,id:58,name: "William Thompson", test:['FBC'],testId:[1]},
-    {date:1,id:59,name: "Jennifer Garcia", test: ['FBC'],testId:[1]},
-    {date:1,id:60,name: "Robert Rodriguez", test: ['Lipid'],testId:[6]},
-    {date:1,id:61,name: "Ashley Lopez", test:['Lipid','Glucose'],testId:[6,4]},
-    {date:1,id:62,name: "Matthew Lee", test: ['FBC'],testId:[1]},
-
-    {date:2,id:73,name: "Jacob Baker", test: ['Urine'],testId:[5]},
-    {date:2,id:74,name: "Ava Green", test: ['FBC'],testId:[1]},
-    {date:2,id:75,name: "Alexander Adams", test:['FBC'],testId:[1]},
-    {date:2,id:76,name: "Charlotte Hill", test: ['FBC'],testId:[1]},
-    {date:2,id:77,name: "William Murphy", test: ['Lipid'],testId:[6]},
-
-    {date:3,id:88,name: "Olivia Anderson", test:['hCG'],testId:[7]},
-    {date:3,id:89,name: "Joshua Taylor", test: ['FBC'],testId:[1]},
-    {date:3,id:90,name: "Sophia Thomas", test: ['FBC'],testId:[1]},
-    {date:3,id:91,name: "Ethan Walker", test:['HBC','Thyroxin'],testId:[2,3]},
-    {date:3,id:92,name: "Isabella Clark", test: ['Urine'],testId:[5]},
-    {date:3,id:93,name: "James Young", test: ['FBC'],testId:[1]}
+  {date:1,id:51,name: "Sarah Johnson", load:[{repId:23,test: 'Thyroxin',testId:3}]},
+  {date:1,id:52,name: "Michael Smith", load:[{repId:24,test:'urine',testId:2}]},
+  {date:1,id:54,name: "John Davis", load:[{repId:25,test: 'BMT',testId:8}]},
+  {date:1,id:55,name: "Emily Wilson", load:[{repId:26,test:'Thyroxin',testId:3},{repId:27,test: 'FBC',testId:1}]},
+  {date:1,id:56,name: "David Martinez", load:[{repId:28,test: 'Urine',testId:2}]},
+  {date:1,id:57,name: "Jessica Anderson", load:[{repId:29,test: 'FBC',testId:1}]},
+  {date:1,id:58,name: "William Thompson", load:[{repId:30,test:'FBC',testId:1}]},
+  {date:1,id:59,name: "Jennifer Garcia", load:[{repId:31,test: 'FBC',testId:1}]},
+  {date:1,id:60,name: "Robert Rodriguez", load:[{repId:31,test: 'Lipid',testId:7}]},
+  {date:1,id:61,name: "Ashley Lopez", load:[{repId:33,test:'Lipid',testId:7}]},
+  {date:1,id:62,name: "Matthew Lee", load:[{repId:34,test: 'FBC',testId:1}]},
+  {date:2,id:73,name: "Jacob Baker", load:[{repId:35,test: 'Lipid',testId:7},{repId:36,test: 'Urine',testId:2}]},
+  {date:2,id:74,name: "Ava Green", load:[{repId:37,test: 'FBC',testId:1},{repId:38,test: 'Urine',testId:2}]},
+  {date:2,id:75,name: "Alexander Adams", load:[{repId:39,test:'FBC',testId:1}]},
+  {date:2,id:76,name: "Charlotte Hill", load:[{repId:40,test: 'FBC',testId:1}]},
+  {date:2,id:77,name: "William Murphy", load:[{repId:41,test: 'Lipid',testId:7}]},
+  {date:3,id:88,name: "Olivia Anderson", load:[{repId:42,test:'hCG',testId:7},{repId:43,test: 'Urine',testId:2}]},
+  {date:3,id:89,name: "Joshua Taylor", load:[{repId:44,test: 'FBC',testId:1}]},
+  {date:3,id:90,name: "Sophia Thomas", load:[{repId:45,test: 'FBC',testId:1}]},
+  {date:3,id:91,name: "Ethan Walker", load:[{repId:46,test:'HBC',testId:2}]},
+  {date:3,id:92,name: "Isabella Clark", load:[{repId:47,test: 'Urine',testId:2}]},
+  {date:3,id:93,name: "James Young", load:[{repId:48,test: 'FBC',testId:1}]}
    ]
 
    let y=[
-    {date:1,id:54,name: "John Davis", test: 'BMT',testId:8},
-    {date:1,id:55,name: "Emily Wilson", test:'HBC',testId:23},
-    {date:1,id:56,name: "David Martinez", test: 'Urine',testId:2},
-    {date:1,id:57,name: "Jessica Anderson", test: 'FBC',testId:1},
-    {date:1,id:58,name: "William Thompson", test:'FBC',testId:1},
-    {date:1,id:59,name: "Jennifer Garcia", test: 'FBC',testId:1},
-    {date:1,id:60,name: "Robert Rodriguez", test: 'Lipid',testId:7},
-    {date:1,id:61,name: "Ashley Lopez", test:'Lipid',testId:7},
-    {date:1,id:62,name: "Matthew Lee", test: 'FBC',testId:1},
-    {date:2,id:73,name: "Jacob Baker", test: 'Urine',testId:2},
-    {date:2,id:74,name: "Ava Green", test: 'FBC',testId:1},
-    {date:2,id:75,name: "Alexander Adams", test:'FBC',testId:1},
-    {date:2,id:76,name: "Charlotte Hill", test: 'FBC',testId:1},
-    {date:2,id:77,name: "William Murphy", test: 'Lipid',testId:7}
+    {repId:11,test:'Urine',testId:2,token:100},
+    {repId:12,test:'BMT',testId:8,token:101},
+    {repId:13,test:'Thyroxin',testId:3,token:102},
+    {repId:14,test:'Urine',testId:2,token:103},
+    {repId:15,test:'FBC',testId:1,token:104},
+    {repId:16,test:'FBC',testId:1,token:105},
+    {repId:17,test:'FBC',testId:1,token:106},
+    {repId:18,test:'Lipid',testId:7,token:107},
+    {repId:19,test:'Lipid',testId:7,token:108},
+    {repId:20,test:'FBC',testId:1,token:109},
    ]
 
     const [Tload,setTload]=useState([])//Lab test list <----- from back end
@@ -68,9 +62,9 @@ export default function Lab() {
 
     //const [Fields,setFields]=useState([])//store set of fields by the selected test
     const [Test,setTest]=useState([])//store the selected test
-    const [loadIn,setLoadIn]=useState([])//selected reports by a date
+    const [loadIn,setLoadIn]=useState([])//selected reqs by a date
     const [accLoad,setAccLoad]=useState(y)//set sample accepted test list
-    const [report,setReport]=useState()//store selected reports details
+    const [req,setReq]=useState()//store selected reqs details
 
     useEffect(()=>{
       document.body.style.margin = '0';
@@ -90,7 +84,7 @@ export default function Lab() {
       //select a lab request
       loadIn.map((x)=>{
         if(x.id==selectedT){
-          setReport(x)
+          setReq(x)
         }
       })
      },[date,tId,page,Tload,selectedT])
@@ -120,7 +114,7 @@ export default function Lab() {
          loadIn.map((elm)=>{
             return(
              <>
-              <Sideunit_Test key={elm.id} id={elm.id} name={elm.name} test={elm.test} setSelectedT={setSelectedT} selectedT={selectedT}></Sideunit_Test>
+              <Sideunit_Test key={elm.id} id={elm.id} name={elm.name} load={elm.load} setSelectedT={setSelectedT} selectedT={selectedT}></Sideunit_Test>
 
              </>
             )
@@ -158,7 +152,7 @@ export default function Lab() {
 
     <Grid item sm={9} spacing={0} sx={{height:'100%',marginLeft:{sm:'320px',xs:'0px'},width:{xs:'100vw',sm:'60vw'}}}>
     {
-              page==1 && report!=null ? <Accept report={report}></Accept>
+              page==1 && req!=null ? <Accept req={req} accLoad={accLoad} setAccLoad={setAccLoad}></Accept>
               :page==2?<LabTestList settId={settId} setPage={setPage} Tload={Tload} setTload={setTload}></LabTestList>
               :page==3?<CreateLabTemplate setPage={setPage} setTload={setTload}></CreateLabTemplate>
               :page==4?<Edittemplate setPage={setPage} tId={tId} Tdata={Test} setTload={setTload}></Edittemplate>

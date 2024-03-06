@@ -11,8 +11,8 @@ export default function SubmitPage({load,setpage}) {
     //Pop up dialog box------------------------------------------------------------
     const [open, setOpen] = useState(false)
     const handleClickOpen = (x) => {
-        let t= load.filter((e)=>{return e.id==x})
-        settest(t);
+        let t= load.filter((e)=>{return e.testId==x})
+        settest(t); 
         setOpen(true)
     }
     const handleClose = () => {setOpen(false)}  
@@ -42,12 +42,12 @@ export default function SubmitPage({load,setpage}) {
 
         <Stack sx={{paddingTop:{xs:'60px',sm:'80px'},paddingLeft:{xs:'5%',sm:'8%'}}}>
         {
-            load.map((i)=>{
-                return <Paper sx={{width:'70%',display:'flex',justifyContent:'space-between',alignItems:'center',mt:'10px',p:'10px',cursor:'pointer'}} onClick={()=>handleClickOpen(i.id)}>
-                    <Typography sx={{fontSize:'18px',flex:'1'}}>{i.id}</Typography>
-                    <Typography sx={{fontSize:'18px',flex:'1'}}>{i.date}</Typography>
-                    <Typography sx={{fontSize:'15px',flex:'2'}}>{i.name}</Typography>
+            load.map((i,ind)=>{
+                return <Paper sx={{width:'70%',display:'flex',justifyContent:'space-between',alignItems:'center',mt:'10px',p:'10px',cursor:'pointer'}} onClick={()=>handleClickOpen(i.testId)}>
+                    <Typography sx={{fontSize:'18px',flex:'1'}}>{ind}</Typography>
+                    <Typography sx={{fontSize:'18px',flex:'1'}}>{i.token}</Typography>
                     <Typography sx={{fontSize:'15px',flex:'2'}}>{i.test}</Typography>
+                    <Typography sx={{fontSize:'15px',flex:'2'}}>{i.testId}</Typography>
             </Paper>
             })
         }

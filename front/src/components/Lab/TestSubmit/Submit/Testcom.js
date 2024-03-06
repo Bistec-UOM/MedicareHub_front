@@ -4,7 +4,7 @@ import { Button, Typography } from '@mui/material';
 import axios from 'axios';
 import Fieldcom from './Fieldcom';
 
-export default function Testcom({detail,test,handleClose}) {
+export default function Testcom({test,handleClose}) {
 
   const [Fload,setFload]=useState([])//field set according to the needed test
   const [loading,setloading]=useState(true)
