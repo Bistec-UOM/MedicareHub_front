@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 
-export default function Accept({req,setAccLoad,accLoad,RLoad,setRLoad}) {
+export default function Accept({req,reqOK,setAccLoad,accLoad,RLoad,setRLoad}) {
 
   // SnackBar component====================================================================================
   const [open, setOpen] = React.useState(false);
@@ -50,13 +50,13 @@ export default function Accept({req,setAccLoad,accLoad,RLoad,setRLoad}) {
 
   return (
     <div>
-        <Card sx={{width:'100%',height:'30px',pl:'35px',height:'50px',pt:'20px',position:'fixed',zIndex:'10'}} square>
+       { reqOK?<Card sx={{width:'100%',height:'30px',pl:'35px',height:'50px',pt:'20px',position:'fixed',zIndex:'10'}} square>
             <Typography>{req.name}</Typography>
-        </Card>
-
+        </Card>:''
+      }
 
         <Box sx={{width:'100%',padding:'40px',paddingTop:'90px'}}>
-        <Typography sx={{fontSize:'16px'}}>Accept samples & payments</Typography>
+        {reqOK?<Typography sx={{fontSize:'16px'}}>Accept samples & payments</Typography>:''}
         {
             req.load.map((i)=>{
                 return <Paper sx={{width:'70%',display:'flex',justifyContent:'space-between',alignItems:'center',mt:'10px',p:'10px'}}>
@@ -75,7 +75,7 @@ export default function Accept({req,setAccLoad,accLoad,RLoad,setRLoad}) {
 
 
         {/* ----------------- snack bar ----------------------------------------------------------------*/}
-        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
         <Alert
           onClose={handleClose}
           severity="success"
