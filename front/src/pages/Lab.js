@@ -45,16 +45,16 @@ export default function Lab() {
    ]
 
    let y=[
-    {repId:11,test:'Urine',testId:2,token:100},
-    {repId:12,test:'BMT',testId:8,token:101},
-    {repId:13,test:'Thyroxin',testId:3,token:102},
-    {repId:14,test:'Urine',testId:2,token:103},
-    {repId:15,test:'FBC',testId:1,token:104},
-    {repId:16,test:'FBC',testId:1,token:105},
-    {repId:17,test:'FBC',testId:1,token:106},
-    {repId:18,test:'Lipid',testId:7,token:107},
-    {repId:19,test:'Lipid',testId:7,token:108},
-    {repId:20,test:'FBC',testId:1,token:109},
+    {repId:11,test:'Urine',testId:2},
+    {repId:12,test:'BMT',testId:8},
+    {repId:13,test:'Thyroxin',testId:3},
+    {repId:14,test:'Urine',testId:2},
+    {repId:15,test:'FBC',testId:1},
+    {repId:16,test:'FBC',testId:1},
+    {repId:17,test:'FBC',testId:1},
+    {repId:18,test:'Lipid',testId:7},
+    {repId:19,test:'Lipid',testId:7},
+    {repId:20,test:'FBC',testId:1},
    ]
 
     const [Tload,setTload]=useState([])//Lab test list <----- from back end
@@ -65,14 +65,15 @@ export default function Lab() {
     const [loadIn,setLoadIn]=useState([])//selected reqs by a date
     const [accLoad,setAccLoad]=useState(y)//set sample accepted test list
     const [req,setReq]=useState()//store selected reqs details
+    const [reqOK,setReqOk]=useState(true)//to stop keeping previous reqs details after it poped up
 
     useEffect(()=>{
       document.body.style.margin = '0';
       //selcted date's request
-      let a=RLoad.filter((el)=>{
+/*       let a=RLoad.filter((el)=>{
         return el.date==date
       }) 
-      setLoadIn(a)
+      setLoadIn(a) */
 
       //selected test name
       let t=Tload.filter(el=>{
@@ -82,12 +83,15 @@ export default function Lab() {
       setTest(t[0])
 
       //select a lab request
-      loadIn.map((x)=>{
+      let found=false
+      RLoad.map((x)=>{
         if(x.id==selectedT){
           setReq(x)
+          found=true
         }
       })
-     },[date,tId,page,Tload,selectedT])
+      if(!found){setReqOk(false)}else{setReqOk(true)}//to not render previous req details
+     },[date,tId,page,Tload,selectedT,RLoad])
 
 //Responsive drawer==================================================================================
  const drawerW=320
@@ -111,13 +115,15 @@ export default function Lab() {
       </SidebarTop>
       <SidebarList>
       {
-         loadIn.map((elm)=>{
+         RLoad.map((elm)=>{
+          if(elm.date==date){
             return(
              <>
               <Sideunit_Test key={elm.id} id={elm.id} name={elm.name} load={elm.load} setSelectedT={setSelectedT} selectedT={selectedT}></Sideunit_Test>
 
              </>
             )
+          }
          })
        }
       </SidebarList>
@@ -152,7 +158,7 @@ export default function Lab() {
 
     <Grid item sm={9} spacing={0} sx={{height:'100%',marginLeft:{sm:'320px',xs:'0px'},width:{xs:'100vw',sm:'60vw'}}}>
     {
-              page==1 && req!=null ? <Accept req={req} accLoad={accLoad} setAccLoad={setAccLoad}></Accept>
+              page==1 && req!=null ? <Accept req={req} accLoad={accLoad} setAccLoad={setAccLoad} RLoad={RLoad} setRLoad={setRLoad} reqOK={reqOK}></Accept>
               :page==2?<LabTestList settId={settId} setPage={setPage} Tload={Tload} setTload={setTload}></LabTestList>
               :page==3?<CreateLabTemplate setPage={setPage} setTload={setTload}></CreateLabTemplate>
               :page==4?<Edittemplate setPage={setPage} tId={tId} Tdata={Test} setTload={setTload}></Edittemplate>

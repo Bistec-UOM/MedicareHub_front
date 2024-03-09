@@ -45,9 +45,9 @@ export default function SubmitPage({load,setpage}) {
             load.map((i,ind)=>{
                 return <Paper sx={{width:'70%',display:'flex',justifyContent:'space-between',alignItems:'center',mt:'10px',p:'10px',cursor:'pointer'}} onClick={()=>handleClickOpen(i.testId)}>
                     <Typography sx={{fontSize:'18px',flex:'1'}}>{ind}</Typography>
-                    <Typography sx={{fontSize:'18px',flex:'1'}}>{i.token}</Typography>
+                    <Typography sx={{fontSize:'18px',flex:'1'}}>{i.repId}</Typography>
+                    <Typography sx={{fontSize:'18px',flex:'1'}}>{i.testId}</Typography>
                     <Typography sx={{fontSize:'15px',flex:'2'}}>{i.test}</Typography>
-                    <Typography sx={{fontSize:'15px',flex:'2'}}>{i.testId}</Typography>
             </Paper>
             })
         }
