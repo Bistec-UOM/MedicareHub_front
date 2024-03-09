@@ -152,7 +152,7 @@ export default function Lab() {
 
     <Grid item sm={9} spacing={0} sx={{height:'100%',marginLeft:{sm:'320px',xs:'0px'},width:{xs:'100vw',sm:'60vw'}}}>
     {
-              page==1 && req!=null ? <Accept req={req} accLoad={accLoad} setAccLoad={setAccLoad}></Accept>
+              page==1 && req!=null ? <Accept req={req} accLoad={accLoad} setAccLoad={setAccLoad} RLoad={RLoad}></Accept>
               :page==2?<LabTestList settId={settId} setPage={setPage} Tload={Tload} setTload={setTload}></LabTestList>
               :page==3?<CreateLabTemplate setPage={setPage} setTload={setTload}></CreateLabTemplate>
               :page==4?<Edittemplate setPage={setPage} tId={tId} Tdata={Test} setTload={setTload}></Edittemplate>
