@@ -18,6 +18,8 @@ import AnaliticalReports from '../components/DoctorComponents/AnaliticalReports'
 import '../components/CustomScroll.css'
 import LabRequest from '../components/DoctorComponents/LabRequest';
 import { Sideunit_Patient } from '../components/sidebar/Sideunits';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 
 export default function Doctor() {
 
@@ -27,7 +29,7 @@ export default function Doctor() {
   const [openpopBox, setOpenpopBox] = useState(false);
   const [openAreports, setOpenAreports] = useState(false);
   const [description,setDescription] = useState ("");
-
+  const [open, setOpen] = React.useState(false); //for snapbar
   //display date
   const currentDate = new Date();
   const formattedDate = currentDate.toDateString();
@@ -58,18 +60,27 @@ export default function Doctor() {
   const handleAddButtonClick = () => {
     setOpenpopBox(true);
   };
+  const handlesnapbarClick = () => {
+    setOpen(true);
+  };
+ 
+  
 
   // Remove after click the confirm buttun
   const confirmRemoving = () => {
     if (select !== null) {
-        const updatedAppointments = x.filter(appointment => appointment.id !== select); // Filter out the selected appointment    
+        const updatedAppointments = x.filter(appointment => appointment.id !== select); // Filter out the selected appointment          
+        updatedAppointments.pres = [];
+        updatedAppointments.rep = [];
+        updatedAppointments.description = '';        
         setX(updatedAppointments); // remove the selected patient in the appointments array
-        setSelect(null); // Clear the selected patient account   
-        
-      
-    }
+        setSelect(null);
+        setOpen(false); // Clear the selected patient account      
+      }
 };
 const handleClick = () => {
+ 
+  handlesnapbarClick();
   let obj = { //strore the all data in this object after click the confirm button
     id: select,
     drugs: pres, // drug array: from DoctorAddDrugs component
@@ -77,7 +88,10 @@ const handleClick = () => {
     descript: description
   }
   console.log(obj)
-  confirmRemoving(); // Call the confirmRemoving function
+  // Call the confirmRemoving function after showing the Snackbar
+  setTimeout(() => {
+    confirmRemoving();
+  }, 1500);
 };
  
  //-------------------------->patients appointments Array<--------------------------------------------------------//
@@ -146,8 +160,7 @@ const handleClick = () => {
 
   const [x,setX]=useState(data)
   const selectedAppointment = select ? x.filter(appointment => appointment.id === select) : [];//------------filter  the selected patient----------
-  
-  
+ 
  return (
   <div>
   <Navbar></Navbar>
@@ -155,14 +168,14 @@ const handleClick = () => {
       <Grid item xs={3} style={{ height: '100%', backgroundColor: '#DEF4F2' }}>
           <SidebarContainer sx={{ backgroundColor: '#DEF4F2' }}>
               <SidebarTop>
-                <Typography sx={{ fontWeight:'Bold',color:'grey' }}>{formattedDate}</Typography>
+              <Typography sx={{ fontWeight:'Bold',color:'grey' }}>{formattedDate}</Typography>
               </SidebarTop>
               <SidebarList>
-                  {x.map((elm, ind) => {
-                      return (
-                          <Sideunit_Patient
-                              key={ind} id={elm.id} name={elm.patient.name} time={elm["time"]} status={elm["status"]} setSelect={setSelect} selected={elm.id === select ? true : ''}></Sideunit_Patient>
-                      );
+                {x.map((elm, ind) => {
+                  return (
+                  <Sideunit_Patient
+                  key={ind} id={elm.id} name={elm.patient.name} time={elm["time"]} status={elm["status"]} setSelect={setSelect} selected={elm.id === select ? true : ''}></Sideunit_Patient>
+                    );
                   })}
               </SidebarList>
           </SidebarContainer>
@@ -174,23 +187,23 @@ const handleClick = () => {
                   <div sx={{ display: 'flex' ,}}>
                      {selectedAppointment.map((index) => (
                           <Card key={index} sx={{ maxWidth: '100%', height: '100px',}}>
-                              <CardContent>
-                                  <AudioFileIcon sx={{ color: 'rgb(0, 153, 255)', float: 'right', marginRight: '10px', fontSize: '30px', cursor: 'pointer', }} onClick={handleAddIconClick} />
-                                  <UpdateIcon sx={{ color: 'rgb(255, 153, 0)', float: 'right', marginRight: '10px', fontSize: '30px', cursor: 'pointer', }} onClick={handleViewReporsClick} />
-                                  <AnaliticalReports openAreports={openAreports} setOpenAreports={setOpenAreports} />
-                                  <>
-                                      <Typography gutterBottom variant="h6">{selectedAppointment[0].patient.name}</Typography>
-                                      <Typography gutterBottom variant="p" sx={{ color: '#808080' }}>{selectedAppointment[0].patient.age} years</Typography><br />
-                                      <Typography gutterBottom variant="p" sx={{ color: '#808080' }}>{selectedAppointment[0].patient.gender}</Typography>
-                                  </>
+                           <CardContent>
+                             <AudioFileIcon sx={{ color: 'rgb(0, 153, 255)', float: 'right', marginRight: '10px', fontSize: '30px', cursor: 'pointer', }} onClick={handleAddIconClick} />
+                             <UpdateIcon sx={{ color: 'rgb(255, 153, 0)', float: 'right', marginRight: '10px', fontSize: '30px', cursor: 'pointer', }} onClick={handleViewReporsClick} />
+                             <AnaliticalReports openAreports={openAreports} setOpenAreports={setOpenAreports} />
+                             <>
+                             <Typography gutterBottom variant="h6">{selectedAppointment[0].patient.name}</Typography>
+                             <Typography gutterBottom variant="p" sx={{ color: '#808080' }}>{selectedAppointment[0].patient.age} years</Typography><br />
+                             <Typography gutterBottom variant="p" sx={{ color: '#808080' }}>{selectedAppointment[0].patient.gender}</Typography>
+                               </>
                               </CardContent>
                               <PatientsRecords openPopup={openPopup} setOpenPopup={setOpenPopup} />
                           </Card>
                       ))}
                       </div>
                   <div>
-                      <DoctorAddDrugs pres={pres} setPres={setPres} openBox={openBox} setOpenBox={setOpenBox} />
-                      <AddCircleIcon sx={{ color: '#00cc66', marginLeft: '10%', fontSize: '30px', float: 'left', marginTop: '27px', cursor: 'pointer' }} onClick={handleAddDrugsClick} />
+                  <DoctorAddDrugs pres={pres} setPres={setPres} openBox={openBox} setOpenBox={setOpenBox} />
+                  <AddCircleIcon sx={{ color: '#00cc66', marginLeft: '10%', fontSize: '30px', float: 'left', marginTop: '27px', cursor: 'pointer' }} onClick={handleAddDrugsClick} />
                   </div>
                   <ThermostatIcon sx={{ color: '#33cc33', marginLeft: '74%', fontSize: '45px', marginTop: '48px', cursor: 'pointer' }} onClick={() =>handleAddButtonClick(selectedAppointment)} />
                   <LabRequest openpopBox={openpopBox} setOpenpopBox={setOpenpopBox} rep={rep} setrep={setrep}/>
@@ -207,6 +220,18 @@ const handleClick = () => {
                       </Box>
                       <br></br>
                       <Button variant="contained" sx={{ backgroundColor: '#00cca3', left: '80%' }} onClick={handleClick}>Confirm</Button>
+                      <div>
+      
+      <Snackbar open={open} autoHideDuration={6000}  anchorOrigin={{ vertical: 'bottom', horizontal: 'right'}} >
+        <Alert             
+          severity="success"
+          variant="filled"          
+          sx={{ width: '100%', }}
+        >
+           Successfully  Confirm  !
+        </Alert>
+      </Snackbar>
+    </div>
                   </div>
               </>
           ) : (
