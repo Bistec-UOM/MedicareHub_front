@@ -69,10 +69,10 @@ export default function Lab() {
     useEffect(()=>{
       document.body.style.margin = '0';
       //selcted date's request
-      let a=RLoad.filter((el)=>{
+/*       let a=RLoad.filter((el)=>{
         return el.date==date
       }) 
-      setLoadIn(a)
+      setLoadIn(a) */
 
       //selected test name
       let t=Tload.filter(el=>{
@@ -82,7 +82,7 @@ export default function Lab() {
       setTest(t[0])
 
       //select a lab request
-      loadIn.map((x)=>{
+      RLoad.map((x)=>{
         if(x.id==selectedT){
           setReq(x)
         }
@@ -111,13 +111,15 @@ export default function Lab() {
       </SidebarTop>
       <SidebarList>
       {
-         loadIn.map((elm)=>{
+         RLoad.map((elm)=>{
+          if(elm.date==date){
             return(
              <>
               <Sideunit_Test key={elm.id} id={elm.id} name={elm.name} load={elm.load} setSelectedT={setSelectedT} selectedT={selectedT}></Sideunit_Test>
 
              </>
             )
+          }
          })
        }
       </SidebarList>
@@ -152,7 +154,7 @@ export default function Lab() {
 
     <Grid item sm={9} spacing={0} sx={{height:'100%',marginLeft:{sm:'320px',xs:'0px'},width:{xs:'100vw',sm:'60vw'}}}>
     {
-              page==1 && req!=null ? <Accept req={req} accLoad={accLoad} setAccLoad={setAccLoad} RLoad={RLoad}></Accept>
+              page==1 && req!=null ? <Accept req={req} accLoad={accLoad} setAccLoad={setAccLoad} RLoad={RLoad} setRLoad={setRLoad}></Accept>
               :page==2?<LabTestList settId={settId} setPage={setPage} Tload={Tload} setTload={setTload}></LabTestList>
               :page==3?<CreateLabTemplate setPage={setPage} setTload={setTload}></CreateLabTemplate>
               :page==4?<Edittemplate setPage={setPage} tId={tId} Tdata={Test} setTload={setTload}></Edittemplate>

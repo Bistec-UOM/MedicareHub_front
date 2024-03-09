@@ -1,9 +1,9 @@
 import { Button, Paper, Typography,Card,Box} from '@mui/material'
-import React from 'react'
+import React, { useState } from 'react'
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 
-export default function Accept({req,setAccLoad,accLoad,RLoad}) {
+export default function Accept({req,setAccLoad,accLoad,RLoad,setRLoad}) {
 
   // SnackBar component====================================================================================
   const [open, setOpen] = React.useState(false);
@@ -20,6 +20,8 @@ export default function Accept({req,setAccLoad,accLoad,RLoad}) {
   }
   //=======================================================================================================
 
+  const [ok,setok]=useState(true)
+
   const remTest=(x)=>{//remove acceptes sample form req list
     let tmp=RLoad
     tmp.map((i)=>{
@@ -30,6 +32,10 @@ export default function Accept({req,setAccLoad,accLoad,RLoad}) {
         i.load=obj
       }
     })
+    setRLoad(RLoad.filter((el)=>{
+      return el.load.length!=0
+    }))
+
   }
 
   const addToAcc=(x)=>{
