@@ -75,7 +75,7 @@ export default function DoctorAddDrugs(props) {
         <div>
       <Dialog open={openBox}>
       <DialogContent dividers>
-        <CloseIcon onClick={handleClose} style={{ position: 'absolute', right: '8px', top: '8px', cursor: 'pointer' }} />
+        <CloseIcon onClick={handleClose} style={{ position: 'absolute', right: '8px', top: '8px', cursor: 'pointer',}} />
         <SearchIcon sx={{ position: 'absolute', left: '30%', top: '35px', cursor: 'pointer', }} />
 
         <form onSubmit={handleSubmit}>
