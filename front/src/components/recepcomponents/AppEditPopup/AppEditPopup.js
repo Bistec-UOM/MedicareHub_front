@@ -225,11 +225,14 @@ export default function AppEditPopup({
                   <CloseIcon />
                 </IconButton>
               </Box>
+              <Box>
+                
+              </Box>
               <Stack
                 direction={"column"}
                 sx={{
                   justifyContent: "space-between",
-                  padding: "20px",
+                  padding: "2%",
                   alignItem: "center",
                 }}
               >

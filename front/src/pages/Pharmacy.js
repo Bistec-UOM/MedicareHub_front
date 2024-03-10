@@ -176,10 +176,10 @@ const result = 10 * 15
       {medicine.map((drug, no) => (
         <Grid key={no} container spacing={1} sx={{marginTop:"10px",}}>
         <Grid item xs={12}>
-        <Card sx={{ backgroundColor: '#0099cc', color: 'white', fontSize: '20px',width:"500px",marginLeft:"10px"}}>
-                <Typography gutterBottom variant="p" sx={{ marginLeft: '10px', }}>{drug.name}</Typography>
-                <Typography gutterBottom variant="p" sx={{ marginLeft: '110px ',  }}>{drug.quantity} mg</Typography>
-                <Typography gutterBottom variant="p" sx={{ marginLeft: '150px', }}>{drug.hour}</Typography>
+        <Card sx={{ backgroundColor: '#0099cc',display:'flex',flexDirection:'row', color: 'white', fontSize: '20px',width:"500px",marginLeft:"10px"}}>
+                <Typography gutterBottom variant="p" sx={{ flex:'3',marginLeft: '10px', }}>{drug.name}</Typography>
+                <Typography gutterBottom variant="p" sx={{flex:'2', marginLeft: '110px ',  }}>{drug.quantity} mg</Typography>
+                <Typography gutterBottom variant="p" sx={{ flex:'1',marginLeft: '150px', }}>{drug.hour}</Typography>
                 </Card>   
                 <Grid key={no} container spacing={1} sx={{marginTop:"10px"}}>
       <Grid item xs={12}>
