@@ -27,7 +27,7 @@ export default function LabTestList({setPage,settId,Tload,setTload}) {
 
     useEffect(()=>{
       if(Tload.length==0){
-        axios.get('http://localhost:5220/api/Test')
+        axios.get('http://localhost:7205/api/Test')
         .then(res=>{setTload(res.data)})
         .catch(er=>{})
       }
@@ -71,7 +71,7 @@ export default function LabTestList({setPage,settId,Tload,setTload}) {
 
       <Dialog open={open} onClose={handleClose}>
           <DialogTitle sx={{backgroundColor: "rgb(222, 244, 242)",display: "flex",justifyContent: "space-between"}}>
-            Edit test
+            <Typography sx={{fontSize:'18px'}}>Edit test</Typography>
           <CloseIcon onClick={handleClose} sx={{cursor:'pointer'}} />
           </DialogTitle>
        <TestDialogBox test={test} setPage={setPage} setTload={setTload} handleClose={handleClose}></TestDialogBox>
