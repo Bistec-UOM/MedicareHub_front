@@ -168,7 +168,7 @@ export default function DoctorList() {
         </Grid>
         
         <Grid item xs={9} style={{ height: '100%', overflowY: 'scroll' }}>
-        <DoctorAppList selectedDay={selectedDay} docid={2}/>
+        <DoctorAppList selectedDay={selectedDay} docid={1}/>
           
          
         </Grid>

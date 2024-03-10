@@ -174,7 +174,7 @@ export default function AppAddPopup({
 
   useEffect(() => {
     //console.log("sele",formatAMPM(selectedTime))
-    // console.log(activeId);
+     console.log(activeId);
     formatAMPM(selectedTime)
 
     if (patientList && Array.isArray(patientList)) {

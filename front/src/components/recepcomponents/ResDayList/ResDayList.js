@@ -180,14 +180,14 @@ const ResDayList = (props) => {
         </Box>
 
         {
-          <Box sx={{ width: "80%",marginTop:{xs:'40%',sm:'20%',md:'7%'}}}>
+          <Box sx={{ width: "70%",marginTop:{xs:'40%',sm:'20%',md:'7%'}}}>
             {Array.isArray(filteredAppointments) && filteredAppointments.sort((a,b)=>{
               return new Date(a.time)-new Date(b.time);
             })
             .filter((item)=>{
               return search.toLowerCase()===''?item:item.patient.fullName.toLowerCase().includes(search.toLowerCase())
             }).map((item) => (
-              <div key={item.nic}>
+              <div key={item.patient?.nic}>
                 <AppointmentCard  
                 selectedDay={selectedDay}
                   docid={props.docid}
