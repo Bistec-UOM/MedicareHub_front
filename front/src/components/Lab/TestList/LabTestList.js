@@ -71,7 +71,7 @@ export default function LabTestList({setPage,settId,Tload,setTload}) {
 
       <Dialog open={open} onClose={handleClose}>
           <DialogTitle sx={{backgroundColor: "rgb(222, 244, 242)",display: "flex",justifyContent: "space-between"}}>
-            Edit test
+            <Typography sx={{fontSize:'18px'}}>Edit test</Typography>
           <CloseIcon onClick={handleClose} sx={{cursor:'pointer'}} />
           </DialogTitle>
        <TestDialogBox test={test} setPage={setPage} setTload={setTload} handleClose={handleClose}></TestDialogBox>

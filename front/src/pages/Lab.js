@@ -63,7 +63,7 @@ export default function Lab() {
     //const [Fields,setFields]=useState([])//store set of fields by the selected test
     const [Test,setTest]=useState([])//store the selected test
     const [loadIn,setLoadIn]=useState([])//selected reqs by a date
-    const [accLoad,setAccLoad]=useState(y)//set sample accepted test list
+    const [accLoad,setAccLoad]=useState([])//set sample accepted test list
     const [req,setReq]=useState()//store selected reqs details
     const [reqOK,setReqOk]=useState(true)//to stop keeping previous reqs details after it poped up
 

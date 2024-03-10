@@ -57,7 +57,7 @@ export default function SubmitPage({load,setpage}) {
 
       <Dialog open={open} onClose={handleClose}>
           <DialogTitle sx={{backgroundColor: "rgb(222, 244, 242)",display: "flex",justifyContent: "space-between"}}>
-            Submit test results
+            <Typography sx={{fontSize:'16px'}}>Enter test results</Typography>
           <CloseIcon onClick={handleClose} sx={{cursor:'pointer'}} />
           </DialogTitle>
       <Testcom handleClose={handleClose} test={test} detail={"njkjn"}></Testcom>

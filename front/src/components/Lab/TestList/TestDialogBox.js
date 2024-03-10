@@ -36,11 +36,11 @@ export default function TestDialogBox({test,setPage,setTload,handleClose}) {
         <TextField disabled={isDisabled} label="Name" margin="dense" value={testName} onChange={(e)=>settestName(e.target.value)}/>
         <TextField disabled={isDisabled} label="Provider" margin="dense" value={provider} onChange={(e)=>setProvider(e.target.value)}/>
         <TextField disabled={isDisabled} label="Price" margin="dense" value={price} onChange={(e)=>setPrice(e.target.value)}/>
-        <div style={{paddingTop:'10px',display:'flex',justifyContent:'flex-end',alignItems:'center'}} >
+        <div style={{paddingTop:'10px',display:'flex',flexDirection:'row-reverse',alignItems:'center'}} >
+          <Button sx={{ml:'10%'}} size='small' variant='contained' onClick={saveButtonAction}>{isDisabled?'Edit':'Save'}</Button>
           {
             isDisabled==false?<Button sx={{ml:'20%',height:'25px'}} variant='contained' startIcon={<DashboardCustomizeIcon></DashboardCustomizeIcon>}  onClick={()=>setPage(4)}></Button>:''
           }
-          <Button sx={{ml:'10%'}} variant='contained' onClick={saveButtonAction}>{isDisabled?'Edit':'Save'}</Button>
         </div>
     </div>
   )
