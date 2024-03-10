@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { Grid, Stack, Typography, Button, Container, Box, Hidden } from "@mui/material";
-import Navbar from "../../navbar/Navbar";
-import AppointmentCard from "../AppointmentCard/AppointmentCard";
-import SearchBar from "../Searchbar/Searchbar";
-import Steper from "../Setper/Steper";
-import { SidebarContainer } from "../../sidebar/Sidebar";
-import { SidebarTop, SidebarList } from "../../sidebar/Sidebar";
-import { Sideunit_Doctor } from "../../sidebar/Sideunits";
 
-import AppAddPopup from "../AppAddPopup/AppAddPopup";
-import AllAppDeletePopup from "../AllAppDeletePopup/AllAppDeletePopup";
-import '../../../recep.css'
-import SuccessNotification from "../SnackBar/SuccessNotification";
+import AppointmentCard from "../../AppointmentCard/AppointmentCard";
+import SearchBar from "../../Searchbar/Searchbar";
+import Steper from "../../Setper/Steper";
+import { SidebarContainer } from "../../../sidebar/Sidebar";
+import { SidebarTop, SidebarList } from "../../../sidebar/Sidebar";
+import { Sideunit_Doctor } from "../../../sidebar/Sideunits";
+
+
+import AppAddPopup from "../../AppAddPopup/AppAddPopup";
+import AllAppDeletePopup from "../../AllAppDeletePopup/AllAppDeletePopup";
+import '../../../../recep.css'
+import SuccessNotification from "../../SnackBar/SuccessNotification";
 import axios from "axios";
+import DoctorAppCard from "../DoctorAppCard/DoctorAppCard";
+import DoctorAllAppDeletePopup from "../DoctotAllAppDelelePopup/DoctorAllAppDeletePopup";
 
 
 
@@ -21,7 +24,7 @@ import axios from "axios";
 
 
 
-const ResDayList = (props) => {
+const DoctorAppList = (props) => {
 
   const [notificationOpen,setNotificationOpen]=useState(false);
   const [notiMessage,setNotiMessage]=useState("");
@@ -55,8 +58,10 @@ const ResDayList = (props) => {
 
   const [patientDataList,setPatientDataList]=useState([]);
 
-  const handleDeleteAll = () => {
-    setDopen(true);
+  const [cancelAll,setCancelAll]=useState(false);
+
+  const handleCancelAll = () => {
+    setCancelAll(true);
   };
 
   var location = useLocation();
@@ -67,13 +72,13 @@ const ResDayList = (props) => {
     props.setRenderVal(true);
   };
   useEffect(() => {
-    console.log("use effect doctorid", props.docid);
+    console.log("use effect doctorid", props.doctorId);
     console.log("use effect selected", selectedDay);
     document.body.style.margin = "0";
 
     axios.get(`https://localhost:7205/api/Appointment/doctor/${props.docid}/day/${selectedDay}`)
         .then((response) => {
-            // console.log("do",props.docid);
+             console.log("do",props.docid);
             // console.log(selectedDay);
             // console.log("pure",response);
             console.log("response data",response.data)
@@ -132,7 +137,7 @@ const ResDayList = (props) => {
           spacing={2}
           direction="row"
         >
-          <Button
+          {/* <Button
             onClick={handleAppAd}
             sx={{
               backgroundColor: "#79CCBE",
@@ -144,9 +149,9 @@ const ResDayList = (props) => {
             variant="contained"
           >
             Add
-          </Button>
+          </Button> */}
           <Button
-            onClick={handleDeleteAll}
+            onClick={handleCancelAll}
             disabled={isDisabled}
             sx={{
               backgroundColor: "#F44336",
@@ -187,8 +192,8 @@ const ResDayList = (props) => {
             .filter((item)=>{
               return search.toLowerCase()===''?item:item.patient.fullName.toLowerCase().includes(search.toLowerCase())
             }).map((item) => (
-              <div key={item.patient?.nic}>
-                <AppointmentCard  
+              <div key={item.nic}>
+                <DoctorAppCard  
                 selectedDay={selectedDay}
                   docid={props.docid}
                   appointlist={props.appointlist}
@@ -206,7 +211,7 @@ const ResDayList = (props) => {
         }
       </div>
       <AppAddPopup apopen={apopen} setApopen={setApopen} />
-      <AllAppDeletePopup
+      <DoctorAllAppDeletePopup
         selectedDay={selectedDay}
         delcount={delcount}
         setDelcount={setDelcount}
@@ -216,8 +221,8 @@ const ResDayList = (props) => {
         setIsDisabled={setIsDisabled}
         filteredAppointments={filteredAppointments}
         setFilteredAppointments={setFilteredAppointments}
-        dopen={dopen}
-        setDopen={setDopen}
+        cancelAll={cancelAll}
+        setCancelAll={setCancelAll}
       />
        <SuccessNotification setNotificationOpen={setNotificationOpen} notiMessage={notiMessage} notificationOpen={notificationOpen}/>
     
@@ -225,4 +230,4 @@ const ResDayList = (props) => {
   );
 };
 
-export default ResDayList;
+export default DoctorAppList;

@@ -1,4 +1,5 @@
 import * as React from "react";
+import axios from "axios";
 
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -16,12 +17,13 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import Button from "@mui/material/Button";
+
 import { Box } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { Grid, Stack } from "@mui/material";
 import ErrorIcon from "@mui/icons-material/Error";
 
-export default function DoctorAppDeletePopup({doctorAppDeleteOpen,setDoctorAppDeleteOpen,setNotificationOpen,setNotiMessage,notiMessage}) {
+export default function DoctorAllAppDeletePopup({cancelAll,setCancelAll,selectedDay,delcount,setDelcount,docid,handleNotification, dopen, setDopen,filteredAppointments,setFilteredAppointments,isDisabled,setIsDisabled }) {
   // const [enameError,seteNameError]=useState(false)
   // const [eaddressError,seteAddressError]=useState(false)
   // const [enicError,seteNicError]=useState(false)
@@ -33,40 +35,45 @@ export default function DoctorAppDeletePopup({doctorAppDeleteOpen,setDoctorAppDe
   const [timevalue, setTimeValue] = useState("");
   const [rdelete,setRdelete]=useState(false);
 
-
-  const handleNotification=(msg)=>
+  async function  handleAllAppDelete()
   {
-      //console.log(msg)
-      setDoctorAppDeleteOpen(false);
-      setNotiMessage(msg);
-     setNotificationOpen(true);
-     console.log(notiMessage);
-    
+
+    try
+    {
+        // console.log(item.appointment.id)
+        // console.log(item.appointment.dateTime)
+        // console.log(item.appointment.doctorId)
+        console.log("docid",docid);
+        console.log("selectedday",selectedDay);
+        await axios.put(`https://localhost:7205/api/Appointment/doctor/${docid}/day/${selectedDay}`);
+        setDelcount(delcount+1);
+        setCancelAll(false);
+        handleNotification("All appointment Cancelled succesfully!");
+   // console.log()
+   // setAppEditOpen(false);
+   // handleNotification("Appointment Edited succesfully!");
+    // setSuccessState("Student succesfully updated!")
+    // navigate('/');
      
-  }
 
-
-  const handleRealAllDelete=(msg)=>
-  {
-    setDoctorAppDeleteOpen(false);
-    handleNotification(msg);
-   
+     
+    
+    }
+catch(err)
+    {
+      //setNerror(err.response.data);
+    }
     
 
   }
 
-  const handleRealDelete=(item)=>
-  {
-   // setAppointList(appointlist.filter((itemf)=>itemf.nic!==item.nic));
-    //setIsDisabled(true);
-   // setDelcount(delcount+1);
-    setDoctorAppDeleteOpen(false);
-  //  handleNotification("Appointment deleted succesfully!");
 
-  }
+  const handleClickOpen = () => {
+    setDopen(true);
+  };
 
   const handleClose = () => {
-    setDoctorAppDeleteOpen(false);
+    setCancelAll(false);
   };
 
   async function handleSubmit(event) {
@@ -75,7 +82,7 @@ export default function DoctorAppDeletePopup({doctorAppDeleteOpen,setDoctorAppDe
 
   return (
     <React.Fragment>
-      <Dialog open={doctorAppDeleteOpen} onClose={handleClose}>
+      <Dialog open={cancelAll} onClose={handleClose}>
         <Box sx={{ width: {xs:"100%",sm:"500px"}, height: "150px" }}>
           <Box>
             <Box
@@ -97,11 +104,11 @@ export default function DoctorAppDeletePopup({doctorAppDeleteOpen,setDoctorAppDe
               sx={{ color: "red", marginRight: "2%",fontSize:'2rem' }}
             />
             <Typography  sx={{ marginTop:'1%',color:'#000000' }}>
-              Are you sure you want to Cancel the all appointments?
+              Are you sure the entire list  to be Canceled?
             </Typography>
           </Box>
           <Box sx={{display:'flex',justifyContent:'flex-end',paddingRight:'5%'}}>
-            <Button onClick={()=>handleRealAllDelete("All appointemnts are Cancelled Successfully!")}
+            <Button onClick={handleAllAppDelete}
               sx={{
                 backgroundColor: "#F44336", // Replace with your desired color
                 "&:hover": {

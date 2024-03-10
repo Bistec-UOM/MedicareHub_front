@@ -6,9 +6,9 @@ import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp
 import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import DoneIcon from '@mui/icons-material/Done';
+import axios from 'axios'
 
-export default function CreateLabTemplate({setPage,FloadSet,TloadSet}) {
+export default function CreateLabTemplate({setPage,setTload}) {
 
     useEffect(()=>{
         document.body.style.margin = '0';
@@ -25,7 +25,7 @@ export default function CreateLabTemplate({setPage,FloadSet,TloadSet}) {
 
       const addTestField=()=>{
         let data_set={
-          field:fieldName,min:refMin,max:refMax,unit:unit
+         fieldname:fieldName,index:'',minRef:refMin,maxRef:refMax,unit:unit
         }
         setTestField([...testField,data_set])
         setFieldName('')
@@ -40,22 +40,23 @@ export default function CreateLabTemplate({setPage,FloadSet,TloadSet}) {
 
       //Edit fields---------------------------------------------------------------
       const[editMode,setEditMode]=useState(false)
-      const[editData,setEditData]=useState({ind:'',field:'',min:'',max:'',unit:''})
+      const[editData,setEditData]=useState({fieldname:'',index:'',minRef:'',maxRef:'',unit:''})
 
       const setEditModeData=(indx)=>{
         setEditMode(true)
-        setEditData({...editData,ind:indx,field:testField[indx].field,min:testField[indx].min,max:testField[indx].max,unit:testField[indx].unit})
+        setEditData({...editData,fieldname:testField[indx].fieldname,index:indx,minRef:testField[indx].minRef,maxRef:testField[indx].maxRef,unit:testField[indx].unit})
       }
 
       const addEditData=()=>{
         let arr=[...testField]
         let e_data={
-          field:editData.field,
-          min:editData.min,
-          max:editData.max,
+          fieldname:editData.fieldname,
+          index:editData.index,
+          minRef:editData.minRef,
+          maxRef:editData.maxRef,
           unit:editData.unit
         }
-        arr[editData.ind]=e_data;
+        arr[editData.index]=e_data;
         setTestField(arr)
         setEditMode(false)
       }
@@ -78,14 +79,24 @@ export default function CreateLabTemplate({setPage,FloadSet,TloadSet}) {
 
       //Finalizing---------------------------------------------------------------
       const createTemplate=()=>{
+        let ar=testField
+        ar.map((el,ind)=>{
+          el.index=ind
+        })
         let T={
-          name:testData.name,
+          testName:testData.name,
+          abb:'ABC',
+          price:testData.price,
           provider:testData.provider,
-          price:testData.price
+          reportFields:ar
         }
-        TloadSet(T)//Send test to test list
-        FloadSet(testField)//Send fileds list to corrsp. field set
-        setPage(2)
+        console.log(JSON.stringify(T))
+        axios.post('http://localhost:5220/api/Template',T)
+        .then(res=>{
+          setTload([])//make test list empty to reload again
+          setPage(2)
+        })
+        .catch(er=>{console.log(er)})
       }
     
     
@@ -122,16 +133,16 @@ export default function CreateLabTemplate({setPage,FloadSet,TloadSet}) {
                        return(
                        <Box sx={{display:'flex',justifyContent:'space-between',alignItems:'center',width:{xs:'90%',sm:'80%'},height:'30px',borderBottom:'1px solid #0488b0',mt:'5px'}}>
                            <Box sx={{width:{xs:'40%',sm:'45%'},height:'100%'}}>
-                             <Typography sx={{fontSize:'16px',cursor:'pointer'}} onDoubleClick={()=>setEditModeData(indx)}>{elm.Fieldname}</Typography>
+                             <Typography sx={{fontSize:'16px',cursor:'pointer'}} onDoubleClick={()=>setEditModeData(indx)}>{elm.fieldname}</Typography>
                            </Box>
                            <Box sx={{width:{xs:'10%',sm:'15%'},height:'100%'}}>
-                             <Typography sx={{fontSize:'16px',textAlign:'right'}}>{elm.MinRef}</Typography>
+                             <Typography sx={{fontSize:'16px',textAlign:'right'}}>{elm.minRef}</Typography>
                            </Box>
                            <Box sx={{width:{xs:'10%',sm:'15%'},height:'100%'}}>
-                             <Typography sx={{fontSize:'16px',pl:'4px'}}>{elm.MaxRef}</Typography>
+                             <Typography sx={{fontSize:'16px',pl:'4px'}}>{elm.maxRef}</Typography>
                            </Box>
                            <Box sx={{width:'10%',height:'100%'}}>
-                             <Typography sx={{fontSize:'16px'}}>{elm.Unit}</Typography>
+                             <Typography sx={{fontSize:'16px'}}>{elm.unit}</Typography>
                            </Box>
                            {/* nav icons & close icon*/}
                            <Box sx={{width:{xs:'10%',sm:'5%'},height:'100%',display:'flex',justifyContent:'flex-end',ml:'5px'}}>
@@ -192,14 +203,14 @@ export default function CreateLabTemplate({setPage,FloadSet,TloadSet}) {
              
           <Box sx={{display:'flex',flexDirection:'column',alignItems:'flex-start',width:'45%',height:'100%',ml:'10px'}}>
             <Typography sx={{fontSize:'16px',mr:'5px'}}>Field name</Typography>
-            <input style={{height:'20px',borderRadius: '4px',border:'1px solid blue',width:'100%'}} value={editData.field} onChange={(e)=>setEditData({...editData,field:e.target.value})}></input>
+            <input style={{height:'20px',borderRadius: '4px',border:'1px solid blue',width:'100%'}} value={editData.fieldname} onChange={(e)=>setEditData({...editData,fieldname:e.target.value})}></input>
           </Box>
           
           <Box sx={{display:'flex',flexDirection:'column',alignItems:'flex-start',width:'30%',height:'100%',ml:'10px'}}>
             <Typography sx={{fontSize:'16px',mr:'5px'}}>Ref</Typography>
             <div style={{display:'flex',flexDirection:'row',alignItems:'center'}}>
-             <input style={{height:'20px',borderRadius: '4px',border:'1px solid blue',width:'90%'}} type='number'  value={editData.min} onChange={(e)=>setEditData({...editData,min:e.target.value})}></input>
-             <input style={{height:'20px',borderRadius: '4px',border:'1px solid blue',width:'90%',marginLeft:'5px'}} type='number' value={editData.max} onChange={(e)=>setEditData({...editData,max:e.target.value})}></input>
+             <input style={{height:'20px',borderRadius: '4px',border:'1px solid blue',width:'90%'}} type='number'  value={editData.minRef} onChange={(e)=>setEditData({...editData,minRef:e.target.value})}></input>
+             <input style={{height:'20px',borderRadius: '4px',border:'1px solid blue',width:'90%',marginLeft:'5px'}} type='number' value={editData.maxRef} onChange={(e)=>setEditData({...editData,maxRef:e.target.value})}></input>
             </div>
           </Box>
  

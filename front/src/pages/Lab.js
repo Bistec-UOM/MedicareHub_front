@@ -8,91 +8,90 @@ import CreateLabTemplate from '../components/Lab/CreateLabTemplate';
 import '../components/CustomScroll.css'
 import ResNavBar from '../components/recepcomponents/ResNavBar/ResNabBar';
 import Edittemplate from '../components/Lab/Edittemplate';
+import SubmitPage from '../components/Lab/TestSubmit/Submit/SubmitPage';
+import Accept from '../components/Lab/TestSubmit/Accept';
 
 export default function Lab() {
 
-  const [page,setPage]=useState(1)//Navigate pages  [1:dashboard  2:testlist  3:createtetmplt  4:edittmplt]
-
+  const [page,setPage]=useState(1)//Navigate pages  [1:dashboard  2:testlist  3:createtetmplt  4:edittmplt
+                                  //                 5:submit list]
   const [date,setDate]=useState(2)
   const [tId,settId]=useState()//selected test <----------- from LabTestList
-  const [selectedT,setSelectedT]=useState()//selected report <---------- from Sideunit
+  const [selectedT,setSelectedT]=useState()//selected req <---------- from Sideunit
 
-  const [loadIn,setLoadIn]=useState([]) //selected reports by a date
-
-  let x=[
-    {date:1,id:51,name: "Sarah Johnson", test: ['Thyroxin'],testId:[3]},
-    {date:1,id:52,name: "Michael Smith", test:['FBC','urine'],testId:[1,5]},
-    {date:1,id:54,name: "John Davis", test: ['BMT'],testId:[8]},
-    {date:1,id:55,name: "Emily Wilson", test:['HBC','Thyroxin'],testId:[2,3]},
-    {date:1,id:56,name: "David Martinez", test: ['Urine'],testId:[5]},
-    {date:1,id:57,name: "Jessica Anderson", test: ['FBC'],testId:[1]},
-    {date:1,id:58,name: "William Thompson", test:['FBC'],testId:[1]},
-    {date:1,id:59,name: "Jennifer Garcia", test: ['FBC'],testId:[1]},
-    {date:1,id:60,name: "Robert Rodriguez", test: ['Lipid'],testId:[6]},
-    {date:1,id:61,name: "Ashley Lopez", test:['Lipid','Glucose'],testId:[6,4]},
-    {date:1,id:62,name: "Matthew Lee", test: ['FBC'],testId:[1]},
-
-    {date:2,id:73,name: "Jacob Baker", test: ['Urine'],testId:[5]},
-    {date:2,id:74,name: "Ava Green", test: ['FBC'],testId:[1]},
-    {date:2,id:75,name: "Alexander Adams", test:['FBC'],testId:[1]},
-    {date:2,id:76,name: "Charlotte Hill", test: ['FBC'],testId:[1]},
-    {date:2,id:77,name: "William Murphy", test: ['Lipid'],testId:[6]},
-
-    {date:3,id:88,name: "Olivia Anderson", test:['hCG'],testId:[7]},
-    {date:3,id:89,name: "Joshua Taylor", test: ['FBC'],testId:[1]},
-    {date:3,id:90,name: "Sophia Thomas", test: ['FBC'],testId:[1]},
-    {date:3,id:91,name: "Ethan Walker", test:['HBC','Thyroxin'],testId:[2,3]},
-    {date:3,id:92,name: "Isabella Clark", test: ['Urine'],testId:[5]},
-    {date:3,id:93,name: "James Young", test: ['FBC'],testId:[1]}
+  const x=[
+  {date:1,id:51,name: "Sarah Johnson", load:[{repId:23,test: 'Thyroxin',testId:3}]},
+  {date:1,id:52,name: "Michael Smith", load:[{repId:24,test:'urine',testId:2}]},
+  {date:1,id:54,name: "John Davis", load:[{repId:25,test: 'BMT',testId:8}]},
+  {date:1,id:55,name: "Emily Wilson", load:[{repId:26,test:'Thyroxin',testId:3},{repId:27,test: 'FBC',testId:1}]},
+  {date:1,id:56,name: "David Martinez", load:[{repId:28,test: 'Urine',testId:2}]},
+  {date:1,id:57,name: "Jessica Anderson", load:[{repId:29,test: 'FBC',testId:1}]},
+  {date:1,id:58,name: "William Thompson", load:[{repId:30,test:'FBC',testId:1}]},
+  {date:1,id:59,name: "Jennifer Garcia", load:[{repId:31,test: 'FBC',testId:1}]},
+  {date:1,id:60,name: "Robert Rodriguez", load:[{repId:31,test: 'Lipid',testId:7}]},
+  {date:1,id:61,name: "Ashley Lopez", load:[{repId:33,test:'Lipid',testId:7}]},
+  {date:1,id:62,name: "Matthew Lee", load:[{repId:34,test: 'FBC',testId:1}]},
+  {date:2,id:73,name: "Jacob Baker", load:[{repId:35,test: 'Lipid',testId:7},{repId:36,test: 'Urine',testId:2}]},
+  {date:2,id:74,name: "Ava Green", load:[{repId:37,test: 'FBC',testId:1},{repId:38,test: 'Urine',testId:2}]},
+  {date:2,id:75,name: "Alexander Adams", load:[{repId:39,test:'FBC',testId:1}]},
+  {date:2,id:76,name: "Charlotte Hill", load:[{repId:40,test: 'FBC',testId:1}]},
+  {date:2,id:77,name: "William Murphy", load:[{repId:41,test: 'Lipid',testId:7}]},
+  {date:3,id:88,name: "Olivia Anderson", load:[{repId:42,test:'hCG',testId:7},{repId:43,test: 'Urine',testId:2}]},
+  {date:3,id:89,name: "Joshua Taylor", load:[{repId:44,test: 'FBC',testId:1}]},
+  {date:3,id:90,name: "Sophia Thomas", load:[{repId:45,test: 'FBC',testId:1}]},
+  {date:3,id:91,name: "Ethan Walker", load:[{repId:46,test:'HBC',testId:2}]},
+  {date:3,id:92,name: "Isabella Clark", load:[{repId:47,test: 'Urine',testId:2}]},
+  {date:3,id:93,name: "James Young", load:[{repId:48,test: 'FBC',testId:1}]}
    ]
 
-   const [Tload,setTload]=useState([])
+   let y=[
+    {repId:11,test:'Urine',testId:2},
+    {repId:12,test:'BMT',testId:8},
+    {repId:13,test:'Thyroxin',testId:3},
+    {repId:14,test:'Urine',testId:2},
+    {repId:15,test:'FBC',testId:1},
+    {repId:16,test:'FBC',testId:1},
+    {repId:17,test:'FBC',testId:1},
+    {repId:18,test:'Lipid',testId:7},
+    {repId:19,test:'Lipid',testId:7},
+    {repId:20,test:'FBC',testId:1},
+   ]
 
-   const [Fload,setFload]=useState([])
+    const [Tload,setTload]=useState([])//Lab test list <----- from back end
+    const [RLoad,setRLoad]=useState(x)
 
     //const [Fields,setFields]=useState([])//store set of fields by the selected test
-    const [Tests,setTests]=useState([])//store the selected test
-
-    const TloadSet=(xLoad)=>{//Add newly created test
-      let T={
-        id:Tload.length+1,
-        name:xLoad.name,
-        provider:xLoad.provider,
-        price:xLoad.price
-      }
-      setTload([...Tload,T])
-    }
-
-    const FloadSet=(xLoad)=>{//set created field data <----- from CreatLabtemplate
-      let T={
-        id:(Tload.length+1),
-        load:xLoad
-      }
-      setFload([...Fload,T])
-    }
-
-    const FloadEdit=(id,xLoad)=>{//set edited field data <----- from Edittemplate
-      let obj={
-        id:id,
-        load:xLoad
-      }
-      console.log(obj)
-    }
+    const [Test,setTest]=useState([])//store the selected test
+    const [loadIn,setLoadIn]=useState([])//selected reqs by a date
+    const [accLoad,setAccLoad]=useState(y)//set sample accepted test list
+    const [req,setReq]=useState()//store selected reqs details
+    const [reqOK,setReqOk]=useState(true)//to stop keeping previous reqs details after it poped up
 
     useEffect(()=>{
       document.body.style.margin = '0';
-      //selcted date's req
-      let a=x.filter((el)=>{
+      //selcted date's request
+/*       let a=RLoad.filter((el)=>{
         return el.date==date
       }) 
-      setLoadIn(a)
+      setLoadIn(a) */
+
       //selected test name
       let t=Tload.filter(el=>{
-        return el.testId==tId
+        return el.id==tId
       })
-      setTests(t[0])
+      console.log(t)
+      setTest(t[0])
 
-     },[date,tId,page])
+      //select a lab request
+      let found=false
+      RLoad.map((x)=>{
+        if(x.id==selectedT){
+          setReq(x)
+          found=true
+        }
+      })
+      if(!found){setReqOk(false)}else{setReqOk(true)}//to not render previous req details
+     },[date,tId,page,Tload,selectedT,RLoad])
 
 //Responsive drawer==================================================================================
  const drawerW=320
@@ -116,13 +115,15 @@ export default function Lab() {
       </SidebarTop>
       <SidebarList>
       {
-         loadIn.map((elm)=>{
+         RLoad.map((elm)=>{
+          if(elm.date==date){
             return(
              <>
-              <Sideunit_Test key={elm.id} id={elm.id} name={elm.name} test={elm.test} setSelectedT={setSelectedT} selectedT={selectedT}></Sideunit_Test>
+              <Sideunit_Test key={elm.id} id={elm.id} name={elm.name} load={elm.load} setSelectedT={setSelectedT} selectedT={selectedT}></Sideunit_Test>
 
              </>
             )
+          }
          })
        }
       </SidebarList>
@@ -157,26 +158,11 @@ export default function Lab() {
 
     <Grid item sm={9} spacing={0} sx={{height:'100%',marginLeft:{sm:'320px',xs:'0px'},width:{xs:'100vw',sm:'60vw'}}}>
     {
-              page==1?
-
-              selectedT!=null ? 
-              <div>
-              <Card sx={{width:'100%',height:'30px',pl:'35px',height:'50px',pt:'20px',position:'fixed',zIndex:'10'}} square>
-                  {loadIn.map((x)=>{
-                    if(x.id==selectedT){return <Typography>{x.name}</Typography>}
-                  })
-                }
-              </Card>
-              <Box sx={{width:'100%',padding:'40px',paddingTop:'90px'}}>
-
-    
-              </Box>
-             </div>
-              : ''
-
+              page==1 && req!=null ? <Accept req={req} accLoad={accLoad} setAccLoad={setAccLoad} RLoad={RLoad} setRLoad={setRLoad} reqOK={reqOK}></Accept>
               :page==2?<LabTestList settId={settId} setPage={setPage} Tload={Tload} setTload={setTload}></LabTestList>
-              :page==3?<CreateLabTemplate setPage={setPage} TloadSet={TloadSet} FloadSet={FloadSet} PK={Tload.length}></CreateLabTemplate>
-              :page==4?<Edittemplate setPage={setPage} tId={tId} Tdata={Tests} FloadEdit={FloadEdit}></Edittemplate>
+              :page==3?<CreateLabTemplate setPage={setPage} setTload={setTload}></CreateLabTemplate>
+              :page==4?<Edittemplate setPage={setPage} tId={tId} Tdata={Test} setTload={setTload}></Edittemplate>
+              :page==5?<SubmitPage setpage={setPage} load={accLoad}></SubmitPage>
               :''
       }
 

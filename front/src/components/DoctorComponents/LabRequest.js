@@ -7,24 +7,45 @@ import DialogContent from '@mui/material/DialogContent';
 
 
 export default function LabRequest(props) {
-  const { openpopBox, setOpenpopBox } = props;
-   
-  const [rep, setrep] = useState([]);
+  const { openpopBox, setOpenpopBox ,rep, setrep} = props;   
+  //const [rep, setrep] = useState([]);
   const [name, setName] = useState('');
+  const [nameError, setNameError] = useState(false);
 
   const handleClose = () => {
     setOpenpopBox(false);   
   };
  
- 
+  const validate = () => {
+    let isValid = true;
+    if (name.trim() === '') {
+      setNameError(true);
+      isValid = false;
+    } else {
+      setNameError(false);
+    }}
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      if (validate()) {
+          const newrep = { name };
+          setrep([...rep, newrep]);
+          setName('');
+      } else {
+          console.log('Form submission failed. Please check the fields.');
+      }
+  };
   //error
   const handleAddLabRequest = () => {
+    if (name.trim() === '') {          
+      return;
+    }
     const newRep = { name };
     setrep([...rep, newRep]);
     setName('');
     // setOpen(true)
     
 };
+
 const handleDeleteLabRequest = (index) => {
   const updatedrep = [...rep];
   updatedrep.splice(index, 1);
@@ -43,7 +64,7 @@ const handleDeleteLabRequest = (index) => {
             >
             <CloseIcon />
             </IconButton>
-      <form sx={{marginLeft: 'auto',}} >        
+      <form sx={{marginLeft: 'auto',}}  onClick={handleSubmit}>        
         <TextField
           variant="outlined"
           size="small"
@@ -60,22 +81,22 @@ const handleDeleteLabRequest = (index) => {
           }}
           placeholder="Enter Lab Request"
           value={name} onChange={(e) => setName(e.target.value)}
+          error={nameError}
+          helperText={nameError ? 'Report Name is required' : ''}          
         />
         
-        <Button variant="outlined" sx={{top: '10px', color: 'Green', borderColor: 'Green', borderWidth: '3px' }}  onClick={handleAddLabRequest}>
-          OK
-        </Button>        
+        <Button variant="outlined" sx={{top: '10px', color: 'Green', borderColor: 'Green', borderWidth: '3px' }} 
+         onClick={() => {handleAddLabRequest(); handleClose()}}> OK </Button>        
       </form>      
      </DialogContent>  
      
-      </Dialog>
- 
+      </Dialog> 
      <div >
       {rep.map((drug, index) => (
       <Grid key={index} container spacing={1} sx={{ marginTop: "5px",}}>
                         <Grid item xs={3}>
                             <Card sx={{ backgroundColor: '#48EC4F', color: 'white', fontSize: '19px',height:'32px',marginleft:'90%',}}>
-                                <Typography gutterBottom variant="p" sx={{ marginLeft: '15px',}}>{drug.name}</Typography>
+                                <Typography gutterBottom variant="p" sx={{ marginLeft: '15px'}}>{drug.name}</Typography>
                             </Card>
                         </Grid>
                         <Grid item xs={8}>

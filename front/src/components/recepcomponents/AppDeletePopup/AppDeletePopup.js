@@ -5,6 +5,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import axios from "axios";
 
 import { CardContent, IconButton, TextField, Typography } from "@mui/material";
 
@@ -36,11 +37,22 @@ export default function AppDeletePopup({appointlist,setAppointList,handleNotific
 
   const handleRealDelete=(item)=>
   {
-    setAppointList(appointlist.filter((itemf)=>itemf.nic!==item.nic));
-    //setIsDisabled(true);
+
+    axios.delete(`https://localhost:7205/api/Appointment/${item.appointment.id}`)
+  .then(response => {
+    console.log('Resource deleted successfully:', response.data);
     setDelcount(delcount+1);
     setDaopen(false);
     handleNotification("Appointment deleted succesfully!");
+  })
+  .catch(error => {
+    console.error('Error deleting resource:', error);
+  });
+
+
+    // setAppointList(appointlist.filter((itemf)=>itemf.nic!==item.nic));
+    // //setIsDisabled(true);
+    
 
   }
 

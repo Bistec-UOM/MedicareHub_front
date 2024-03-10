@@ -1,5 +1,6 @@
 import * as React from "react";
 import BasicTimePicker from "../TimePicker/TimePicker";
+import axios from "axios";
 
 import Moment from "react-moment";
 
@@ -26,6 +27,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Grid, Stack } from "@mui/material";
 
 export default function AppAddPopup({
+  selectedDay,
   handleNotification,
   docid,
   appointmentList,
@@ -90,6 +92,25 @@ export default function AppAddPopup({
     console.log(selectedTime);
   };
 
+  function getRealTime(timeObject)  //this is used for converting the displayed time to the pasing body time in the backend
+  {
+    let hours = parseInt(timeObject.hours, 10);
+    if (timeObject.ampm === 'pm' && hours !== 12) {
+      hours += 12;
+  } else if (timeObject.ampm === 'am' && hours === 12) {
+      hours = 0;
+  }
+  console.log("selected",selectedDay)
+
+  const date = new Date(selectedDay);
+ // console.log()
+  date.setHours(hours, timeObject.minutes, 0, 0);
+  return date;
+
+
+
+  }
+
   const handleClickOpen = () => {
     setApopen(true);
   };
@@ -105,9 +126,55 @@ export default function AppAddPopup({
     setApopen(false);
     handleNotification("A new appointment added succesfully!");
   }
+
+  async function handleSubmit(event)
+  {
+      event.preventDefault();
+      var finalTime=getRealTime(appTime);
+      var date=finalTime;
+      const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}T${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}.${date.getMilliseconds().toString().padStart(3, '0')}`;
+     // console.log("final time",finalTime)
+     // const dateobject=finalTime.toISOString();
+      
+     // var formattedDateString = finalTime.toISOString();
+      console.log("isostring",formattedDate);
+      console.log(activeData.id)
+      console.log(docid);
+
+      let obj= {
+        id: 0,
+        dateTime:formattedDate,
+        status:"new",
+        patientId: activeData.id,
+        doctorId: docid,
+        recepId:7
+      }
+
+
+      try{
+          await axios.post("https://localhost:7205/api/Appointment",obj
+         );
+         console.log(obj);
+          setApopen(false);
+          handleNotification("Appointment Added succesfully!");
+         
+      }
+      catch(err)
+      {
+      var msg=err.response.data;
+      console.log("Inseide error");
+         console.log(err.response.data);
+         //setError(msg);
+      }
+      
+
+  }
+
+
+
   useEffect(() => {
     //console.log("sele",formatAMPM(selectedTime))
-    // console.log(activeId);
+     console.log(activeId);
     formatAMPM(selectedTime)
 
     if (patientList && Array.isArray(patientList)) {
@@ -125,9 +192,6 @@ export default function AppAddPopup({
   return (
     <React.Fragment>
       <Dialog open={apopen} onClose={handleClose}>
-        <Box sx={{ width: { sm: "600px", xs: "280px" } }}>
-          <form autoComplete="false" noValidate onSubmit={handleSubmit}>
-            <Box>
               <Box
                 sx={{
                   backgroundColor: "#DEF4F2",
@@ -141,11 +205,14 @@ export default function AppAddPopup({
                   <CloseIcon />
                 </IconButton>
               </Box>
+        <Box sx={{ width: { sm: "600px", xs: "280px",  padding: "20px", }}}>
+          <form autoComplete="false" noValidate onSubmit={handleSubmit}>
+            <Box>
               <Stack
                 direction={"column"}
                 sx={{
                   justifyContent: "space-between",
-                  padding: "20px",
+                 
                   alignItem: "center",
                 }}
               >
@@ -158,25 +225,27 @@ export default function AppAddPopup({
                         padding: "2%",
                         border: "1px solid #3B877A",
                         borderRadius: 5,
-                        height: { md: "125px", xs: "180px" },
+                        height: { md: "125px", sm: "100px" },
                         marginBottom: { xs: "5%", sm: 0 },
                         width: "100%",
                         marginRight: {
                           sm: 0,
                           xs: 5,
                         },
+                    
                       }}
                     >
-                      <Stack direction={"column"}>
+                      <Stack direction={"column"} sx={{height:{xs:"100px",md:"100%"}}}>
                         <Stack
                           direction={"row"}
                           sx={{
                             justifyContent: "space-between",
                             alignItem: "center",
+                            height:{xs:"100px",md:"100%"}
                           }}
                         >
                           <Typography sx={{ padding: "2%" }} variant="h5">
-                            {activeData?.name}
+                            {activeData?.fullName}
                           </Typography>
                         </Stack>
                         <Stack>
@@ -268,14 +337,19 @@ export default function AppAddPopup({
               </Stack>
             </Box>
             <DialogActions>
-              <Stack
-                direction="row"
+              <Stack direction={{xs:"column",sm:"row"}}
+               
                 sx={{
                   justifyContent: "space-between",
                   alignItems: "baseline",
                   width: "100%",
+                //  flexDirection:{
+                //     sm:"column",
+                //     md :"row"
+                //   }
                 }}
               >
+               
                 <BasicTimePicker
                 sx={{overflow:{xs:'hidden'}}}
                   selectedTime={selectedTime}
@@ -284,19 +358,26 @@ export default function AppAddPopup({
                   // setSelectedTimeH={(value) => setTimeValue({...timevalue,hour:value})}
                   // setSelectedTimeM={(value) => setTimeValue({...timevalue,minutes:value})}
                 />
-              
+               
+                  
                 <Button
                   sx={{
+                    marginTop:{xs:'20px !important',md:'0px'},
                     backgroundColor: "#79CCBE",
                     "&:hover": {
                       backgroundColor: "#79CCBE",
                     },
+                    
+                   
                   }}
                   variant="contained"
                   type="submit"
                 >
                   Confirm
                 </Button>
+                
+               
+              
               </Stack>
             </DialogActions>
           </form>

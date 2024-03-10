@@ -16,6 +16,7 @@ import Box from '@mui/material/Box';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import { Sideunit_Bill } from '../components/sidebar/Sideunits';
+import axios from 'axios';
 
 function createData(
   ID,
@@ -33,11 +34,99 @@ function createData(
 
 export default function Pharmacy_drugstore() {
 
+   const [data, setData] =useState([]);
+
+  useEffect(()=>{
+    getData();
+  },[])
+
+  const [brand, setBrand] = useState('');
+  const [drug, setDrug] = useState('');
+  const [quantity, setQuantity] = useState('');
+  const [dosage, setDosage] = useState('');
+  const [price, setPrice] = useState('');
+  const rowdata = [
+    {id:1,drug:'Paracetamole',brand:"Panadol",dosage:["10 mg"],quantity:[120],price:[20.00]},
+    {id:1,drug:'Veniloflaxin',brand:"Veniz",dosage:["37.5 mg","75 mg","150 mg"],quantity:[34,12,90],price:[35.00,45.00,60.00]},
+    {id:1,drug:'Flucanzole',brand:"Diflucan",dosage:["10 mg"],quantity:[15],price:[12.00]}
+    
+  ];
+
+  
+  const getData = () => {
+    axios.get('https://localhost:44346/api/Drugs')
+    .then((result) => {
+        const drugs = result.data.map(drug => ({
+            ID: drug.id,
+            drug: drug.genericN,
+            brand: drug.brandN,
+            dosage: drug.weight,
+            quantity: drug.avaliable,
+            price: drug.price
+        }));
+        setRows(drugs);
+    })
+    .catch((error) => {
+        console.log(error)
+    })
+}
+ const handleConfirm=()=>{
+    handleClose();
+      setConfirm(false)
+    const data={
+      "genericN": drug,
+      "brandN": brand,
+      "weight": dosage,
+      "avaliable": quantity,
+      "price": price,
+      
+      
+    }
+    axios.post('https://localhost:44346/api/Drugs',data)
+    .then((result)=>{
+      getData() 
+    })
+    .catch((error)=>{
+      console.log(error)
+    })
+  }
+  const handleDelete = (id) => {
+    axios.delete(`https://localhost:44346/api/Drugs/${id}`)
+      .then(() => {
+        getData(); // Refresh data after delete
+        handleEditClose(); // Close the dialog
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const handleEdit = () => {
+    handleEditClose();
+    let updatedData = {
+      genericN: selectedCard.drug,
+      brandN: selectedCard.brand,
+      weight: selectedCard.dosage,
+      avaliable: selectedCard.quantity,
+      price: selectedCard.price
+    };
+    console.log('check this')
+    console.log('check',updatedData)
+    axios.put(`https://localhost:44346/api/Drugs/${selectedCard.ID}`, updatedData)
+      .then((response) => {
+        getData(); // Refresh data after edit
+        console.log("sent ",updatedData)
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  
   const [searchValue, setSearchValue] = useState('');
 
   const handleInputChange = (event) => {
     setSearchValue(event.target.value);
-    // You can perform additional filtering logic here if needed
+    
   };
   
 
@@ -54,41 +143,26 @@ export default function Pharmacy_drugstore() {
   const handleClose =() => {
     setOpen(false)
   }; 
-  const [brand, setBrand] = useState('');
-  const [drug, setDrug] = useState('');
-  const [quantity, setQuantity] = useState('');
-  const [dosage, setDosage] = useState('');
-  const [price, setPrice] = useState('');
-  const rowdata = [
-    {id:1,drug:'Paracetamole',brand:"Panadol",dosage:["10 mg"],quantity:[120],price:[20.00]},
-    {id:1,drug:'Veniloflaxin',brand:"Veniz",dosage:["37.5 mg","75 mg","150 mg"],quantity:[34,12,90],price:[35.00,45.00,60.00]},
-    {id:1,drug:'Flucanzole',brand:"Diflucan",dosage:["10 mg"],quantity:[15],price:[12.00]}
-    
-  ];
+
   const [rows, setRows] = useState(rowdata);
 
-  const handleConfirm =() => {
-    const newDrug = { drug, brand,dosage, quantity,price };
-    setRows([...rows, newDrug]);
-    setDrug('');
-        setBrand('');
-        setDosage('');
-        setQuantity('');
-        setPrice('');
-    handleClose();
-    setConfirm(false)
-  };
+
+
+
+ 
   const handleEditClose = () => {
     setSelectedCard(null);
     setEditOpen(false);
   };
-  const handleEdit =() => {
-    handleEditClose();
-    setConfirm(false)
-  };
-  const handleDelete =() => {
-    setConfirm(false)
-  };
+  // const handleEdit =() => {
+  //   handleEditClose();
+  //   setConfirm(false)
+  // };
+  //////
+  // const handleDelete =() => {
+  //   setConfirm(false)
+  // };
+
   const handleEditOpen =(row) => {
     setSelectedCard(row);
     setEditOpen(true);
@@ -100,6 +174,7 @@ export default function Pharmacy_drugstore() {
 
    },[]) 
    const handleFieldChange = (fieldName, value) => {
+    console.log(`Updating ${fieldName} to ${value}`);
     setSelectedCard(prevState => ({
       ...prevState,
       [fieldName]: value
@@ -276,7 +351,7 @@ export default function Pharmacy_drugstore() {
         </DialogContent>
         <DialogActions>
           <Button
-            onClick={handleConfirm}
+             onClick={handleConfirm}
             variant="contained"
             sx={{ backgroundColor: "rgb(121, 204, 190)", m: 2 }}
             
@@ -302,32 +377,15 @@ export default function Pharmacy_drugstore() {
   </Grid>
   <Grid item xs={2}>
   <Typography sx={{flex:1}}>
-                  {Array.isArray(row.dosage) ? (
-                    row.dosage.map((dosage, index) => (
-                      <List key={index}>{dosage}</List>
-                    ))
-                  ) : (
-                    <List>{row.dosage}</List>
-                  )}
+                  {row.dosage}
+                 
                 </Typography>
   </Grid>
   <Grid item xs={2}>
-  <Typography sx={{flex:1}}> {Array.isArray(row.quantity) ? (
-                    row.quantity.map((quantity, index) => (
-                      <List key={index}>{quantity}</List>
-                    ))
-                  ) : (
-                    <List>{row.quantity}</List>
-                  )}</Typography>
+  <Typography sx={{flex:1}}> {row.quantity}</Typography>
   </Grid>
   <Grid item xs={2}>
-  <Typography sx={{flex:1}}>{Array.isArray(row.price) ? (
-                    row.price.map((price, index) => (
-                      <List key={index}>{price}</List>
-                    ))
-                  ) : (
-                    <List>{row.price}</List>
-                  )}</Typography>
+  <Typography sx={{flex:1}}>{row.price}</Typography>
   </Grid>
 </Grid>
     </Card>
@@ -389,7 +447,7 @@ export default function Pharmacy_drugstore() {
         <DialogActions>
           
           <Button
-            onClick={handleDelete}
+            onClick={() => handleDelete(selectedCard.ID)}
             variant="contained"
             sx={{ backgroundColor: "rgb(121, 204, 190)", m: 2 }}
           >

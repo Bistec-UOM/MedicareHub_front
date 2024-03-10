@@ -19,6 +19,7 @@
   import { Sideunit_Doctor } from '../../sidebar/Sideunits';
 
   import ResNavBar from '../ResNavBar/ResNabBar';
+import MyFullCalendar from '../MyFullCalendar/MyFullCalendar';
 
   const drawerWidth = 358.4;
 
@@ -28,7 +29,7 @@
     },[])
 
     const [doctorList,setDoctorList]=useState([]);
-    const [doctorCount,setDoctorCount]=useState(0);
+    const [doctorCount,setDoctorCount]=useState(1);
 
     useEffect(()=>
     {
@@ -38,8 +39,11 @@
       }).then((responseData)=>
       {
         setDoctorCount(doctorCount+1);
-        console.log(responseData.result);
+        console.log("in response calender",responseData.result);
+        //console.log
         setDoctorList(responseData.result);
+        setSelectedTab(responseData.result[0].id)
+
       })
 
     },[]);
@@ -141,16 +145,17 @@
                   }).map((item,index)=>(
                     <div
                     key={index}
-                    onClick={() => setSelectedTab(index)}
+                    onClick={() => setSelectedTab(item.id)}
                     style={{
-                      backgroundColor: selectedTab === index ? '#79CCBE' : 'transparent',
+                      backgroundColor: selectedTab === item.id? '#79CCBE' : 'transparent',
+                      color:selectedTab === item.id? 'white' : 'black',
                       padding: '10px',
                       margin: '5px',
                       cursor: 'pointer',
                       borderRadius:'8px'
                     }}
                   >
-                    <Sideunit_Doctor selectedTab={selectedTab}  name={item.fullName} title={item.qualifications} index={index} key={index}></Sideunit_Doctor>
+                    <Sideunit_Doctor selectedTab={selectedTab}  name={item.fullName} title={item.qualifications} index={item.id} key={selectedTab}></Sideunit_Doctor>
                   </div>
 
                   
@@ -227,7 +232,7 @@
         
           
           <Grid sx={{paddingLeft:'10px',paddingRight:'10px',paddingTop:'64px',width:'100%', height:'100%'}} item xs={9} sm={11} md={9}>
-            <MyCalendar doctorId={selectedTab}/>
+            <MyFullCalendar doctorId={selectedTab}/>
             </Grid>
           
         </Box>

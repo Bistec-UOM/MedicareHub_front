@@ -24,20 +24,20 @@
 {
   padding-top:10px;
 }
-#root > div > div > div.sc-beySPh.cxSrBg > div > div.MuiGrid-root.MuiGrid-item.MuiGrid-grid-xs-1.MuiGrid-grid-sm-10.MuiGrid-grid-md-9.css-1jvafor-MuiGrid-root > div > div
+/* #root > div > div > div.sc-beySPh.cxSrBg > div > div.MuiGrid-root.MuiGrid-item.MuiGrid-grid-xs-1.MuiGrid-grid-sm-10.MuiGrid-grid-md-9.css-1jvafor-MuiGrid-root > div > div
 {
   width:{
     xs:400,
   }
-}
+} */
 #root > div > div > div > main > div > div > div:nth-child(2){
   overflow-y:'none'
 }
 
-#root > div > div > div > main > div
+/* #root > div > div > div > main > div
 {
   
-}
+} */
 
 
 #root > div > div > div > nav > div > div > div > div.MuiGrid-root.MuiGrid-item.MuiGrid-grid-xs-3.MuiGrid-grid-sm-1.MuiGrid-grid-md-3.css-mcxjgr-MuiGrid-root > div > div:nth-child(2) > div:nth-child(2)
@@ -83,6 +83,34 @@ body > div.MuiDrawer-root.MuiDrawer-modal.MuiModal-root.css-hjb2rp-MuiModal-root
   width:100% !important;
 }
 
+
+.fc .fc-daygrid-day-frame ,.fc .fc-daygrid-day-top, .fc .fc-daygrid-day-number
+{
+  width:100%;
+  height:100% !important;
+  position:relative
+  /* background-color: blue; */
+}
+
+
+.fc .fc-daygrid-day-events 
+{
+  display:none
+}
+
+
+
+
+
+
+
+
+
+
+
+.fc-col-header-cell.fc-day-sun {
+  color: red; /* Apply red color to Sunday header */
+}
 
 
   
