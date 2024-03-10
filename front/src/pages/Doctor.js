@@ -30,6 +30,7 @@ export default function Doctor() {
   const [openAreports, setOpenAreports] = useState(false);
   const [description,setDescription] = useState ("");
   const [open, setOpen] = React.useState(false); //for snapbar
+
   //display date
   const currentDate = new Date();
   const formattedDate = currentDate.toDateString();
