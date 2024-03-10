@@ -35,8 +35,8 @@ export default function Pharmacy() {
   };
 
   
-  const data =[{name:"Dhammika Mahendra Wijesingha",age:"36",gender:"male"},
-];
+//   const data =[{name:"Dhammika Mahendra Wijesingha",age:"36",gender:"male"},
+// ];
 const [selectedQuantities, setSelectedQuantities] = React.useState('');
 const [quantity, setQuantity] = React.useState('');
 
@@ -59,82 +59,157 @@ const result = 10 * 15
 
    const [select,setSelect]=useState(null)
 
-   let x=[
+   
+   const data=[
     {
-      "id": 1,
-      "name": "Dhammika Mahendra Wijesingha",
-      "time": "09:00"
-      
+       id:51,  // -----------------------------------> prescription Id-------  
+       patientdata:{
+           name:"Dhammika Mahendra",
+           age:30,
+           gender:"male"
+         },
+         name:"Dhammika Mahendra",
+         time: "08:10"
+         
+     },
+     {
+       id:52,    
+       patientdata:{
+           name:"Nethmi Eranga",
+           age:18,
+           gender:"female"
+         },
+         name:"Nethmi Eranga",
+         time: "09:15"
+         
+     },
+     {
+       id:53,    
+       patientdata:{
+           name:"Chathumini Pamodya",
+           age:8,
+           gender:"female",
+         },
+         name:"Chathumini Pamodya",
+         time: "10:10"
+         
+     },
+     {
+       id:54,    
+       patientdata:{
+           name:"Yasiru Ramosh",
+           age:22,
+           gender:"male"
+         },
+         name:"Yasiru Ramosh",
+         time: "10:25"
+         
+     },
+     {
+       id:55,    
+       patientdata:{
+           name:"Chathura Ishara",
+           age:38,
+           gender:"male"
+         },
+         name:"Chathura Ishara",
+         time: "11:15"
+         
+     },
+     {
+      id:75,    
+      patientdata:{
+          name:"Hasini Chamodi",
+          age:48,
+          gender:"female"
+        },
+        name:"Hasini Chamodi",
+        time: "13:15"
+        
     },
     {
-      "id": 2,
-      "name": "Bob",
-      "time": "10:30"
-      
+      id:76,    
+      patientdata:{
+          name:"Nelunika Nuwanthi",
+          age:18,
+          gender:"female"
+        },
+        name:"Nelunika Nuwanthi",
+        time: "13:35"
+        
     },
     {
-      "id": 3,
-      "name": "Charlie",
-      "time": "11:45"
-      
+      id:79,    
+      patientdata:{
+          name:"Methnula Thisum",
+          age:18,
+          gender:"male"
+        },
+        name:"Methnula Thisum",
+        time: "14:15"
+        
     },
     {
-      "id": 4,
-      "name": "David",
-      "time": "13:15"
-    
+      id:81,    
+      patientdata:{
+          name:"Eranga Kumari",
+          age:48,
+          gender:"female"
+        },
+        name:"Eranga Kumari",
+        time: "14:45"
+        
     },
     {
-      "id": 5,
-      "name": "Eve",
-      "time": "14:30"
-      
+      id:88,    
+      patientdata:{
+          name:"Kasun Kasun",
+          age:48,
+          gender:"male"
+        },
+        name:"Kasun Kasun",
+        time: "15:15"
+        
     },
     {
-      "id": 6,
-      "name": "Frank",
-      "time": "15:45"
-      
+      id:90,    
+      patientdata:{
+          name:"Saman Perera",
+          age:48,
+          gender:"male"
+        },
+        name:"Saman Perera",
+        time: "15:19"
+        
+    },
+   
+    {
+      id:99,    
+      patientdata:{
+          name:"Pabodya Baumika",
+          age:48,
+          gender:"female"
+        },
+        name:"Pabodya Baumika",
+        time: "13:15"
+        
     },
     {
-      "id": 7,
-      "name": "Grace",
-      "time": "16:30"
-      
+      id:101,    
+      patientdata:{
+          name:"Akasha",
+          age:48,
+          gender:"female"
+        },
+        name:"Akasha",
+        time: "13:15"
+        
     },
-    {
-      "id": 8,
-      "name": "Henry",
-      "time": "17:15"
-      
-    },
-    {
-      "id": 9,
-      "name": "Isabel",
-      "time": "18:00"
-      
-    },
-    {
-      "id": 10,
-      "name": "Jack",
-      "time": "19:00"
-    
-    },
-    {
-      "id": 11,
-      "name": "Kelly",
-      "time": "20:00"
-      
-    },
-    {
-      "id": 12,
-      "name": "Liam",
-      "time": "21:00"
-      
-    }
-  ]
-  
-  
+     
+   ] 
+   
+   const [x,setX]=useState(data)
+   const selectedPrescription = select ? x.filter(prescription => prescription.id === select) : [];//------------filter  the selected patient----------
   return (
     <div>
     <Navbar></Navbar>
@@ -160,17 +235,22 @@ const result = 10 * 15
       </Grid>
 
       <Grid item xs={9} style={{height:'100%',overflowY:'scroll'}}>
+      {select ? (
       <div style={{ position: 'sticky', top: 0, zIndex: 1000 }}>
-          {data.map((patientdata, id) => (
+          {selectedPrescription.map((patientdata, id) => (
       <Card  key={id} sx={{ minWidth: 275 }}>
         <CardContent>
-         <div> <Typography gutterBottom variant='h6'>{patientdata.name}</Typography></div>
-          <div><Typography gutterBottom variant='20px' sx={{color:"#8E8B8B"}}>{patientdata.age} years</Typography></div>
-          <div><Typography gutterBottom variant='20px'sx={{color:"#8E8B8B"}}>{patientdata.gender}</Typography></div>
+         <div> <Typography gutterBottom variant='h6'>{selectedPrescription[0].patientdata.name}</Typography></div>
+          <div><Typography gutterBottom variant='20px' sx={{color:"#8E8B8B"}}>{selectedPrescription[0].patientdata.age} years</Typography></div>
+          <div><Typography gutterBottom variant='20px'sx={{color:"#8E8B8B"}}>{selectedPrescription[0].patientdata.gender}</Typography></div>
         </CardContent>
       </Card>
           ))}
       </div>
+      ): 
+      (
+        <Typography gutterBottom variant="p"></Typography>
+    ) }
       
       <div>
       {medicine.map((drug, no) => (
