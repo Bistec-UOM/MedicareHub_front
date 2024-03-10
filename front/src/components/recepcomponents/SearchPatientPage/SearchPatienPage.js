@@ -191,9 +191,9 @@ const SearchPatientPage = (props) => {
         {
           <Box sx={{ width: "80%" ,marginTop:{xs:'20%',sm:'0%'}}}>
             {Array.isArray(patientList) && patientList.filter((item)=>{
-              return search.toLowerCase() ===''?item:item.name.toLowerCase().includes(search.toLowerCase());
+              return search.toLowerCase() ===''?item:item.fullName.toLowerCase().includes(search.toLowerCase());
             }).map((item) => (
-              <div key={item.nic}>
+              <div key={item.nic+item.fullName}>
                 <PatientDetailCard
                 appAddPopupCount={appAddPopupCount}
                   setAppAddPopupCount={setAppAddPopupCount}

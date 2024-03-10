@@ -22,6 +22,9 @@ import TaskAltRoundedIcon from '@mui/icons-material/TaskAltRounded';
 import MarkAsCompleted from "../MarkAsCompletedPopup/MarkAsCompleted";
 import AppCancelPopup from "../AppCancelPoplup/AppCancelPopup";
 
+import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
+import BlockRoundedIcon from '@mui/icons-material/BlockRounded';
+
 const DoctorAppCard = ({selectedDay,docid,appointlist,setAppointList,handleNotification,filteredAppointments,setFilteredAppointments, item ,delcount,setDelcount}) => {
   const [daopen,setDaopen]=useState(false);
   const [markAsCompleted,setMarkAsCompleted]=useState(false);
@@ -33,6 +36,18 @@ const DoctorAppCard = ({selectedDay,docid,appointlist,setAppointList,handleNotif
   const handleMarkAsCompelted=()=>
   {
     setMarkAsCompleted(true);
+  }
+
+  const completedStatus=(item)=>
+  {
+    if(item.appointment.status=="Completed")
+    {
+      return  <CheckCircleRoundedIcon color="success" sx={{fontSize:"38px"}}/>
+    }
+    else if(item.appointment.status=="cancelled")
+    {
+      return <BlockRoundedIcon color="warning" sx={{fontSize:"38px"}}/>
+    }
   }
 
   // useEffect(() => {
@@ -58,6 +73,8 @@ const DoctorAppCard = ({selectedDay,docid,appointlist,setAppointList,handleNotif
     
   };
 
+  const isCompletedOrCancelled = item.appointment?.status === 'Completed' || item.appointment?.status === 'cancelled';
+
   //const [disabled,setDisabled]=useState(true);
 
   const handleEdit = () => {
@@ -71,12 +88,13 @@ const DoctorAppCard = ({selectedDay,docid,appointlist,setAppointList,handleNotif
 
      
         
-        <Box  sx={{ width: { md:"80%",xs:'100%'}, marginLeft: "auto", marginRight: "auto",
+        <Box  sx={{ width: { md:"80%",xs:'100%'}, marginLeft: "auto", marginRight: "auto",  opacity:isCompletedOrCancelled?0.5:1,
+            pointerEvents:isCompletedOrCancelled?'none':'auto'
        }}>
           <Card
             sx={{
               backgroundColor: "#FFFF",
-              textAlign: "left",
+              textAlign: "left",  
               marginBottom: 2,
               border: "1px solid #3B877A",
               borderRadius: 5,
@@ -91,13 +109,18 @@ const DoctorAppCard = ({selectedDay,docid,appointlist,setAppointList,handleNotif
                   <Typography variant="h5" >
                     {item.patient?.fullName}
                   </Typography>
+                  <Typography variant="body2" color="text.secondary" sx={{textAlign:'center'}}>
+                {item.patient?.contactNumber}
+                </Typography>
 
-                  <Typography variant="body2" >
+                  {completedStatus(item)}
+
+                  {/* <Typography variant="body2" >
                     {item.appointment?.status}
-                  </Typography>
+                  </Typography> */}
                 
         
-                <Box>
+                {/* <Box>
 
                 <IconButton onClick={handleMarkAsCompelted}><TaskAltRoundedIcon color="success"  /></IconButton>
         
@@ -105,18 +128,30 @@ const DoctorAppCard = ({selectedDay,docid,appointlist,setAppointList,handleNotif
                  
         
         
-                </Box>
+                </Box> */}
               </Stack>
               <Stack sx={{justifyContent:'space-between',alignItem:'center',flexDirection:{xs:'column',md:'row'}}} >
                 <Typography variant="body2" color="text.secondary">
                 {item.patient?.address}
                 </Typography>
-                <Typography  color="text.secondary">
+                {/* <Typography  color="text.secondary">
                 {item.patient?.nic}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
+                </Typography> */}
+                {/* <Typography variant="body2" color="text.secondary">
                 {item.patient?.contactNumber}
-                </Typography>
+                </Typography> */}
+
+                {isCompletedOrCancelled?  <div></div>:
+                <Box>
+
+<IconButton onClick={handleMarkAsCompelted}><TaskAltRoundedIcon color="success"  /></IconButton>
+
+ <IconButton onClick={handleCancelAppointment}><HighlightOffRoundedIcon  sx={{ marginLeft: "auto", color: "#E60000" }} /></IconButton>
+ 
+
+
+</Box>
+}
                 <Typography sx={{display:{xs:'flex',sm:'flex',md:'none'}}} variant="body2" color="text.secondary">
                   {item.appointment.dateTime}
                 </Typography>

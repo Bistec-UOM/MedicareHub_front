@@ -10,7 +10,7 @@ import './steper.css'
 export default function Steper(props) {
 
 
-  function getTime(dateTimeString) {
+  function getStartTime(dateTimeString) {
     // Create a Date object from the date-time string
     const dateTime = new Date(dateTimeString);
   
@@ -31,18 +31,57 @@ export default function Steper(props) {
     return timeString;
   }
 
+ // const isCompletedOrCancelled = props.item.appointment?.status === 'Completed' || props.item.appointment?.status === 'cancelled';
+
+  function getEndingTime(dateTimeString) {
+    // Create a Date object from the date-time string
+    const dateTime = new Date(dateTimeString);
+
+    // Add 20 minutes to the current time
+    dateTime.setMinutes(dateTime.getMinutes() + 20);
+
+    // Get hours
+    let hours = dateTime.getHours();
+    // Convert hours to 12-hour format
+    hours = hours % 12 || 12; // Convert 0 to 12
+
+    // Get minutes
+    const minutes = dateTime.getMinutes();
+
+    // Get AM or PM
+    const amOrPm = dateTime.getHours() >= 12 ? 'PM' : 'AM';
+
+    // Format the time string
+    const timeString = `${hours}:${minutes < 10 ? '0' : ''}${minutes} ${amOrPm}`;
+
+    return timeString;
+}
+
+const findOpacityStatus=(label)=>
+{
+  if(label=="Completed" || label=="cancelled")
+  {
+    return true;
+  }
+  else{
+    return false;
+  }
+}
+
+
+
 
 
 
     console.log(props.items)
   return (
-    <Box >
+    <Box  >
       <Stepper orientation='vertical' activeStep={0} >
         {props.items && props.items.filter((item)=>{
            return props.search.toLowerCase()===''?item:item.patient.fullName.toLowerCase().includes(props.search.toLowerCase())
         }).map((label) => (
           <Step key={label.patient.nic}>
-            <StepLabel  >{getTime(label.appointment?.dateTime)}</StepLabel>
+            <StepLabel  sx={{opacity:findOpacityStatus(label.appointment?.status)?0.5:1}}>{getStartTime(label.appointment?.dateTime)}- {getEndingTime(label.appointment?.dateTime)} </StepLabel>
 
 
           </Step>

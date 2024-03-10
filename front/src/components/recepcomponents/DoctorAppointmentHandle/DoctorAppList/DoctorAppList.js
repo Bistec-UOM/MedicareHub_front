@@ -185,7 +185,7 @@ const DoctorAppList = (props) => {
         </Box>
 
         {
-          <Box sx={{ width: "80%",marginTop:{xs:'40%',sm:'20%',md:'7%'}}}>
+          <Box sx={{ width: "70%",marginTop:{xs:'40%',sm:'20%',md:'7%'}}}>
             {Array.isArray(filteredAppointments) && filteredAppointments.sort((a,b)=>{
               return new Date(a.time)-new Date(b.time);
             })
