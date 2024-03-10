@@ -21,7 +21,7 @@ export default function TestDialogBox({test,setPage,setTload,handleClose}) {
         price:price,
         provider:provider
       }
-      axios.put('http://localhost:5220/api/Test',obj)
+      axios.put('http://localhost:7205/api/Test',obj)
       .then(res=>{
         setTload([])//make test list empty to reload again
         handleClose()
@@ -39,7 +39,7 @@ export default function TestDialogBox({test,setPage,setTload,handleClose}) {
         <div style={{paddingTop:'10px',display:'flex',flexDirection:'row-reverse',alignItems:'center'}} >
           <Button sx={{ml:'10%'}} size='small' variant='contained' onClick={saveButtonAction}>{isDisabled?'Edit':'Save'}</Button>
           {
-            isDisabled==false?<Button sx={{ml:'20%',height:'25px'}} variant='contained' startIcon={<DashboardCustomizeIcon></DashboardCustomizeIcon>}  onClick={()=>setPage(4)}></Button>:''
+            isDisabled==false?<Button sx={{ml:'20px',height:'25px'}} variant='contained' startIcon={<DashboardCustomizeIcon></DashboardCustomizeIcon>}  onClick={()=>setPage(4)}></Button>:''
           }
         </div>
     </div>

@@ -27,7 +27,7 @@ export default function LabTestList({setPage,settId,Tload,setTload}) {
 
     useEffect(()=>{
       if(Tload.length==0){
-        axios.get('http://localhost:5220/api/Test')
+        axios.get('http://localhost:7205/api/Test')
         .then(res=>{setTload(res.data)})
         .catch(er=>{})
       }
