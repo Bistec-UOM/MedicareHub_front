@@ -20,6 +20,7 @@ import LabRequest from '../components/DoctorComponents/LabRequest';
 import { Sideunit_Patient } from '../components/sidebar/Sideunits';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import TopUnit from '../components/DoctorComponents/TopUnit';
 
 export default function Doctor() {
 
@@ -30,10 +31,6 @@ export default function Doctor() {
   const [openAreports, setOpenAreports] = useState(false);
   const [description,setDescription] = useState ("");
   const [open, setOpen] = React.useState(false); //for snapbar
-
-  //display date
-  const currentDate = new Date();
-  const formattedDate = currentDate.toDateString();
   
   useEffect(() => {
     document.body.style.margin = '0';
@@ -166,10 +163,10 @@ const handleClick = () => {
   <div>
   <Navbar></Navbar>
   <Grid container spacing={0} sx={{ paddingTop: '64px', height: '100vh' }}>
-      <Grid item xs={3} style={{ height: '100%', backgroundColor: '#DEF4F2' }}>
-          <SidebarContainer sx={{ backgroundColor: '#DEF4F2' }}>
+      <Grid item xs={3} style={{ height: '100%', backgroundColor:'#E7FFF9'}}>
+          <SidebarContainer sx={{ backgroundColor:'#E7FFF9'}}>
               <SidebarTop>
-              <Typography sx={{ fontWeight:'Bold',color:'grey' }}>{formattedDate}</Typography>
+                <TopUnit></TopUnit>
               </SidebarTop>
               <SidebarList>
                 {x.map((elm, ind) => {
