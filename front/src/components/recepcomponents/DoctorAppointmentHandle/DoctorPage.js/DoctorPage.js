@@ -162,7 +162,7 @@ export default function DoctorPage() {
         </Grid>
         
         <Grid item xs={9} style={{ height: '100%', overflowY: 'scroll' }}>
-        <DoctorAppCalender doctorId={2}/>
+        <DoctorAppCalender doctorId={1}/>
           
          
         </Grid>
