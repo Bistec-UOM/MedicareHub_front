@@ -1,31 +1,14 @@
 import React, { useState,useEffect } from 'react';
-import { Grid, Paper,MenuItem,InputLabel,Select,FormControl, Typography, Box } from '@mui/material';
+import { Grid, Paper,MenuItem,InputLabel,Select,FormControl, Typography,TableCell,TableRow,TableHead,TableBody,Table, Box } from '@mui/material';
 import { AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis, Label, Area } from "recharts";
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
 
+//need to take data from //drugs// table to take available data
 
 
-// const axios = require('axios');
-
-// // Define the URL of your .NET backend endpoint
-// const url = 'http://your-backend-url/api/endpoint';
-
-// // Send a GET request to the .NET backend
-// axios.get(url)
-//   .then(response => {
-//     // The data is available in the response.data property
-//     const pdata = response.data;
-
-//     // You can now use pdata in your code
-//     console.log(pdata);
-//   })
-//   .catch(error => {
-//     // Handle any errors
-//     console.error('Error fetching data', error);
-//   });
 
 const pdata = [
   { 
@@ -90,7 +73,15 @@ const pdata = [
   },
   
 ];
+function createData(name,available) {
+  return { name,available };
+}
 
+const rows = [
+  createData('amoxilin','800'),
+  createData('lodrine','900'),
+  createData('panadol','940'),
+  ];
 
 const drugTypes = pdata.flatMap(data => data.drugType);
 
@@ -244,10 +235,11 @@ useEffect(() => {
         </Select>
       </FormControl>
            </Box>
-            <ResponsiveContainer aspect={3}>
+            <ResponsiveContainer aspect={2}>
               <AreaChart data={DrugData} style={{ padding: '0px' }}>
-                <XAxis dataKey="datefor" interval={"preserveStartEnd"}>
-                  <Label value="Date" position="insideBottom" offset={-5} />
+                <XAxis  fontSize={10} dataKey="datefor" interval={"preserveStartEnd"}>
+                  <Label  value="Date" position="insideBottom" offset={-5} />
+                  
                 </XAxis>
                 <YAxis>
                   <Label value="Amount" angle={-90} position="insideLeft" offset={2} />
@@ -260,7 +252,30 @@ useEffect(() => {
         </Grid>
       </Grid>
       <Grid>
-        table
+      <Paper sx={{margin:'20px'}}>
+      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+        <TableHead>
+          <TableRow>
+            <TableCell align='center' sx={{ fontWeight: 'bold' }}>Name</TableCell>
+          <TableCell align='center' sx={{ fontWeight: 'bold' }}>Available count</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {rows.map((row) => (
+            <TableRow
+              key={row.name}
+              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+            >
+              <TableCell align='center' component="th" scope="row">
+                {row.name}
+              </TableCell>
+              <TableCell align="center">{row.available}</TableCell>
+
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+      </Paper>
       </Grid>
     </div>
   );
