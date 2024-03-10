@@ -85,21 +85,67 @@ const [update,forceUpdate]=useState(0);
 
 
   const handleAddSaveClose = () => {
+      // Validate form fields
+  let errors = {};
+  let isValid = true;
+
+  if (formData.fullName.trim() === '') {
+    errors.fullName = 'Full Name is required';
+    isValid = false;
+  }
+  if (formData.name.trim() === '') {
+    errors.name = 'Name is required';
+    isValid = false;
+  }
+  if (formData.address.trim() === '') {
+    errors.address = 'Address is required';
+    isValid = false;
+  }
+  if (formData.contactNumber.trim() === '') {
+    errors.contactNumber = 'Contact number is required';
+    isValid = false;
+  }
+  if (formData.dob === '') {
+    errors.dob = 'Date of birth is required';
+    isValid = false;
+  }
+  if (formData.email.trim() === '') {
+    errors.email = 'Email is required';
+    isValid = false;
+  }
+  if (formData.gender.trim() === '') {
+    errors.gender = 'Gender is required';
+    isValid = false;
+  }
+  if (formData.nic.trim() === '') {
+    errors.nic = 'Email is required';
+    isValid = false;
+  }
+    // Add validation rules for other fields as needed
+
+    if (!isValid) {
+      setFormErrors(errors);
+      return;
+    }
       // Create a data object to send in the POST request
   let tmp = pData
   tmp.id = 0;
-  axios.post('https://localhost:7205/api/Patient', tmp)
-  .then(response => {
-    console.log('Data added successfully:', response.data);
-    forceUpdate(prevCount => prevCount + 1); // Trigger a re-render
-    // Optionally, fetch updated data from the API and update the state
-  })
-  .catch(error => {
-    console.error('Error adding data:', error.message);
-  });
 
-  setOpen(false);
+    axios.post('https://localhost:7205/api/Patient', tmp)
+    .then(response => {
+      setOpen(false);
+      console.log('Data added successfully:', response.data);
+      forceUpdate(prevCount => prevCount + 1); // Trigger a re-render
+      // Optionally, fetch updated data from the API and update the state
+    })
+    .catch(error => {
+      console.error('Error adding data:', error.message);
+    });
+  
+    
   };
+
+
   const handleRemove =()=>{
     axios.delete(`https://localhost:7205/api/patient/`+`${pData.id}`)
     .then(res=>{
@@ -172,18 +218,7 @@ try {
     { label: "Email", key: "email", sx: { ml: 1 } },
   ];
   
-//selecting paper content
-  // const [selectedPaper, setSelectedPaper] = useState({
-  //   id:0,
-  //   name: "",
-  //   fullName: "",
-  //   nic: "",
-  //   address: "",
-  //   contactNumber: "",
-  //   email: "",
-  //   dob: "",
-  //   gender: ""
-  // });
+
   const handleInputChange = (field, value) => {
     console.log("hello")
     setFormData({
@@ -211,7 +246,16 @@ const Filter = (event) => {
     )
   );
 };
-
+const [formErrors, setFormErrors] = useState({
+  fullName: '',
+  name: '',
+  nic: '',
+  address: '',
+  contactNumber: '',
+  email: '',
+  dob: '',
+  gender: ''
+});
 
 
 
@@ -274,40 +318,35 @@ const Filter = (event) => {
         </DialogTitle>
         <DialogContent>
           {/* Add form fields or other content here */}
-          <TextField required label="Full Name" fullWidth sx={{ mb: 1, mt: 3 }} onChange={(e) => handleInputChange("fullName", e.target.value)}/>
-          <TextField required label="Name" sx={{ mb: 1 }}  onChange={(e) => handleInputChange("name", e.target.value)}/>
-          <TextField required label="NIC" sx={{ ml: 4, mb: 1 }}  onChange={(e) => handleInputChange("nic", e.target.value)}/>
-          <TextField required label="Address" fullWidth sx={{ mb: 1 }}  onChange={(e) => handleInputChange("address", e.target.value)}/>
-          <TextField required label="Contact Number" sx={{ mb: 1 }}  onChange={(e) => handleInputChange("contactNumber", e.target.value)}/>
-          <TextField required label="E-mail" fullWidth sx={{ mb: 1 }} onChange={(e) => handleInputChange("email", e.target.value)}/>
-          {/* <TextField label="dob" sx={{ mb: 1 }}  onChange={(e) => handleInputChange("dob", e.target.value)}/> */}
+          <TextField required label="Full Name" fullWidthsx={{ mb: 1, mt: 3 }} onChange={(e) => handleInputChange("fullName", e.target.value)} error={!!formErrors.fullName}helperText={formErrors.fullName}/>          
+          <TextField required label="Name" sx={{ mb: 1 }}  onChange={(e) => handleInputChange("name", e.target.value)} error={!!formErrors.name}helperText={formErrors.name}/>
+          <TextField required label="Address" fullWidth sx={{ mb: 1 }}  onChange={(e) => handleInputChange("address", e.target.value)} error={!!formErrors.address}helperText={formErrors.address}/>
+          <TextField required label="NIC" sx={{ ml: 4, mb: 1 }}  onChange={(e) => handleInputChange("nic", e.target.value)} error={!!formErrors.nic}helperText={formErrors.nic}/>
+          <TextField required label="Contact Number" sx={{ mb: 1 }}  onChange={(e) => handleInputChange("contactNumber", e.target.value)} error={!!formErrors.contactNumber}helperText={formErrors.contactNumber}/>
+          <TextField required label="E-mail" fullWidth sx={{ mb: 1 }} onChange={(e) => handleInputChange("email", e.target.value)} error={!!formErrors.email}helperText={formErrors.email}/>
           <div style={{display:'flex'}}>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DemoContainer  components={['DateField']}>
         <DateField
-        
+          error={!!formErrors.dob}helperText={formErrors.dob}
           label="Date Of Birth"
           style={{width:'200px'}}
           required
-          // value={value}
           onChange={(newValue) => handleInputChange('dob', newValue)}
-          renderInput={(props) => <TextField {...props} />} // You may need to import TextField from '@mui/material/TextField'
-          // format="YYYY/MM/DD"
+          renderInput={(props) => <TextField {...props} />} // need to import TextField from '@mui/material/TextField'
         />
       </DemoContainer>
     </LocalizationProvider>
-          {/* <TextField label="Gender" sx={{ ml: 4, mb: 1 }} onChange={(e) => handleInputChange("gender", e.target.value)}/> */}
           <FormControl style={{marginLeft:'15px',marginTop:'8px'}}>
         <InputLabel id="demo-simple-select-label">Gender</InputLabel>
         <Select
         required
         style={{width:'200px'}}
         labelId="demo-simple-select-label"
-          // labelId="demo-simple-select-label"
           id="demo-simple-select"
-          // value={handleInputChange("gender", e.target.value)}
           label="Gender"
           onChange={(e) => handleInputChange("gender", e.target.value)}
+          error={!!formErrors.gender}helperText={formErrors.gender}
         >
           <MenuItem value={'Female'}>Female</MenuItem>
           <MenuItem value={'Male'}>Male</MenuItem>
@@ -315,7 +354,6 @@ const Filter = (event) => {
         </Select>
       </FormControl>
           </div>
-          {/* Add more fields as needed */}
         </DialogContent>
         <DialogActions>
           <Button
@@ -366,7 +404,7 @@ const Filter = (event) => {
             <Typography sx={{ flex: 1 }}>{row.name}</Typography>
             <Typography sx={{ flex: 1 }}>{row.nic}</Typography>
             <Typography sx={{ flex: 1 }}>{row.gender}</Typography>
-            <Typography sx={{ flex: 1 }}>{row.address}</Typography>
+            <Typography sx={{ flex: 1 }}>{row.email}</Typography>
           </Paper>
         ))}
       </Grid>

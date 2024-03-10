@@ -11,8 +11,8 @@ import { DateField } from '@mui/x-date-pickers/DateField';
 
 
 
-function createData(id,fullName,name,nic,address,contactNumber,qualifications,role,email,age,gender) {
-    return {id,fullName,name,nic,address,contactNumber,qualifications,role,email,age,gender};
+function createData(id,fullName,name,nic,address,contactNumber,qualifications,role,email,dob,gender) {
+    return {id,fullName,name,nic,address,contactNumber,qualifications,role,email,dob,gender};
   }
 
 
@@ -48,7 +48,7 @@ const [isDisabled, setIsDisabled] = useState(true);
     address: "",
     contactNumber: "",
     email: "",
-    age: "",
+    dob: "",
     gender: "",
     role:"",
     qualifications:""
@@ -68,11 +68,11 @@ const [isDisabled, setIsDisabled] = useState(true);
         data.qualifications,
         data.role,
         data.email,
-        data.age,
+        data.dob,
         data.gender,
         data.role,
         
-        // data.age
+        // data.dob
       ));
       setStaffData(apiData);
     })
@@ -94,7 +94,7 @@ const [isDisabled, setIsDisabled] = useState(true);
     address: formData.address,
     contactNumber: formData.contactNumber,
     email: formData.email,
-    age: formData.age,
+    dob: formData.dob,
     gender: formData.gender,
     qualifications:formData.qualifications,
     role:formData.role
@@ -107,7 +107,7 @@ const [isDisabled, setIsDisabled] = useState(true);
   //   address: formData.address,
   //   contactNumber: formData.contactNumber,
   //   email: formData.email,
-  //   age: formData.age,
+  //   dob: formData.dob,
   //   gender: formData.gender,
   //   qualifications:formData.qualifications,
   //   role:formData.role
@@ -180,7 +180,7 @@ try {
     setEditOpen(false);
           })
 } catch (error) {
-  // Handle error, show an error message or dispatch an error action
+  // Handle error, show an error messdob or dispatch an error action
   console.error('Error updating patient:', error.response.data);
   
 }
@@ -189,7 +189,7 @@ try {
 
   const handleEditClickOpen = (row) => {
     // setType(`Edit ${buttonNumber}`);
-    setFormData({...formData,id: row.id, name: row.name,role:row.role, fullName: row.fullName, nic: row.nic,address: row.address,contactNumber:row.contactNumber,email:row.email,age:row.age,gender:row.gender,qualifications:row.qualifications});
+    setFormData({...formData,id: row.id, name: row.name,role:row.role, fullName: row.fullName, nic: row.nic,address: row.address,contactNumber:row.contactNumber,email:row.email,dob:row.dob,gender:row.gender,qualifications:row.qualifications});
 console.log(pData.id)
     // setSelectedPaper(row);
     setEditOpen(true);
@@ -229,6 +229,15 @@ const deletePopUp = () =>{
   setDeleteOpen(true);
 }
 
+const fields = [
+  { label: "Full Name", key: "fullName", fullWidth: true },
+  { label: "Usual Name", key: "name" },
+  { label: "NIC", key: "nic" },
+  { label: "Address", key: "address", fullWidth: true },
+  { label: "Contact Number", key: "contactNumber" },
+  { label: "Qualifications", key: "qualifications" },
+  { label: "Email Address", key: "email" },
+];
 
 
   return (
@@ -284,13 +293,13 @@ const deletePopUp = () =>{
           {/* Add form fields or other content here */}
           <TextField required label="Full Name" fullWidth sx={{mb:2}}  onChange={(e) => handleInputChange("fullName", e.target.value)}/>
           <TextField required label="Usual Name"  sx={{ mb: 1 }} onChange={(e) => handleInputChange("name", e.target.value)}/>
-          <TextField required  label="NIC" sx={{ ml: 4, mb: 1 }} onChange={(e) => handleInputChange("NIC", e.target.value)}/>
+          <TextField required  label="NIC" sx={{ ml: 4, mb: 1 }} onChange={(e) => handleInputChange("nic", e.target.value)}/>
           <TextField required label="Address" fullWidth sx={{ mb: 1 }} onChange={(e) => handleInputChange("address", e.target.value)}/>
           <TextField required label="Contact Number" sx={{ mb: 1 }} onChange={(e) => handleInputChange("contactNumber", e.target.value)}/>
           <TextField required label="qualifications" sx={{ ml: 4, mb: 1 }} onChange={(e) => handleInputChange("qualifications", e.target.value)}/>
           {/* <TextField label="Role" fullWidth sx={{ mb: 1 }} onChange={(e) => handleInputChange("role", e.target.value)}/> */}
           <TextField required label="E-mail" fullWidth sx={{ mb: 1 }} onChange={(e) => handleInputChange("email", e.target.value)}/>
-          {/* <TextField label="Date of Birth" sx={{ mb: 1 }} onChange={(e) => handleInputChange("age", e.target.value)}/> */}
+          {/* <TextField label="Date of Birth" sx={{ mb: 1 }} onChange={(e) => handleInputChange("dob", e.target.value)}/> */}
           <div style={{display:'flex'}}>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DemoContainer components={['DateField']}>
@@ -299,7 +308,7 @@ const deletePopUp = () =>{
           style={{width:'200px'}}
           required
           // value={value}
-          onChange={(newValue) => handleInputChange('age', newValue)}
+          onChange={(newValue) => handleInputChange('dob', newValue)}
           renderInput={(props) => <TextField {...props} />} // You may need to import TextField from '@mui/material/TextField'
           // format="YYYY/MM/DD"
         />
@@ -339,132 +348,80 @@ const deletePopUp = () =>{
 
       {/* data editing */}
       <Dialog open={editOpen} onClose={handleEditClose}>
-        <DialogTitle
-          sx={{
-            backgroundColor: "rgb(222, 244, 242)",
-            display: "flex",
-            justifyContent: "space-between",
-          }}
-        >
-          Edit User
-          <CloseIcon onClick={handleEditClose} sx={{cursor:'pointer'}} />
-        </DialogTitle>
-        <DialogContent>
-          <TextField
-            label="Full Name"
-            fullWidth
-            margin="normal"
-            value={formData.fullName}
-            disabled={isDisabled}
-            onChange={(e) =>setFormData({...formData,fullName:e.target.value})}
-            />
-          <TextField
-            label="Usual Name"
-            margin="normal"
-            value={formData.name}
-            onChange={(e) => setFormData({...formData,name:e.target.value})}
-            disabled={isDisabled}
-          />
-          <TextField
-            label="NIC"
-            margin="normal"
-            sx={{ ml: 4 }}
-            value={formData.nic}
-            disabled={isDisabled}
-            onChange={(e) => setFormData({...formData,nic:e.target.value})}
-          />
-          <TextField
-            label="Address"
-            fullWidth
-            margin="normal"
-            value={formData.address}
-            onChange={(e) => setFormData({...formData,address:e.target.value})}
-            disabled={isDisabled}
-          />
-          <TextField
-            label="Contact Number"
-            margin="normal"
-            value={formData.contactNumber}
-            onChange={(e) => setFormData({...formData,contactNumber:e.target.value})}
-            disabled={isDisabled}
-          />
-          <TextField
-            label="qualifications"
-            margin="normal"
-            sx={{ ml: 4 }}
-            value={formData.qualifications}
-            onChange={(e) => setFormData({...formData,qualifications:e.target.value})}
-            disabled={isDisabled}
-          />
-                              <FormControl sx={{m:2,ml:4}}>
-           <InputLabel id="demo-simple-select-label">Gender</InputLabel>
-
-           </FormControl>
-<div style={{display:'flex'}}>
-<TextField
-            label="Email Address"
-            margin="normal"
-            value={formData.email}
-            onChange={(e) => setFormData({...formData,email:e.target.value})}
-            disabled={isDisabled}
-          />
-<LocalizationProvider dateAdapter={AdapterDayjs}>
-  <DemoContainer components={['DateField']}>
-    <DateField
-      label="Date Of Birth"
-      value={formData.age ? dayjs(formData.age) : null} // Ensure formData.age is a valid date or null
-      onChange={(newValue) => handleInputChange('age', newValue)}
-      renderInput={(props) => <TextField {...props} />}
-      style={{width:'200px',marginLeft:'35px',marginTop:'9px'}}
-      disabled= {isDisabled}
-      // format="YYYY/MM/DD" // You can add this line back if it's needed
-    />
-  </DemoContainer>
-</LocalizationProvider>
-</div>
-<Select
-    labelId="gender-label"
-    id="gender"
-    value={formData.gender}
-    onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
-    label="Gender"
-    disabled={isDisabled}
-    style={{width:"200px"}}
-    // sx={{m:1,ml:1}}
+  <DialogTitle
+    sx={{
+      backgroundColor: "rgb(222, 244, 242)",
+      display: "flex",
+      justifyContent: "space-between",
+    }}
   >
-    <MenuItem value="Male">Male</MenuItem>
-    <MenuItem value="Female">Female</MenuItem>
-    {/* <MenuItem value="other">Other</MenuItem> */}
-  </Select>
-
-
-
-
-
-
-         
-        </DialogContent>
-        <DialogActions>
-        {!isDisabled && (
-        <Button
-          onClick={deletePopUp}
-          variant="outlined"
-          color="error"
-          sx={{ m: 2 }}
-        >
-          Delete
-        </Button>
-      )}
-          <Button
-            onClick={isDisabled? handleEditClick : handleEditSave}
-            variant="contained"
-            sx={{ backgroundColor: "rgb(121, 204, 190)", m: 2 }}
-          >
-            {isDisabled ? 'Edit' : 'Save'}
-          </Button>
-
-        </DialogActions>
-      </Dialog>
+    Edit User
+    <CloseIcon onClick={handleEditClose} sx={{cursor:'pointer'}} />
+  </DialogTitle>
+  <DialogContent>
+    {fields.map((field) => (
+      <TextField
+        label={field.label}
+        fullWidth={field.fullWidth || false}
+        margin="normal"
+        value={formData[field.key]}
+        disabled={isDisabled}
+        onChange={(e) => setFormData({...formData, [field.key]: e.target.value})}
+      />
+    ))}
+    <FormControl sx={{m:2,ml:4}}>
+      <InputLabel id="demo-simple-select-label">Gender</InputLabel>
+    </FormControl>
+    <div style={{display:'flex'}}>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <DemoContainer components={['DateField']}>
+          <DateField
+            label="Date Of Birth"
+            value={formData.dob ? dayjs(formData.dob) : null} // Ensure formData.dob is a valid date or null
+            onChange={(newValue) => handleInputChange('dob', newValue)}
+            renderInput={(props) => <TextField {...props} />}
+            style={{width:'200px',marginLeft:'35px',marginTop:'9px'}}
+            disabled= {isDisabled}
+            // format="YYYY/MM/DD" // You can add this line back if it's needed
+          />
+        </DemoContainer>
+      </LocalizationProvider>
+    </div>
+    <Select
+      labelId="gender-label"
+      id="gender"
+      value={formData.gender}
+      onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
+      label="Gender"
+      disabled={isDisabled}
+      style={{width:"200px"}}
+      // sx={{m:1,ml:1}}
+    >
+      <MenuItem value="Male">Male</MenuItem>
+      <MenuItem value="Female">Female</MenuItem>
+      {/* <MenuItem value="other">Other</MenuItem> */}
+    </Select>
+  </DialogContent>
+  <DialogActions>
+  {!isDisabled && (
+    <Button
+      onClick={deletePopUp}
+      variant="outlined"
+      color="error"
+      sx={{ m: 2 }}
+    >
+      Delete
+    </Button>
+  )}
+    <Button
+      onClick={isDisabled? handleEditClick : handleEditSave}
+      variant="contained"
+      sx={{ backgroundColor: "rgb(121, 204, 190)", m: 2 }}
+    >
+      {isDisabled ? 'Edit' : 'Save'}
+    </Button>
+  </DialogActions>
+</Dialog>
 
       {/* Dr Data Paper */}
       {row2.filter(row=>row.role === 'Doctor').map((row)=>

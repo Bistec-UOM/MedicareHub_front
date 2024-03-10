@@ -23,14 +23,15 @@ const rows = [
 const AOther = () => {
     return (
         <div>
-            <Paper sx={{margin:'20px',boxShadow:5}}>
+              <Typography sx={{textAlign:'center',fontWeight:'bolder',fontSize:'20px'}}>Attendance of Staff</Typography>
+            <Paper sx={{margin:'20px'}}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell align='center'>Name </TableCell>
-          <TableCell align='center'>Attendance(%)</TableCell>
-          <TableCell align="center">Attendance</TableCell>
-          <TableCell align="center">Reasonable Leaves</TableCell>
+            <TableCell align='center' sx={{ fontWeight: 'bold' }}>Name </TableCell>
+          <TableCell align='center' sx={{ fontWeight: 'bold' }}>Attendance(%)</TableCell>
+          <TableCell align="center" sx={{ fontWeight: 'bold' }}>Attendance</TableCell>
+          <TableCell align="center" sx={{ fontWeight: 'bold' }}>Reasonable Leaves</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>

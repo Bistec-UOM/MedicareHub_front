@@ -34,8 +34,7 @@ export default function Analysis() {
                     return (
                         <div>
                             <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                <Typography sx={{ textAlign: 'center',fontSize:30, flex: 1 }}>{selectedNavItem.toUpperCase()}</Typography>
-                                <List sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', position: 'relative', top: '-9px' }}>
+                            <Typography sx={{color:'rgb(105, 116, 115)', textAlign: 'center',fontSize:25,fontWeight:'bold', flex: 1 }}>{selectedNavItem.toUpperCase()}</Typography>                                <List sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', position: 'relative', top: '-9px' }}>
                                     {["income", "patient", "drug", 'other'].map((text, index) => (
                                         <ListItem key={text} sx={{ width: '10vw' }}>
                                             <ListItemButton
