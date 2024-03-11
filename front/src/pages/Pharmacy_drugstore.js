@@ -265,7 +265,7 @@ export default function Pharmacy_drugstore() {
 
     <Grid container spacing={0} sx={{paddingTop:'64px',height:'100vh'}}>
       <Grid item xs={3} style={{height:'100%',backgroundColor:'#DEF4F2'}}>
-        <SidebarContainer>
+        <SidebarContainer sx={{ backgroundColor:'#E7FFF9'}}>
           <SidebarTop>
 
           </SidebarTop>
