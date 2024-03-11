@@ -99,29 +99,29 @@ const handleClick = () => {
      date:1,
       id:51,  // -----------------------------------> appointment Id-------  
       patient:{
-          name:"dhgwhjdbjhw",
-          age:30,
-          gender:"male"
+          name:"Nethmi Eranga",
+          age:23,
+          gender:"female"
         },
         time: "13:15",
         status: "done"
     },
     {
-      date:16,
+      date:2,
       id:52,    
       patient:{
-          name:"nethmi",
+          name:"Dammika mahendra",
           age:18,
-          gender:"female"
+          gender:"male"
         },
         time: "14:15",
         status: "done"
     },
     {
-      date:12,
+      date:3,
       id:53,    
       patient:{
-          name:"eranga",
+          name:"Yasiru Ramosh",
           age:8,
           gender:"male",
         },
@@ -129,22 +129,88 @@ const handleClick = () => {
         status: "done"
     },
     {
-      date:19,
+      date:4,
       id:54,    
       patient:{
-          name:"wijeweera",
-          age:22,
+          name:"Chathumini Pamodya",
+          age:32,
           gender:"female"
         },
         time: "13:15",
         status: "done"
     },
     {
-      date:10,
+      date:5,
       id:55,    
       patient:{
-          name:"mihiran",
+          name:"Chalana Mihiran",
+          age:22,
+          gender:"male"
+        },
+        time: "13:15",
+        status: "done"
+    },
+    {
+      date:6,
+      id:56,    
+      patient:{
+          name:"Dilini tharaka",
+          age:42,
+          gender:"female"
+        },
+        time: "13:15",
+        status: "done"
+    },
+    {
+      date:7,
+      id:57,    
+      patient:{
+          name:"Hasini Chamodi",
+          age:52,
+          gender:"female"
+        },
+        time: "13:15",
+        status: "done"
+    },
+    {
+      date:8,
+      id:58,    
+      patient:{
+          name:"Mihiran Iddamalgoda",
           age:38,
+          gender:"male"
+        },
+        time: "13:15",
+        status: "done"
+    },
+    {
+      date:9,
+      id:59,    
+      patient:{
+          name:"Sunil Perera",
+          age:22,
+          gender:"male"
+        },
+        time: "13:15",
+        status: "done"
+    },
+    {
+      date:10,
+      id:60,    
+      patient:{
+          name:"Nimal Senarathna",
+          age:16,
+          gender:"male"
+        },
+        time: "13:15",
+        status: "done"
+    },
+    {
+      date:11,
+      id:61,    
+      patient:{
+          name:"Kasun Perera",
+          age:60,
           gender:"male"
         },
         time: "13:15",
