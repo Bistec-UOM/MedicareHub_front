@@ -17,6 +17,8 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import { Sideunit_Bill } from '../components/sidebar/Sideunits';
 import axios from 'axios';
+import AddIcon from '@mui/icons-material/Add';
+import Avatar from '@mui/material/Avatar';
 
 function createData(
   ID,
@@ -387,6 +389,7 @@ export default function Pharmacy_drugstore() {
   <Grid item xs={2}>
   <Typography sx={{flex:1}}>{row.price}</Typography>
   </Grid>
+ 
 </Grid>
     </Card>
     </div>

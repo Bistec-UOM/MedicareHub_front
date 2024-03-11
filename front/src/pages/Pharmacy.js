@@ -47,10 +47,10 @@ const handleChange = (event,no) => {
     setSelectedQuantities(newQuantities);
 };
 
-const medicine =[{name:"Acetaminophe",quantity:"10",hour:"BID",value:"10",unit_price:"15.00",fullprice:"150.00"},
-             {name:"Sumatripan",quantity:"20",hour:"BID",value:"10",unit_price:"04.50",fullprice:"45.00"},
-             {name:"Rizatripan",quantity:"0.5",hour:"4H",value:"",unit_price:"",fullprice:""},
-];
+// const medicine =[{name:"Acetaminophe",quantity:"10",hour:"BID",value:"10",unit_price:"15.00",fullprice:"150.00"},
+//              {name:"Sumatripan",quantity:"20",hour:"BID",value:"10",unit_price:"04.50",fullprice:"45.00"},
+//              {name:"Rizatripan",quantity:"0.5",hour:"4H",value:"",unit_price:"",fullprice:""},
+// ];
 
 const result = 10 * 15
   useEffect(()=>{
@@ -59,7 +59,7 @@ const result = 10 * 15
 
    const [select,setSelect]=useState(null)
 
-   
+   //   data for when click storing
    const data=[
     {
        id:51,  // -----------------------------------> prescription Id-------  
@@ -69,7 +69,12 @@ const result = 10 * 15
            gender:"male"
          },
          name:"Dhammika Mahendra",
-         time: "08:10"
+         time: "08:10",
+         medicine :[{name:"Acetaminophe",quantity:"10",hour:"BID",value:"10",unit_price:"15.00",fullprice:"150.00"},
+             {name:"Sumatripan",quantity:"20",hour:"BID",value:"10",unit_price:"04.50",fullprice:"45.00"},
+             {name:"Rizatripan",quantity:"0.5",hour:"4H",value:"",unit_price:"",fullprice:""},
+]
+
          
      },
      {
@@ -80,8 +85,10 @@ const result = 10 * 15
            gender:"female"
          },
          name:"Nethmi Eranga",
-         time: "09:15"
+         time: "09:15",
+         medicine :[{name:"Acetaminophe",quantity:"10",hour:"BID",value:"10",unit_price:"15.00",fullprice:"150.00"},
          
+]    
      },
      {
        id:53,    
@@ -91,8 +98,10 @@ const result = 10 * 15
            gender:"female",
          },
          name:"Chathumini Pamodya",
-         time: "10:10"
-         
+         time: "10:10",
+         medicine :[{name:"Sumatripan",quantity:"20",hour:"BID",value:"10",unit_price:"04.50",fullprice:"45.00"},
+         {name:"Rizatripan",quantity:"0.5",hour:"4H",value:"",unit_price:"",fullprice:""},
+]       
      },
      {
        id:54,    
@@ -102,8 +111,10 @@ const result = 10 * 15
            gender:"male"
          },
          name:"Yasiru Ramosh",
-         time: "10:25"
-         
+         time: "10:25",
+         medicine :[{name:"Sumatripan",quantity:"10",hour:"BID",value:"10",unit_price:"15.00",fullprice:"150.00"},
+         {name:"Rizatripan",quantity:"0.5",hour:"4H",value:"",unit_price:"",fullprice:""},
+]        
      },
      {
        id:55,    
@@ -113,8 +124,13 @@ const result = 10 * 15
            gender:"male"
          },
          name:"Chathura Ishara",
-         time: "11:15"
+         time: "11:15",
+         medicine :[{name:"Paracitamol",quantity:"10",hour:"BID",value:"10",unit_price:"15.00",fullprice:"150.00"},
+         {name:"Zithraceene",quantity:"20",hour:"BID",value:"10",unit_price:"04.50",fullprice:"45.00"},
+         {name:"Zithraceene",quantity:"20",hour:"BID",value:"10",unit_price:"04.50",fullprice:"45.00"},
+         {name:"Zithraceene",quantity:"20",hour:"BID",value:"10",unit_price:"04.50",fullprice:"45.00"},
          
+]
      },
      {
       id:75,    
@@ -124,8 +140,11 @@ const result = 10 * 15
           gender:"female"
         },
         name:"Hasini Chamodi",
-        time: "13:15"
+        time: "13:15",
+        medicine :[{name:"Acetaminophe",quantity:"10",hour:"BID",value:"10",unit_price:"15.00",fullprice:"150.00"},
+        {name:"Sumatripan",quantity:"20",hour:"BID",value:"10",unit_price:"04.50",fullprice:"45.00"},
         
+]
     },
     {
       id:76,    
@@ -135,8 +154,11 @@ const result = 10 * 15
           gender:"female"
         },
         name:"Nelunika Nuwanthi",
-        time: "13:35"
-        
+        time: "13:35",
+        medicine :[{name:"Acetaminophe",quantity:"10",hour:"BID",value:"10",unit_price:"15.00",fullprice:"150.00"},
+        {name:"Sumatripan",quantity:"20",hour:"BID",value:"10",unit_price:"04.50",fullprice:"45.00"},
+        {name:"Rizatripan",quantity:"0.5",hour:"4H",value:"",unit_price:"",fullprice:""},
+]
     },
     {
       id:79,    
@@ -146,8 +168,11 @@ const result = 10 * 15
           gender:"male"
         },
         name:"Methnula Thisum",
-        time: "14:15"
-        
+        time: "14:15",
+        medicine :[{name:"Acetaminophe",quantity:"10",hour:"BID",value:"10",unit_price:"15.00",fullprice:"150.00"},
+        {name:"Sumatripan",quantity:"20",hour:"BID",value:"10",unit_price:"04.50",fullprice:"45.00"},
+        {name:"Rizatripan",quantity:"0.5",hour:"4H",value:"",unit_price:"",fullprice:""},
+]
     },
     {
       id:81,    
@@ -157,8 +182,10 @@ const result = 10 * 15
           gender:"female"
         },
         name:"Eranga Kumari",
-        time: "14:45"
-        
+        time: "14:45", 
+        medicine :[ {name:"Sumatripan",quantity:"20",hour:"BID",value:"10",unit_price:"04.50",fullprice:"45.00"},
+        {name:"Rizatripan",quantity:"0.5",hour:"4H",value:"",unit_price:"",fullprice:""},
+] 
     },
     {
       id:88,    
@@ -168,7 +195,11 @@ const result = 10 * 15
           gender:"male"
         },
         name:"Kasun Kasun",
-        time: "15:15"
+        time: "15:15",
+        medicine :[{name:"Acetaminophe",quantity:"10",hour:"BID",value:"10",unit_price:"15.00",fullprice:"150.00"},
+        {name:"Sumatripan",quantity:"20",hour:"BID",value:"10",unit_price:"04.50",fullprice:"45.00"},
+        {name:"Rizatripan",quantity:"0.5",hour:"4H",value:"",unit_price:"",fullprice:""},
+]
         
     },
     {
@@ -179,7 +210,11 @@ const result = 10 * 15
           gender:"male"
         },
         name:"Saman Perera",
-        time: "15:19"
+        time: "15:19",
+        medicine :[{name:"Acetaminophe",quantity:"10",hour:"BID",value:"10",unit_price:"15.00",fullprice:"150.00"},
+        {name:"Sumatripan",quantity:"20",hour:"BID",value:"10",unit_price:"04.50",fullprice:"45.00"},
+        
+]
         
     },
    
@@ -191,7 +226,12 @@ const result = 10 * 15
           gender:"female"
         },
         name:"Pabodya Baumika",
-        time: "13:15"
+        time: "13:15",
+        medicine :[{name:"Acetaminophe",quantity:"10",hour:"BID",value:"10",unit_price:"15.00",fullprice:"150.00"},
+        {name:"Sumatripan",quantity:"20",hour:"BID",value:"10",unit_price:"04.50",fullprice:"45.00"},
+        {name:"Rizatripan",quantity:"0.5",hour:"4H",value:"",unit_price:"",fullprice:""},
+]
+
         
     },
     {
@@ -202,8 +242,12 @@ const result = 10 * 15
           gender:"female"
         },
         name:"Akasha",
-        time: "13:15"
-        
+        time: "13:15",
+        medicine :[{name:"Acetaminophe",quantity:"10",hour:"BID",value:"10",unit_price:"15.00",fullprice:"150.00"},
+        {name:"Sumatripan",quantity:"20",hour:"BID",value:"10",unit_price:"04.50",fullprice:"45.00"},
+        {name:"Rizatripan",quantity:"0.5",hour:"4H",value:"",unit_price:"",fullprice:""},
+]
+
     },
      
    ] 
@@ -237,7 +281,7 @@ const result = 10 * 15
       <Grid item xs={9} style={{height:'100%',overflowY:'scroll'}}>
       {select ? (
       <div style={{ position: 'sticky', top: 0, zIndex: 1000 }}>
-          {selectedPrescription.map((patientdata, id) => (
+          {selectedPrescription.map((patientdata, id) => (       // name card dispaly in patient detail
       <Card  key={id} sx={{ minWidth: 275 }}>
         <CardContent>
          <div> <Typography gutterBottom variant='h6'>{selectedPrescription[0].patientdata.name}</Typography></div>
@@ -251,9 +295,11 @@ const result = 10 * 15
       (
         <Typography gutterBottom variant="p"></Typography>
     ) }
-      
+      {select ? (
       <div>
-      {medicine.map((drug, no) => (
+        {selectedPrescription.map((prescription, index) => ( //   drug detail rendering
+          <div key={index}>
+      {prescription.medicine.map((drug, no) => (           
         <Grid key={no} container spacing={1} sx={{marginTop:"10px",}}>
         <Grid item xs={12}>
         <Card sx={{ backgroundColor: '#0099cc',display:'flex',flexDirection:'row', color: 'white', fontSize: '20px',width:"500px",marginLeft:"10px"}}>
@@ -274,12 +320,12 @@ const result = 10 * 15
         label="Quantity"
         onChange={(event) => handleChange(event, no)}
        
-      >
-        <MenuItem value="">
+      >      
+        <MenuItem value="">       
           <em>None</em>
         </MenuItem>
         <MenuItem value={10}>10 mg</MenuItem>
-        <MenuItem value={20}>20 mg</MenuItem>
+        <MenuItem value={20}>20 mg</MenuItem>      
         <MenuItem value={30}>30 mg</MenuItem>
       </Select>
     </FormControl>
@@ -298,9 +344,14 @@ const result = 10 * 15
         </Grid> 
       ))}
       </div>
-      
+      ))}
+      </div>
+       ) : (
+        <Typography gutterBottom variant="p"></Typography>
+      )}
+      {select && (         // used for not visible this in page untill click
+  <div>
       <div style={{ textAlign: 'right' }}>
-      
       <Divider style={dividerStyle} />
       <Typography sx={{marginRight:'237px',}}><b>195.00</b></Typography>
     </div>
@@ -339,12 +390,13 @@ const result = 10 * 15
     </div>
     
     <div style={{ textAlign: 'right', marginTop: '20px', marginBottom: '20px' }}>
-    <PrintIcon sx={{ width: '60px', height: '50px', marginRight: '20px' }} />
-    <Button variant="contained" sx={{ backgroundColor: '#00cca3' }}>
+    <PrintIcon sx={{ width: '60px', height: '50px', marginRight: '30px' }} />
+    <Button variant="contained" sx={{ backgroundColor: '#00cca3',marginRight: '220px' }}>
       Confirm
     </Button>
   </div>
-<br></br>
+</div>
+)}
       </Grid>
     </Grid>
 
