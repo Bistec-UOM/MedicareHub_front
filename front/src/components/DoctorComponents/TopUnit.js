@@ -1,5 +1,5 @@
 import { Typography,Box, TextField,Grid,Card } from '@mui/material';
-import React from 'react'
+import React, { useState } from 'react'
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import Dialog from '@mui/material/Dialog';
@@ -10,42 +10,27 @@ import IconButton from '@mui/material/IconButton';
 
 import CloseIcon from '@mui/icons-material/Close';
 
-export default function TopUnit() {
+export default function TopUnit(props) {
 
 //display date
   const currentDate = new Date();
   const formattedDate = currentDate.toDateString();
   const [open, setOpen] = React.useState(false);
+  const [filteredAppointmentsdone, setFilteredAppointmentsdone] = useState([]);
   const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
   });
   
   const handleClickOpen = () => {
     setOpen(true);
+    const filteredAppointments = props.appointments.filter(appointment => appointment.status === "done");
+    setFilteredAppointmentsdone(filteredAppointments);
   };
+
   const handleClose = () => {
     setOpen(false);
   };
-  const patients=[
-    {
-    patient:{
-      id:1,
-      name:"Nethmi Eranga",
-      age:23,
-      gender:"female"
-    },
-    time: "13:15",
-  },
-  {
-    patient:{
-      id:1,
-      name:"Nethmi Eranga",
-      age:23,
-      gender:"female"
-    },
-    time: "13:15",
-  }
-  ]
+ 
 
   
   return (
@@ -57,8 +42,7 @@ export default function TopUnit() {
     </Box>
       <Dialog
       fullScreen
-      open={open}
-      onClose={handleClose}
+      open={open}     
       TransitionComponent={Transition}>
       <AppBar sx={{ position: 'relative',backgroundColor:'#E7FFF9'}}>
           <Toolbar>
@@ -80,19 +64,20 @@ export default function TopUnit() {
         <br></br>       
        
         <TextField   label="Search" sx={{width:'25%', margin: '20px',  boxShadow: '0px 0px 20px rgba(0, 0, 0, 0.1)'}}></TextField>
-        <Grid container spacing={3} sx={{ marginTop: "5px",}}>
-          {patients.map((patient) => (
+        <Grid container spacing={5} sx={{ marginTop: "5px",}}>
+          {filteredAppointmentsdone.map((appoinment) => (
           
-                        <Grid key={patient.patient.id} item xs={12} sm={8} sx={{ marginLeft: '20%', width: 'auto', }}>
+                        <Grid key={appoinment.id} item xs={12} sm={8} sx={{ marginLeft: '20%', width: 'auto', }}>
 
                         <Card style={{ display: 'flex', flexDirection: 'row', fontSize: '18px', }}>
                           
-                          <Typography gutterBottom variant="p" sx={{ flex: '3', marginLeft: '10px' }}>{patient.patient.name}</Typography>
+                          <Typography gutterBottom variant="p" sx={{ flex: '3', marginLeft: '10px' }}>{appoinment.patient.name}</Typography>
     
-                          <Typography gutterBottom variant="p" sx={{ flex: '2', marginLeft: '50px' }}>{patient.patient.age} years</Typography>
+                          <Typography gutterBottom variant="p" sx={{ flex: '2', marginLeft: '50px' }}>{appoinment.patient.age} years</Typography>
     
-                          <Typography gutterBottom variant="p" sx={{ flex: '1', marginLeft: '100px' }}>{patient.patient.gender}</Typography>
-                          <Typography gutterBottom variant="p" sx={{ flex: '1', marginLeft: '100px' }}>{patient.time}</Typography>
+                          <Typography gutterBottom variant="p" sx={{ flex: '1', marginLeft: '100px' }}>{appoinment.patient.gender}</Typography>
+                          <Typography gutterBottom variant="p" sx={{ flex: '1', marginLeft: '100px' }}>{appoinment.time}</Typography>
+                          <Typography gutterBottom variant="p" sx={{ flex: '1', marginLeft: '100px' }}>{appoinment.status}</Typography>
                           </Card>
                           
                         </Grid>
