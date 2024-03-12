@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { SidebarContainer, SidebarTop, SidebarList } from '../components/sidebar/Sidebar'
 import Navbar from '../components/navbar/Navbar'
-import { Grid, Card, Typography } from '@mui/material'
+import { Grid, Card, Typography, Switch} from '@mui/material'
 import CardContent from '@mui/material/CardContent';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
@@ -104,7 +104,7 @@ const handleClick = () => {
           gender:"female"
         },
         time: "13:15",
-        status: "done"
+        status: "pending"
     },
     {
       date:2,
@@ -115,7 +115,7 @@ const handleClick = () => {
           gender:"male"
         },
         time: "14:15",
-        status: "done"
+        status: "pending"
     },
     {
       date:3,
@@ -126,7 +126,7 @@ const handleClick = () => {
           gender:"male",
         },
         time: "13:15",
-        status: "done"
+        status: "pending"
     },
     {
       date:4,
@@ -137,7 +137,7 @@ const handleClick = () => {
           gender:"female"
         },
         time: "13:15",
-        status: "done"
+        status: "pending"
     },
     {
       date:5,
@@ -148,7 +148,7 @@ const handleClick = () => {
           gender:"male"
         },
         time: "13:15",
-        status: "done"
+        status: "pending"
     },
     {
       date:6,
@@ -159,7 +159,7 @@ const handleClick = () => {
           gender:"female"
         },
         time: "13:15",
-        status: "done"
+        status: "pending"
     },
     {
       date:7,
@@ -170,7 +170,7 @@ const handleClick = () => {
           gender:"female"
         },
         time: "13:15",
-        status: "done"
+        status: "pending"
     },
     {
       date:8,
@@ -181,7 +181,7 @@ const handleClick = () => {
           gender:"male"
         },
         time: "13:15",
-        status: "done"
+        status: "pending"
     },
     {
       date:9,
@@ -192,7 +192,7 @@ const handleClick = () => {
           gender:"male"
         },
         time: "13:15",
-        status: "done"
+        status: "pending"
     },
     {
       date:10,
@@ -203,7 +203,7 @@ const handleClick = () => {
           gender:"male"
         },
         time: "13:15",
-        status: "done"
+        status: "pending"
     },
     {
       date:11,
@@ -214,7 +214,7 @@ const handleClick = () => {
           gender:"male"
         },
         time: "13:15",
-        status: "done"
+        status: "pending"
     },
     
   ]
@@ -234,7 +234,8 @@ const handleClick = () => {
               <SidebarTop>
                 <TopUnit></TopUnit>
               </SidebarTop>
-              <SidebarList>
+              <SidebarList >
+                <Switch defaultChecked size="small" sx={{position:'fixed',left:'8px',top:'125px'}}/>
                 {x.map((elm, ind) => {
                   return (
                   <Sideunit_Patient
