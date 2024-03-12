@@ -31,6 +31,9 @@ export default function Doctor() {
   const [openAreports, setOpenAreports] = useState(false);
   const [description,setDescription] = useState ("");
   const [open, setOpen] = React.useState(false); //for snapbar
+  const [showDonePatients, setShowDonePatients] = useState(false); // State to track switch toggle
+  const [pres,setPres]=useState([]) // hold the pres details from doctoradd drug component
+  const [rep,setrep]=useState([]) // hold the  lab request from doctoradd drug component
   
   useEffect(() => {
     document.body.style.margin = '0';
@@ -62,20 +65,29 @@ export default function Doctor() {
     setOpen(true);
   };
  
-  
-
-  // Remove after click the confirm buttun
   const confirmRemoving = () => {
-    if (select !== null) {
-        const updatedAppointments = x.filter(appointment => appointment.id !== select); // Filter out the selected appointment          
-        updatedAppointments.pres = [];
-        updatedAppointments.rep = [];
-        updatedAppointments.description = '';        
-        setX(updatedAppointments); // remove the selected patient in the appointments array
-        setSelect(null);
-        setOpen(false); // Clear the selected patient account      
-      }
+  if (select !== null) {
+      const updatedAppointments = x.map(appointment => {
+          if (appointment.id === select) {
+              // Update status to "done"
+              appointment.status = "done";
+
+              // Clear other fields if needed
+              appointment.drugs = [];
+              appointment.labs = [];
+              appointment.descript = '';
+          }
+          return appointment;
+      });
+
+      // Display updated appointments
+      console.log("Updated Appointments:", updatedAppointments);
+      setX(updatedAppointments);
+      setSelect(null);
+      setOpen(false); // Clear the selected patient account      
+  }
 };
+
 const handleClick = () => {
  
   handlesnapbarClick();
@@ -215,16 +227,13 @@ const handleClick = () => {
         },
         time: "13:15",
         status: "pending"
-    },
-    
+    },    
   ]
-
-  const [pres,setPres]=useState([]) // hold the pres details from doctoradd drug component
-  const [rep,setrep]=useState([]) // hold the  lab request from doctoradd drug component
+  
 
   const [x,setX]=useState(data)
   const selectedAppointment = select ? x.filter(appointment => appointment.id === select) : [];//------------filter  the selected patient----------
- 
+  const filteredAppointments = showDonePatients ? x.filter(appointment => appointment.status === "pending") : x;
  return (
   <div>
   <Navbar></Navbar>
@@ -235,13 +244,19 @@ const handleClick = () => {
                 <TopUnit></TopUnit>
               </SidebarTop>
               <SidebarList >
-                <Switch defaultChecked size="small" sx={{position:'fixed',left:'8px',top:'125px'}}/>
-                {x.map((elm, ind) => {
-                  return (
-                  <Sideunit_Patient
-                  key={ind} id={elm.id} name={elm.patient.name} time={elm["time"]} status={elm["status"]} setSelect={setSelect} selected={elm.id === select ? true : ''}></Sideunit_Patient>
-                    );
-                  })}
+                <Switch defaultChecked size="small" sx={{position:'fixed',left:'8px',top:'125px'}}
+                onChange={() => setShowDonePatients(prev => !prev)}/>
+                {filteredAppointments.map((elm, ind) => (
+                                <Sideunit_Patient
+                                    key={ind}
+                                    id={elm.id}
+                                    name={elm.patient.name}
+                                    time={elm.time}
+                                    status={elm.status}
+                                    setSelect={setSelect}
+                                    selected={elm.id === select ? true : ''}
+                                />
+                            ))}
               </SidebarList>
           </SidebarContainer>
       </Grid>
@@ -287,7 +302,7 @@ const handleClick = () => {
                       <Button variant="contained" sx={{ backgroundColor: '#00cca3', left: '80%' }} onClick={handleClick}>Confirm</Button>
                       <div>
       
-      <Snackbar open={open} autoHideDuration={6000}  anchorOrigin={{ vertical: 'bottom', horizontal: 'right'}} >
+      <Snackbar open={open} autoHideDuration={6000}  anchorOrigin={{ vertical: 'bottom', horizontal: 'left'}} >
         <Alert             
           severity="success"
           variant="filled"          

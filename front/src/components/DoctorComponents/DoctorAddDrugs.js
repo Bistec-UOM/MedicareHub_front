@@ -82,8 +82,8 @@ export default function DoctorAddDrugs(props) {
         )}
           <div>
           </div>
-          <TextField variant="outlined" size="small"
-                    sx={{ flex: '1', marginRight: '11px', '& .MuiOutlinedInput-root': { '& fieldset': { borderColor: '#0099cc', borderWidth: '2px' } } }} 
+          <TextField variant="outlined" size="small"  label="Amount"
+                    sx={{ flex: '1',fontSize: '13px', marginRight: '11px', '& .MuiOutlinedInput-root': { '& fieldset': { borderColor: '#0099cc', borderWidth: '2px' } } }} 
             value={quantity}
             onChange={(e) => setQuantity(e.target.value)}            
           />
