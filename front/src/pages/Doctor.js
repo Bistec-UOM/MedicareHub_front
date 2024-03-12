@@ -23,7 +23,7 @@ import Alert from '@mui/material/Alert';
 import TopUnit from '../components/DoctorComponents/TopUnit';
 
 export default function Doctor() {
-
+  const [appointments, setAppointments] = useState([]);
   const [select,setSelect]=useState(null);//---------------hold the selected appoinment patient-----------------------------
   const [openPopup, setOpenPopup] = useState(false);
   const [openBox, setOpenBox] = useState(false);
@@ -31,10 +31,10 @@ export default function Doctor() {
   const [openAreports, setOpenAreports] = useState(false);
   const [description,setDescription] = useState ("");
   const [open, setOpen] = React.useState(false); //for snapbar
-  const [showDonePatients, setShowDonePatients] = useState(false); // State to track switch toggle
+  const [showDonePatients, setShowDonePatients] = useState(false);
+  const [showPendingPatients, setShowPendingPatients] =  useState(false);// State to track switch toggle
   const [pres,setPres]=useState([]) // hold the pres details from doctoradd drug component
   const [rep,setrep]=useState([]) // hold the  lab request from doctoradd drug component
-  
   useEffect(() => {
     document.body.style.margin = '0';
   }, [])
@@ -115,7 +115,7 @@ const handleClick = () => {
           age:23,
           gender:"female"
         },
-        time: "13:15",
+        time: "9:15",
         status: "pending"
     },
     {
@@ -126,7 +126,7 @@ const handleClick = () => {
           age:18,
           gender:"male"
         },
-        time: "14:15",
+        time: "10:30",
         status: "pending"
     },
     {
@@ -137,7 +137,7 @@ const handleClick = () => {
           age:8,
           gender:"male",
         },
-        time: "13:15",
+        time: "11:15",
         status: "pending"
     },
     {
@@ -148,7 +148,7 @@ const handleClick = () => {
           age:32,
           gender:"female"
         },
-        time: "13:15",
+        time: "12:00",
         status: "pending"
     },
     {
@@ -159,7 +159,7 @@ const handleClick = () => {
           age:22,
           gender:"male"
         },
-        time: "13:15",
+        time: "13:05",
         status: "pending"
     },
     {
@@ -170,7 +170,7 @@ const handleClick = () => {
           age:42,
           gender:"female"
         },
-        time: "13:15",
+        time: "14:15",
         status: "pending"
     },
     {
@@ -181,7 +181,7 @@ const handleClick = () => {
           age:52,
           gender:"female"
         },
-        time: "13:15",
+        time: "15:00",
         status: "pending"
     },
     {
@@ -192,7 +192,7 @@ const handleClick = () => {
           age:38,
           gender:"male"
         },
-        time: "13:15",
+        time: "15:30",
         status: "pending"
     },
     {
@@ -203,7 +203,7 @@ const handleClick = () => {
           age:22,
           gender:"male"
         },
-        time: "13:15",
+        time: "15:45",
         status: "pending"
     },
     {
@@ -214,7 +214,7 @@ const handleClick = () => {
           age:16,
           gender:"male"
         },
-        time: "13:15",
+        time: "16:00",
         status: "pending"
     },
     {
@@ -225,7 +225,7 @@ const handleClick = () => {
           age:60,
           gender:"male"
         },
-        time: "13:15",
+        time: "16:15",
         status: "pending"
     },    
   ]
@@ -234,6 +234,7 @@ const handleClick = () => {
   const [x,setX]=useState(data)
   const selectedAppointment = select ? x.filter(appointment => appointment.id === select) : [];//------------filter  the selected patient----------
   const filteredAppointments = showDonePatients ? x.filter(appointment => appointment.status === "pending") : x;
+ 
  return (
   <div>
   <Navbar></Navbar>
@@ -241,7 +242,7 @@ const handleClick = () => {
       <Grid item xs={3} style={{ height: '100%', backgroundColor:'#E7FFF9'}}>
           <SidebarContainer sx={{ backgroundColor:'#E7FFF9'}}>
               <SidebarTop>
-                <TopUnit></TopUnit>
+              <TopUnit appointments={x} ></TopUnit>
               </SidebarTop>
               <SidebarList >
                 <Switch defaultChecked size="small" sx={{position:'fixed',left:'8px',top:'125px'}}
