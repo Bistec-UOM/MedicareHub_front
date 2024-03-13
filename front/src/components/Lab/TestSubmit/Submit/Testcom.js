@@ -35,8 +35,12 @@ export default function Testcom({test,handleClose}) {
   }
 
   const submitData=()=>{
-
-    handleClose()
+    setTimeout(() => {
+      handleClose()
+    }, 3000)
+    setTimeout(() => {
+      handleClick1()
+    }, 2500)
   }
 
   const enterData=(indx,x)=>{

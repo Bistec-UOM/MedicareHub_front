@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { Box,FormGroup,FormControlLabel,Checkbox, Typography, Paper} from '@mui/material'
+import { Box,FormGroup,FormControlLabel,Checkbox, Typography, Paper, Divider} from '@mui/material'
 
 
 const Doctor_analytics = () => {
@@ -20,18 +20,18 @@ const Doctor_analytics = () => {
   };
   
   const [data,setData] = useState([
-    { month: 'Jan', Levothyroxine: 50, Iodine: 10 , Thyroxin:5},
-    { month: 'Feb', Levothyroxine: 50, Iodine: 10 , Thyroxin:5},
-    { month: 'Mar', Levothyroxine: 50, Iodine: 10 , Thyroxin:5},
-    { month: 'Apr', Levothyroxine: 50, Iodine: 10 , Thyroxin:5},
-    { month: 'May', Levothyroxine: 50, Iodine: 10 , Thyroxin:6},
-    { month: 'Jun', Levothyroxine: 50, Iodine: 20, Thyroxin:8},
-    { month: 'Jul', Levothyroxine: 25, Iodine: 20 , Thyroxin:8},
-    { month: 'Aug', Levothyroxine: 25, Iodine: 20 , Thyroxin:10},
-    { month: 'Sep', Levothyroxine: 20, Iodine: 20 , Thyroxin:12},
-    { month: 'Oct', Levothyroxine: 20, Iodine: 30 , Thyroxin:16},
-    { month: 'Nov', Levothyroxine: 20, Iodine: 30 , Thyroxin:22},
-    { month: 'Dec', Levothyroxine: 20, Iodine: 30 , Thyroxin:22},
+    { month: 'Jan 2', Levothyroxine: 50, Iodine: 10 , Thyroxin:5},
+    { month: 'Feb 18', Levothyroxine: 50, Iodine: 10 , Thyroxin:5},
+    { month: 'Jan 30 ', Levothyroxine: 50, Iodine: 10 , Thyroxin:5},
+    { month: 'Feb 4', Levothyroxine: 50, Iodine: 10 , Thyroxin:5},
+    { month: 'Feb 10', Levothyroxine: 50, Iodine: 10 , Thyroxin:6},
+    { month: 'Feb 20', Levothyroxine: 50, Iodine: 20, Thyroxin:8},
+    { month: 'Feb 28', Levothyroxine: 25, Iodine: 20 , Thyroxin:8},
+    { month: 'Mar 1', Levothyroxine: 25, Iodine: 20 , Thyroxin:10},
+    { month: 'Mar 6', Levothyroxine: 20, Iodine: 20 , Thyroxin:12},
+    { month: 'Mar 12', Levothyroxine: 20, Iodine: 30 , Thyroxin:16},
+    { month: 'Mar 20', Levothyroxine: 20, Iodine: 30 , Thyroxin:22},
+    { month: 'Mar 30', Levothyroxine: 20, Iodine: 30 , Thyroxin:22},
   ]);
 
   const getRandomColor=()=>{
@@ -53,9 +53,10 @@ const Doctor_analytics = () => {
 
 return(
 <Box>
-    <Box sx={{display:'flex',justifyContent:'space-between'}}>
-      <Paper >
-        <Typography sx={{fontSize:'16px'}}>Medications</Typography>
+    <Box sx={{display:'flex',justifyContent:'space-around'}}>
+      <Paper sx={{p:'5px'}}>
+        <Typography sx={{fontSize:'16px',color:'grey'}}>Medications</Typography>
+        <Divider></Divider>
         <FormGroup >
         {medList.map((el,ind) => (
              ind<=1? <FormControlLabel
@@ -67,14 +68,15 @@ return(
         </FormGroup>
       </Paper>
 
-      <Paper>
-        <Typography sx={{fontSize:'16px'}}>Lab tests</Typography>
+      <Paper sx={{p:'5px'}}>
+        <Typography sx={{fontSize:'16px',color:'grey'}}>Lab tests</Typography>
+        <Divider></Divider>
         <FormGroup >
         {medList.map((el,ind) => (
               ind==2?<FormControlLabel
                 key={el}
-                control={<Checkbox size='small' sx={{height:'22px'}} style={{ color: col[el] }} checked={selectedMed.includes(el)} onChange={() => handleMedToggle(el)} />}
-                label={<Typography sx={{fontSize:'15px'}}>{el}</Typography>}
+                control={<Checkbox size='small' sx={{height:'20px'}} style={{ color: col[el] }} checked={selectedMed.includes(el)} onChange={() => handleMedToggle(el)} />}
+                label={<Typography sx={{fontSize:'14px'}}>{el}</Typography>}
               />:''
             ))}
         </FormGroup>
