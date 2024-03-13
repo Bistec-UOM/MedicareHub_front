@@ -36,7 +36,7 @@ export default function Log() {
       handleClick("Fill the empty fields",'warning')
       return
     }
-    if(user>5){
+    if(user>8){
       setTimeout(() => {
         handleClick("Invalid user",'error')
       }, 2500);
@@ -49,7 +49,7 @@ export default function Log() {
       return
     }else{
       setTimeout(() => {
-        navigate('admin')
+        navigate('doct')
       }, 2500);
     }
   }
