@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { Box,FormGroup,FormControlLabel,Checkbox, Typography} from '@mui/material'
+import { Box,FormGroup,FormControlLabel,Checkbox, Typography, Paper} from '@mui/material'
 
 
 const Doctor_analytics = () => {
 
-  const [medList,setMedList]=useState(['Levothyroxine', 'Rezatripan']);
-  const [selectedMed, setSelectedMed] = useState(['Levothyroxine', 'Rezatripan']);
+  const [medList,setMedList]=useState(['Levothyroxine', 'Iodine','Thyroxin']);
+  const [selectedMed, setSelectedMed] = useState(['Levothyroxine', 'Iodine','Thyroxin']);
+  const [col,setCol]=useState({})
 
   const handleMedToggle = (x) => {
     setSelectedMed(prev => {
@@ -19,32 +20,66 @@ const Doctor_analytics = () => {
   };
   
   const [data,setData] = useState([
-    { month: 'Jan', Levothyroxine: 10, Rezatripan: 15 },
-    { month: 'Feb', Levothyroxine: 15, Rezatripan: 20 },
-    { month: 'Mar', Levothyroxine: 20, Rezatripan: 25 },
-    { month: 'Apr', Levothyroxine: 25, Rezatripan: 30 },
-    { month: 'May', Levothyroxine: 30, Rezatripan: 35 },
-    { month: 'Jun', Levothyroxine: 35, Rezatripan: 30 },
-    { month: 'Jul', Levothyroxine: 30, Rezatripan: 25 },
-    { month: 'Aug', Levothyroxine: 25, Rezatripan: 20 },
-    { month: 'Sep', Levothyroxine: 20, Rezatripan: 15 },
-    { month: 'Oct', Levothyroxine: 15, Rezatripan: 10 },
-    { month: 'Nov', Levothyroxine: 10, Rezatripan: 5 },
-    { month: 'Dec', Levothyroxine: 5, Rezatripan: 0 },
+    { month: 'Jan', Levothyroxine: 50, Iodine: 10 , Thyroxin:5},
+    { month: 'Feb', Levothyroxine: 50, Iodine: 10 , Thyroxin:5},
+    { month: 'Mar', Levothyroxine: 50, Iodine: 10 , Thyroxin:5},
+    { month: 'Apr', Levothyroxine: 50, Iodine: 10 , Thyroxin:5},
+    { month: 'May', Levothyroxine: 50, Iodine: 10 , Thyroxin:6},
+    { month: 'Jun', Levothyroxine: 50, Iodine: 20, Thyroxin:8},
+    { month: 'Jul', Levothyroxine: 25, Iodine: 20 , Thyroxin:8},
+    { month: 'Aug', Levothyroxine: 25, Iodine: 20 , Thyroxin:10},
+    { month: 'Sep', Levothyroxine: 20, Iodine: 20 , Thyroxin:12},
+    { month: 'Oct', Levothyroxine: 20, Iodine: 30 , Thyroxin:16},
+    { month: 'Nov', Levothyroxine: 20, Iodine: 30 , Thyroxin:22},
+    { month: 'Dec', Levothyroxine: 20, Iodine: 30 , Thyroxin:22},
   ]);
 
+  const getRandomColor=()=>{
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  }
+
+  useEffect(()=>{
+    let obj={}
+    medList.map((el)=>{
+      obj[el]=getRandomColor()
+    })
+    setCol(obj)
+  },[])
 
 return(
 <Box>
-    <FormGroup>
-    {medList.map(el => (
-          <FormControlLabel
-            key={el}
-            control={<Checkbox size='small' sx={{height:'18px'}} checked={selectedMed.includes(el)} onChange={() => handleMedToggle(el)} />}
-            label={<Typography sx={{fontSize:'14px'}}>{el}</Typography>}
-          />
-        ))}
-    </FormGroup>
+    <Box sx={{display:'flex',justifyContent:'space-between'}}>
+      <Paper >
+        <Typography sx={{fontSize:'16px'}}>Medications</Typography>
+        <FormGroup >
+        {medList.map((el,ind) => (
+             ind<=1? <FormControlLabel
+                key={el}
+                control={<Checkbox size='small' sx={{height:'22px'}} style={{ color: col[el] }} checked={selectedMed.includes(el)} onChange={() => handleMedToggle(el)} />}
+                label={<Typography sx={{fontSize:'15px'}}>{el}</Typography>}
+              />:''
+            ))}
+        </FormGroup>
+      </Paper>
+
+      <Paper>
+        <Typography sx={{fontSize:'16px'}}>Lab tests</Typography>
+        <FormGroup >
+        {medList.map((el,ind) => (
+              ind==2?<FormControlLabel
+                key={el}
+                control={<Checkbox size='small' sx={{height:'22px'}} style={{ color: col[el] }} checked={selectedMed.includes(el)} onChange={() => handleMedToggle(el)} />}
+                label={<Typography sx={{fontSize:'15px'}}>{el}</Typography>}
+              />:''
+            ))}
+        </FormGroup>
+      </Paper>
+    </Box>
 
 
     <ResponsiveContainer width={500} height={300}>
@@ -61,8 +96,8 @@ return(
         <XAxis dataKey="month" tick={{ fontFamily: 'Arial', fontSize: 12 }}/>
         <YAxis />
         <Tooltip/>
-        {selectedMed.map(city => (
-          <Line key={city} type="stepAfter" dataKey={city} stroke="#8884d8" activeDot={{ r: 8 }} />
+        {selectedMed.map((el) => (
+          <Line key={el} type="stepAfter" dataKey={el} stroke={col[el]} activeDot={{ r: 8 }} />
         ))}      
         </LineChart>
     </ResponsiveContainer>
