@@ -13,8 +13,8 @@ import DialogContent from '@mui/material/DialogContent';
 import CloseIcon from '@mui/icons-material/Close';
 import '../components/CustomScroll.css'
 import Box from '@mui/material/Box';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
+import { Snackbar } from '@mui/material'; 
+import MuiAlert from '@mui/material/Alert';
 import { Sideunit_Bill } from '../components/sidebar/Sideunits';
 import axios from 'axios';
 import AddIcon from '@mui/icons-material/Add';
@@ -37,25 +37,30 @@ function createData(
 export default function Pharmacy_drugstore() {
 
    const [data, setData] =useState([]);
-
-  useEffect(()=>{
-    getData();
-  },[])
-
-  const [brand, setBrand] = useState('');
+   const [brand, setBrand] = useState('');
   const [drug, setDrug] = useState('');
   const [quantity, setQuantity] = useState('');
   const [dosage, setDosage] = useState('');
   const [price, setPrice] = useState('');
-  const rowdata = [
+  const [snackbarOpen, setSnackbarOpen] = useState(false); // State for Snackbar visibility
+  const [snackbarMessage, setSnackbarMessage] = useState(''); // State for Snackbar message
+
+  
+  useEffect(()=>{
+    getData();
+  },[])
+
+  
+
+  const rowdata = [   // dummy data
     {id:1,drug:'Paracetamole',brand:"Panadol",dosage:["10 mg"],quantity:[120],price:[20.00]},
     {id:1,drug:'Veniloflaxin',brand:"Veniz",dosage:["37.5 mg","75 mg","150 mg"],quantity:[34,12,90],price:[35.00,45.00,60.00]},
     {id:1,drug:'Flucanzole',brand:"Diflucan",dosage:["10 mg"],quantity:[15],price:[12.00]}
     
   ];
 
-  
-  const getData = () => {
+  ////////////////////////////////////////////////////////////////////////////////////
+  const getData = () => { // get
     axios.get('https://localhost:44346/api/Drugs')
     .then((result) => {
         const drugs = result.data.map(drug => ({
@@ -72,7 +77,8 @@ export default function Pharmacy_drugstore() {
         console.log(error)
     })
 }
- const handleConfirm=()=>{
+//////////////////////////////////////////////////////////////////
+ const handleConfirm=()=>{    // set and post
     handleClose();
       setConfirm(false)
     const data={
@@ -87,23 +93,54 @@ export default function Pharmacy_drugstore() {
     axios.post('https://localhost:44346/api/Drugs',data)
     .then((result)=>{
       getData() 
+      setSnackbarMessage('Drug added successfully'); // Set success message
+        setSnackbarOpen(true); // Show Snackbar
     })
     .catch((error)=>{
       console.log(error)
     })
   }
-  const handleDelete = (id) => {
+//////////////////////////////////////////////////////////////////////////////////
+
+  const handleCloseSnackbar = (event, reason) => {   /// snackbar for add 
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
+  const renderSnackbar = () => (
+    <Snackbar
+      open={snackbarOpen}
+      autoHideDuration={6000} // Snackbar duration in milliseconds
+      onClose={handleCloseSnackbar}
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }} // Position Snackbar at bottom left
+    >
+      <MuiAlert
+        elevation={6}
+        variant="filled"
+        onClose={handleCloseSnackbar}
+        severity="success" // Snackbar severity (success, error, warning, info)
+      >
+        {snackbarMessage}
+      </MuiAlert>
+    </Snackbar>
+  );
+/////////////////////////////////////////////////////////////////////////////////
+
+  const handleDelete = (id) => {              ////// delete
     axios.delete(`https://localhost:44346/api/Drugs/${id}`)
       .then(() => {
         getData(); // Refresh data after delete
+        setSnackbarMessage('Drug deleted successfully'); // Set success message
+        setSnackbarOpen(true); // Show Snackbar
         handleEditClose(); // Close the dialog
       })
       .catch((error) => {
         console.log(error);
       });
   };
-
-  const handleEdit = () => {
+//////////////////////////////////////////////////////////////////////
+  const handleEdit = () => {          // edit
     handleEditClose();
     let updatedData = {
       genericN: selectedCard.drug,
@@ -117,13 +154,17 @@ export default function Pharmacy_drugstore() {
     axios.put(`https://localhost:44346/api/Drugs/${selectedCard.ID}`, updatedData)
       .then((response) => {
         getData(); // Refresh data after edit
+        setSnackbarMessage('Drug edited successfully'); // Set success message
+        setSnackbarOpen(true); // Show Snackbar
         console.log("sent ",updatedData)
       })
       .catch((error) => {
         console.log(error);
       });
   };
-  
+  ///////////////////////////////////////////////////////////////////////////
+ 
+ 
   const [searchValue, setSearchValue] = useState('');
 
   const handleInputChange = (event) => {
@@ -131,9 +172,6 @@ export default function Pharmacy_drugstore() {
     
   };
   
-
-  
-
   const [open, setOpen] =useState(false);
   const [selectedCard, setSelectedCard] =useState(null);
   const [editOpen, setEditOpen] =useState(false);
@@ -148,28 +186,15 @@ export default function Pharmacy_drugstore() {
 
   const [rows, setRows] = useState(rowdata);
 
-
-
-
- 
   const handleEditClose = () => {
     setSelectedCard(null);
     setEditOpen(false);
   };
-  // const handleEdit =() => {
-  //   handleEditClose();
-  //   setConfirm(false)
-  // };
-  //////
-  // const handleDelete =() => {
-  //   setConfirm(false)
-  // };
-
+  
   const handleEditOpen =(row) => {
     setSelectedCard(row);
     setEditOpen(true);
   };
-
 
   useEffect(()=>{
     document.body.style.margin = '0';
@@ -186,74 +211,80 @@ export default function Pharmacy_drugstore() {
   let x=[
     {
       "id": 1,
-      "name": "Dhammika Mahendra Wijesingha",
-      "time": "09:00"
+      "name": "Dhammika Mahendra ",
+      "time": "08:10"
       
     },
     {
       "id": 2,
-      "name": "Bob",
-      "time": "10:30"
+      "name": "Nethmi Eranga",
+      "time": "09:15"
       
     },
     {
       "id": 3,
-      "name": "Charlie",
-      "time": "11:45"
+      "name": "Chathumini Pamodya",
+      "time": "10:10"
       
     },
     {
       "id": 4,
-      "name": "David",
-      "time": "13:15"
+      "name": "Yasiru Ramosh",
+      "time": "10:25"
     
     },
     {
       "id": 5,
-      "name": "Eve",
-      "time": "14:30"
+      "name": "Chathura Ishara",
+      "time": "11:15"
       
     },
     {
       "id": 6,
-      "name": "Frank",
-      "time": "15:45"
+      "name": "Hasini Chamodi",
+      "time": "13:15"
       
     },
     {
       "id": 7,
-      "name": "Grace",
-      "time": "16:30"
+      "name": "Nelunika Nuwanthi",
+      "time": "13:35"
       
     },
     {
       "id": 8,
-      "name": "Henry",
-      "time": "17:15"
+      "name": "Methnula Thisum",
+      "time": "14:15"
       
     },
     {
       "id": 9,
-      "name": "Isabel",
-      "time": "18:00"
+      "name": "Eranga Kumari",
+      "time": "14:45"
       
     },
     {
       "id": 10,
-      "name": "Jack",
-      "time": "19:00"
+      "name": "Kasun Kasun",
+      "time": "15:15"
     
     },
     {
       "id": 11,
-      "name": "Kelly",
-      "time": "20:00"
+      "name": "Saman Perera",
+      "time": "15:19"
       
     },
     {
       "id": 12,
-      "name": "Liam",
-      "time": "21:00"
+      "name": "Pabodya Baumika",
+      "time": "15:25"
+      
+    },
+    {
+      "id": 13,
+      "name": "Akasha",
+      "time": "16:15"
       
     }
   ]
@@ -262,7 +293,10 @@ export default function Pharmacy_drugstore() {
     
     
     <div>
+       <div>
       
+      {renderSnackbar()}    // snackbar render
+    </div>
     <Navbar></Navbar>
 
     <Grid container spacing={0} sx={{paddingTop:'64px',height:'100vh'}}>

@@ -97,7 +97,10 @@ const handleClick = () => {
     labs: rep,  // lab test array: from Labrequest component
     descript: description
   }
-  console.log(obj)
+  //console.log(obj)
+  setPres([])
+  setrep([])
+  setDescription('')
   // Call the confirmRemoving function after showing the Snackbar
   setTimeout(() => {
     confirmRemoving();
