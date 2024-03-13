@@ -165,7 +165,7 @@ export default function Lab() {
               :page==2?<LabTestList settId={settId} setPage={setPage} Tload={Tload} setTload={setTload}></LabTestList>
               :page==3?<CreateLabTemplate setPage={setPage} setTload={setTload}></CreateLabTemplate>
               :page==4?<Edittemplate setPage={setPage} tId={tId} Tdata={Test} setTload={setTload}></Edittemplate>
-              :page==5?<SubmitPage setpage={setPage} load={accLoad}></SubmitPage>
+              :page==5?<SubmitPage setpage={setPage} load={accLoad} setLoad={setAccLoad}></SubmitPage>
               :''
       }
 
