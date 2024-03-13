@@ -23,7 +23,7 @@ import Alert from '@mui/material/Alert';
 import TopUnit from '../components/DoctorComponents/TopUnit';
 
 export default function Doctor() {
-  const [appointments, setAppointments] = useState([]);
+  
   const [select,setSelect]=useState(null);//---------------hold the selected appoinment patient-----------------------------
   const [openPopup, setOpenPopup] = useState(false);
   const [openBox, setOpenBox] = useState(false);
