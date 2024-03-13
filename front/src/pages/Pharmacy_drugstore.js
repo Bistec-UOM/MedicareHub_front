@@ -52,12 +52,7 @@ export default function Pharmacy_drugstore() {
 
   
 
-  const rowdata = [   // dummy data
-    {id:1,drug:'Paracetamole',brand:"Panadol",dosage:["10 mg"],quantity:[120],price:[20.00]},
-    {id:1,drug:'Veniloflaxin',brand:"Veniz",dosage:["37.5 mg","75 mg","150 mg"],quantity:[34,12,90],price:[35.00,45.00,60.00]},
-    {id:1,drug:'Flucanzole',brand:"Diflucan",dosage:["10 mg"],quantity:[15],price:[12.00]}
-    
-  ];
+ 
 
   ////////////////////////////////////////////////////////////////////////////////////
   const getData = () => { // get
@@ -167,7 +162,7 @@ export default function Pharmacy_drugstore() {
  
   const [searchValue, setSearchValue] = useState('');
 
-  const handleInputChange = (event) => {
+  const Filter = (event) => {
     setSearchValue(event.target.value);
     
   };
@@ -184,7 +179,7 @@ export default function Pharmacy_drugstore() {
     setOpen(false)
   }; 
 
-  const [rows, setRows] = useState(rowdata);
+  const [rows, setRows] = useState(data);
 
   const handleEditClose = () => {
     setSelectedCard(null);
@@ -334,7 +329,7 @@ export default function Pharmacy_drugstore() {
             marginTop:"10px",
           }}
         >
-          <InputBase type="text" className="form-control" onChange={handleInputChange} sx={{ ml: 3, flex: 1 }} placeholder="Search " />
+          <InputBase type="text" className="form-control" onChange={Filter} sx={{ ml: 3, flex: 1 }} placeholder="Search " />
          
           <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
             <SearchIcon />
