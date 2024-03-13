@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import {SidebarContainer,SidebarTop,SidebarList} from '../components/sidebar/Sidebar'
 import Navbar from '../components/navbar/Navbar'
-import { Grid,Card, Typography,Dialog, DialogTitle, DialogContent, DialogActions,Button, CardContent } from '@mui/material'
+import { Grid,Snackbar,Card, Typography,Dialog, DialogTitle, DialogContent, DialogActions,Button, CardContent } from '@mui/material'
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -14,17 +14,35 @@ import IconButton from '@mui/material/IconButton';
 import Divider from '@mui/material/Divider';
 import PrintIcon from '@mui/icons-material/Print';
 import { Sideunit_Bill } from '../components/sidebar/Sideunits';
+import MuiAlert from '@mui/material/Alert';
 
 
 export default function Pharmacy() {
  
   const [open, setOpen] = useState(false);
+  const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   const handleOpen = () => {
     setOpen(true);
   };
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleConfirmDialogOpen = () => {
+    setConfirmDialogOpen(true);
+  };
+  const handleConfirmDialogClose = () => {
+    setConfirmDialogOpen(false);
+  };
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  };
+  const handleConfirmAction = () => {
+    setConfirmDialogOpen(false);
+    setSnackbarOpen(true);
+    
   };
 
   const dividerStyle = {
@@ -391,10 +409,30 @@ const result = 10 * 15
     
     <div style={{ textAlign: 'right', marginTop: '20px', marginBottom: '20px' }}>
     <PrintIcon sx={{ width: '60px', height: '50px', marginRight: '30px' }} />
-    <Button variant="contained" sx={{ backgroundColor: '#00cca3',marginRight: '220px' }}>
+    <Button variant="contained" sx={{ backgroundColor: '#00cca3',marginRight: '220px' }}onClick={handleConfirmDialogOpen}>
       Confirm
     </Button>
   </div>
+  <Dialog open={confirmDialogOpen} onClose={handleConfirmDialogClose}>
+        <DialogTitle>Confirm Action</DialogTitle>
+        <DialogContent>
+          <Typography>Are you sure you want to confirm?</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleConfirmDialogClose} color="primary">
+            No
+          </Button>
+          <Button onClick={handleConfirmAction} color="primary" autoFocus>
+            Yes
+          </Button>
+        </DialogActions>
+      </Dialog>
+      {/* Snackbar */}
+      <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose}>
+        <MuiAlert onClose={handleSnackbarClose} severity="success" elevation={6} variant="filled">
+          Bill generated suceessfully!
+        </MuiAlert>
+      </Snackbar>
 </div>
 )}
       </Grid>
