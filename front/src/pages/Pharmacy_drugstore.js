@@ -161,9 +161,18 @@ export default function Pharmacy_drugstore() {
  
  
   const [searchValue, setSearchValue] = useState('');
-
+  const [rows, setRows] = useState(data);
   const Filter = (event) => {
-    setSearchValue(event.target.value);
+    const searchValue = event.target.value.toLowerCase();
+  
+  setRows(
+    rows.filter(
+      (f) =>
+        (typeof f.drug === 'string' && f.drug.toLowerCase().includes(searchValue)) ||
+        (typeof f.brand === 'string' && f.brand.toLowerCase().includes(searchValue)) 
+        
+    )
+  );
     
   };
   
@@ -179,7 +188,7 @@ export default function Pharmacy_drugstore() {
     setOpen(false)
   }; 
 
-  const [rows, setRows] = useState(data);
+  
 
   const handleEditClose = () => {
     setSelectedCard(null);
