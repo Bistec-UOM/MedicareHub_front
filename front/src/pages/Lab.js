@@ -18,6 +18,7 @@ export default function Lab() {
   const [date,setDate]=useState(2)
   const [tId,settId]=useState()//selected test <----------- from LabTestList
   const [selectedT,setSelectedT]=useState()//selected req <---------- from Sideunit
+  const [query, setQuery] = useState('')//searchbar value
 
   const x=[
   {date:1,id:51,name: "Sarah Johnson", load:[{repId:23,test: 'Thyroxin',testId:3}]},
@@ -67,6 +68,8 @@ export default function Lab() {
     const [req,setReq]=useState()//store selected reqs details
     const [reqOK,setReqOk]=useState(true)//to stop keeping previous reqs details after it poped up
 
+    const filteredData = RLoad.filter(item => item.name.toLowerCase().includes(query.toLowerCase()))//filtered Rload data by the search
+
     useEffect(()=>{
       document.body.style.margin = '0';
       //selcted date's request
@@ -111,11 +114,11 @@ export default function Lab() {
   <Grid  item spacing={0} style={{paddingTop:'64px',backgroundColor:'#E7FFF9',height:'100%'}}>
     <SidebarContainer>
       <SidebarTop>
-         <LabSearch setPage={setPage} setDate={setDate} date={date}></LabSearch>
+         <LabSearch setPage={setPage} setDate={setDate} date={date} query={query} setQuery={setQuery}></LabSearch>
       </SidebarTop>
       <SidebarList>
       {
-         RLoad.map((elm)=>{
+         filteredData.map((elm)=>{
           if(elm.date==date){
             return(
              <>
@@ -162,7 +165,7 @@ export default function Lab() {
               :page==2?<LabTestList settId={settId} setPage={setPage} Tload={Tload} setTload={setTload}></LabTestList>
               :page==3?<CreateLabTemplate setPage={setPage} setTload={setTload}></CreateLabTemplate>
               :page==4?<Edittemplate setPage={setPage} tId={tId} Tdata={Test} setTload={setTload}></Edittemplate>
-              :page==5?<SubmitPage setpage={setPage} load={accLoad}></SubmitPage>
+              :page==5?<SubmitPage setpage={setPage} load={accLoad} setLoad={setAccLoad}></SubmitPage>
               :''
       }
 
