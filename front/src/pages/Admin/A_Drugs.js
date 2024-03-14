@@ -51,7 +51,7 @@ const pdata = [
   { 
     datefor: "2024.02.26", 
     drugType: [
-      {name: "amoxilin", quantity: 12},
+      {name: "amoxilin", quantity: 122},
       {name: "dopamine", quantity: 23},
     ] 
   },
@@ -63,12 +63,28 @@ const pdata = [
     ] 
   },
   { 
-    datefor: "2024.02.28", 
+    datefor: "2024.03.11", 
     drugType: [
       {name: "amoxilin", quantity: 33},
       {name: "dopamine", quantity: 4},
       {name: "lodrine", quantity: 4},
-      {name: "panadol", quantity: 4},
+      {name: "panadol", quantity: 42},
+    ] 
+  },
+  { 
+    datefor: "2024.03.12", 
+    drugType: [
+      {name: "amoxilin", quantity: 12},
+      {name: "dopamine", quantity: 233},
+    ] 
+  },
+  { 
+    datefor: "2024.03.13", 
+    drugType: [
+      {name: "amoxilin", quantity: 33},
+      {name: "dopamine", quantity: 43},
+      {name: "lodrine", quantity: 4},
+      {name: "panadol", quantity: 42},
     ] 
   },
   

@@ -195,40 +195,46 @@ const pdata = [
   { datefor: "2024.03.07 16:21:00", income: 130.00 },
   { datefor: "2024.03.08 16:21:00", income: 30.00 },
   { datefor: "2024.03.09 16:22:00", income: 5030.00 },
-  { datefor: "2024.03.10 16:24:00", income: 5130.00 },
-  { datefor: "2024.03.10 16:25:00", income: 5030.00 },
-  { datefor: "2024.03.10 16:26:00", income: 5130.00 },
-  { datefor: "2024.03.10 17:26:00", income: 5130.00 },
-  { datefor: "2024.03.10 10:30:00", income: 600.00 },
-  { datefor: "2024.03.10 12:45:00", income: 1000.00 },
-  { datefor: "2024.03.10 14:20:00", income: 250.00 },
-  { datefor: "2024.03.10 15:30:00", income: 400.00 },
-  { datefor: "2024.03.10 12:00:00", income: 300.00 },
-  { datefor: "2024.03.10 16:45:00", income: 100.00 },
-  { datefor: "2024.03.10 09:00:00", income: 5000.00 },
-  { datefor: "2024.03.10 09:15:00", income: 2500.00 },
-  { datefor: "2024.03.10 17:20:00", income: 300.00 },
-  { datefor: "2024.03.10 06:19:00", income: 130.00 },
-  { datefor: "2024.03.10 16:21:00", income: 130.00 },
-  { datefor: "2024.03.10 16:21:00", income: 30.00 },
-  { datefor: "2024.03.10 16:22:00", income: 5030.00 },
-  { datefor: "2024.03.10 16:24:00", income: 5130.00 },
-  { datefor: "2024.03.10 16:25:00", income: 5030.00 },
-  { datefor: "2024.03.10 16:26:00", income: 5130.00 },
-  { datefor: "2024.03.10 17:26:00", income: 5130.00 },
+  { datefor: "2024.03.13 16:24:00", income: 5130.00 },
+  { datefor: "2024.03.13 16:25:00", income: 5030.00 },
+  { datefor: "2024.03.13 16:26:00", income: 5130.00 },
+  { datefor: "2024.03.13 17:26:00", income: 5130.00 },
+  { datefor: "2024.03.13 10:30:00", income: 600.00 },
+  { datefor: "2024.03.13 12:45:00", income: 1000.00 },
+  { datefor: "2024.03.13 14:20:00", income: 250.00 },
+  { datefor: "2024.03.13 15:30:00", income: 400.00 },
+  { datefor: "2024.03.13 12:00:00", income: 300.00 },
+  { datefor: "2024.03.13 16:45:00", income: 100.00 },
+  { datefor: "2024.03.13 09:00:00", income: 5000.00 },
+  { datefor: "2024.03.13 09:15:00", income: 2500.00 },
+  { datefor: "2024.03.13 17:20:00", income: 300.00 },
+  { datefor: "2024.03.13 06:19:00", income: 130.00 },
+  { datefor: "2024.03.13 16:21:00", income: 130.00 },
+  { datefor: "2024.03.13 16:21:00", income: 30.00 },
+  { datefor: "2024.03.13 16:22:00", income: 5030.00 },
+  { datefor: "2024.03.13 16:24:00", income: 5130.00 },
+  { datefor: "2024.03.13 16:25:00", income: 5030.00 },
+  { datefor: "2024.03.13 16:26:00", income: 5130.00 },
+  { datefor: "2024.03.13 17:26:00", income: 5130.00 },
 ];
 
 const currentDate = new Date();
 let TimeGap = new Date(currentDate);
 TimeGap.setDate(currentDate.getDate() - 1);
 
+const today = new Date();
+today.setHours(0, 0, 0, 0); // set time to 00:00:00.000
+
 const totalIncome = pdata.reduce((total, entry) => {
-  if (entry.datefor.startsWith(currentDate)) {
+  const entryDate = new Date(entry.datefor);
+  entryDate.setHours(0, 0, 0, 0); // set time to 00:00:00.000
+
+  if (entryDate.getTime() === today.getTime()) {
     return total + entry.income;
   }
+
   return total;
 }, 0);
-
 
 const AIncome = () => {
   const [Value, setValue] = React.useState('day'); // Initialize Value state with 'day'

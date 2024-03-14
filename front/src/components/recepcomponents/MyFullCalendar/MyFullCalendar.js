@@ -1,7 +1,7 @@
 
-import FullCalendar from '@fullcalendar/react'
+import FullCalendar from '@fullcalendar/react';
 import { Box } from '@mui/material';
-import dayGridPlugin from '@fullcalendar/daygrid'
+import dayGridPlugin from '@fullcalendar/daygrid';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 

@@ -5,12 +5,12 @@ import { LineChart,BarChart,Bar, ResponsiveContainer, Legend, Tooltip, Line, XAx
 const pdata = [
   { datefor: "2022.02.20", child_male: 12, child_female: 2, adult_male: 12, adult_female: 2, old_male: 12, old_female: 2 },
   { datefor: "2023.04.21", child_male: 12, child_female: 2, adult_male: 12, adult_female: 2, old_male: 12, old_female: 2 },
-  { datefor: "2024.02.22", child_male: 12, child_female: 2, adult_male: 12, adult_female: 2, old_male: 12, old_female: 2 },
-  { datefor: "2024.02.23", child_male: 12, child_female: 9, adult_male: 12, adult_female: 2, old_male: 12, old_female: 2 },
-  { datefor: "2024.02.24", child_male: 12, child_female: 2, adult_male: 12, adult_female: 2, old_male: 12, old_female: 2 },
-  { datefor: "2024.02.25", child_male: 12, child_female: 2, adult_male: 12, adult_female: 2, old_male: 12, old_female: 2 },
-  { datefor: "2024.02.27", child_male: 1, child_female: 2, adult_male: 1, adult_female: 2, old_male: 2, old_female: 2 },
-  { datefor: "2024.02.28", child_male: 11, child_female: 26, adult_male: 1, adult_female: 25, old_male: 22, old_female: 24 },
+  { datefor: "2024.03.12", child_male: 12, child_female: 2, adult_male: 12, adult_female: 2, old_male: 12, old_female: 2 },
+  { datefor: "2024.03.12", child_male: 12, child_female: 9, adult_male: 12, adult_female: 2, old_male: 12, old_female: 2 },
+  { datefor: "2024.03.12", child_male: 12, child_female: 2, adult_male: 12, adult_female: 2, old_male: 12, old_female: 2 },
+  { datefor: "2024.03.13", child_male: 12, child_female: 2, adult_male: 12, adult_female: 2, old_male: 12, old_female: 2 },
+  { datefor: "2024.03.13", child_male: 1, child_female: 2, adult_male: 1, adult_female: 2, old_male: 2, old_female: 2 },
+  { datefor: "2024.03.13", child_male: 11, child_female: 26, adult_male: 1, adult_female: 25, old_male: 22, old_female: 24 },
 ];
 
 const APatient = () => {
