@@ -1,12 +1,12 @@
 import { Paper, Typography, InputBase, IconButton, Divider, Toolbar,Stack, Dialog, DialogTitle} from '@mui/material'
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
 import Testcom from './Testcom';
 import axios from 'axios';
 
-export default function SubmitPage({load,setpage}) {
+export default function SubmitPage({load,setLoad,setpage}) {
 
     //Pop up dialog box------------------------------------------------------------
     const [open, setOpen] = useState(false)
@@ -28,7 +28,7 @@ export default function SubmitPage({load,setpage}) {
             <ArrowBackIcon sx={{cursor:'pointer'}} onClick={()=>setpage(1)}></ArrowBackIcon>
 
             {/*-------Search bar------------------------------------ */}
-            <Paper component="form" sx={{p: "2px 4px",display: "flex",alignItems: "center",height:'30px',width:{xs:'40%',sm:'40%'},borderRadius: "20px",boxShadow: 1}}>
+            <Paper component="form" sx={{p: "2px 4px",display: "flex",alignItems: "center",height:'30px',width:{xs:'40%',sm:'40%'},borderRadius: "10px",boxShadow: 1,mr:'300px'}}>
             <InputBase type="text" className="form-control" sx={{ flex: 1 }} placeholder="Search"/>
             <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
             <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
@@ -44,9 +44,9 @@ export default function SubmitPage({load,setpage}) {
         {
             load.map((i,ind)=>{
                 return <Paper sx={{width:'70%',display:'flex',justifyContent:'space-between',alignItems:'center',mt:'10px',p:'10px',cursor:'pointer'}} onClick={()=>handleClickOpen(i.testId)}>
-                    <Typography sx={{fontSize:'18px',flex:'1'}}>{ind}</Typography>
-                    <Typography sx={{fontSize:'18px',flex:'1'}}>{i.repId}</Typography>
-                    <Typography sx={{fontSize:'18px',flex:'1'}}>{i.testId}</Typography>
+                    <Typography sx={{fontSize:'18px',flex:'1',color:'grey'}}>{ind+1}</Typography>
+                    <Typography sx={{fontSize:'15px',flex:'1'}}>{i.repId}</Typography>
+                    <Typography sx={{fontSize:'15px',flex:'1'}}>2024 Mar 22</Typography>
                     <Typography sx={{fontSize:'15px',flex:'2'}}>{i.test}</Typography>
             </Paper>
             })
@@ -57,10 +57,10 @@ export default function SubmitPage({load,setpage}) {
 
       <Dialog open={open} onClose={handleClose}>
           <DialogTitle sx={{backgroundColor: "rgb(222, 244, 242)",display: "flex",justifyContent: "space-between"}}>
-            Submit test results
+            <Typography sx={{fontSize:'16px'}}>Enter test results</Typography>
           <CloseIcon onClick={handleClose} sx={{cursor:'pointer'}} />
           </DialogTitle>
-      <Testcom handleClose={handleClose} test={test} detail={"njkjn"}></Testcom>
+      <Testcom handleClose={handleClose} test={test} load={load} setLoad={setLoad} detail={"njkjn"}></Testcom>
       </Dialog>
         
     </div>

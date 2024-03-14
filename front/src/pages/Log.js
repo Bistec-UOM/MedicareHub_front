@@ -1,26 +1,69 @@
 import React, { useEffect, useState } from 'react'
 import SideDrawer from '../components/recepcomponents/sidedrawer/SideDrawer'
 import { Box, fontSize } from '@mui/system'
-import { Button, Divider, Paper, TextField, Typography } from '@mui/material'
+import { Button, Divider, Paper, TextField, Typography,Snackbar,Alert } from '@mui/material'
 import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
-
+import { useNavigate } from 'react-router-dom'
 
 export default function Log() {
+  const navigate=useNavigate()
+
+  // SnackBar component====================================================================================
+  const [open, setOpen] = React.useState(false);
+  const [msg,setMsg]=useState('Init')
+  const [col,setCol]=useState('Primary')
+
+  const handleClick = (x,c) => {
+    setOpen(true);
+    setMsg(x)
+    setCol(c)
+  };
+    
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false);
+  }
+
+  const usar=[
+    '123','4567','2839','4840','8409'
+  ]
+  //======================================================================================================
 
   const validate=()=>{
-
+    if(password=="" || user==""){
+      handleClick("Fill the empty fields",'warning')
+      return
+    }
+    if(user>8){
+      setTimeout(() => {
+        handleClick("Invalid user",'error')
+      }, 2500);
+      return
+    }
+    if(password!=usar[user-1]){
+      setTimeout(() => {
+        handleClick("Wrong password",'error')
+      }, 2500);
+      return
+    }else{
+      setTimeout(() => {
+        navigate('doct')
+      }, 2500);
+    }
   }
 
   const setData=()=>{
-    console.log(password+' '+user)
+    validate()
   }
 
   const clearData=()=>{
     setUser("")
     setPassword("")
   }
-  const [password,setPassword]=useState()
-  const [user,setUser]=useState()
+  const [password,setPassword]=useState("")
+  const [user,setUser]=useState("")
 
   useEffect(()=>{
     document.body.style.margin = '0';
@@ -45,6 +88,19 @@ export default function Log() {
           <Button variant="outlined" sx={{ml:'5px'}} onClick={clearData} color='warning'>Clear</Button>
         </div>
       </Box>
+
+
+        {/* ----------------- snack bar ----------------------------------------------------------------*/}
+        <Snackbar open={open} autoHideDuration={2000} onClose={handleClose} >
+        <Alert
+          onClose={handleClose}
+          severity={col}
+          variant="filled"
+          sx={{ width: '100%' }}
+        >
+          {msg}
+        </Alert>
+      </Snackbar>
     </Box>
   )
 }

@@ -3,6 +3,11 @@ import FullCalendar from '@fullcalendar/react';
 import { Box } from '@mui/material';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import { useNavigate } from 'react-router-dom';
+<<<<<<< HEAD
+=======
+import axios from 'axios';
+
+>>>>>>> e219694db0483b654ce31a3d86005454571f3991
 import { useEffect } from 'react';
 import moment from 'moment';
 
@@ -27,6 +32,12 @@ function MyFullCalendar({doctorId,selectedTab,setSelectedTab}) {
     const [doctorCount,setDoctorCount]=useState(0);
 
 
+    const [dayAppCount,setDayAppCount]=useState([]);
+
+    const [pasMonth,setPasMonth]=useState(null);
+    
+ 
+
     useEffect(()=>
     {
       fetch("https://localhost:7205/api/Appointment/doctors").then((response)=>
@@ -35,11 +46,52 @@ function MyFullCalendar({doctorId,selectedTab,setSelectedTab}) {
       }).then((responseData)=>
       {
         setDoctorCount(doctorCount+1);
-        console.log(responseData.result);
+      
         setDoctorList(responseData.result);
       })
    
     },[]);
+
+
+    useEffect(()=>
+    {
+
+    
+      axios.get(`https://localhost:7205/api/Appointment/doctor/${doctorId}/month/${pasMonth}`)
+      .then((response) => {
+        console.log(response.data);
+        console.log("daycout"+response.data);
+        console.log(pasMonth+"doc"+doctorId)
+        setDayAppCount(response.data);
+        console.log(getDayAppCount(10));
+      })
+      .catch((error) => {
+          console.error('Error fetching appointments:', error);
+      });
+
+
+      
+
+
+
+
+    },[doctorId,pasMonth]);
+
+   function getDayAppCount(day)
+   {
+     var total=0;
+     const newDay=parseInt(day,10);
+     for(var i=0;i<dayAppCount.length;i++)
+     {
+      const date = new Date( dayAppCount[i].dateTime);
+      if(date.getDate()==newDay)
+      {
+        total+=1;
+      }
+       
+     }
+     return total;
+   }
 
     const navigate = useNavigate();
     // const [displayedRange, setDisplayedRange] = useState({
@@ -96,6 +148,7 @@ function MyFullCalendar({doctorId,selectedTab,setSelectedTab}) {
     const displayedDate = arg.view.currentStart;
     const selectedMonth = displayedDate.getMonth(); // 0-indexed (0 for January, 11 for December)
     const selectedYear = displayedDate.getFullYear();
+    setPasMonth(selectedMonth);
 
     const firstDayOfMonth = new Date(selectedYear, selectedMonth, 1);
     const lastDayOfMonth = new Date(selectedYear, selectedMonth+1, 1);
@@ -144,7 +197,7 @@ function MyFullCalendar({doctorId,selectedTab,setSelectedTab}) {
       <div >
         <div>{dayCell.dayNumberText} </div>
         
-        <LinearProgress variant="determinate" value={50} style={{ width:'90%', height: '10px',position:'absolute',bottom:'5%' }}  color="success" />
+        <LinearProgress variant="determinate" value={getDayAppCount(dayCell.dayNumberText)*10} style={{ width:'90%', height: '10px',position:'absolute',bottom:'5%' }}  color="success" />
              
 
       </div>

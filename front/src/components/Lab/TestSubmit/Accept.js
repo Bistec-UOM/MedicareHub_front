@@ -63,7 +63,7 @@ export default function Accept({req,reqOK,setAccLoad,accLoad,RLoad,setRLoad}) {
                 <Box>
                     <Typography sx={{fontSize:'18px'}}>{i.test}</Typography>
                     <Typography sx={{fontSize:'15px'}}>taoken No:{i.repId}</Typography>
-                    <Typography sx={{fontSize:'22px'}}>Rs. 1200</Typography>
+                    <Typography sx={{fontSize:'22px'}}>{i.test=='FBC'?'Rs. 1200':i.test=='Lipid'?'Rs. 1390':'Rs.1340'}</Typography>
                 </Box>
                 <Button variant='contained' onClick={()=>addToAcc(i.repId)}>Accept</Button>
             </Paper>

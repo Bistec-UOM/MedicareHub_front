@@ -27,6 +27,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Grid, Stack } from "@mui/material";
 
 export default function AppAddPopup({
+  filteredAppointments,
   selectedDay,
   handleNotification,
   docid,
@@ -45,6 +46,8 @@ export default function AppAddPopup({
   //console.log(activeD)
   // const [enicError,seteNicError]=useState(false)
   const [etimevalueError, seteTimeValueError] = useState(false);
+
+  const [bookedTimeSlots, setBookedTimeSlots] = useState([]);
 
   const [selectedTime, setSelectedTime] = useState(dayjs("2022-04-17T08:30"));
 
@@ -110,6 +113,27 @@ export default function AppAddPopup({
 
 
   }
+
+
+  const scheduledTimes = filteredAppointments.map(appointment => {
+    return dayjs(appointment.appointment.dateTime).format('HH:mm');
+  });
+
+  const isTimeDisabled = (time) => {
+    const selectedTimeStr = dayjs(time).format('HH:mm');
+    return scheduledTimes.includes(selectedTimeStr);
+  };
+
+
+  useEffect(() => {
+
+    console.log("filt",scheduledTimes);
+}
+  )
+
+ 
+
+
 
   const handleClickOpen = () => {
     setApopen(true);
@@ -354,6 +378,15 @@ export default function AppAddPopup({
                 sx={{overflow:{xs:'hidden'}}}
                   selectedTime={selectedTime}
                   setSelectedTime={setSelectedTime}
+                  disabledItems={isTimeDisabled}
+
+                  renderOption={(time, { selected }) => {
+                    if (scheduledTimes.includes(time)) {
+                      return <Typography style={{ color: 'gray' }}>{time}</Typography>;
+                    }
+                    return <Typography>{time}</Typography>;
+                  }}  
+                  
                  
                   // setSelectedTimeH={(value) => setTimeValue({...timevalue,hour:value})}
                   // setSelectedTimeM={(value) => setTimeValue({...timevalue,minutes:value})}

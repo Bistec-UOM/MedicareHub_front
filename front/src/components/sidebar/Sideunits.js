@@ -44,15 +44,26 @@ function Sideunit_Doctor({ name, title ,selectedTab,index}) {
 
 
 function Sideunit_Patient({id,name,status,time,selected,setSelect}) {
-    return (
-      <div style={{width:'90%',margin:'3px',cursor:'pointer',backgroundColor: selected==true?'#79CCBE':'#ffffff',padding:'5px',paddingTop:'0',color: selected==true?'#FFFFFF':'',borderRadius:'8px',boxShadow:'0 0 4px rgba(0, 0, 0, .2)'}} onClick={()=>setSelect(id)}>
-          <Typography sx={{fontSize:'17px'}}>{name}</Typography>
-          <div style={{display:'flex',alignContent:'space-between'}}>
-                  <div style={{display:'inline',border:selected==true?'1px solid white':'1px solid grey',paddingLeft:'4px',paddingRight:'4px',borderRadius:'5px',marginLeft:'4px',color: selected==true?'white':'grey'}}>{time}</div>
-                  {status=='done'?<CheckIcon color={'success'}></CheckIcon>:status=='pending'?<MoreHorizIcon color={'warning'}></MoreHorizIcon>:''}
-          </div>
+  return (
+  <Paper sx={{width: '90%',margin: '5px',cursor: 'pointer',padding:'8px',borderRadius: '8px',
+    backgroundColor: selected? 'rgb(121, 204, 190)' : '#ffffff',boxShadow: 2,
+    "&:hover": {
+    boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
+    backgroundColor: selected? 'rgb(121, 204, 190)' : 'rgb(231, 255, 249)'}}}
+    onClick={() => setSelect(id)}>
+      <Typography sx={{fontSize:'17px',color:selected?'white':'black'}}>{name}</Typography>
+
+
+      <div style={{display:'flex',justifyContent:'space-between',width:'100%'}}>
+
+        <div style={{display:'inline',backgroundColor: selected?'#60a398':'#adaaaa',color:'white',paddingRight:'4px',paddingLeft:'4px',paddingTop:'2px',paddingBottom:'2px',borderRadius:'15px',marginRight:'4px'}}>{time}</div>
+
+        {status=='done'?<CheckIcon sx={{mr:'5px'}}color={'success'}></CheckIcon>:status=='pending'?<MoreHorizIcon color={'warning'}></MoreHorizIcon>:''}
       </div>
-    )
+
+</Paper>
+
+  )
 }
 
 function Sideunit_Test({id,name,load,setSelectedT,selectedT}) {
@@ -61,9 +72,9 @@ function Sideunit_Test({id,name,load,setSelectedT,selectedT}) {
       backgroundColor: selectedT === id ? 'rgb(121, 204, 190)' : '#ffffff',boxShadow: 2,
       "&:hover": {
       boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
-      backgroundColor: selectedT === id ? 'rgb(121, 204, 190)' : 'rgb(231, 255, 249)',}}}
+      backgroundColor: selectedT === id ? 'rgb(121, 204, 190)' : 'rgb(231, 255, 249)'}}}
       onClick={() => setSelectedT(id)}>
-      <Typography sx={{fontSize:'17px'}}>{name}</Typography>
+      <Typography sx={{fontSize:'17px',color:selectedT === id?'white':'black'}}>{name}</Typography>
           {
             load.map((el)=>{
               return(
@@ -76,14 +87,20 @@ function Sideunit_Test({id,name,load,setSelectedT,selectedT}) {
     )
 }
 
+
 function Sideunit_Bill({id,name,time,setSelect,selected}) {
   return (
-    <div style={{width:'90%',margin:'3px',padding:'5px',paddingTop:'0',cursor:'pointer',backgroundColor: selected==true?'#79CCBE':'#ffffff',borderRadius:'8px',color: selected==true?'#FFFFFF':'',boxShadow:'0 0 4px rgba(0, 0, 0, .2)'}} onClick={()=>setSelect(id)}>
-        <Typography sx={{fontSize:'17px'}}>{name}</Typography>
-        <div>
-                <div style={{display:'inline',border:selected==true?'1px solid white':'1px solid grey',color:selected==true?'white':'grey',paddingLeft:'4px',paddingRight:'4px',borderRadius:'5px'}}>{time}</div>
-        </div>
-    </div>
+  <Paper sx={{width: '90%',margin: '5px',cursor: 'pointer',padding:'8px',borderRadius: '8px',
+    backgroundColor: selected? 'rgb(121, 204, 190)' : '#ffffff',boxShadow: 2,
+    "&:hover": {
+    boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
+    backgroundColor: selected?'rgb(121, 204, 190)' : 'rgb(231, 255, 249)'}}}
+    onClick={() => setSelect(id)}>
+    <Typography sx={{fontSize:'17px',color:selected?'white':'black'}}>{name}</Typography>
+    <div style={{display:'inline',backgroundColor: selected?'#60a398':'#adaaaa',color:'white',paddingRight:'4px',paddingLeft:'4px',paddingTop:'2px',paddingBottom:'2px',borderRadius:'15px',marginRight:'4px'}}>{time}</div>
+</Paper>
+
   )
 }
+
 export {Sideunit_Doctor,Sideunit_Patient,Sideunit_Test,Sideunit_Bill}

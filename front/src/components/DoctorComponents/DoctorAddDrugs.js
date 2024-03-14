@@ -8,7 +8,7 @@ import Select from '@mui/material/Select';
 import SearchIcon from '@mui/icons-material/Search';
 import DoNotDisturbOnIcon from '@mui/icons-material/DoNotDisturbOn';
 import { Grid, Card, Typography,Button } from '@mui/material';
-
+import Autocomplete from '@mui/material/Autocomplete';
 
 export default function DoctorAddDrugs(props) {
     const { openBox, setOpenBox ,pres , setPres} = props;
@@ -16,52 +16,27 @@ export default function DoctorAddDrugs(props) {
     const [quantity, setQuantity] = useState('');
     const [quantitytype, setQuantitytype] = useState('');
     const [hour, setHour] = useState('');
-    //const [pres, setPres] = useState([]);//---------------------------prescription array------------------------
-    const [nameError, setNameError] = useState(false);
-    const [quantityError, setQuantityError] = useState(false);
- 
-    const validate = () => {
-        let isValid = true;
-        if (name.trim() === '') {
-          setNameError(true);
-          isValid = false;
-        } else {
-          setNameError(false);
-        }
-        if (quantity.trim() === '') {
-          setQuantityError(true);
-          isValid = false;
-        } else {
-          setQuantityError(false);
-        }        
-        return isValid;
-      };
+    //const [pres, setPres] = useState([]);//---------------------------prescription array------------------------ 
+    
+    
+    const drugNames = ['Paracetamol', 'Aspirin', 'Ibuprofen', 'Amoxicillin', 'Lisinopril', 'Atorvastatin', 'Metformin', 'Simvastatin'];
+    
       const handleSubmit = (e) => {
         e.preventDefault();
-        if (validate()) {
-          // Proceed with form submission
-          console.log('Form submitted successfully!');
-        } else {
-          console.log('Form submission failed. Please check the fields.');
-        }
+      
       };
     const handleClose = () => {
         setOpenBox(false);
     };
 
     const handleAddDrug = () => {
-        // Perform validation
-        if (name.trim() === '' || quantity.trim() === '') {          
-          return;
-        }
-      
-        // If all fields are filled, add the drug
-        const newDrug = { name, quantity, quantitytype, hour };
-        setPres([...pres, newDrug]);
-        setName('');
-        setQuantity('');
-        
-      };
+      const newDrug = { name, quantity,quantitytype, hour };
+      setPres([...pres, newDrug]);
+      setName('');
+      setQuantity('');
+      setQuantitytype('');
+      setHour('');
+  };
     const handleDeleteDrug = (index) => {
       const updatedPres = [...pres];
       updatedPres.splice(index, 1);
@@ -75,23 +50,42 @@ export default function DoctorAddDrugs(props) {
         <div>
       <Dialog open={openBox}>
       <DialogContent dividers>
-        <CloseIcon onClick={handleClose} style={{ position: 'absolute', right: '8px', top: '8px', cursor: 'pointer',}} />
+        <CloseIcon onClick={handleClose} style={{ position: 'absolute', right: '3px', top: '4px', cursor: 'pointer',}} />
         <SearchIcon sx={{ position: 'absolute', left: '30%', top: '35px', cursor: 'pointer', }} />
 
-        <form onSubmit={handleSubmit}>
-          <TextField variant="outlined" size="small"
-             sx={{ m: 1, width: '33%', top: '1px', '& .MuiOutlinedInput-root': { '& fieldset': { borderColor: '#0099cc', borderWidth: '2px', borderRadius: '25px', }, }, }} 
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            error={nameError}
-            helperText={nameError ? 'Name is required' : ''}
-          />
-          <TextField variant="outlined" size="small"
-                     sx={{ m: 1, width: '13%', top: '1px', '& .MuiOutlinedInput-root': { '& fieldset': { borderColor: '#0099cc', borderWidth: '2px',  }, }, }} 
+        <form onSubmit={handleSubmit} style={{ display: 'flex', alignItems: 'center', }}>
+        {openBox && (
+  <div style={{ position: 'relative' }}>      
+      <Autocomplete
+    sx={{ flex: '1', marginRight: '10px', width: '200px', '& .MuiOutlinedInput-root': { '& fieldset': { borderColor: '#0099cc', borderWidth: '2px' } } }}
+    freeSolo
+    options={drugNames}
+    value={name}
+    onChange={(event, newValue) => {
+        setName(newValue);
+    }}
+    renderInput={(params) => (
+        <TextField
+            {...params}
+            label="Search"
+            variant="outlined"
+            size="small" // Decrease the size of TextField
+            sx={{ width: '100%', fontSize: '14px' }}            
+            InputProps={{
+                ...params.InputProps,
+                endAdornment: null // Remove the end adornment (clear icon)
+            }}
+        />
+    )}
+/>
+    </div>
+        )}
+          <div>
+          </div>
+          <TextField variant="outlined" size="small"  label="Amount"
+                    sx={{ flex: '1',fontSize: '13px', marginRight: '11px', '& .MuiOutlinedInput-root': { '& fieldset': { borderColor: '#0099cc', borderWidth: '2px' } } }} 
             value={quantity}
-            onChange={(e) => setQuantity(e.target.value)}
-            error={quantityError}
-            helperText={quantityError ? ' required' : ''}
+            onChange={(e) => setQuantity(e.target.value)}            
           />
           <Select 
                     sx={{ m: 1, top: '1px', border: '2px solid #0099cc', width: '70px', height: '40px', }}
@@ -107,12 +101,16 @@ export default function DoctorAddDrugs(props) {
                             <MenuItem key={index} value={option}>{option}</MenuItem>
                         ))}
                     </Select>
+                    
           <Button type="submit" variant="outlined"  sx={{ top: '0.5px', color: 'Green', borderColor: 'Green', borderWidth:'3px'}}  onClick={() => {
              handleAddDrug();
               handleClose()}}>OK</Button>
           </form>
+         
           </DialogContent>
+          
           </Dialog>
+          
             <div>
                 {pres.map((drug, index) => (
                     <Grid key={index} container spacing={1} sx={{ marginTop: "5px",}}>
@@ -134,6 +132,7 @@ export default function DoctorAddDrugs(props) {
                     </Grid>
                 ))}
             </div>
+            
         </div>
     )
 }

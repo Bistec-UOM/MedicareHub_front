@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { SidebarContainer, SidebarTop, SidebarList } from '../components/sidebar/Sidebar'
 import Navbar from '../components/navbar/Navbar'
-import { Grid, Card, Typography } from '@mui/material'
+import { Grid, Card, Typography, Switch} from '@mui/material'
 import CardContent from '@mui/material/CardContent';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
@@ -20,9 +20,10 @@ import LabRequest from '../components/DoctorComponents/LabRequest';
 import { Sideunit_Patient } from '../components/sidebar/Sideunits';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import TopUnit from '../components/DoctorComponents/TopUnit';
 
 export default function Doctor() {
-
+  
   const [select,setSelect]=useState(null);//---------------hold the selected appoinment patient-----------------------------
   const [openPopup, setOpenPopup] = useState(false);
   const [openBox, setOpenBox] = useState(false);
@@ -30,10 +31,10 @@ export default function Doctor() {
   const [openAreports, setOpenAreports] = useState(false);
   const [description,setDescription] = useState ("");
   const [open, setOpen] = React.useState(false); //for snapbar
-  //display date
-  const currentDate = new Date();
-  const formattedDate = currentDate.toDateString();
-  
+  const [showDonePatients, setShowDonePatients] = useState(false);
+  const [showPendingPatients, setShowPendingPatients] =  useState(false);// State to track switch toggle
+  const [pres,setPres]=useState([]) // hold the pres details from doctoradd drug component
+  const [rep,setrep]=useState([]) // hold the  lab request from doctoradd drug component
   useEffect(() => {
     document.body.style.margin = '0';
   }, [])
@@ -64,20 +65,29 @@ export default function Doctor() {
     setOpen(true);
   };
  
-  
-
-  // Remove after click the confirm buttun
   const confirmRemoving = () => {
-    if (select !== null) {
-        const updatedAppointments = x.filter(appointment => appointment.id !== select); // Filter out the selected appointment          
-        updatedAppointments.pres = [];
-        updatedAppointments.rep = [];
-        updatedAppointments.description = '';        
-        setX(updatedAppointments); // remove the selected patient in the appointments array
-        setSelect(null);
-        setOpen(false); // Clear the selected patient account      
-      }
+  if (select !== null) {
+      const updatedAppointments = x.map(appointment => {
+          if (appointment.id === select) {
+              // Update status to "done"
+              appointment.status = "done";
+
+              // Clear other fields if needed
+              appointment.drugs = [];
+              appointment.labs = [];
+              appointment.descript = '';
+          }
+          return appointment;
+      });
+
+      // Display updated appointments
+      console.log("Updated Appointments:", updatedAppointments);
+      setX(updatedAppointments);
+      setSelect(null);
+      setOpen(false); // Clear the selected patient account      
+  }
 };
+
 const handleClick = () => {
  
   handlesnapbarClick();
@@ -87,7 +97,10 @@ const handleClick = () => {
     labs: rep,  // lab test array: from Labrequest component
     descript: description
   }
-  console.log(obj)
+  //console.log(obj)
+  setPres([])
+  setrep([])
+  setDescription('')
   // Call the confirmRemoving function after showing the Snackbar
   setTimeout(() => {
     confirmRemoving();
@@ -101,82 +114,153 @@ const handleClick = () => {
      date:1,
       id:51,  // -----------------------------------> appointment Id-------  
       patient:{
-          name:"dhgwhjdbjhw",
-          age:30,
-          gender:"male"
-        },
-        time: "13:15",
-        status: "done"
-    },
-    {
-      date:16,
-      id:52,    
-      patient:{
-          name:"nethmi",
-          age:18,
+          name:"Nethmi Eranga",
+          age:23,
           gender:"female"
         },
-        time: "14:15",
-        status: "done"
+        time: "9:15",
+        status: "pending"
     },
     {
-      date:12,
+      date:2,
+      id:52,    
+      patient:{
+          name:"Dammika mahendra",
+          age:18,
+          gender:"male"
+        },
+        time: "10:30",
+        status: "pending"
+    },
+    {
+      date:3,
       id:53,    
       patient:{
-          name:"eranga",
+          name:"Yasiru Ramosh",
           age:8,
           gender:"male",
         },
-        time: "13:15",
-        status: "done"
+        time: "11:15",
+        status: "pending"
     },
     {
-      date:19,
+      date:4,
       id:54,    
       patient:{
-          name:"wijeweera",
-          age:22,
+          name:"Chathumini Pamodya",
+          age:32,
           gender:"female"
         },
-        time: "13:15",
-        status: "done"
+        time: "12:00",
+        status: "pending"
     },
     {
-      date:10,
+      date:5,
       id:55,    
       patient:{
-          name:"mihiran",
+          name:"Chalana Mihiran",
+          age:22,
+          gender:"male"
+        },
+        time: "13:05",
+        status: "pending"
+    },
+    {
+      date:6,
+      id:56,    
+      patient:{
+          name:"Dilini tharaka",
+          age:42,
+          gender:"female"
+        },
+        time: "14:15",
+        status: "pending"
+    },
+    {
+      date:7,
+      id:57,    
+      patient:{
+          name:"Hasini Chamodi",
+          age:52,
+          gender:"female"
+        },
+        time: "15:00",
+        status: "pending"
+    },
+    {
+      date:8,
+      id:58,    
+      patient:{
+          name:"Mihiran Iddamalgoda",
           age:38,
           gender:"male"
         },
-        time: "13:15",
-        status: "done"
+        time: "15:30",
+        status: "pending"
     },
-    
+    {
+      date:9,
+      id:59,    
+      patient:{
+          name:"Sunil Perera",
+          age:22,
+          gender:"male"
+        },
+        time: "15:45",
+        status: "pending"
+    },
+    {
+      date:10,
+      id:60,    
+      patient:{
+          name:"Nimal Senarathna",
+          age:16,
+          gender:"male"
+        },
+        time: "16:00",
+        status: "pending"
+    },
+    {
+      date:11,
+      id:61,    
+      patient:{
+          name:"Kasun Perera",
+          age:60,
+          gender:"male"
+        },
+        time: "16:15",
+        status: "pending"
+    },    
   ]
-
-  const [pres,setPres]=useState([]) // hold the pres details from doctoradd drug component
-  const [rep,setrep]=useState([]) // hold the  lab request from doctoradd drug component
+  
 
   const [x,setX]=useState(data)
   const selectedAppointment = select ? x.filter(appointment => appointment.id === select) : [];//------------filter  the selected patient----------
+  const filteredAppointments = showDonePatients ? x.filter(appointment => appointment.status === "pending") : x;
  
  return (
   <div>
   <Navbar></Navbar>
   <Grid container spacing={0} sx={{ paddingTop: '64px', height: '100vh' }}>
-      <Grid item xs={3} style={{ height: '100%', backgroundColor: '#DEF4F2' }}>
-          <SidebarContainer sx={{ backgroundColor: '#DEF4F2' }}>
+      <Grid item xs={3} style={{ height: '100%', backgroundColor:'#E7FFF9'}}>
+          <SidebarContainer sx={{ backgroundColor:'#E7FFF9'}}>
               <SidebarTop>
-              <Typography sx={{ fontWeight:'Bold',color:'grey' }}>{formattedDate}</Typography>
+              <TopUnit appointments={x} ></TopUnit>
               </SidebarTop>
-              <SidebarList>
-                {x.map((elm, ind) => {
-                  return (
-                  <Sideunit_Patient
-                  key={ind} id={elm.id} name={elm.patient.name} time={elm["time"]} status={elm["status"]} setSelect={setSelect} selected={elm.id === select ? true : ''}></Sideunit_Patient>
-                    );
-                  })}
+              <SidebarList >
+                <Switch defaultChecked size="small" sx={{position:'fixed',left:'8px',top:'125px'}}
+                onChange={() => setShowDonePatients(prev => !prev)}/>
+                {filteredAppointments.map((elm, ind) => (
+                                <Sideunit_Patient
+                                    key={ind}
+                                    id={elm.id}
+                                    name={elm.patient.name}
+                                    time={elm.time}
+                                    status={elm.status}
+                                    setSelect={setSelect}
+                                    selected={elm.id === select ? true : ''}
+                                />
+                            ))}
               </SidebarList>
           </SidebarContainer>
       </Grid>
@@ -222,7 +306,7 @@ const handleClick = () => {
                       <Button variant="contained" sx={{ backgroundColor: '#00cca3', left: '80%' }} onClick={handleClick}>Confirm</Button>
                       <div>
       
-      <Snackbar open={open} autoHideDuration={6000}  anchorOrigin={{ vertical: 'bottom', horizontal: 'right'}} >
+      <Snackbar open={open} autoHideDuration={6000}  anchorOrigin={{ vertical: 'bottom', horizontal: 'left'}} >
         <Alert             
           severity="success"
           variant="filled"          

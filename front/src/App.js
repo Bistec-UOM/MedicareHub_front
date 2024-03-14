@@ -14,6 +14,7 @@ import ResDay from "./components/recepcomponents/ResDay/ResDay";
 import TestPractise from "./components/recepcomponents/testpractice/TestPractise";
 import DoctorPage from "./components/recepcomponents/DoctorAppointmentHandle/DoctorPage.js/DoctorPage";
 import DoctorList from "./components/recepcomponents/DoctorAppointmentHandle/DoctorList/DoctorList";
+import Doctor_analytics from "./components/Doctor_analytics";
 
 function App() {
  
@@ -38,6 +39,7 @@ function App() {
       <Route path='/resday' element={<ResDay/>}></Route>
       <Route path='/dpage' element={<DoctorPage/>}></Route>
       <Route path="/dappList" element={<DoctorList/>}></Route>
+      <Route path="doct/analytics" element={<Doctor_analytics/>}></Route>
      
      
 

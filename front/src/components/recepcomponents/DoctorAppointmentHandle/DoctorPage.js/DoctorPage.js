@@ -19,6 +19,7 @@ import '../../../../components/CustomScroll.css'
 import LabRequest from '../../../DoctorComponents/LabRequest';
 import { Sideunit_Patient } from '../../../../components/sidebar/Sideunits';
 import DoctorAppCalender from '../DoctorAppCalender/DoctorAppCalender';
+import TopUnit from '../../../DoctorComponents/TopUnit';
 
 export default function DoctorPage() {
   const [select,setSelect]=useState(null)
@@ -146,6 +147,7 @@ export default function DoctorPage() {
         <Grid item xs={3} style={{ height: '100%',backgroundColor:'#DEF4F2'}}>
           <SidebarContainer sx={{backgroundColor:'#DEF4F2'}}>
             <SidebarTop>
+            <TopUnit></TopUnit>
             </SidebarTop>
             <SidebarList>
             {
@@ -162,7 +164,7 @@ export default function DoctorPage() {
         </Grid>
         
         <Grid item xs={9} style={{ height: '100%', overflowY: 'scroll' }}>
-        <DoctorAppCalender doctorId={2}/>
+        <DoctorAppCalender doctorId={1}/>
           
          
         </Grid>

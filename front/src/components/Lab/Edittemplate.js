@@ -85,7 +85,7 @@ export default function Edittemplate({setPage,tId,Tdata,setTload}) {
           TestId:tId,
           Fields:ld
         }
-        axios.put('http://localhost:5220/api/Template',obj)
+        axios.put('http://localhost:7205/api/Template',obj)
         .then(res=>{
           setTload([])//make test list empty to reload again
           setPage(2)
@@ -97,7 +97,7 @@ export default function Edittemplate({setPage,tId,Tdata,setTload}) {
       const [loading,setLoading]=useState(true)
       useEffect(()=>{
         document.body.style.margin = '0';
-          axios.get('http://localhost:5220/api/Template/'+`${tId}`)
+          axios.get('http://localhost:7205/api/Template/'+`${tId}`)
           .then(res=>{setTestField(res.data); setLoading(false)})
           .catch(er=>{})
        },[])
