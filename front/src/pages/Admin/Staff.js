@@ -14,26 +14,6 @@ import { DateField } from '@mui/x-date-pickers/DateField';
 function createData(id,fullName,name,nic,address,contactNumber,qualifications,role,email,dob,gender) {
     return {id,fullName,name,nic,address,contactNumber,qualifications,role,email,dob,gender};
   }
-
-
-// const row2 = [
-//   createData(1, "wimal kostha", "wimal", '200666503237', '134/h hansamaligama,premadasadeniya', '0756321737','mlt','lab', 'easter@gmail.com', '30', "female"),
-//   createData(2, "kumara sangakkara", "kumara", '200154996552', '109/o malwatte handiya,migamuwa', '0741572003','mlt','lab', 'asanka@gmail.com', '30', "male"),
-//   createData(3,"pathirana saman","pathirana",'201052946305','234/v nonagumgama,raddoluwa','0791031573','mlt','lab','tharaka@gmail.com','30',"female"),
-//   createData(4, "lavu kanush", "kanush",'200933401635', '546/g sandangana gama,sandalankaawa', '0783985174','mlt','lab','sonic@gmail.com', '30', "male"),
-//   createData(1, "wimal kostha", "wimal", '200666503237', '134/h hansamaligama,premadasadeniya', '0756321737','mbbs','doctor', 'easter@gmail.com', '30', "female"),
-//   createData(2, "kumara sangakkara", "kumara", '200154996552', '109/o malwatte handiya,migamuwa', '0741572003','mbbs','doctor', 'asanka@gmail.com', '30', "male"),
-//   createData(3,"pathirana saman","pathirana",'201052946305','234/v nonagumgama,raddoluwa','0791031573','mbbs','doctor','tharaka@gmail.com','30',"female"),
-//   createData(4, "lavu kanush", "kanush",'200933401635', '546/g sandangana gama,sandalankaawa', '0783985174','mbbs','doctor','sonic@gmail.com', '30', "male"),
-//   createData(1, "wimal kostha", "wimal", '200666503237', '134/h hansamaligama,premadasadeniya', '0756321737','hr','recep', 'easter@gmail.com', '30', "female"),
-//   createData(2, "kumara sangakkara", "kumara", '200154996552', '109/o malwatte handiya,migamuwa', '0741572003','hr','recep', 'asanka@gmail.com', '30', "male"),
-//   createData(3,"pathirana saman","pathirana",'201052946305','234/v nonagumgama,raddoluwa','0791031573','hr','recep','tharaka@gmail.com','30',"female"),
-//   createData(4, "lavu kanush", "kanush",'200933401635', '546/g sandangana gama,sandalankaawa', '0783985174','hr','recep','sonic@gmail.com', '30', "male")
-// ];
-
-
-
-
 export default function Staff() {
 
 
@@ -99,19 +79,7 @@ const [isDisabled, setIsDisabled] = useState(true);
     qualifications:formData.qualifications,
     role:formData.role
   };
-  // const p2Data = {
-  //   // id:formData.id,
-  //   name: formData.name,
-  //   fullName: formData.fullName,
-  //   nic: formData.nic,
-  //   address: formData.address,
-  //   contactNumber: formData.contactNumber,
-  //   email: formData.email,
-  //   dob: formData.dob,
-  //   gender: formData.gender,
-  //   qualifications:formData.qualifications,
-  //   role:formData.role
-  // };
+
 const [Role, setRole] = useState("");
   const handleAddSaveClose = () =>{
     let temp = pData
@@ -230,12 +198,12 @@ const deletePopUp = () =>{
 }
 
 const fields = [
-  { label: "Full Name", key: "fullName", fullWidth: true },
+  { label: "Full Name", key: "fullName", fullWidth: true},
   { label: "Usual Name", key: "name" },
-  { label: "NIC", key: "nic" },
+  { label: "NIC", key: "nic",style:{ml:'20px'} },
   { label: "Address", key: "address", fullWidth: true },
   { label: "Contact Number", key: "contactNumber" },
-  { label: "Qualifications", key: "qualifications" },
+  { label: "Qualifications", key: "qualifications" ,style:{ml:'20px'}},
   { label: "Email Address", key: "email" },
 ];
 
@@ -362,6 +330,7 @@ const fields = [
     {fields.map((field) => (
       <TextField
         label={field.label}
+        sx={field.style}
         fullWidth={field.fullWidth || false}
         margin="normal"
         value={formData[field.key]}
@@ -380,13 +349,12 @@ const fields = [
             value={formData.dob ? dayjs(formData.dob) : null} // Ensure formData.dob is a valid date or null
             onChange={(newValue) => handleInputChange('dob', newValue)}
             renderInput={(props) => <TextField {...props} />}
-            style={{width:'200px',marginLeft:'35px',marginTop:'9px'}}
+            style={{width:'200px',marginTop:'9px'}}
             disabled= {isDisabled}
             // format="YYYY/MM/DD" // You can add this line back if it's needed
           />
         </DemoContainer>
       </LocalizationProvider>
-    </div>
     <Select
       labelId="gender-label"
       id="gender"
@@ -394,13 +362,14 @@ const fields = [
       onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
       label="Gender"
       disabled={isDisabled}
-      style={{width:"200px"}}
-      // sx={{m:1,ml:1}}
+      style={{width:"200px",height:'8vh'}}
+      sx={{m:1,mt:2}}
     >
       <MenuItem value="Male">Male</MenuItem>
       <MenuItem value="Female">Female</MenuItem>
       {/* <MenuItem value="other">Other</MenuItem> */}
     </Select>
+    </div>
   </DialogContent>
   <DialogActions>
   {!isDisabled && (

@@ -15,6 +15,7 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateField } from '@mui/x-date-pickers/DateField';
+import SuccessNotification from "../../components/recepcomponents/SnackBar/SuccessNotification";
 
 
 function createData(id, name, nic, address,dob, email,gender,fullName,contactNumber) {
@@ -23,6 +24,9 @@ function createData(id, name, nic, address,dob, email,gender,fullName,contactNum
 
 
 function Patient() {
+  const [notificationOpen,setNotificationOpen]=useState(false);
+  const [notiMessage,setNotiMessage]=useState("");
+
 
 const [update,forceUpdate]=useState(0);
 
@@ -48,6 +52,7 @@ const [update,forceUpdate]=useState(0);
       });
   }, [update]);
   const [rows, setData] = useState([]);
+ 
 
 
 
@@ -83,67 +88,75 @@ const [update,forceUpdate]=useState(0);
     gender: formData.gender,
   };
 
-
   const handleAddSaveClose = () => {
-      // Validate form fields
-  let errors = {};
-  let isValid = true;
+    // Validate form fields
+    let errors = {};
+    let isValid = true;
+  
+    // Check if any of the required fields are empty
+    const fields = ['fullName', 'name', 'address', 'contactNumber', 'dob', 'email', 'gender', 'nic'];
 
-  if (formData.fullName.trim() === '') {
-    errors.fullName = 'Full Name is required';
-    isValid = false;
-  }
-  if (formData.name.trim() === '') {
-    errors.name = 'Name is required';
-    isValid = false;
-  }
-  if (formData.address.trim() === '') {
-    errors.address = 'Address is required';
-    isValid = false;
-  }
-  if (formData.contactNumber.trim() === '') {
-    errors.contactNumber = 'Contact number is required';
-    isValid = false;
-  }
-  if (formData.dob === '') {
-    errors.dob = 'Date of birth is required';
-    isValid = false;
-  }
-  if (formData.email.trim() === '') {
-    errors.email = 'Email is required';
-    isValid = false;
-  }
-  if (formData.gender.trim() === '') {
-    errors.gender = 'Gender is required';
-    isValid = false;
-  }
-  if (formData.nic.trim() === '') {
-    errors.nic = 'Email is required';
-    isValid = false;
-  }
-    // Add validation rules for other fields as needed
-
+    fields.forEach(field => {
+      if (!formData[field] || (typeof formData[field] === 'string' && formData[field].trim() === '')) {
+        errors[field] = `${field.charAt(0).toUpperCase() + field.slice(1)} is required`;
+        isValid = false;
+      }
+    });
+  
+    // If any required field is empty, set form errors and return
     if (!isValid) {
       setFormErrors(errors);
       return;
     }
-      // Create a data object to send in the POST request
-  let tmp = pData
-  tmp.id = 0;
-
-    axios.post('https://localhost:7205/api/Patient', tmp)
-    .then(response => {
-      setOpen(false);
-      console.log('Data added successfully:', response.data);
-      forceUpdate(prevCount => prevCount + 1); // Trigger a re-render
-      // Optionally, fetch updated data from the API and update the state
-    })
-    .catch(error => {
-      console.error('Error adding data:', error.message);
-    });
   
-    
+    // Check for duplicates only if the required fields are not empty
+    const isDuplicateName = rows.some((row) => row.name.toLowerCase() === formData.name.toLowerCase());
+    const isDuplicateFullName = rows.some((row) => row.fullName.toLowerCase() === formData.fullName.toLowerCase());
+    const isDuplicateContactNumber = rows.some((row) => row.contactNumber === formData.contactNumber);
+    const isDuplicateNIC = rows.some((row) => row.nic.toLowerCase() === formData.nic.toLowerCase());
+  
+    if (isDuplicateName) {
+      errors.name = 'Name already exists';
+      isValid = false;
+    }
+    if (isDuplicateFullName) {
+      errors.fullName = 'Full Name already exists';
+      isValid = false;
+    }
+  
+    if (isDuplicateContactNumber) {
+      errors.contactNumber = 'Contact number already exists';
+      isValid = false;
+    }
+  
+    if (isDuplicateNIC) {
+      errors.nic = 'NIC already exists';
+      isValid = false;
+    }
+  
+    // If any duplicates are found, set form errors and return
+    if (!isValid) {
+      setFormErrors(errors);
+      return;
+    }
+    setNotiMessage("patient added successfully")
+    // If no errors, proceed with creating data object and sending POST request
+    let tmp = pData;
+    tmp.id = 0;
+    axios.post('https://localhost:7205/api/Patient', tmp)
+      .then(response => {
+        setNotificationOpen(true);
+        setOpen(false);
+        console.log('Data added successfully:', response.data);
+        forceUpdate(prevCount => prevCount + 1); // Trigger a re-render
+        // Optionally, fetch updated data from the API and update the state
+      })
+      .catch(error => {
+        console.error('Error adding data:', error.message);
+      });
   };
+
+  
 
 
   const handleRemove =()=>{
@@ -167,8 +180,52 @@ const [isDisabled, setIsDisabled] = useState(true);
 
 
   const handleEditSave = () => {
+  // Validate form fields
+  let errors = {};
+  let isValid = true;
 
+  // Check if any of the required fields are empty or null
+  formFields.forEach((field) => {
+    if (!formData[field.key] || formData[field.key].trim() === '') {
+      errors[field.key] = `${field.label} is required`;
+      isValid = false;
+    }
+  });
+
+  // Check for duplicates only if the required fields are not empty
+  if (isValid) {
+    const isDuplicateName = rows.some((row) => row.id !== formData.id && row.name.toLowerCase() === formData.name.toLowerCase());
+    const isDuplicateFullName = rows.some((row) => row.id !== formData.id && row.fullName.toLowerCase() === formData.fullName.toLowerCase());
+    const isDuplicateContactNumber = rows.some((row) => row.id !== formData.id && row.contactNumber === formData.contactNumber);
+    const isDuplicateNIC = rows.some((row) => row.id !== formData.id && row.nic.toLowerCase() === formData.nic.toLowerCase());
+  
+    if (isDuplicateName) {
+      errors.name = 'Name already exists';
+      isValid = false;
+    }
+    if (isDuplicateFullName) {
+      errors.name = 'Name already exists';
+      isValid = false;
+    }
+
+    if (isDuplicateContactNumber) {
+      errors.contactNumber = 'Contact number already exists';
+      isValid = false;
+    }
+
+    if (isDuplicateNIC) {
+      errors.nic = 'NIC already exists';
+      isValid = false;
+    }
+  }
+
+  // If any errors are found, set form errors and return
+  if (!isValid) {
+    setFormErrors(errors);
+    return;
+  }
 try {
+  
   console.log(pData)
           // Assuming you have an API endpoint for updating a patient
           axios.put('https://localhost:7205/api/patient/'+ `${pData.id}` , pData)
@@ -176,11 +233,11 @@ try {
             // Handle success, maybe update local state or dispatch an action
             console.log('Patient updated successfully:', response.data);
             handleEditClose();
-                // Assume the Axios request is successful, then set showPatient to true
-    setShowPatient(true);
-    forceUpdate(prevCount => prevCount + 1); // Trigger a re-render
-    // Close the edit dialog
-    setEditOpen(false);
+            // Assume the Axios request is successful, then set showPatient to true
+            setShowPatient(true);
+            forceUpdate(prevCount => prevCount + 1); // Trigger a re-render
+            // Close the edit dialog
+            setEditOpen(false);
           })
 } catch (error) {
   // Handle error, show an error message or dispatch an error action
@@ -210,23 +267,37 @@ try {
   
   
   const formFields = [
-    { label: "Full Name", key: "fullName" },
+    { label: "Full Name", key: "fullName" ,isfull:true},
     { label: "Name", key: "name" },
     { label: "NIC", key: "nic", sx: { ml: 1 } },
-    { label: "Address", key: "address" },
+    { label: "Address", key: "address" ,isfull:true},
     { label: "Contact Number", key: "contactNumber" },
     { label: "Email", key: "email", sx: { ml: 1 } },
   ];
   
 
-  const handleInputChange = (field, value) => {
-    console.log("hello")
+ const handleInputChange = (field, value) => {
+  if (field === 'email') {
+    const emailRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
+    if (!emailRegex.test(value)) {
+      setFormErrors(errors => ({ ...errors, email: 'Invalid email format' }));
+    } else {
+      setFormErrors(errors => ({ ...errors, email: null }));
+    }
+  } else if (field === 'dob') {
+    if (!dayjs(value).isValid()) {
+      setFormErrors(errors => ({ ...errors, dob: 'Invalid date format' }));
+    } else {
+      setFormErrors(errors => ({ ...errors, dob: null }));
+    }
+  } else {
     setFormData({
       ...formData,
       [field]: value,
     });
-  };
-  
+  }
+};
+
 
   //this is record details for filtering
   const [records,setRecords] = useState(rows)
@@ -318,25 +389,27 @@ const [formErrors, setFormErrors] = useState({
         </DialogTitle>
         <DialogContent>
           {/* Add form fields or other content here */}
-          <TextField required label="Full Name" fullWidthsx={{ mb: 1, mt: 3 }} onChange={(e) => handleInputChange("fullName", e.target.value)} error={!!formErrors.fullName}helperText={formErrors.fullName}/>          
+          <TextField required label="Full Name" fullWidth sx={{ mb: 1, mt: 3 }} onChange={(e) => handleInputChange("fullName", e.target.value)} error={!!formErrors.fullName}helperText={formErrors.fullName}/>          
           <TextField required label="Name" sx={{ mb: 1 }}  onChange={(e) => handleInputChange("name", e.target.value)} error={!!formErrors.name}helperText={formErrors.name}/>
           <TextField required label="Address" fullWidth sx={{ mb: 1 }}  onChange={(e) => handleInputChange("address", e.target.value)} error={!!formErrors.address}helperText={formErrors.address}/>
-          <TextField required label="NIC" sx={{ ml: 4, mb: 1 }}  onChange={(e) => handleInputChange("nic", e.target.value)} error={!!formErrors.nic}helperText={formErrors.nic}/>
-          <TextField required label="Contact Number" sx={{ mb: 1 }}  onChange={(e) => handleInputChange("contactNumber", e.target.value)} error={!!formErrors.contactNumber}helperText={formErrors.contactNumber}/>
-          <TextField required label="E-mail" fullWidth sx={{ mb: 1 }} onChange={(e) => handleInputChange("email", e.target.value)} error={!!formErrors.email}helperText={formErrors.email}/>
+          <TextField required label="NIC" sx={{  mb: 1 }}  onChange={(e) => handleInputChange("nic", e.target.value)} error={!!formErrors.nic}helperText={formErrors.nic}/>
+          <TextField required label="Contact Number" sx={{ mb: 1 ,ml:2}}  onChange={(e) => handleInputChange("contactNumber", e.target.value)} error={!!formErrors.contactNumber}helperText={formErrors.contactNumber}/>
+          <TextField required label="E-mail" fullWidth sx={{ mb: 1 }} onChange={(e) => handleInputChange("email", e.target.value)} error={!!formErrors.email} helperText={formErrors.email}/>          
           <div style={{display:'flex'}}>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <DemoContainer  components={['DateField']}>
-        <DateField
-          error={!!formErrors.dob}helperText={formErrors.dob}
-          label="Date Of Birth"
-          style={{width:'200px'}}
-          required
-          onChange={(newValue) => handleInputChange('dob', newValue)}
-          renderInput={(props) => <TextField {...props} />} // need to import TextField from '@mui/material/TextField'
-        />
-      </DemoContainer>
-    </LocalizationProvider>
+          
+<LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DemoContainer components={['DateField']}>
+            <DateField
+            error={!!formErrors.dob} helperText={formErrors.dob}
+              label="Date Of Birth"
+              value={formData.dob ? dayjs(formData.dob) : null}
+              onChange={(newValue) => handleInputChange('dob', newValue)}
+              renderInput={(props) => <TextField {...props} />}
+              style={{ width: '225px' }}
+              required // Ensure date of birth is required
+            />
+          </DemoContainer>
+        </LocalizationProvider>
           <FormControl style={{marginLeft:'15px',marginTop:'8px'}}>
         <InputLabel id="demo-simple-select-label">Gender</InputLabel>
         <Select
@@ -346,7 +419,7 @@ const [formErrors, setFormErrors] = useState({
           id="demo-simple-select"
           label="Gender"
           onChange={(e) => handleInputChange("gender", e.target.value)}
-          error={!!formErrors.gender}helperText={formErrors.gender}
+          error={!!formErrors.gender} helperText={formErrors.gender}
         >
           <MenuItem value={'Female'}>Female</MenuItem>
           <MenuItem value={'Male'}>Male</MenuItem>
@@ -411,63 +484,67 @@ const [formErrors, setFormErrors] = useState({
 
       {/* pop up data editing */}
       <Grid>
-        <Dialog open={editOpen} onClose={handleEditClose}>
-          <DialogTitle
-            sx={{
-              backgroundColor: "rgb(222, 244, 242)",
-              display: "flex",
-              justifyContent: "space-between",
-            }}
-          >
-            Edit Patient
-            <CloseIcon onClick={handleEditClose} sx={{cursor:'pointer'}} />
-          </DialogTitle>
-          <DialogContent>
-          {formFields.map((field) => (
-      <TextField
-        disabled={isDisabled}
-        label={field.label}
-        fullWidth
-        margin="dense"
-        value={formData[field.key]}
-        onChange={(e) =>
-          setFormData({ ...formData, [field.key]: e.target.value })
-        }
-        sx={field.sx}
-      />
-    ))}
-<div style={{display:'flex'}}>
-<LocalizationProvider dateAdapter={AdapterDayjs}>
-  <DemoContainer components={['DateField']}>
-    <DateField
-      label="Date Of Birth"
-      value={formData.dob ? dayjs(formData.dob) : null} // Ensure formData.age is a valid date or null
-      onChange={(newValue) => handleInputChange('dob', newValue)}
-      renderInput={(props) => <TextField {...props} />}
-      style={{width:'225px'}}
-      disabled= {isDisabled}
-      // format="YYYY/MM/DD" // You can add this line back if it's needed
-    />
-  </DemoContainer>
-</LocalizationProvider>
-  <Select
-    labelId="gender-label"
-    id="gender"
-    value={formData.gender}
-    onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
-    label="Gender"
-    disabled={isDisabled}
-    sx={{m:1,ml:1}}
-  >
-    <MenuItem value="Male">Male</MenuItem>
-    <MenuItem value="Female">Female</MenuItem>
-  </Select>
-</div>
-
-           
-          </DialogContent>
-          <DialogActions>
-          {!isDisabled && (
+  <Dialog open={editOpen} onClose={handleEditClose}>
+    <DialogTitle
+      sx={{
+        backgroundColor: "rgb(222, 244, 242)",
+        display: "flex",
+        justifyContent: "space-between",
+      }}
+    >
+      Edit Patient
+      <CloseIcon onClick={handleEditClose} sx={{ cursor: 'pointer' }} />
+    </DialogTitle>
+    <DialogContent>
+      {formFields.map((field) => (
+        <TextField
+          key={field.key}
+          error={!!formErrors[field.key]}
+          helperText={formErrors[field.key]}
+          disabled={isDisabled}
+          label={field.label}
+          fullWidth={field.isfull}
+          margin="dense"
+          value={formData[field.key] || ''} // Ensure value is not null
+          onChange={(e) =>
+            setFormData({ ...formData, [field.key]: e.target.value })
+          }
+          sx={field.sx}
+          required={field.required} // Add required prop based on form field requirements
+        />
+      ))}
+      <div style={{ display: 'flex' }}>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DemoContainer components={['DateField']}>
+            <DateField
+              label="Date Of Birth"
+              value={formData.dob ? dayjs(formData.dob) : null}
+              onChange={(newValue) => handleInputChange('dob', newValue)}
+              renderInput={(props) => <TextField {...props} />}
+              style={{ width: '225px' }}
+              disabled={isDisabled}
+              required // Ensure date of birth is required
+            />
+          </DemoContainer>
+        </LocalizationProvider>
+        <Select
+          labelId="gender-label"
+          id="gender"
+          value={formData.gender || ''} // Ensure value is not null
+          onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
+          label="Gender"
+          disabled={isDisabled}
+          sx={{ m: 1, ml: 1 }}
+          required // Ensure gender is required
+        >
+          <MenuItem >Select Gender</MenuItem> {/* Add a default value */}
+          <MenuItem value="Male">Male</MenuItem>
+          <MenuItem value="Female">Female</MenuItem>
+        </Select>
+      </div>
+    </DialogContent>
+    <DialogActions>
+      {!isDisabled && (
         <Button
           onClick={handleRemove}
           variant="outlined"
@@ -477,19 +554,17 @@ const [formErrors, setFormErrors] = useState({
           Delete
         </Button>
       )}
-            <Button
-              onClick={isDisabled ? handleEditClick : handleEditSave}
-              variant="contained"
-              sx={{ backgroundColor: "rgb(121, 204, 190)", m: 2 }}
-            >
-              {isDisabled ? 'Edit' : 'Save'}
-            </Button>
-          </DialogActions>
-        </Dialog>
-        
-
-
-      </Grid>
+      <Button
+        onClick={isDisabled ? handleEditClick : handleEditSave}
+        variant="contained"
+        sx={{ backgroundColor: "rgb(121, 204, 190)", m: 2 }}
+      >
+        {isDisabled ? 'Edit' : 'Save'}
+      </Button>
+    </DialogActions>
+  </Dialog>
+</Grid>
+<SuccessNotification setNotificationOpen={setNotificationOpen} notiMessage={notiMessage} notificationOpen={notificationOpen}></SuccessNotification>
 </Grid>
     </div>
   );

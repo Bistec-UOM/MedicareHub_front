@@ -209,6 +209,8 @@ function ResDay() {
    }
  ]);
 
+ const [filteredAppointments, setFilteredAppointments] = useState([]);
+
  useEffect(()=>
  {
   console.log("Hello fuck",doctorid);
@@ -372,7 +374,7 @@ function ResDay() {
           sm:'35px',
           xs:'30px'
         },width:'100%', height:'100%'}} item xs={9} sm={11} md={9}>
-        {renderVal ?  <SearchPatientPage selectedDay={selectedDay} docid={doctorid} renderVal={renderVal} setRenderVal={setRenderVal}/> :<ResDayList selectedDay={selectedDay}  docid={doctorid} setAppointList={setAppointList} appointlist={appointlist} renderVal={renderVal} setRenderVal={setRenderVal}/>}   
+        {renderVal ?  <SearchPatientPage filteredAppointments={filteredAppointments} setFilteredAppointments={setFilteredAppointments} selectedDay={selectedDay} docid={doctorid} renderVal={renderVal} setRenderVal={setRenderVal}/> :<ResDayList filteredAppointments={filteredAppointments} setFilteredAppointments={setFilteredAppointments} selectedDay={selectedDay}  docid={doctorid} setAppointList={setAppointList} appointlist={appointlist} renderVal={renderVal} setRenderVal={setRenderVal}/>}   
           </Grid>
         
       </Box>

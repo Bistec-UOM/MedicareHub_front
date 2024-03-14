@@ -6,7 +6,7 @@ import Fieldcom from './Fieldcom';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 
-export default function Testcom({test,handleClose}) {
+export default function Testcom({test,handleClose,load,setLoad}) {
 
     // SnackBar component====================================================================================
     const [open, setOpen] = React.useState(false);
@@ -37,6 +37,9 @@ export default function Testcom({test,handleClose}) {
   const submitData=()=>{
     setTimeout(() => {
       handleClose()
+      let tmp=[...load]
+      tmp.pop()
+      setLoad(tmp)
     }, 3000)
     setTimeout(() => {
       handleClick1()

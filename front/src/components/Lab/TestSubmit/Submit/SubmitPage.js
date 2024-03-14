@@ -1,12 +1,12 @@
 import { Paper, Typography, InputBase, IconButton, Divider, Toolbar,Stack, Dialog, DialogTitle} from '@mui/material'
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
 import Testcom from './Testcom';
 import axios from 'axios';
 
-export default function SubmitPage({load,setpage}) {
+export default function SubmitPage({load,setLoad,setpage}) {
 
     //Pop up dialog box------------------------------------------------------------
     const [open, setOpen] = useState(false)
@@ -60,7 +60,7 @@ export default function SubmitPage({load,setpage}) {
             <Typography sx={{fontSize:'16px'}}>Enter test results</Typography>
           <CloseIcon onClick={handleClose} sx={{cursor:'pointer'}} />
           </DialogTitle>
-      <Testcom handleClose={handleClose} test={test} detail={"njkjn"}></Testcom>
+      <Testcom handleClose={handleClose} test={test} load={load} setLoad={setLoad} detail={"njkjn"}></Testcom>
       </Dialog>
         
     </div>
