@@ -42,6 +42,7 @@ const DayList = (props) => {
     props.setRenderVal(true);
   };
   useEffect(() => {
+    console.log('dayapplist',filteredAppointments)
     document.body.style.margin = "0";
     const appointments = props.appointlist.filter((item) => item.today === loc.today);
     const newappointments=appointments.filter((item)=>item.did===props.docid)
@@ -136,14 +137,14 @@ const DayList = (props) => {
           </div>
         }
       </div>
-      <AppAddPopup apopen={apopen} setApopen={setApopen} />
+      <AppAddPopup filteredAppointments={filteredAppointments} apopen={apopen} setApopen={setApopen} />
       <AllAppDeletePopup
         isDisabled={isDisabled}
         setIsDisabled={setIsDisabled}
         filteredAppointments={filteredAppointments}
         setFilteredAppointments={setFilteredAppointments}
         dopen={dopen}
-        setDopen={setDopen}
+        setDopen={setDopen} 
       />
     </Box>
   );

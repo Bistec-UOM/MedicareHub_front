@@ -210,7 +210,7 @@ const DoctorAppList = (props) => {
           </Box>
         }
       </div>
-      <AppAddPopup apopen={apopen} setApopen={setApopen} />
+    
       <DoctorAllAppDeletePopup
         selectedDay={selectedDay}
         delcount={delcount}
