@@ -41,7 +41,7 @@ const ResDayList = (props) => {
   const [dayapp, setDayApp] = useState([]);
   const [doctorid,setDoctorid]=useState(props.docid);
  
-  const [filteredAppointments, setFilteredAppointments] = useState([]);
+
   const [search,setSearch]=useState("")
 
   const [apopen, setApopen] = useState(false);
@@ -76,13 +76,14 @@ const ResDayList = (props) => {
             // console.log("do",props.docid);
             // console.log(selectedDay);
             // console.log("pure",response);
+
             console.log("response data",response.data)
             const responseData = response.data;
            // setFilteredAppointments(responseData);
             setIsDisabled(responseData.length === 0); // Update isDisabled based on the fetched appointments
             console.log("use effect appointments", responseData.result);
             const sortedAppointments = responseData.slice().sort((a, b) => new Date(a.appointment.dateTime) - new Date(b.appointment.dateTime));  //this is used for sorting appointments based on their arrival time
-            setFilteredAppointments(sortedAppointments);
+            props.setFilteredAppointments(sortedAppointments);
             console.log("sorted appointments",sortedAppointments)
         })
         .catch((error) => {
@@ -176,12 +177,12 @@ const ResDayList = (props) => {
             
 
         },display:{xs:'none',sm:'none',md:'flex'},marginRight:{xs:'3%',sm:'0%'},marginTop:{xs:'50%',sm:'20%',md:'7%'} }}>
-          <Steper  search={search} items={filteredAppointments}></Steper>
+          <Steper  search={search} items={props.filteredAppointments}></Steper>
         </Box>
 
         {
           <Box sx={{ width: "70%",marginTop:{xs:'40%',sm:'20%',md:'7%'}}}>
-            {Array.isArray(filteredAppointments) && filteredAppointments.sort((a,b)=>{
+            {Array.isArray(props.filteredAppointments) && props.filteredAppointments.sort((a,b)=>{
               return new Date(a.time)-new Date(b.time);
             })
             .filter((item)=>{
@@ -196,8 +197,8 @@ const ResDayList = (props) => {
                   handleNotification={handleNotification}
                   delcount={delcount}
                   setDelcount={setDelcount}
-                  filteredAppointments={filteredAppointments}
-                  setFilteredAppointments={setFilteredAppointments}
+                  filteredAppointments={props.filteredAppointments}
+                  setFilteredAppointments={props.setFilteredAppointments}
                   item={item}
                 />
               </div>
@@ -205,7 +206,7 @@ const ResDayList = (props) => {
           </Box>
         }
       </div>
-      <AppAddPopup apopen={apopen} setApopen={setApopen} />
+      <AppAddPopup filteredAppointments={props.filteredAppointments} apopen={apopen} setApopen={setApopen} />
       <AllAppDeletePopup
         selectedDay={selectedDay}
         delcount={delcount}
@@ -214,8 +215,8 @@ const ResDayList = (props) => {
         handleNotification={handleNotification}
         isDisabled={isDisabled}
         setIsDisabled={setIsDisabled}
-        filteredAppointments={filteredAppointments}
-        setFilteredAppointments={setFilteredAppointments}
+        filteredAppointments={props.filteredAppointments}
+        setFilteredAppointments={props.setFilteredAppointments}
         dopen={dopen}
         setDopen={setDopen}
       />
