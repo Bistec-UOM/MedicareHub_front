@@ -3,11 +3,8 @@ import FullCalendar from '@fullcalendar/react';
 import { Box } from '@mui/material';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import { useNavigate } from 'react-router-dom';
-<<<<<<< HEAD
-=======
 import axios from 'axios';
 
->>>>>>> e219694db0483b654ce31a3d86005454571f3991
 import { useEffect } from 'react';
 import moment from 'moment';
 
