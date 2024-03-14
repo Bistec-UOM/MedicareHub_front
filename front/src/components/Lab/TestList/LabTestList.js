@@ -25,6 +25,11 @@ export default function LabTestList({setPage,settId,Tload,setTload}) {
     const [test,setTest]=useState()
     //----------------------------------------------------------------------------
 
+    const [query, setQuery] = useState('')//searchbar value
+
+    const filteredData = Tload.filter(item => item.testName.toLowerCase().includes(query.toLowerCase()))//filtered Rload data by the search
+
+
     useEffect(()=>{
       if(Tload.length==0){
         axios.get('http://localhost:7205/api/Test')
@@ -40,7 +45,7 @@ export default function LabTestList({setPage,settId,Tload,setTload}) {
 
             {/*-------Search bar--------------- */}
             <Box component="form" sx={{p: "2px 4px",display: "flex",alignItems: "center",height:'30px',width:{xs:'40%',sm:'40%'},borderRadius: "20px",boxShadow: 1}}>
-            <InputBase type="text" className="form-control" sx={{ flex: 1 }} placeholder="Search"/>
+            <InputBase type="text" className="form-control" sx={{ flex: 1 }} placeholder="Search tests" onChange={(e)=>setQuery(e.target.value)}/>
             <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
             <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
               <SearchIcon />
@@ -54,7 +59,7 @@ export default function LabTestList({setPage,settId,Tload,setTload}) {
 
         <Stack sx={{paddingTop:{xs:'60px',sm:'80px'},paddingLeft:{xs:'5%',sm:'8%'}}}>
             {
-                Tload.map((el)=>{
+                filteredData.map((el)=>{
                     return(
                     <Paper sx={{display:'flex',width:{xs:'95%',sm:'80%'},justifyContent:'space-between',cursor:'pointer',padding:{xs:1,sm:2},borderRadius:'12px',mb:'10px'}} 
                     onClick={()=>handleClickOpen(el.id)}>
