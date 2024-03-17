@@ -8,7 +8,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import TestDialogBox from './TestDialogBox';
 import CloseIcon from "@mui/icons-material/Close";
 import axios from 'axios'
-
+import { baseURL,endPoints} from '../../../Services/Lab';
 
 export default function LabTestList({setPage,settId,Tload,setTload}) {
 
@@ -32,7 +32,7 @@ export default function LabTestList({setPage,settId,Tload,setTload}) {
 
     useEffect(()=>{
       if(Tload.length==0){
-        axios.get('http://localhost:7205/api/Test')
+        axios.get(baseURL+endPoints.TEST)
         .then(res=>{setTload(res.data)})
         .catch(er=>{})
       }

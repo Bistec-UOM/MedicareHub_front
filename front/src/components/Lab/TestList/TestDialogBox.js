@@ -2,7 +2,7 @@ import React, {useState } from 'react'
 import { Button, TextField } from '@mui/material'
 import DashboardCustomizeIcon from '@mui/icons-material/DashboardCustomize';
 import axios from 'axios'
-
+import { baseURL,endPoints } from '../../../Services/Lab';
 
 export default function TestDialogBox({test,setPage,setTload,handleClose}) {
 
@@ -21,7 +21,7 @@ export default function TestDialogBox({test,setPage,setTload,handleClose}) {
         price:price,
         provider:provider
       }
-      axios.put('http://localhost:7205/api/Test',obj)
+      axios.put(baseURL+endPoints.TEST,obj)
       .then(res=>{
         setTload([])//make test list empty to reload again
         handleClose()

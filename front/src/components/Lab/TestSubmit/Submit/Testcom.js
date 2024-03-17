@@ -5,6 +5,7 @@ import axios from 'axios';
 import Fieldcom from './Fieldcom';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import { baseURL,endPoints } from '../../../../Services/Lab';
 
 export default function Testcom({test,handleClose,load,setLoad}) {
 
@@ -57,7 +58,7 @@ export default function Testcom({test,handleClose,load,setLoad}) {
   }
 
   useEffect(()=>{
-    axios.get('http://localhost:7205/api/Template/'+`${test[0].testId}`)
+    axios.get(baseURL+endPoints.TEMPLATE+`${test[0].testId}`)
     .then(res=>{
       setFload(res.data)
 
