@@ -7,6 +7,7 @@ import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrow
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import axios from 'axios'
+import { baseURL,endPoints } from '../../Services/Lab';
 
 export default function Edittemplate({setPage,tId,Tdata,setTload}) {
       
@@ -85,7 +86,7 @@ export default function Edittemplate({setPage,tId,Tdata,setTload}) {
           TestId:tId,
           Fields:ld
         }
-        axios.put('http://localhost:7205/api/Template',obj)
+        axios.put(baseURL+endPoints.TEMPLATE,obj)
         .then(res=>{
           setTload([])//make test list empty to reload again
           setPage(2)
@@ -97,7 +98,7 @@ export default function Edittemplate({setPage,tId,Tdata,setTload}) {
       const [loading,setLoading]=useState(true)
       useEffect(()=>{
         document.body.style.margin = '0';
-          axios.get('http://localhost:7205/api/Template/'+`${tId}`)
+          axios.get(baseURL+endPoints.TEMPLATE+`${tId}`)
           .then(res=>{setTestField(res.data); setLoading(false)})
           .catch(er=>{})
        },[])
