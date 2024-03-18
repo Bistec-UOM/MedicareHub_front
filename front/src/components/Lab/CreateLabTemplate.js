@@ -7,6 +7,7 @@ import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrow
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import axios from 'axios'
+import { baseURL,endPoints } from '../../Services/Lab';
 
 export default function CreateLabTemplate({setPage,setTload}) {
 
@@ -90,7 +91,7 @@ export default function CreateLabTemplate({setPage,setTload}) {
           provider:testData.provider,
           reportFields:ar
         }
-        axios.post('http://localhost:7205/api/Template',T)
+        axios.post(baseURL+endPoints.TEMPLATE,T)
         .then(res=>{
           setTload([])//make test list empty to reload again
           setPage(2)
