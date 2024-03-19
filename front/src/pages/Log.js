@@ -4,6 +4,7 @@ import { Box, fontSize } from '@mui/system'
 import { Button, Divider, Paper, TextField, Typography,Snackbar,Alert } from '@mui/material'
 import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
 import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
 
 export default function Log() {
   const navigate=useNavigate()
@@ -55,7 +56,22 @@ export default function Log() {
   }
 
   const setData=()=>{
-    validate()
+    if(password=="" || user==""){
+      handleClick("Fill the empty fields",'warning')
+      return
+    }
+    let obj={
+      UserId:user,
+      Password:password
+    }
+    axios.post('http://localhost:5220/api/Authent/log',obj)
+    .then((res)=>{
+      localStorage.setItem('token', res.data)
+      console.log(localStorage.getItem('token'))
+    })
+    .catch((er)=>{
+      handleClick(er.response.data,'error')
+    })
   }
 
   const clearData=()=>{

@@ -110,3 +110,7 @@ lab reports===========================================================>>>
   ('Madison Perez', '567891234V', 'Madison Harper Perez', '1994-04-15', '0790123456', '357 Cedar St, Colombo', 'madisonperez@example.com', 'Female'),
   ('Anthony Garcia', '234567891V', 'Anthony Edward Garcia', '1992-09-30', '0745678901', '852 Elm St, Galle', 'anthonygarcia@example.com', 'Male'),
   ('Evelyn Adams', '678912345V', 'Evelyn Rose Adams', '1986-02-15', '0778901234', '951 Pine St, Kandy', 'evelynadams@example.com', 'Female'),
+
+
+SELECT pcr.Id,pcr.DateTime,lb.TestId
+FROM labReports lb JOIN prescriptions pcr ON lb.PrescriptionID=pcr.Id ;
