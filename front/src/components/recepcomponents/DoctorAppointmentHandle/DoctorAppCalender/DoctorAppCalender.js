@@ -28,6 +28,7 @@ import EventBusyIcon from '@mui/icons-material/EventBusy';
 
 import interactionPlugin from '@fullcalendar/interaction';
 import '../../../../recep.css';
+import CustomizedProgressBars from '../../CustomProgressBar/CustomProgressBar';
 
 
 
@@ -133,7 +134,7 @@ const DoctorAppCalender=({doctorId})=>
           <div>{dayCell.dayNumberText} </div>
           
          
-          <LinearProgress variant="determinate" value={getDayAppCount(dayCell.dayNumberText)*10} style={{ width:'90%', height: '10px',position:'absolute',bottom:'5%' }}  color="success" />
+          <CustomizedProgressBars  value={getDayAppCount(dayCell.dayNumberText)*10}  />
                
     
         </div>

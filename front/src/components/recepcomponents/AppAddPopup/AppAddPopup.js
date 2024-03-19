@@ -171,7 +171,7 @@ export default function AppAddPopup({
         status:"new",
         patientId: activeData.id,
         doctorId: docid,
-        recepId:7
+        recepId:1
       }
 
 
