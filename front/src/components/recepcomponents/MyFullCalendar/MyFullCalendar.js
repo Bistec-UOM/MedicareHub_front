@@ -8,6 +8,8 @@ import axios from 'axios';
 import { useEffect } from 'react';
 import moment from 'moment';
 
+import CustomizedProgressBars from '../CustomProgressBar/CustomProgressBar';
+
 import interactionPlugin from '@fullcalendar/interaction';
 
 import LinearProgress from '@mui/material/LinearProgress';
@@ -193,8 +195,10 @@ function MyFullCalendar({doctorId,selectedTab,setSelectedTab}) {
     return (
       <div >
         <div>{dayCell.dayNumberText} </div>
+
         
-        <LinearProgress variant="determinate" value={getDayAppCount(dayCell.dayNumberText)*10} style={{ width:'90%', height: '10px',position:'absolute',bottom:'5%' }}  color="success" />
+        
+        <CustomizedProgressBars   value={getDayAppCount(dayCell.dayNumberText)*10}  />
              
 
       </div>
