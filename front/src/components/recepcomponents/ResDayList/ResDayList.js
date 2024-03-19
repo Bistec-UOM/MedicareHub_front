@@ -19,7 +19,7 @@ import axios from "axios";
 
 
 
-
+//day app list page for a day
 
 const ResDayList = (props) => {
 
@@ -27,13 +27,10 @@ const ResDayList = (props) => {
   const [notiMessage,setNotiMessage]=useState("");
 
   const handleNotification=(msg)=>
- {
-     //console.log(msg)
-     setNotiMessage(msg);
+ {  
+    setNotiMessage(msg);
     setNotificationOpen(true);
     console.log(notiMessage);
-   
-    
  }
 
 
