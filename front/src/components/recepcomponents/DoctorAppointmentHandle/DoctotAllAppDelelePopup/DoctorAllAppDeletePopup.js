@@ -23,7 +23,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Grid, Stack } from "@mui/material";
 import ErrorIcon from "@mui/icons-material/Error";
 
-export default function DoctorAllAppDeletePopup({cancelAll,setCancelAll,selectedDay,delcount,setDelcount,docid,handleNotification, dopen, setDopen,filteredAppointments,setFilteredAppointments,isDisabled,setIsDisabled }) {
+export default function DoctorAllAppDeletePopup({cancelAll,setCancelAll,selectedDay,delcount,setDelcount,docid,handleNotification, dopen, setDopen,filteredAppointments,setFilteredAppointments,isDisabledCancel,setIsDisabledCancel }) {
   // const [enameError,seteNameError]=useState(false)
   // const [eaddressError,seteAddressError]=useState(false)
   // const [enicError,seteNicError]=useState(false)

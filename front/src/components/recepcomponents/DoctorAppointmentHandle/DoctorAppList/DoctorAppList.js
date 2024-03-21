@@ -52,13 +52,19 @@ const DoctorAppList = (props) => {
 
   const [delcount,setDelcount]=useState(0)
 
-  const [isDisabled, setIsDisabled] = useState(true);
+  const [isDisabledCancel, setIsDisabledCancel] = useState(true);  //variable for disabling the cancel button
+
+  const [isDisabledBlock,setIsDisabledBlock]=useState(true);
 
   const [selectedDay,setSelectedDay]=useState(props.selectedDay);
 
   const [patientDataList,setPatientDataList]=useState([]);
 
   const [cancelAll,setCancelAll]=useState(false);
+
+  const today=new Date();
+
+  const compSelectedDay=new Date(selectedDay);  //day object of selected day for comparison of blocking functionality
 
   const handleCancelAll = () => {
     setCancelAll(true);
@@ -79,13 +85,16 @@ const DoctorAppList = (props) => {
     axios.get(`https://localhost:7205/api/Appointment/doctor/${props.docid}/day/${selectedDay}`)
         .then((response) => {
              console.log("do",props.docid);
-            // console.log(selectedDay);
+             console.log("dsa"+selectedDay);
+             console.log("todaydsa"+today);
             // console.log("pure",response);
             console.log("response data",response.data)
             const responseData = response.data;
            // setFilteredAppointments(responseData);
-            setIsDisabled(responseData.length === 0); // Update isDisabled based on the fetched appointments
+            setIsDisabledCancel(responseData.length === 0); // Update isDisabled based on the fetched appointments
+            setIsDisabledBlock(responseData.length != 0 || today>compSelectedDay);
             console.log("use effect appointments", responseData.result);
+            console.log("dsa today"+ (today<compSelectedDay));
             const sortedAppointments = responseData.slice().sort((a, b) => new Date(a.appointment.dateTime) - new Date(b.appointment.dateTime));  //this is used for sorting appointments based on their arrival time
             setFilteredAppointments(sortedAppointments);
             console.log("sorted appointments",sortedAppointments)
@@ -120,7 +129,7 @@ const DoctorAppList = (props) => {
           search={search}
           setSearch={setSearch}
           mgl="20%"
-          isDisabled={isDisabled}
+          isDisabled={isDisabledCancel}
           placename="Patient name or id..."
         />
         <Stack
@@ -152,7 +161,21 @@ const DoctorAppList = (props) => {
           </Button> */}
           <Button
             onClick={handleCancelAll}
-            disabled={isDisabled}
+            disabled={isDisabledBlock}
+            sx={{
+              backgroundColor: "#F44336",
+              fontWeight: 25,
+              "&:hover": {
+                backgroundColor: "#F34436", // Set hover background color to be the same
+              },
+            }}
+            variant="contained"
+          >
+            Block
+          </Button>
+          <Button
+            onClick={handleCancelAll}
+            disabled={isDisabledCancel}
             sx={{
               backgroundColor: "#F44336",
               fontWeight: 25,
@@ -217,8 +240,8 @@ const DoctorAppList = (props) => {
         setDelcount={setDelcount}
         docid={props.docid}
         handleNotification={handleNotification}
-        isDisabled={isDisabled}
-        setIsDisabled={setIsDisabled}
+        isDisabledCancel={isDisabledCancel}
+        setIsDisabledCancel={setIsDisabledCancel}
         filteredAppointments={filteredAppointments}
         setFilteredAppointments={setFilteredAppointments}
         cancelAll={cancelAll}
