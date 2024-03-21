@@ -135,6 +135,7 @@ const DoctorAppCalender=({doctorId})=>
           
          
           <CustomizedProgressBars  value={getDayAppCount(dayCell.dayNumberText)*10}  />
+          
                
     
         </div>
