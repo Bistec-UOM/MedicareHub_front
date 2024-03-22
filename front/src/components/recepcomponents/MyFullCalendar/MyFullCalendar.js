@@ -8,6 +8,8 @@ import axios from 'axios';
 import { useEffect } from 'react';
 import moment from 'moment';
 
+import CustomizedProgressBars from '../CustomProgressBar/CustomProgressBar';
+
 import interactionPlugin from '@fullcalendar/interaction';
 
 import LinearProgress from '@mui/material/LinearProgress';
@@ -19,22 +21,24 @@ const events = [
   { title: 'Meeting', start: new Date() }
 ]
 
+//full calender for receptionist
+
 function MyFullCalendar({doctorId,selectedTab,setSelectedTab}) {
 
 
    // const localizer = momentLocalizer(moment);
     let today;
 
-    const [doctorList,setDoctorList]=useState([]);
-    const [doctorCount,setDoctorCount]=useState(0);
+    const [doctorList,setDoctorList]=useState([]);  //doctor list for sidebar
+    const [doctorCount,setDoctorCount]=useState(0);  // changing state for fetching the doctor list
 
 
-    const [dayAppCount,setDayAppCount]=useState([]);
+    const [dayAppCount,setDayAppCount]=useState([]);  //variable for getting the app count of a day for calculating the progress bar
 
-    const [pasMonth,setPasMonth]=useState(null);
+    const [pasMonth,setPasMonth]=useState(null);   //variable for getting the current display month
     
  
-
+    // use effect for fetching the doctor list
     useEffect(()=>
     {
       fetch("https://localhost:7205/api/Appointment/doctors").then((response)=>
@@ -50,6 +54,7 @@ function MyFullCalendar({doctorId,selectedTab,setSelectedTab}) {
     },[]);
 
 
+    //  use effect for getting the app day count for the current displayed month
     useEffect(()=>
     {
 
@@ -74,6 +79,8 @@ function MyFullCalendar({doctorId,selectedTab,setSelectedTab}) {
 
     },[doctorId,pasMonth]);
 
+    //function for calculating the app daycount of a given day
+
    function getDayAppCount(day)
    {
      var total=0;
@@ -91,11 +98,9 @@ function MyFullCalendar({doctorId,selectedTab,setSelectedTab}) {
    }
 
     const navigate = useNavigate();
-    // const [displayedRange, setDisplayedRange] = useState({
-    //   start: moment().startOf('month'),
-    //   end: moment().endOf('month'),
-    // });
 
+
+    //function for navigating to the app list page when a day cell clicked
 
     const handleDateClick = (arg) => {
       const selectedDate = moment(arg.dateStr);
@@ -114,18 +119,10 @@ function MyFullCalendar({doctorId,selectedTab,setSelectedTab}) {
       }
     };
   
-    
-    //   const handleNavigate = (newDate) => {
-    //     const startDate = moment(newDate).startOf('month');
-    //     const endDate = moment(newDate).endOf('month');
-    //     setDisplayedRange({ start: startDate, end: endDate });
-    //   };
-
-
-
+  
   const currentDate = new Date();
 
-  const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+  const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);  
   const lastDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1);
 
   const [validRange, setValidRange] = useState({ start: firstDayOfMonth, end: lastDayOfMonth });
@@ -137,10 +134,8 @@ function MyFullCalendar({doctorId,selectedTab,setSelectedTab}) {
     return { start: firstDayOfMonth, end: lastDayOfMonth };
   }
 
-//   function handleDateClick() {
-//    console.log("Hello");
-//   }
 
+  //handle datesset for setting the valid date range
   const handleDatesSet = (arg) => {
     const displayedDate = arg.view.currentStart;
     const selectedMonth = displayedDate.getMonth(); // 0-indexed (0 for January, 11 for December)
@@ -170,7 +165,7 @@ function MyFullCalendar({doctorId,selectedTab,setSelectedTab}) {
     console.log(validRange);
   };
 
-
+  
   function renderEventContent(eventInfo) {
     return (
       <>
@@ -188,13 +183,17 @@ function MyFullCalendar({doctorId,selectedTab,setSelectedTab}) {
   const selectAllow = (arg) => {
     return isWithinDisplayedMonth(arg);
   };
+  
 
+  //for displaying day cell content
   function renderDayCellContent(dayCell) {
     return (
       <div >
         <div>{dayCell.dayNumberText} </div>
+
         
-        <LinearProgress variant="determinate" value={getDayAppCount(dayCell.dayNumberText)*10} style={{ width:'90%', height: '10px',position:'absolute',bottom:'5%' }}  color="success" />
+        
+        <CustomizedProgressBars   value={getDayAppCount(dayCell.dayNumberText)*10}  />
              
 
       </div>
@@ -207,8 +206,6 @@ function MyFullCalendar({doctorId,selectedTab,setSelectedTab}) {
       <FullCalendar
         plugins={[dayGridPlugin,interactionPlugin]}
         initialView='dayGridMonth'
-       // weekends={false}
-      //  events={events}
         eventContent={renderEventContent}
         dayCellContent={renderDayCellContent}
         dateClick={handleDateClick}
@@ -219,10 +216,6 @@ function MyFullCalendar({doctorId,selectedTab,setSelectedTab}) {
           center: 'title',
           right: 'next'
         }}
-       
-       // validRange={validRange}
-        
-      //  select={handleDateClick}
       />
 
       </Box>

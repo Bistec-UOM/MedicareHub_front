@@ -19,7 +19,7 @@ import axios from "axios";
 
 
 
-
+//day app list page for a day
 
 const ResDayList = (props) => {
 
@@ -27,13 +27,10 @@ const ResDayList = (props) => {
   const [notiMessage,setNotiMessage]=useState("");
 
   const handleNotification=(msg)=>
- {
-     //console.log(msg)
-     setNotiMessage(msg);
+ {  
+    setNotiMessage(msg);
     setNotificationOpen(true);
     console.log(notiMessage);
-   
-    
  }
 
 
@@ -42,7 +39,7 @@ const ResDayList = (props) => {
   const [doctorid,setDoctorid]=useState(props.docid);
  
 
-  const [search,setSearch]=useState("")
+  const [search,setSearch]=useState("");
 
   const [apopen, setApopen] = useState(false);
   const [dopen, setDopen] = useState(false);
