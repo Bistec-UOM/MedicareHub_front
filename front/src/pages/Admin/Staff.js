@@ -233,9 +233,7 @@ const RoleFields = ["Doctor", "Receptionist", "Lab Assistant", "Cashier"];
           <TextField required label="Address" fullWidth sx={{ mb: 1 }} onChange={(e) => handleInputChange("address", e.target.value)}/>
           <TextField required label="Contact Number" sx={{ mb: 1 }} onChange={(e) => handleInputChange("contactNumber", e.target.value)}/>
           <TextField required label="qualifications" sx={{ ml: 4, mb: 1 }} onChange={(e) => handleInputChange("qualifications", e.target.value)}/>
-          {/* <TextField label="Role" fullWidth sx={{ mb: 1 }} onChange={(e) => handleInputChange("role", e.target.value)}/> */}
           <TextField required label="E-mail" fullWidth sx={{ mb: 1 }} onChange={(e) => handleInputChange("email", e.target.value)}/>
-          {/* <TextField label="Date of Birth" sx={{ mb: 1 }} onChange={(e) => handleInputChange("dob", e.target.value)}/> */}
           <div style={{display:'flex'}}>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DemoContainer components={['DateField']}>
@@ -243,14 +241,12 @@ const RoleFields = ["Doctor", "Receptionist", "Lab Assistant", "Cashier"];
           label="Date Of Birth"
           style={{width:'200px'}}
           required
-          // value={value}
           onChange={(newValue) => handleInputChange('dob', newValue)}
           renderInput={(props) => <TextField {...props} />} // You may need to import TextField from '@mui/material/TextField'
           // format="YYYY/MM/DD"
         />
       </DemoContainer>
     </LocalizationProvider>
-          {/* <TextField label="Gender" sx={{ ml: 4, mb: 1 }} onChange={(e) => handleInputChange("gender", e.target.value)}/> */}
           <Box>
   <FormControl style={{ width: '200px',margin:'9px',marginLeft:'40px' }}>
     <InputLabel id="demo-simple-select-label">Gender</InputLabel>
