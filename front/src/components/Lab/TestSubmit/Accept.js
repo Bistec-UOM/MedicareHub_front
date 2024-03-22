@@ -1,9 +1,11 @@
 import { Button, Paper, Typography,Card,Box} from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import axios from 'axios';
+import { baseURL, endPoints } from '../../../Services/Lab';
 
-export default function Accept({req,reqOK,setAccLoad,accLoad,RLoad,setRLoad}) {
+export default function Accept({req,reqOK,RLoad,setRLoad}) {
 
   // SnackBar component====================================================================================
   const [open, setOpen] = React.useState(false);
@@ -20,7 +22,6 @@ export default function Accept({req,reqOK,setAccLoad,accLoad,RLoad,setRLoad}) {
   }
   //=======================================================================================================
 
-  const [ok,setok]=useState(true)
 
   const remTest=(x)=>{//remove acceptes sample form req list
     let tmp=RLoad
@@ -38,15 +39,17 @@ export default function Accept({req,reqOK,setAccLoad,accLoad,RLoad,setRLoad}) {
 
   }
 
-  const addToAcc=(x)=>{
-    handleClick()
-    req.load.map((i)=>{
-        if(i.repId==x){
-           setAccLoad([...accLoad,i]) 
-        }
-      })
-    remTest(x)
+  //SEt sample to accepted
+  const AccIdSet=(id)=>{
+    axios.post(baseURL+endPoints.SET_ACCEPT+'?id='+id)
+    .then((res)=>{
+      handleClick()
+    })
+    .catch(()=>{
+
+    })
   }
+
 
   return (
     <div>
@@ -63,9 +66,9 @@ export default function Accept({req,reqOK,setAccLoad,accLoad,RLoad,setRLoad}) {
                 <Box>
                     <Typography sx={{fontSize:'18px'}}>{i.test}</Typography>
                     <Typography sx={{fontSize:'15px'}}>taoken No:{i.repId}</Typography>
-                    <Typography sx={{fontSize:'22px'}}>{i.test=='FBC'?'Rs. 1200':i.test=='Lipid'?'Rs. 1390':'Rs.1340'}</Typography>
+                    <Typography sx={{fontSize:'22px'}}>{i.price}</Typography>
                 </Box>
-                <Button variant='contained' onClick={()=>addToAcc(i.repId)}>Accept</Button>
+                <Button variant='contained' onClick={()=>AccIdSet(i.repId)}>Accept</Button>
             </Paper>
             })
         }
