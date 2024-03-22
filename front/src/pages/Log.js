@@ -5,6 +5,7 @@ import { Button, Divider, Paper, TextField, Typography,Snackbar,Alert } from '@m
 import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import { baseURL,endPoints } from '../Services/Auth';
 
 export default function Log() {
   const navigate=useNavigate()
@@ -64,7 +65,7 @@ export default function Log() {
       UserId:user,
       Password:password
     }
-    axios.post('http://localhost:5220/api/Authent/log',obj)
+    axios.post(baseURL+endPoints.LOG,obj)
     .then((res)=>{
       localStorage.setItem('token', res.data)
       console.log(localStorage.getItem('token'))

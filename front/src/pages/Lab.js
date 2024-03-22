@@ -10,6 +10,8 @@ import ResNavBar from '../components/recepcomponents/ResNavBar/ResNabBar';
 import Edittemplate from '../components/Lab/Edittemplate';
 import SubmitPage from '../components/Lab/TestSubmit/Submit/SubmitPage';
 import Accept from '../components/Lab/TestSubmit/Accept';
+import axios from 'axios';
+import { baseURL, endPoints } from '../Services/Lab';
 
 export default function Lab() {
 
@@ -59,7 +61,8 @@ export default function Lab() {
    ]
 
     const [Tload,setTload]=useState([])//Lab test list <----- from back end
-    const [RLoad,setRLoad]=useState(x)
+    const [RLoad,setRLoad]=useState([])
+    const [RloadDone,setRloadDone]=useState(false)
 
     //const [Fields,setFields]=useState([])//store set of fields by the selected test
     const [Test,setTest]=useState([])//store the selected test
@@ -72,17 +75,22 @@ export default function Lab() {
 
     useEffect(()=>{
       document.body.style.margin = '0';
-      //selcted date's request
-/*       let a=RLoad.filter((el)=>{
-        return el.date==date
-      }) 
-      setLoadIn(a) */
+
+     if(!RloadDone){
+      axios.get(baseURL+endPoints.REPORT)
+      .then((res)=>{
+        setRLoad(res.data)
+        setRloadDone(true)
+      })
+      .catch((er)=>{
+        console.log(er.massage)
+      })
+     }
 
       //selected test name
       let t=Tload.filter(el=>{
         return el.id==tId
       })
-      console.log(t)
       setTest(t[0])
 
       //select a lab request
