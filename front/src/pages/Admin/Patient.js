@@ -92,21 +92,17 @@ const [update,forceUpdate]=useState(0);
     // Validate form fields
     let errors = {};
     let isValid = true;
-  
+    console.log(formData)
+
     // Check if any of the required fields are empty
     const fields = ['fullName', 'name', 'address', 'contactNumber', 'gender', 'nic'];
-
+  
     fields.forEach(field => {
       if (!formData[field] || (typeof formData[field] === 'string' && formData[field].trim() === '')) {
         errors[field] = `${field.charAt(0).toUpperCase() + field.slice(1)} is required`;
         isValid = false;
       }
     });
-    // if(fullName===''){
-    //   errors.fullName="Full Name is required"
-    //   isValid=false;
-    // }
-
   
     // If any required field is empty, set form errors and return
     if (!isValid) {
@@ -144,12 +140,22 @@ const [update,forceUpdate]=useState(0);
       setFormErrors(errors);
       return;
     }
-    setNotiMessage("patient added successfully")
+  
     // If no errors, proceed with creating data object and sending POST request
-    let tmp = pData;
-    tmp.id = 0;
-    axios.post('https://localhost:7205/api/Patient', tmp)
+    const newData = {
+      name: formData.name,
+      fullName: formData.fullName,
+      nic: formData.nic,
+      address: formData.address,
+      contactNumber: formData.contactNumber,
+      email: formData.email,
+      dob: formData.dob,
+      gender: formData.gender,
+    };
+  console.log("level last"+newData)
+    axios.post('https://localhost:7205/api/Patient', newData)
       .then(response => {
+        setNotiMessage("Patient added successfully");
         setNotificationOpen(true);
         setOpen(false);
         console.log('Data added successfully:', response.data);
@@ -160,7 +166,7 @@ const [update,forceUpdate]=useState(0);
         console.error('Error adding data:', error.message);
       });
   };
-
+  
   
 
 
@@ -282,25 +288,12 @@ try {
   
 
   const handleInputChange = (field, value) => {
-    if (field === 'email') {
-      const emailRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
-      if (!emailRegex.test(value)) {
-        setFormErrors(errors => ({ ...errors, email: 'Invalid email format' }));
-      } else {
-        setFormErrors(errors => ({ ...errors, email: null }));
-      }
-    } else if (field === 'dob') {
-      if (!dayjs(value).isValid()) {
-        setFormErrors(errors => ({ ...errors, dob: 'Invalid date format' }));
-      } else {
-        setFormErrors(errors => ({ ...errors, dob: null }));
-      }
-    } else {
+
       setFormData({
         ...formData,
         [field]: value,
       });
-    }
+    
   };
   
 
