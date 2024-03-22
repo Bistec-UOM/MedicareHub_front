@@ -1,4 +1,4 @@
-import { Button, Paper, Typography,Card,Box} from '@mui/material'
+import { Button, Paper, Typography,Card,Box, Chip} from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
@@ -44,6 +44,7 @@ export default function Accept({req,reqOK,RLoad,setRLoad}) {
     axios.post(baseURL+endPoints.SET_ACCEPT+'?id='+id)
     .then((res)=>{
       handleClick()
+      remTest(id)
     })
     .catch(()=>{
 
@@ -59,14 +60,14 @@ export default function Accept({req,reqOK,RLoad,setRLoad}) {
       }
 
         <Box sx={{width:'100%',padding:'40px',paddingTop:'90px'}}>
-        {reqOK?<Typography sx={{fontSize:'16px'}}>Accept samples & payments</Typography>:''}
+        {reqOK?<Typography sx={{fontSize:'16px',mb:'30px',color:'gray'}}>Accept samples & payments</Typography>:''}
         {
             req.load.map((i)=>{
-                return <Paper sx={{width:'70%',display:'flex',justifyContent:'space-between',alignItems:'center',mt:'10px',p:'10px'}}>
+                return <Paper sx={{width:'70%',display:'flex',justifyContent:'space-between',alignItems:'center',mt:'10px',p:'10px',pr:'30px'}} elevation={3}>
                 <Box>
-                    <Typography sx={{fontSize:'18px'}}>{i.test}</Typography>
-                    <Typography sx={{fontSize:'15px'}}>taoken No:{i.repId}</Typography>
-                    <Typography sx={{fontSize:'22px'}}>{i.price}</Typography>
+                    <Typography sx={{fontSize:'18px',mb:'5px'}}>{i.testName} Test</Typography>
+                    <Typography sx={{fontSize:'15px'}}>Token No: <Chip label={i.repId} sx={{height:'20px',borderRadius:'5px',color:'white',backgroundColor:'#568a91'}}></Chip></Typography>
+                    <Typography sx={{fontSize:'16px'}}>Rs. {i.price}</Typography>
                 </Box>
                 <Button variant='contained' onClick={()=>AccIdSet(i.repId)}>Accept</Button>
             </Paper>
