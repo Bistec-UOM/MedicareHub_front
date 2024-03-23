@@ -36,6 +36,10 @@ function MyFullCalendar({doctorId,selectedTab,setSelectedTab}) {
     const [dayAppCount,setDayAppCount]=useState([]);  //variable for getting the app count of a day for calculating the progress bar
 
     const [pasMonth,setPasMonth]=useState(null);   //variable for getting the current display month
+
+    
+
+    
     
  
     // use effect for fetching the doctor list
