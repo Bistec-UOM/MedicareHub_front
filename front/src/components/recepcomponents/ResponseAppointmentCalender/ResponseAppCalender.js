@@ -1,25 +1,19 @@
   import * as React from 'react';
-
-
   import Box from '@mui/material/Box';
   import CssBaseline from '@mui/material/CssBaseline';
   import Divider from '@mui/material/Divider';
   import Drawer from '@mui/material/Drawer';
   import Toolbar from '@mui/material/Toolbar';
-  import Typography from '@mui/material/Typography';
-  import MyCalendar from '../Calender/MyCalender';
   import { Grid } from '@mui/material';
   import { useState } from 'react';
-
   import { SidebarContainer } from '../../sidebar/Sidebar';
   import { SidebarTop,SidebarList } from '../../sidebar/Sidebar';
   import SearchBar from '../Searchbar/Searchbar';
   import { useEffect } from 'react';
   import {Tabs} from '@mui/material';
   import { Sideunit_Doctor } from '../../sidebar/Sideunits';
-
   import ResNavBar from '../ResNavBar/ResNabBar';
-import MyFullCalendar from '../MyFullCalendar/MyFullCalendar';
+  import MyFullCalendar from '../MyFullCalendar/MyFullCalendar';
 
   const drawerWidth = 358.4;
 
@@ -28,8 +22,8 @@ import MyFullCalendar from '../MyFullCalendar/MyFullCalendar';
       document.body.style.margin = '0';
     },[])
 
-    const [doctorList,setDoctorList]=useState([]);
-    const [doctorCount,setDoctorCount]=useState(1);
+    const [doctorList,setDoctorList]=useState([]);  //doctor list of sidebar
+    const [doctorCount,setDoctorCount]=useState(1);  
 
     useEffect(()=>
     {
@@ -39,42 +33,17 @@ import MyFullCalendar from '../MyFullCalendar/MyFullCalendar';
       }).then((responseData)=>
       {
         setDoctorCount(doctorCount+1);
-        console.log("in response calender",responseData.result);
-        //console.log
+       // console.log("in response calender",responseData.result);
         setDoctorList(responseData.result);
-        setSelectedTab(responseData.result[0].id)
-
+        setSelectedTab(responseData.result[0].id)  //set the selected doctor id
       })
-
     },[]);
-    
-
-    // const [selectedTab, setSelectedTab] = useState(0);
-  //  const [doctorid,setDoctorid]=useState(null)
-
-
-    const handleChanges = (event, newValue) => {
+     const handleChanges = (event, newValue) => {
       setSelectedTab(newValue);
     };
-    const [auth, setAuth] = React.useState(true);
-    const [anchorEl, setAnchorEl] = React.useState(null);
 
-    const handleChange = (event) => {
-      setAuth(event.target.checked);
-    };
-
-    const handleMenu = (event) => {
-      setAnchorEl(event.currentTarget);
-    };
-
-    const handleClose = () => {
-      setAnchorEl(null);
-    };
-    
-
-    const [mobileOpen, setMobileOpen] = React.useState(false);
+    const [mobileOpen, setMobileOpen] = React.useState(false);  //variable for mobile screen drawer open
     const [isClosing, setIsClosing] = React.useState(false);
-
     const [selectedTab, setSelectedTab] = useState(0);
 
     const handleDrawerClose = () => {
@@ -85,59 +54,27 @@ import MyFullCalendar from '../MyFullCalendar/MyFullCalendar';
     const handleDrawerTransitionEnd = () => {
       setIsClosing(false);
     };
+   
 
-  
-
-    const [appointmentlist,setAppointmentList]=useState([])
-
-    
-
-
-  //   const data=[
-  //     {'name':'Amal Rathnayaka','title':'MBBS, MD, MRCP(UK)'},
-  //     {'name':'Bimasara Herath','title':'MBBS, MD, MRCP(UK), PRCP-E'},
-  //     {'name':'Tharushi Fernando','title':'MBBS, MD'},
-  //     {'name':'Infas Mohomad','title':'MBBS, FCGP(SL), MD-CH(UK), MBS-CH(UK), C.ht(USA)'},
-  //     {'name':'Amal Rathnayaka','title':'MBBS, MD, MRCP(UK)'},
-  //     {'name':'Bimasara Herath','title':'MBBS, MD, MRCP(UK), PRCP-E'},
-  //     {'name':'Tharushi Fernando','title':'MBBS, MD'},
-  //     {'name':'Ankmal saruken','title':'MBBS, FCGP(SL), MD-CH(UK), MBS-CH(UK), C.ht(USA)'}
-      
-      
-    
-  //  ] 
-  const [search,setSearch]=useState("")
-
+  const [search,setSearch]=useState("")  //searching text var of searchbar of doctors
     const drawer = (
       <div>
-
         <Toolbar />
         <Divider />
-        <Grid  item xs={3} sm={1} md={3} sx={{backgroundColor:'#DEF4F2'}}>
+        <Grid  item xs={3} sm={1} md={3} sx={{backgroundColor:'#DEF4F2'}}>   
             <SidebarContainer>
               <SidebarTop>
-                <SearchBar search={search} setSearch={setSearch} mgl="10%" isDisabled={false} placename="Doctor name"></SearchBar>
+                <SearchBar  search={search} setSearch={setSearch} mgl="10%" isDisabled={false} placename="Doctor name"></SearchBar>
               </SidebarTop>
-              <SidebarList sx={{backgroundColor:'#DEF4F2'}}>
-                
+              <SidebarList sx={{backgroundColor:'#DEF4F2'}}>   
               <Box sx={{overflowY:'scroll',height:'81vh'}}>
                 <Tabs
                         orientation="vertical"
-                      // variant="scrollable"
                         value={selectedTab}
                         onChange={handleChanges}
                         aria-label="example vertical tabs"
-                        sx={{marginTop:0}}
-                        
+                        sx={{marginTop:0}} 
                       >
-                  {/* {data.filter((item)=>{
-                      return search.toLowerCase()===''?item:item.name.toLowerCase().includes(search.toLowerCase());
-                  }).map((item,index)=>(
-                    <Tab key={index} label="" style={{ display: 'none' }} />
-                
-                
-                    //<Sideunit_Doctor name={item.name} title={item.title} key={index}></Sideunit_Doctor>
-                  ))} */}
                   </Tabs>
                   <div style={{width:'100%',marginTop:'2%'}}>
                   {Array.isArray(doctorList) && doctorList.filter((item)=>{
@@ -157,17 +94,9 @@ import MyFullCalendar from '../MyFullCalendar/MyFullCalendar';
                   >
                     <Sideunit_Doctor selectedTab={selectedTab}  name={item.fullName} title={item.qualifications} index={item.id} key={selectedTab}></Sideunit_Doctor>
                   </div>
-
-                  
-                
-                
-                
-                
-                  ))}
+  ))}
                   </div>
-              </Box>
-            
-                
+              </Box> 
               </SidebarList>
             </SidebarContainer>
         </Grid>
@@ -175,21 +104,16 @@ import MyFullCalendar from '../MyFullCalendar/MyFullCalendar';
       </div>
     );
 
-    
     return (
-    
       <Box sx={{ display: 'flex' ,height:'100%'}}>
         <CssBaseline />
         <ResNavBar isClosing={isClosing} setMobileOpen={setMobileOpen} mobileOpen={mobileOpen} />
         <Box
           component="nav"
           sx={{ width: { sm: drawerWidth },  flexShrink: { sm: 0 } }}
-          aria-label="mailbox folders"
-        
+          aria-label="mailbox folders" 
         >
-          {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
           <Drawer
-            
             variant="temporary"
             open={mobileOpen}
             onTransitionEnd={handleDrawerTransitionEnd}
@@ -200,9 +124,7 @@ import MyFullCalendar from '../MyFullCalendar/MyFullCalendar';
             sx={{
               display: { xs: 'block', sm: 'none' },
               '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth-100 },
-            
               height:'100%'
-
             }}
           >
             {drawer}
@@ -213,8 +135,6 @@ import MyFullCalendar from '../MyFullCalendar/MyFullCalendar';
               display: { xs: 'none', sm: 'block' },
               marginTop:'20px',
               '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
-              
-            
             }}
             open
           >
@@ -228,19 +148,12 @@ import MyFullCalendar from '../MyFullCalendar/MyFullCalendar';
             sm:'90vh',
             md:'100vh'
           }, p: 3, width: {  sm: `calc(100% - ${drawerWidth}px)` } }}
-        >
-        
-          
+        > 
           <Grid sx={{paddingLeft:'10px',paddingRight:'10px',paddingTop:'64px',width:'100%', height:'100%'}} item xs={9} sm={11} md={9}>
             <MyFullCalendar doctorId={selectedTab}/>
-            </Grid>
-          
+            </Grid>         
         </Box>
-      </Box>
-    
+      </Box>   
     );
   }
-
-
-
-  export default ResponseAppCalender;
+export default ResponseAppCalender;
