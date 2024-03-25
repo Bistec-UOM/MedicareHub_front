@@ -74,6 +74,7 @@ const SearchPatientPage = (props) => {
      console.log(responseData);
      console.log("insied searchpa",props.selectedDay)
      setPatientList(responseData);
+     console.log("kkr ",props.dayAppTotal);
 
    })
 
@@ -206,7 +207,7 @@ const SearchPatientPage = (props) => {
             ))}
           </Box>
         }
-        <AppAddPopup filteredAppointments={props.filteredAppointments} setFilteredAppointments={props.setFilteredAppointments} selectedDay={props.selectedDay} handleNotification={handleNotification} docid={props.docid} appointmentList={props.appointlist} setAppointmentList={props.setAppointmentList} appAddPopupCount={appAddPopupCount} setAppAddPopupCount={setAppAddPopupCount} patientList={patientList} activeId={activeId} apopen={apopen} setApopen={setApopen} />
+        <AppAddPopup appCountUseEff={props.appCountUseEff} setAppCountUseEff={props.setAppCountUseEff} dayAppTotal={props.dayAppTotal} filteredAppointments={props.filteredAppointments} setFilteredAppointments={props.setFilteredAppointments} selectedDay={props.selectedDay} handleNotification={handleNotification} docid={props.docid} appointmentList={props.appointlist} setAppointmentList={props.setAppointmentList} appAddPopupCount={appAddPopupCount} setAppAddPopupCount={setAppAddPopupCount} patientList={patientList} activeId={activeId} apopen={apopen} setApopen={setApopen} />
         <PatientRegpopup patientCount={patientCount} setPatientCount={setPatientCount} handleNotification={handleNotification} patientList={patientList} setPatientList={setPatientList} regopen={regopen} setRegopen={setRegopen}></PatientRegpopup>
       </div>
       <SuccessNotification setNotificationOpen={setNotificationOpen} notiMessage={notiMessage} notificationOpen={notificationOpen}/>

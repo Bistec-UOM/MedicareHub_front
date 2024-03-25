@@ -37,6 +37,8 @@ const ResDayList = (props) => {
 
   const [dayapp, setDayApp] = useState([]);
   const [doctorid,setDoctorid]=useState(props.docid);
+
+  const [addDisabled,setAddDisabled]=useState(false);
  
 
   const [search,setSearch]=useState("");
@@ -49,6 +51,8 @@ const ResDayList = (props) => {
   const [isDisabled, setIsDisabled] = useState(true);
 
   const [selectedDay,setSelectedDay]=useState(props.selectedDay);
+
+ 
 
   const [patientDataList,setPatientDataList]=useState([]);
 
@@ -82,13 +86,24 @@ const ResDayList = (props) => {
             const sortedAppointments = responseData.slice().sort((a, b) => new Date(a.appointment.dateTime) - new Date(b.appointment.dateTime));  //this is used for sorting appointments based on their arrival time
             props.setFilteredAppointments(sortedAppointments);
             console.log("sorted appointments",sortedAppointments)
+            props.setDayAppTotal(sortedAppointments.length);
+            if(sortedAppointments.length>=10)  //blocked more than 10 appointments for a day
+            {
+              setAddDisabled(true);
+            }
+            else{
+              setAddDisabled(false);
+            }
+
+            console.log(props.dayAppTotal+" daytotal mana")
+           
         })
         .catch((error) => {
             console.error('Error fetching appointments:', error);
         });
   
 
-}, [props.docid, selectedDay, delcount]); // Ensure dependencies are included in the dependency array
+}, [props.docid, selectedDay, delcount,props.appCountUseEff]); // Ensure dependencies are included in the dependency array
 
   return (
     
@@ -132,6 +147,7 @@ const ResDayList = (props) => {
         >
           <Button
             onClick={handleAppAd}
+            disabled={addDisabled}
             sx={{
               backgroundColor: "#79CCBE",
               fontWeight: 25,
@@ -203,7 +219,7 @@ const ResDayList = (props) => {
           </Box>
         }
       </div>
-      <AppAddPopup filteredAppointments={props.filteredAppointments} apopen={apopen} setApopen={setApopen} />
+     
       <AllAppDeletePopup
         selectedDay={selectedDay}
         delcount={delcount}

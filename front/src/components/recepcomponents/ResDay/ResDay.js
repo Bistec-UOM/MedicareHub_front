@@ -98,8 +98,12 @@ function ResDay() {
 
  const [renderVal,setRenderVal]=useState(false);
 
+ const [dayAppTotal,setDayAppTotal]=useState(0);  //total app count of the selected day
+
+ const [appCountUseEff,setAppCountUseEff]=useState(0);  //for triggering the use effect of res day list when adding a new appointment
 
 
+ 
  
 
 
@@ -120,134 +124,15 @@ function ResDay() {
 
 
 
- const [appointlist,setAppointList]=useState([
-   {
-     name:'kamal',
-     city:'Colombo',
-     today:'January 6, 2024',
-     nic:'21433454325',
-     phone:'0774733245',
-     time:'8.30 AM',
-     did:0
-     
-
-   },
-   {
-     name:'akila',
-     city:'Colombo',
-     today:'January 6, 2024',
-     nic:'4524523',
-     phone:'0774733245',
-     time:'9.00 AM',
-     did:0,
-     
-
-   },
-   {
-     name:'namal',
-     city:'Colombo',
-     today:'February 14, 2024',
-     nic:'452452343',
-     phone:'0774733245',
-     time:'9.30 AM',
-     did:0,
-     
-
-   },
-   {
-     name:'sachith',
-     city:'Colombo',
-     today:'February 14, 2024',
-     nic:'4524543223',
-     phone:'0774733245',
-     time:'10.00 AM',
-     did:0,
-     
-
-   },
-   {
-     name:'vihanga',
-     city:'Colombo',
-     today:'February 14, 2024',
-     nic:'45244332523',
-     phone:'0774733245',
-     time:'10.30 AM',
-     did:0
-     
-
-   },
-   {
-     name:'ranil',
-     city:'Moratuwa',
-     today:'February 14, 2024',
-     nic:'54325324',
-     phone:'0742314567',
-     time:'11.00 AM',
-     did:0
-     
-
-   },
-   {
-     name:'saman',
-     city:'kandy',
-     today:'February 14, 2024',
-     nic:'54243252',
-     phone:'0774733245',
-     time:'11.30 AM',
-     did:0,
-
-   },
-
-   {
-     name:'nipun',
-     city:'galle',
-     today:'February 14, 2024',
-     nic:'5243525',
-     phone:'0774733245',
-     time:'12.30 AM',
-     did:0
-   }
- ]);
+ 
 
  const [filteredAppointments, setFilteredAppointments] = useState([]);
 
  useEffect(()=>
  {
-  console.log("Hello fuck",doctorid);
+  console.log("Hello ",doctorid);
   console.log("Hi day",selectedDay)
  },[])
-
-
-
-
-
-//  useEffect(()=>
-//  {
-//    fetch("https://localhost:7205/api/Appointment/doctors").then((response)=>
-//    {
-//      return response.json();
-//    }).then((responseData)=>
-//    {
-//      setDoctorCount(doctorCount+1);
-//      console.log(responseData.result);
-//      setDoctorList(responseData.result);
-//    })
-
-//  },[]);
-
-//  const data=[
-//    {'name':'Amal Rathnayaka','title':'MBBS, MD, MRCP(UK)'},
-//    {'name':'Bimasara Herath','title':'MBBS, MD, MRCP(UK), PRCP-E'},
-//    {'name':'Tharushi Fernando','title':'MBBS, MD'},
-//    {'name':'Infas Mohomad','title':'MBBS, FCGP(SL), MD-CH(UK), MBS-CH(UK), C.ht(USA)'},
-//    {'name':'Amal Rathnayaka','title':'MBBS, MD, MRCP(UK)'},
-//    {'name':'Bimasara Herath','title':'MBBS, MD, MRCP(UK), PRCP-E'},
-//    {'name':'Tharushi Fernando','title':'MBBS, MD'},
-//    {'name':'Infas Mohomad','title':'MBBS, FCGP(SL), MD-CH(UK), MBS-CH(UK), C.ht(USA)'}
-   
-// ] 
-
-
 
 
  const [search,setSearch]=useState("")
@@ -374,7 +259,7 @@ function ResDay() {
           sm:'35px',
           xs:'30px'
         },width:'100%', height:'100%'}} item xs={9} sm={11} md={9}>
-        {renderVal ?  <SearchPatientPage filteredAppointments={filteredAppointments} setFilteredAppointments={setFilteredAppointments} selectedDay={selectedDay} docid={doctorid} renderVal={renderVal} setRenderVal={setRenderVal}/> :<ResDayList filteredAppointments={filteredAppointments} setFilteredAppointments={setFilteredAppointments} selectedDay={selectedDay}  docid={doctorid} setAppointList={setAppointList} appointlist={appointlist} renderVal={renderVal} setRenderVal={setRenderVal}/>}   
+        {renderVal ?  <SearchPatientPage setAppCountUseEff={setAppCountUseEff} appCountUseEff={appCountUseEff} dayAppTotal={dayAppTotal} filteredAppointments={filteredAppointments} setFilteredAppointments={setFilteredAppointments} selectedDay={selectedDay} docid={doctorid} renderVal={renderVal} setRenderVal={setRenderVal}/> :<ResDayList setAppCountUseEff={setAppCountUseEff} appCountUseEff={appCountUseEff} dayAppTotal={dayAppTotal} setDayAppTotal={setDayAppTotal} filteredAppointments={filteredAppointments} setFilteredAppointments={setFilteredAppointments} selectedDay={selectedDay}  docid={doctorid}  renderVal={renderVal} setRenderVal={setRenderVal}/>}   
           </Grid>
         
       </Box>
