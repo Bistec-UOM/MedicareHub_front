@@ -206,43 +206,11 @@ const fields = [
   { label: "Qualifications", key: "qualifications" ,style:{ml:'20px'}},
   { label: "Email Address", key: "email" },
 ];
-
+const RoleFields = ["Doctor", "Receptionist", "Lab Assistant", "Cashier"];
 
   return (
     <div>
-      <Paper
-        sx={{
-          m: 1,
-          backgroundColor: "rgb(59, 135, 122)",
-          color: "white",
-          margin: "10 auto",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          paddingLeft: 2,
-          paddingRight: 2,
-        }}
-      >
-        <Typography
-          variant="h5"
-          sx={{ paddingTop: 0.75, paddingBottom: 0.75, fontWeight: "bolder" }}
-        >
-          Doctor
-        </Typography>
-        <Button
-          variant="contained"
-          size="small"
-          sx={{
-            backgroundColor: "rgb(121, 204, 190)",
-            paddingLeft: "1rem",
-            paddingRight: "1rem",
-            fontWeight: "bolder",
-          }}
-          onClick={() =>handleAddClickOpen('Doctor')}
-        >
-          Add
-        </Button>
-      </Paper>
+      
 
       {/* data adding */}
 
@@ -265,9 +233,7 @@ const fields = [
           <TextField required label="Address" fullWidth sx={{ mb: 1 }} onChange={(e) => handleInputChange("address", e.target.value)}/>
           <TextField required label="Contact Number" sx={{ mb: 1 }} onChange={(e) => handleInputChange("contactNumber", e.target.value)}/>
           <TextField required label="qualifications" sx={{ ml: 4, mb: 1 }} onChange={(e) => handleInputChange("qualifications", e.target.value)}/>
-          {/* <TextField label="Role" fullWidth sx={{ mb: 1 }} onChange={(e) => handleInputChange("role", e.target.value)}/> */}
           <TextField required label="E-mail" fullWidth sx={{ mb: 1 }} onChange={(e) => handleInputChange("email", e.target.value)}/>
-          {/* <TextField label="Date of Birth" sx={{ mb: 1 }} onChange={(e) => handleInputChange("dob", e.target.value)}/> */}
           <div style={{display:'flex'}}>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DemoContainer components={['DateField']}>
@@ -275,14 +241,12 @@ const fields = [
           label="Date Of Birth"
           style={{width:'200px'}}
           required
-          // value={value}
           onChange={(newValue) => handleInputChange('dob', newValue)}
           renderInput={(props) => <TextField {...props} />} // You may need to import TextField from '@mui/material/TextField'
           // format="YYYY/MM/DD"
         />
       </DemoContainer>
     </LocalizationProvider>
-          {/* <TextField label="Gender" sx={{ ml: 4, mb: 1 }} onChange={(e) => handleInputChange("gender", e.target.value)}/> */}
           <Box>
   <FormControl style={{ width: '200px',margin:'9px',marginLeft:'40px' }}>
     <InputLabel id="demo-simple-select-label">Gender</InputLabel>
@@ -392,116 +356,10 @@ const fields = [
   </DialogActions>
 </Dialog>
 
-      {/* Dr Data Paper */}
-      {row2.filter(row=>row.role === 'Doctor').map((row)=>
-      <Paper
-      key={row.Id}
-      
-        sx={{
-          cursor:'Pointer',
-          mt: 3,
-          display: "flex",
-          flexDirection: "column", // Set to 'column' for vertical display
-          paddingLeft: 2,
-          paddingRight: 2,
-        }}
-        onClick={() => handleEditClickOpen(row)} // Open the edit window when clicking on the paper
-      >
-        <Typography variant="h6" sx={{ paddingTop: 0.75 }}>
-          {row.fullName}
-        </Typography>
-        <Typography
-          variant="h10"
-          sx={{ fontSize: 10, color: "rgb(186, 177, 177)" }}
-        >
-          {row.qualifications}
-        </Typography>
-        <Typography
-          variant="h10"
-          sx={{
-            fontSize: 10,
-            paddingBottom: 0.75,
-            color: "rgb(186, 177, 177)",
-          }}
-        >
-          {row.role}
-        </Typography>
-      </Paper>)}
-
-      <div>
-
-      <Paper
-        sx={{
-          mt:2,
-          m: 1,
-          backgroundColor: "rgb(59, 135, 122)",
-          color: "white",
-          margin: "10 auto",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          paddingLeft: 2,
-          paddingRight: 2,
-        }}
-      >
-        <Typography
-          variant="h5"
-          sx={{ paddingTop: 0.75, paddingBottom: 0.75, fontWeight: "bolder" }}
-        >
-          Receptionist
-        </Typography>
-        <Button
-          variant="contained"
-          size="small"
-          sx={{
-            backgroundColor: "rgb(121, 204, 190)",
-            paddingLeft: "1rem",
-            paddingRight: "1rem",
-            fontWeight: "bolder",
-          }}
-          onClick={() =>handleAddClickOpen('Receptionist')}
-        >
-          Add
-        </Button>
-      </Paper>
-      {/* recep Paper */}
-      {row2.filter(row=>row.role === 'Receptionist').map((row)=>
-      <Paper
-      key={row.Id}
-      
-        sx={{
-          cursor:'Pointer',
-          mt: 3,
-          display: "flex",
-          flexDirection: "column", // Set to 'column' for vertical display
-          paddingLeft: 2,
-          paddingRight: 2,
-        }}
-        onClick={() => handleEditClickOpen(row)} // Open the edit window when clicking on the paper
-      >
-        <Typography variant="h6" sx={{ paddingTop: 0.75 }}>
-          {row.fullName}
-        </Typography>
-        <Typography
-          variant="h10"
-          sx={{ fontSize: 10, color: "rgb(186, 177, 177)" }}
-        >
-          {row.qualifications}
-        </Typography>
-        <Typography
-          variant="h10"
-          sx={{
-            fontSize: 10,
-            paddingBottom: 0.75,
-            color: "rgb(186, 177, 177)",
-          }}
-        >
-          {row.role}
-        </Typography>
-      </Paper>)}
-      </div>
-
-      <div>
+ {/*mapping data*/}
+ {RoleFields.map((rolefild) => (
+     
+<div>
 
 <Paper
   sx={{
@@ -521,7 +379,7 @@ const fields = [
     variant="h5"
     sx={{ paddingTop: 0.75, paddingBottom: 0.75, fontWeight: "bolder" }}
   >
-    Lab Asistant
+    {rolefild}
   </Typography>
   <Button
     variant="contained"
@@ -532,13 +390,13 @@ const fields = [
       paddingRight: "1rem",
       fontWeight: "bolder",
     }}
-    onClick={() =>handleAddClickOpen("Lab Asistant")}
+    onClick={() =>handleAddClickOpen(rolefild)}
   >
     Add
   </Button>
 </Paper>
 {/* recep Paper */}
-{row2.filter(row=>row.role === 'Lab Asistant').map((row)=>
+{row2.filter(row=>row.role === rolefild).map((row)=>
 <Paper
 key={row.Id}
 
@@ -551,7 +409,7 @@ key={row.Id}
     paddingRight: 2,
   }}
   onClick={() => handleEditClickOpen(row)} // Open the edit window when clicking on the paper
-  >
+>
   <Typography variant="h6" sx={{ paddingTop: 0.75 }}>
     {row.fullName}
   </Typography>
@@ -574,7 +432,7 @@ key={row.Id}
 </Paper>)}
 </div>
 
-
+ ))}  
 <React.Fragment>
       <Dialog
         open={deleteOpen}

@@ -40,22 +40,18 @@ export default function AppAddPopup({
   apopen,
   setApopen,
   activeD,
+  dayAppTotal,
+  appCountUseEff,
+  setAppCountUseEff
 }) {
-  // const [enameError,seteNameError]=useState(false)
-  // const [eaddressError,seteAddressError]=useState(false)
-  //console.log(activeD)
-  // const [enicError,seteNicError]=useState(false)
+  
   const [etimevalueError, seteTimeValueError] = useState(false);
 
   const [bookedTimeSlots, setBookedTimeSlots] = useState([]);
 
   const [selectedTime, setSelectedTime] = useState(dayjs("2022-04-17T08:30"));
 
-  // const [ename,setEName]=useState(item.name)
-  // const [eaddress,setEAddress]=useState(item.address)
-  // const [enic,setENic]=useState(item.nic)
-  // const [timevalueHour, setTimeValueHour] = useState( String(dayjs(selectedTime).get("hour")).padStart(2, "0"));
-  // const [timevalueMin, setTimeValueMin] = useState(String(dayjs(selectedTime).get("minute")).padStart(2, "0"));
+  const [confirmDisabled,setConfirmDisabled]=useState(false);
 
   const [appTime,setAppTime]=useState({
     hours:" ",
@@ -64,12 +60,6 @@ export default function AppAddPopup({
   })
     
 
-  // useEffect=(()=>
-  // {
-  //   setTimeValue({...timevalue,hour:dayjs(selectedTime).get('hour'),minutes:dayjs(selectedTime).get('minute')})
-
-  //   console.log(dayjs(selectedTime).get('minute'));
-  // },[selectedTime,timevalue])
 
   const [activeData, setActiveData] = useState({});
 
@@ -85,10 +75,7 @@ export default function AppAddPopup({
     setAppTime({...appTime,hours:hours,minutes:minutes,ampm:ampm})
   }
 
-  // useEffect=(()=>{
-  //   console.log("sele",formatAMPM(selectedTime))
-  // },[selectedTime])
-  
+ 
 
   const handleTimeChange = (time) => {
     setSelectedTime("inse time", time);
@@ -106,7 +93,6 @@ export default function AppAddPopup({
   console.log("selected",selectedDay)
 
   const date = new Date(selectedDay);
- // console.log()
   date.setHours(hours, timeObject.minutes, 0, 0);
   return date;
 
@@ -128,6 +114,14 @@ export default function AppAddPopup({
   useEffect(() => {
 
     console.log("filt",scheduledTimes);
+    console.log("day app total inside appadd"+dayAppTotal);
+    if(dayAppTotal>=10)  //disabling confirm button from adding more than 10 appointments for a day
+    {
+      setConfirmDisabled(true);
+    }
+    else{
+      setConfirmDisabled(false);
+    }
 }
   )
 
@@ -157,10 +151,7 @@ export default function AppAddPopup({
       var finalTime=getRealTime(appTime);
       var date=finalTime;
       const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}T${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}.${date.getMilliseconds().toString().padStart(3, '0')}`;
-     // console.log("final time",finalTime)
-     // const dateobject=finalTime.toISOString();
-      
-     // var formattedDateString = finalTime.toISOString();
+
       console.log("isostring",formattedDate);
       console.log(activeData.id)
       console.log(docid);
@@ -171,16 +162,20 @@ export default function AppAddPopup({
         status:"new",
         patientId: activeData.id,
         doctorId: docid,
-        recepId:7
+        recepId:1
       }
 
 
       try{
           await axios.post("https://localhost:7205/api/Appointment",obj
          );
-         console.log(obj);
+          console.log(obj);
+          setAppCountUseEff(appCountUseEff+1);
           setApopen(false);
           handleNotification("Appointment Added succesfully!");
+          console.log("Inside second useeff "+ appCountUseEff);
+          console.log("Inside second useeff apptotal "+ dayAppTotal);
+
          
       }
       catch(err)
@@ -197,9 +192,9 @@ export default function AppAddPopup({
 
 
   useEffect(() => {
-    //console.log("sele",formatAMPM(selectedTime))
      console.log(activeId);
     formatAMPM(selectedTime)
+   
 
     if (patientList && Array.isArray(patientList)) {
       const filteredData = patientList.find(
@@ -394,6 +389,7 @@ export default function AppAddPopup({
                
                   
                 <Button
+                  disabled={confirmDisabled}
                   sx={{
                     marginTop:{xs:'20px !important',md:'0px'},
                     backgroundColor: "#79CCBE",
