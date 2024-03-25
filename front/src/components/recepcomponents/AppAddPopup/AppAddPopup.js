@@ -1,27 +1,13 @@
 import * as React from "react";
 import BasicTimePicker from "../TimePicker/TimePicker";
 import axios from "axios";
-
-import Moment from "react-moment";
-
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
-
 import { CardContent, IconButton, TextField, Typography } from "@mui/material";
-
 import { useState } from "react";
 import { useEffect } from "react";
-
 import dayjs from "dayjs";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import Button from "@mui/material/Button";
-import SearchBar from "../Searchbar/Searchbar";
 import { Box } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { Grid, Stack } from "@mui/material";
@@ -44,26 +30,16 @@ export default function AppAddPopup({
   appCountUseEff,
   setAppCountUseEff
 }) {
-  
-  const [etimevalueError, seteTimeValueError] = useState(false);
-
-  const [bookedTimeSlots, setBookedTimeSlots] = useState([]);
-
   const [selectedTime, setSelectedTime] = useState(dayjs("2022-04-17T08:30"));
-
   const [confirmDisabled,setConfirmDisabled]=useState(false);
-
   const [appTime,setAppTime]=useState({
     hours:" ",
     minutes:" ",
     ampm:" "
   })
-    
-
-
   const [activeData, setActiveData] = useState({});
 
-  function formatAMPM(date) {
+  function formatAMPM(date) {  //setting the am,pm
     var hours = dayjs(date).get("hour");
     var minutes = dayjs(date).get("minute");
     var ampm = hours >= 12 ? 'pm' : 'am';
@@ -74,14 +50,6 @@ export default function AppAddPopup({
     var strTime = hours + ':' + minutes + ' ' + ampm;
     setAppTime({...appTime,hours:hours,minutes:minutes,ampm:ampm})
   }
-
- 
-
-  const handleTimeChange = (time) => {
-    setSelectedTime("inse time", time);
-    console.log(selectedTime);
-  };
-
   function getRealTime(timeObject)  //this is used for converting the displayed time to the pasing body time in the backend
   {
     let hours = parseInt(timeObject.hours, 10);
@@ -90,17 +58,11 @@ export default function AppAddPopup({
   } else if (timeObject.ampm === 'am' && hours === 12) {
       hours = 0;
   }
-  console.log("selected",selectedDay)
-
+ // console.log("selected",selectedDay)
   const date = new Date(selectedDay);
   date.setHours(hours, timeObject.minutes, 0, 0);
   return date;
-
-
-
   }
-
-
   const scheduledTimes = filteredAppointments.map(appointment => {
     return dayjs(appointment.appointment.dateTime).format('HH:mm');
   });
@@ -109,12 +71,9 @@ export default function AppAddPopup({
     const selectedTimeStr = dayjs(time).format('HH:mm');
     return scheduledTimes.includes(selectedTimeStr);
   };
-
-
   useEffect(() => {
-
-    console.log("filt",scheduledTimes);
-    console.log("day app total inside appadd"+dayAppTotal);
+    //console.log("filt",scheduledTimes);
+   // console.log("day app total inside appadd"+dayAppTotal);
     if(dayAppTotal>=10)  //disabling confirm button from adding more than 10 appointments for a day
     {
       setConfirmDisabled(true);
@@ -123,16 +82,7 @@ export default function AppAddPopup({
       setConfirmDisabled(false);
     }
 }
-  )
-
- 
-
-
-
-  const handleClickOpen = () => {
-    setApopen(true);
-  };
-
+ )
   const handleClose = () => {
     console.log("se", selectedTime);
     setApopen(false);
@@ -140,22 +90,19 @@ export default function AppAddPopup({
 
   async function handleSubmit(event) {
     event.preventDefault();
-    // setAppointmentList([...appointmentList,{name:activeData.name,city:activeData.city,nic:activeData.nic,phone:activeData.phone,did:docid,time:"9:00 AM"}]);
     setApopen(false);
     handleNotification("A new appointment added succesfully!");
   }
-
   async function handleSubmit(event)
   {
       event.preventDefault();
       var finalTime=getRealTime(appTime);
       var date=finalTime;
+      //format the time to string form
       const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}T${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}.${date.getMilliseconds().toString().padStart(3, '0')}`;
-
-      console.log("isostring",formattedDate);
-      console.log(activeData.id)
-      console.log(docid);
-
+    //  console.log("isostring",formattedDate);
+      //console.log(activeData.id)
+     // console.log(docid);
       let obj= {
         id: 0,
         dateTime:formattedDate,
@@ -164,35 +111,26 @@ export default function AppAddPopup({
         doctorId: docid,
         recepId:1
       }
-
-
       try{
           await axios.post("https://localhost:7205/api/Appointment",obj
          );
-          console.log(obj);
+          //console.log(obj);
           setAppCountUseEff(appCountUseEff+1);
           setApopen(false);
           handleNotification("Appointment Added succesfully!");
-          console.log("Inside second useeff "+ appCountUseEff);
-          console.log("Inside second useeff apptotal "+ dayAppTotal);
-
-         
+         // console.log("Inside second useeff "+ appCountUseEff);
+         // console.log("Inside second useeff apptotal "+ dayAppTotal);    
       }
       catch(err)
       {
       var msg=err.response.data;
-      console.log("Inseide error");
-         console.log(err.response.data);
-         //setError(msg);
+     // console.log("Inseide error");
+       //console.log(err.response.data);
+         setError(msg);
       }
-      
-
   }
-
-
-
   useEffect(() => {
-     console.log(activeId);
+    // console.log(activeId);
     formatAMPM(selectedTime)
    
 
@@ -362,13 +300,8 @@ export default function AppAddPopup({
                   justifyContent: "space-between",
                   alignItems: "baseline",
                   width: "100%",
-                //  flexDirection:{
-                //     sm:"column",
-                //     md :"row"
-                //   }
                 }}
               >
-               
                 <BasicTimePicker
                 sx={{overflow:{xs:'hidden'}}}
                   selectedTime={selectedTime}
@@ -381,13 +314,7 @@ export default function AppAddPopup({
                     }
                     return <Typography>{time}</Typography>;
                   }}  
-                  
-                 
-                  // setSelectedTimeH={(value) => setTimeValue({...timevalue,hour:value})}
-                  // setSelectedTimeM={(value) => setTimeValue({...timevalue,minutes:value})}
-                />
-               
-                  
+                />      
                 <Button
                   disabled={confirmDisabled}
                   sx={{
@@ -395,18 +322,13 @@ export default function AppAddPopup({
                     backgroundColor: "#79CCBE",
                     "&:hover": {
                       backgroundColor: "#79CCBE",
-                    },
-                    
-                   
+                    },  
                   }}
                   variant="contained"
                   type="submit"
                 >
                   Confirm
                 </Button>
-                
-               
-              
               </Stack>
             </DialogActions>
           </form>

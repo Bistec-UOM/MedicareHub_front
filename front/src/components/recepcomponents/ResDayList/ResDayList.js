@@ -1,84 +1,49 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { Grid, Stack, Typography, Button, Container, Box, Hidden } from "@mui/material";
-import Navbar from "../../navbar/Navbar";
 import AppointmentCard from "../AppointmentCard/AppointmentCard";
 import SearchBar from "../Searchbar/Searchbar";
 import Steper from "../Setper/Steper";
-import { SidebarContainer } from "../../sidebar/Sidebar";
-import { SidebarTop, SidebarList } from "../../sidebar/Sidebar";
-import { Sideunit_Doctor } from "../../sidebar/Sideunits";
-
-import AppAddPopup from "../AppAddPopup/AppAddPopup";
 import AllAppDeletePopup from "../AllAppDeletePopup/AllAppDeletePopup";
 import '../../../recep.css'
 import SuccessNotification from "../SnackBar/SuccessNotification";
 import axios from "axios";
-
-
-
-
-
 //day app list page for a day
 
 const ResDayList = (props) => {
-
   const [notificationOpen,setNotificationOpen]=useState(false);
   const [notiMessage,setNotiMessage]=useState("");
-
   const handleNotification=(msg)=>
  {  
     setNotiMessage(msg);
     setNotificationOpen(true);
-    console.log(notiMessage);
+   // console.log(notiMessage);
  }
-
-
-
-  const [dayapp, setDayApp] = useState([]);
-  const [doctorid,setDoctorid]=useState(props.docid);
-
-  const [addDisabled,setAddDisabled]=useState(false);
- 
-
+  const [addDisabled,setAddDisabled]=useState(false); //variable for Add button disabled
   const [search,setSearch]=useState("");
-
-  const [apopen, setApopen] = useState(false);
   const [dopen, setDopen] = useState(false);
-
   const [delcount,setDelcount]=useState(0)
-
   const [isDisabled, setIsDisabled] = useState(true);
-
   const [selectedDay,setSelectedDay]=useState(props.selectedDay);
-
- 
-
-  const [patientDataList,setPatientDataList]=useState([]);
 
   const handleDeleteAll = () => {
     setDopen(true);
   };
-
   var location = useLocation();
   var loc = location.state;
-
   const handleAppAd = () => {
-   // setApopen(true);
     props.setRenderVal(true);
   };
   useEffect(() => {
-    console.log("use effect doctorid", props.docid);
-    console.log("use effect selected", selectedDay);
+    // console.log("use effect doctorid", props.docid);
+    // console.log("use effect selected", selectedDay);
     document.body.style.margin = "0";
-
     axios.get(`https://localhost:7205/api/Appointment/doctor/${props.docid}/day/${selectedDay}`)
         .then((response) => {
             // console.log("do",props.docid);
             // console.log(selectedDay);
             // console.log("pure",response);
-
-            console.log("response data",response.data)
+          //  console.log("response data",response.data)
             const responseData = response.data;
            // setFilteredAppointments(responseData);
             setIsDisabled(responseData.length === 0); // Update isDisabled based on the fetched appointments
@@ -94,19 +59,15 @@ const ResDayList = (props) => {
             else{
               setAddDisabled(false);
             }
-
-            console.log(props.dayAppTotal+" daytotal mana")
-           
+            console.log(props.dayAppTotal+" daytotal mana")  
         })
         .catch((error) => {
             console.error('Error fetching appointments:', error);
         });
   
-
 }, [props.docid, selectedDay, delcount,props.appCountUseEff]); // Ensure dependencies are included in the dependency array
 
-  return (
-    
+  return (   
     <Box sx={{height:'100%'}}>
       <Box 
         sx={{
@@ -119,9 +80,6 @@ const ResDayList = (props) => {
           flexWrap:'wrap-reverse',
           paddingTop:{xs:'7px',sm:'10px'},
           zIndex:10
-          
-         // paddingTop:10,
-          //marginLeft:-10
         }}
       >
         <SearchBar 
@@ -187,12 +145,9 @@ const ResDayList = (props) => {
         <Box sx={{ padding:{
             sm: "3% 0 0 8%",
             xs:"5% 0 0 2%",
-            
-
         },display:{xs:'none',sm:'none',md:'flex'},marginRight:{xs:'3%',sm:'0%'},marginTop:{xs:'50%',sm:'20%',md:'7%'} }}>
           <Steper  search={search} items={props.filteredAppointments}></Steper>
         </Box>
-
         {
           <Box sx={{ width: "70%",marginTop:{xs:'40%',sm:'20%',md:'7%'}}}>
             {Array.isArray(props.filteredAppointments) && props.filteredAppointments.sort((a,b)=>{
@@ -218,8 +173,7 @@ const ResDayList = (props) => {
             ))}
           </Box>
         }
-      </div>
-     
+      </div>   
       <AllAppDeletePopup
         selectedDay={selectedDay}
         delcount={delcount}
@@ -233,10 +187,8 @@ const ResDayList = (props) => {
         dopen={dopen}
         setDopen={setDopen}
       />
-       <SuccessNotification setNotificationOpen={setNotificationOpen} notiMessage={notiMessage} notificationOpen={notificationOpen}/>
-    
+       <SuccessNotification setNotificationOpen={setNotificationOpen} notiMessage={notiMessage} notificationOpen={notificationOpen}/>   
     </Box>
   );
 };
-
 export default ResDayList;
