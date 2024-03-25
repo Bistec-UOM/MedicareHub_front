@@ -23,7 +23,7 @@ const SearchBar = (props) => {
       placeholder={props.placename}
       InputProps={{
         startAdornment: (
-          <IconButton onClick={handleSearch}> <SearchIcon 
+          <IconButton > <SearchIcon 
           sx={{
             color: 'action.active',
            
