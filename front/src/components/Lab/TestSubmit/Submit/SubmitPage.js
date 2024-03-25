@@ -5,8 +5,9 @@ import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
 import Testcom from './Testcom';
 import axios from 'axios';
+import { baseURL, endPoints } from '../../../../Services/Lab';
 
-export default function SubmitPage({load,setLoad,setpage}) {
+export default function SubmitPage({setpage}) {
 
     //Pop up dialog box------------------------------------------------------------
     const [open, setOpen] = useState(false)
@@ -20,6 +21,18 @@ export default function SubmitPage({load,setLoad,setpage}) {
     //----------------------------------------------------------------------------
 
     const [test,settest]=useState(0)//selected test (out of accepted tests)
+    const [load,setLoad]=useState([])
+    const [loadOK,setLoadOk]=useState(true)
+
+    useEffect(()=>{
+      if(loadOK){
+        axios.get(baseURL+endPoints.GET_ACCEPT)
+      .then((res)=>{
+        setLoad(res.data)
+        setLoadOk(false)
+      })
+      }
+    },[])
 
   return (
     <div>
@@ -45,9 +58,9 @@ export default function SubmitPage({load,setLoad,setpage}) {
             load.map((i,ind)=>{
                 return <Paper sx={{width:'70%',display:'flex',justifyContent:'space-between',alignItems:'center',mt:'10px',p:'10px',cursor:'pointer'}} onClick={()=>handleClickOpen(i.testId)}>
                     <Typography sx={{fontSize:'18px',flex:'1',color:'grey'}}>{ind+1}</Typography>
-                    <Typography sx={{fontSize:'15px',flex:'1'}}>{i.repId}</Typography>
+                    <Typography sx={{fontSize:'15px',flex:'1'}}>{i.id}</Typography>
                     <Typography sx={{fontSize:'15px',flex:'1'}}>2024 Mar 22</Typography>
-                    <Typography sx={{fontSize:'15px',flex:'2'}}>{i.test}</Typography>
+                    <Typography sx={{fontSize:'15px',flex:'2'}}>{i.testId}</Typography>
             </Paper>
             })
         }

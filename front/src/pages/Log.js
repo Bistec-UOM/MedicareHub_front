@@ -87,7 +87,14 @@ export default function Log() {
    },[])
 
   return (
-    <Box sx={{height:'100vh',display:'flex',justifyContent:'center',backgroundImage:'linear-gradient(to bottom,#DEF4F2, #DEF4F2 30%, white 30%, white)'}}>
+    <Box 
+      sx={{
+        height:'100vh',
+        display:'flex',
+        justifyContent:'center',
+        backgroundImage:'linear-gradient(to bottom,#DEF4F2, #DEF4F2 30%, white 30%, white)'
+        }}
+    >
 
       <Box sx={{position:'fixed',mt:'5vh'}}>
         <LocalHospitalIcon sx={{color:'red',mt:'10px'}} fontSize='large'></LocalHospitalIcon>
@@ -95,20 +102,43 @@ export default function Log() {
         <Typography sx={{fontSize:'40px',display:'inline',color:'#AFDCB9'}}>Hub</Typography>
       </Box>
 
-      <Box sx={{display:'flex',flexDirection:'column',justifyContent:'space-evenly',padding:'10px',pr:'5%',pl:'5%', backgroundColor:'white',height:'200px',alignSelf:'center',borderRadius:'8px',border:'1px solid lightgrey'}}>
-        <Typography sx={{fontSize:'20px',alignSelf:'center',backgroundColor:'white',p:'10px'}}>User login</Typography>
+      <Box 
+        sx={{
+          display:'flex',
+          flexDirection:'column',
+          justifyContent:'space-evenly',
+          padding:'10px',
+          pr:'30px',
+          pl:'30px', 
+          backgroundColor:'white',
+          height:'200px',
+          alignSelf:'center',
+          borderRadius:'8px',
+          border:'1px solid lightgrey'
+          }}
+      >
+        <Typography sx={{fontSize:'20px',alignSelf:'center',backgroundColor:'white'}}>User login</Typography>
 
-        <TextField size="small" sx={{mt:'10px',mb:'10px'}} id="1" label="User Id" type="text" autoComplete="current-password" onChange={(e)=>setUser(e.target.value)} value={user}/>
-        <TextField size="small" sx={{mt:'10px',mb:'10px'}} id="2" label="Password" type="password" autoComplete="current-password" onChange={(e)=>setPassword(e.target.value)} value={password}/>
+        <TextField size="small" sx={{mt:'5px',mb:'10px'}} id="1" label="User Id" type="text" autoComplete="current-password" onChange={(e)=>setUser(e.target.value)} value={user}/>
+        <TextField size="small" sx={{mt:'5px',mb:'10px'}} id="2" label="Password" type="password" autoComplete="current-password" onChange={(e)=>setPassword(e.target.value)} value={password}/>
+
         <div style={{display:'flex',flexDirection:'row-reverse',alignItems:'center'}}>
           <Button variant="contained" sx={{ml:'5px'}} onClick={setData}>OK</Button>
           <Button variant="outlined" sx={{ml:'5px'}} onClick={clearData} color='warning'>Clear</Button>
         </div>
+        
       </Box>
 
 
         {/* ----------------- snack bar ----------------------------------------------------------------*/}
-        <Snackbar open={open} autoHideDuration={2000} onClose={handleClose} >
+        <Snackbar           
+          anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'center',
+          }}
+          sx={{mt:'100px'}}
+          open={open} autoHideDuration={2000} onClose={handleClose} 
+        >
         <Alert
           onClose={handleClose}
           severity={col}
