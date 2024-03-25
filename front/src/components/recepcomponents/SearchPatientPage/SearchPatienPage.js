@@ -81,26 +81,10 @@ const SearchPatientPage = (props) => {
   },[patientCount]);
 
   const [patientList,setPatientList] = useState(null);
-
-  const handleDeleteAll = () => {
-    setDopen(true);
-  };
-
   const [activeId, setActiveId] = useState("");
-  
-
- 
-
-//  console.log(activeData[0] && activeData[0].name )
-  
-
   var location = useLocation();
   var loc = location.state;
 
-  const handleAppAd = () => {
-    // setApopen(true);
-    props.setRenderVal(true);
-  };
 
   return (
   
@@ -115,18 +99,7 @@ const SearchPatientPage = (props) => {
           width:{sm:'70%',xs:'90%'},
           flexWrap:'wrap-reverse',
           paddingTop:{xs:'7px',sm:'10px'},
-          zIndex:10
-          
-        
-       
-
-          // flexDirection:{
-          //   xs:'column',
-          //   sm:'row'
-          // },
-             //bgcolor:'red'
-      
-         
+          zIndex:10       
         }}
       >
         <SearchBar

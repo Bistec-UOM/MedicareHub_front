@@ -38,8 +38,7 @@ export default function AppAddPopup({
     ampm:" "
   })
   const [activeData, setActiveData] = useState({});
-
-  function formatAMPM(date) {  //setting the am,pm
+  function formatAMPM(date) {
     var hours = dayjs(date).get("hour");
     var minutes = dayjs(date).get("minute");
     var ampm = hours >= 12 ? 'pm' : 'am';
@@ -126,11 +125,16 @@ export default function AppAddPopup({
       var msg=err.response.data;
      // console.log("Inseide error");
        //console.log(err.response.data);
-         setError(msg);
+         //setError(msg);
       }
+      
+
   }
+
+
+
   useEffect(() => {
-    // console.log(activeId);
+     console.log(activeId);
     formatAMPM(selectedTime)
    
 
@@ -300,8 +304,13 @@ export default function AppAddPopup({
                   justifyContent: "space-between",
                   alignItems: "baseline",
                   width: "100%",
+                //  flexDirection:{
+                //     sm:"column",
+                //     md :"row"
+                //   }
                 }}
               >
+               
                 <BasicTimePicker
                 sx={{overflow:{xs:'hidden'}}}
                   selectedTime={selectedTime}
@@ -314,7 +323,13 @@ export default function AppAddPopup({
                     }
                     return <Typography>{time}</Typography>;
                   }}  
-                />      
+                  
+                 
+                  // setSelectedTimeH={(value) => setTimeValue({...timevalue,hour:value})}
+                  // setSelectedTimeM={(value) => setTimeValue({...timevalue,minutes:value})}
+                />
+               
+                  
                 <Button
                   disabled={confirmDisabled}
                   sx={{
@@ -322,13 +337,18 @@ export default function AppAddPopup({
                     backgroundColor: "#79CCBE",
                     "&:hover": {
                       backgroundColor: "#79CCBE",
-                    },  
+                    },
+                    
+                   
                   }}
                   variant="contained"
                   type="submit"
                 >
                   Confirm
                 </Button>
+                
+               
+              
               </Stack>
             </DialogActions>
           </form>
