@@ -7,7 +7,7 @@ import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import { baseURL,endPoints } from '../../../../Services/Lab';
 
-export default function Testcom({test,handleClose,load,setLoad}) {
+export default function Testcom({handleClose,test,settest}) {
 
     // SnackBar component====================================================================================
     const [open, setOpen] = React.useState(false);
@@ -35,8 +35,40 @@ export default function Testcom({test,handleClose,load,setLoad}) {
     setFload(tmp)
   }
 
+  function getUTCDateTimeString() {
+    const date = new Date();
+    const dateString = date.toISOString().slice(0, -5); // Remove milliseconds and 'Z'
+    return `${dateString}.0000000Z`; // Add '000' as milliseconds
+}
   const submitData=()=>{
-    setTimeout(() => {
+
+      let tmp=[...Fload]
+      let ob=[]
+      console.log(tmp)
+      tmp.map((el,ind)=>{
+        let tmp2={
+          fieldid:el.fieldId,
+          result:el.value,
+          status:el.status
+        }
+        ob.push(tmp2)
+      })
+
+    let obj={
+      ReportId:test[0].id,
+      DateTime:getUTCDateTimeString(),
+      Results:ob
+    }
+    console.log(obj);
+
+    axios.post(baseURL+endPoints.RESULT.obj)
+    .then((res)=>{
+      console.log(res.data)
+    })
+    .catch((er)=>{
+      console.log(er.message)
+    })
+/*     setTimeout(() => {
       handleClose()
       let tmp=[...load]
       tmp.pop()
@@ -44,14 +76,14 @@ export default function Testcom({test,handleClose,load,setLoad}) {
     }, 3000)
     setTimeout(() => {
       handleClick1()
-    }, 2500)
+    }, 2500) */
   }
 
   const enterData=(indx,x)=>{
     let tmp=[...Fload]
     tmp.map((el,ind)=>{
       if(ind==indx){
-       el.value=x
+       el.value=parseInt(x)
       }
     })
     setFload(tmp)
@@ -64,13 +96,25 @@ export default function Testcom({test,handleClose,load,setLoad}) {
 
       //Adding value property to every object in Fload
       let tmp=[...res.data]
+      let ob=[]
       tmp.map((el,ind)=>{
-        let tmp2={...el}
-        tmp2.value=''
-        tmp[ind]=tmp2
+        let tmp2={
+          fieldname:el.fieldname,
+          fieldId:'',
+          minRef:'',
+          maxRef:'',
+          unit:'',
+          value:'',
+          status:''
+        }
+        tmp2.fieldId=el.id
+        tmp2.minRef=el.minRef
+        tmp2.maxRef=el.maxRef
+        tmp2.unit=el.unit
+        ob.push(tmp2)
       })
-      setFload(tmp)
 
+      setFload(ob)
       setloading(false)
     })
     .catch(er=>{})
@@ -79,7 +123,7 @@ export default function Testcom({test,handleClose,load,setLoad}) {
 
   return (
     <Box sx={{p:'10px',width:'450px'}}>
-      <Typography>{test[0].test} Test</Typography>
+      <Typography>{test.testName} Test</Typography>
       <Divider sx={{mb:'15px'}}></Divider>
       {
         !loading ? Fload.map((el,indx)=>{
