@@ -5,13 +5,14 @@ import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
 import Testcom from './Testcom';
 import axios from 'axios';
+import { baseURL, endPoints } from '../../../../Services/Lab';
 
-export default function SubmitPage({load,setLoad,setpage}) {
+export default function SubmitPage({setpage}) {
 
     //Pop up dialog box------------------------------------------------------------
     const [open, setOpen] = useState(false)
     const handleClickOpen = (x) => {
-        let t= load.filter((e)=>{return e.testId==x})
+        let t= load.filter((e)=>{return e.id==x})
         settest(t); 
         setOpen(true)
     }
@@ -20,6 +21,18 @@ export default function SubmitPage({load,setLoad,setpage}) {
     //----------------------------------------------------------------------------
 
     const [test,settest]=useState(0)//selected test (out of accepted tests)
+    const [load,setLoad]=useState([])
+    const [loadOK,setLoadOk]=useState(true)
+
+    useEffect(()=>{
+      if(loadOK){
+        axios.get(baseURL+endPoints.GET_ACCEPT)
+      .then((res)=>{
+        setLoad(res.data)
+        setLoadOk(false)
+      })
+      }
+    },[])
 
   return (
     <div>
@@ -28,7 +41,18 @@ export default function SubmitPage({load,setLoad,setpage}) {
             <ArrowBackIcon sx={{cursor:'pointer'}} onClick={()=>setpage(1)}></ArrowBackIcon>
 
             {/*-------Search bar------------------------------------ */}
-            <Paper component="form" sx={{p: "2px 4px",display: "flex",alignItems: "center",height:'30px',width:{xs:'40%',sm:'40%'},borderRadius: "10px",boxShadow: 1,mr:'300px'}}>
+            <Paper component="form" 
+              sx={{
+                p: "2px 4px",
+                display: "flex",
+                alignItems: "center",
+                height:'30px',
+                width:{xs:'40%',sm:'40%'},
+                borderRadius: "10px",
+                boxShadow: 1,
+                mr:'300px'
+                }}
+            >
             <InputBase type="text" className="form-control" sx={{ flex: 1 }} placeholder="Search"/>
             <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
             <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
@@ -43,11 +67,11 @@ export default function SubmitPage({load,setLoad,setpage}) {
         <Stack sx={{paddingTop:{xs:'60px',sm:'80px'},paddingLeft:{xs:'5%',sm:'8%'}}}>
         {
             load.map((i,ind)=>{
-                return <Paper sx={{width:'70%',display:'flex',justifyContent:'space-between',alignItems:'center',mt:'10px',p:'10px',cursor:'pointer'}} onClick={()=>handleClickOpen(i.testId)}>
-                    <Typography sx={{fontSize:'18px',flex:'1',color:'grey'}}>{ind+1}</Typography>
-                    <Typography sx={{fontSize:'15px',flex:'1'}}>{i.repId}</Typography>
-                    <Typography sx={{fontSize:'15px',flex:'1'}}>2024 Mar 22</Typography>
-                    <Typography sx={{fontSize:'15px',flex:'2'}}>{i.test}</Typography>
+                return <Paper sx={{width:'70%',display:'flex',justifyContent:'space-between',alignItems:'center',mt:'10px',p:'10px',cursor:'pointer'}} onClick={()=>handleClickOpen(i.id)}>
+                    <Typography sx={{fontSize:'12px',flex:'1',color:'grey'}}>{ind+1}</Typography>
+                    <Typography sx={{fontSize:'15px',flex:'1'}}>{i.id}</Typography>
+                    <Typography sx={{fontSize:'15px',flex:'1'}}>{i.abb}</Typography>
+                    <Typography sx={{fontSize:'15px',flex:'2'}}>{i.testName}</Typography>
             </Paper>
             })
         }
@@ -60,7 +84,7 @@ export default function SubmitPage({load,setLoad,setpage}) {
             <Typography sx={{fontSize:'16px'}}>Enter test results</Typography>
           <CloseIcon onClick={handleClose} sx={{cursor:'pointer'}} />
           </DialogTitle>
-      <Testcom handleClose={handleClose} test={test} load={load} setLoad={setLoad} detail={"njkjn"}></Testcom>
+      <Testcom handleClose={handleClose} test={test} settest={settest}></Testcom>
       </Dialog>
         
     </div>

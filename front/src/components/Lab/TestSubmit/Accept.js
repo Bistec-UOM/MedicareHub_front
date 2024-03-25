@@ -39,7 +39,7 @@ export default function Accept({req,reqOK,RLoad,setRLoad}) {
 
   }
 
-  //SEt sample to accepted
+  //Set sample to accepted
   const AccIdSet=(id)=>{
     axios.post(baseURL+endPoints.SET_ACCEPT+'?id='+id)
     .then((res)=>{
@@ -54,16 +54,39 @@ export default function Accept({req,reqOK,RLoad,setRLoad}) {
 
   return (
     <div>
-       { reqOK?<Card sx={{width:'100%',height:'30px',pl:'35px',height:'50px',pt:'20px',position:'fixed',zIndex:'10'}} square>
-            <Typography>{req.name}</Typography>
-        </Card>:''
+       { reqOK?<Card 
+                  sx={{
+                    width:'100%',
+                    height:'30px',
+                    pl:'35px',
+                    height:'50px',
+                    pt:'20px',
+                    position:'fixed',
+                    zIndex:'10'
+                  }} square
+                >
+                <Typography>{req.name}</Typography>
+                </Card>:''
       }
 
         <Box sx={{width:'100%',padding:'40px',paddingTop:'90px'}}>
+
         {reqOK?<Typography sx={{fontSize:'16px',mb:'30px',color:'gray'}}>Accept samples & payments</Typography>:''}
         {
             req.load.map((i)=>{
-                return <Paper sx={{width:'70%',display:'flex',justifyContent:'space-between',alignItems:'center',mt:'10px',p:'10px',pr:'30px'}} elevation={3}>
+                return <Paper 
+                          sx={{
+                            width:'70%',
+                            display:'flex',
+                            justifyContent:'space-between',
+                            alignItems:'center',
+                            mt:'10px',
+                            p:'10px',
+                            pr:'30px'
+                          }} 
+                          elevation={3}
+                        
+                        >
                 <Box>
                     <Typography sx={{fontSize:'18px',mb:'5px'}}>{i.testName} Test</Typography>
                     <Typography sx={{fontSize:'15px'}}>Token No: <Chip label={i.repId} sx={{height:'20px',borderRadius:'5px',color:'white',backgroundColor:'#568a91'}}></Chip></Typography>

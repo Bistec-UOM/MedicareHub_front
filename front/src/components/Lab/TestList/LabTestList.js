@@ -9,6 +9,7 @@ import TestDialogBox from './TestDialogBox';
 import CloseIcon from "@mui/icons-material/Close";
 import axios from 'axios'
 import { baseURL,endPoints} from '../../../Services/Lab';
+import CircularProgress from '@mui/material/CircularProgress';
 
 export default function LabTestList({setPage,settId,Tload,setTload}) {
 
@@ -28,12 +29,15 @@ export default function LabTestList({setPage,settId,Tload,setTload}) {
     const [query, setQuery] = useState('')//searchbar value
 
     const filteredData = Tload.filter(item => item.testName.toLowerCase().includes(query.toLowerCase()))//filtered Rload data by the search
-
+    const [loading,setLoading]=useState(true)
 
     useEffect(()=>{
       if(Tload.length==0){
         axios.get(baseURL+endPoints.TEST)
-        .then(res=>{setTload(res.data)})
+        .then(res=>{
+          setTload(res.data)
+          setLoading(false)
+        })
         .catch(er=>{})
       }
     },[Tload])
@@ -57,7 +61,8 @@ export default function LabTestList({setPage,settId,Tload,setTload}) {
             
         </Toolbar>
 
-        <Stack sx={{paddingTop:{xs:'60px',sm:'80px'},paddingLeft:{xs:'5%',sm:'8%'}}}>
+
+        !setLoading?<Stack sx={{paddingTop:{xs:'60px',sm:'80px'},paddingLeft:{xs:'5%',sm:'8%'}}}>
             {
                 filteredData.map((el)=>{
                     return(
@@ -70,7 +75,9 @@ export default function LabTestList({setPage,settId,Tload,setTload}) {
                     )
                 })
             }
-        </Stack>
+        </Stack>:<div style={{display:'flex',width:'100%',justifyContent:'center'}}>
+          <CircularProgress></CircularProgress>
+        </div>
 
       {/*------------------ Enter values pop up box ---------------------------------------------- */}
 

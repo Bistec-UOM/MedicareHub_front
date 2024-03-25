@@ -129,10 +129,7 @@ export default function Lab() {
          filteredData.map((elm)=>{
           if(elm.date==date){
             return(
-             <>
               <Sideunit_Test key={elm.id} id={elm.id} name={elm.name} load={elm.load} setSelectedT={setSelectedT} selectedT={selectedT}></Sideunit_Test>
-
-             </>
             )
           }
          })
@@ -156,16 +153,15 @@ export default function Lab() {
 
     <Drawer variant="temporary" open={mobileOpen} onTransitionEnd={handleDrawerTransitionEnd} 
      onClose={handleDrawerClose} ModalProps={{keepMounted: true}}
-    sx={{display: { xs: 'block', sm: 'none' },'& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerW-30 },height:'100%'}} >
-          
-      {drawer}
-        
+    sx={{display: { xs: 'block', sm: 'none' },'& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerW-30 },height:'100%'}} >     
+      {drawer}    
     </Drawer>
+    
     <Drawer variant="permanent" sx={{display: { xs: 'none', sm: 'block' },marginTop:'20px','& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerW }}} open>
-
       {drawer}
-
     </Drawer>
+
+    {/*=============== Selected data is displayed below (active area) ================================ */}
 
     <Grid item sm={9} spacing={0} sx={{height:'100%',marginLeft:{sm:'320px',xs:'0px'},width:{xs:'100vw',sm:'60vw'}}}>
     {
@@ -185,38 +181,5 @@ export default function Lab() {
 }
 
 
-//backup code
-/* {
-<CustomScroll>
-<Navbar></Navbar>
-<Grid container spacing={0} sx={{paddingTop:'64px',height:'100vh'}}>
-  <Grid item xs={3} style={{height:'100%',backgroundColor:'gray'}}>
-    <SidebarContainer>
-      <SidebarTop>
-        <Toolbar>
-          <SearchIcon></SearchIcon>
-          <Paper sx={{width:'150px',height:'20px'}}>Search here</Paper>
-        </Toolbar>
-      </SidebarTop>
-      <SidebarList>
-        {data.map(el=>{
-          return(
-            <Sideunit_Doctor name={el.name} title={el.title}></Sideunit_Doctor>
-          )
-        })}
-        {data.map(el=>{
-          return(
-            <Sideunit_Doctor name={el.name} title={el.title}></Sideunit_Doctor>
-          )
-        })}
 
-      </SidebarList>
-    </SidebarContainer>
-  </Grid>
-  <Grid item xs={9} style={{height:'100%',overflowY:'scroll',backgroundColor:'yellow'}}>
-
-  </Grid>
-</Grid>
-</CustomScroll>
-} */
 
