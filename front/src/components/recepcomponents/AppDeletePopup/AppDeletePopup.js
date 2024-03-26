@@ -1,73 +1,32 @@
 import * as React from "react";
-
 import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
 import axios from "axios";
-
 import { CardContent, IconButton, TextField, Typography } from "@mui/material";
-
-import { useState } from "react";
-
-import dayjs from "dayjs";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import Button from "@mui/material/Button";
-import SearchBar from "../Searchbar/Searchbar";
 import { Box } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { Grid, Stack } from "@mui/material";
 import ErrorIcon from "@mui/icons-material/Error";
 
 export default function AppDeletePopup({appointlist,setAppointList,handleNotification,item,delcount,setDelcount, daopen, setDaopen,filteredAppointments,setFilteredAppointments,isDisabled,setIsDisabled }) {
-  // const [enameError,seteNameError]=useState(false)
-  // const [eaddressError,seteAddressError]=useState(false)
-  // const [enicError,seteNicError]=useState(false)
-  const [etimevalueError, seteTimeValueError] = useState(false);
-
-  // const [ename,setEName]=useState(item.name)
-  // const [eaddress,setEAddress]=useState(item.address)
-  // const [enic,setENic]=useState(item.nic)
-  const [timevalue, setTimeValue] = useState("");
-  const [rdelete,setRdelete]=useState(false);
 
   const handleRealDelete=(item)=>
   {
-
+   
     axios.delete(`https://localhost:7205/api/Appointment/${item.appointment.id}`)
   .then(response => {
-    console.log('Resource deleted successfully:', response.data);
-    setDelcount(delcount+1);
+    //console.log('Resource deleted successfully:', response.data);
+    setDelcount(delcount+1);  //for fetching the newly updated app list
     setDaopen(false);
     handleNotification("Appointment deleted succesfully!");
+   // console.log("inside real delte"+filteredAppointments);
   })
   .catch(error => {
     console.error('Error deleting resource:', error);
   });
-
-
-    // setAppointList(appointlist.filter((itemf)=>itemf.nic!==item.nic));
-    // //setIsDisabled(true);
-    
-
   }
-
-  const handleClickOpen = () => {
-    setDaopen(true);
-  };
-
   const handleClose = () => {
     setDaopen(false);
   };
-
-  async function handleSubmit(event) {
-    event.preventDefault();
-  }
-
   return (
     <React.Fragment>
       <Dialog open={daopen} onClose={handleClose}>

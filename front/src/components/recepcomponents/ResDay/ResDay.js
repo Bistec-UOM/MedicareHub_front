@@ -3,11 +3,7 @@ import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
-import MailIcon from '@mui/icons-material/Mail';
-import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import MyCalendar from '../Calender/MyCalender';
 import { Grid } from '@mui/material';
 import { useState } from 'react';
 import { SidebarContainer } from '../../sidebar/Sidebar';
@@ -19,7 +15,6 @@ import { Sideunit_Doctor } from '../../sidebar/Sideunits';
 import ResNavBar from '../ResNavBar/ResNabBar';
 import { useLocation } from 'react-router-dom';
 import SearchPatientPage from '../SearchPatientPage/SearchPatienPage';
-import DayList from '../DayAppList/DayAppList';
 import ResDayList from '../ResDayList/ResDayList';
 import '../../../recep.css'
 
@@ -50,22 +45,12 @@ function ResDay() {
   const handleDrawerTransitionEnd = () => {
     setIsClosing(false);
   };
-
  const [renderVal,setRenderVal]=useState(false);  //variable for conditional rendering of daylist app and patientSearchPage
  const [dayAppTotal,setDayAppTotal]=useState(0);  //total app count of the selected day
- const [appCountUseEff,setAppCountUseEff]=useState(0);  //for triggering the use effect of res day list when adding a new appointment
-
  const [docid,setDocid]=useState(doctorid)
  //console.log(doctorid);
-
- const [filteredAppointments, setFilteredAppointments] = useState([]);
-
- useEffect(()=>
- {
-  // console.log("Hello ",doctorid);
-  // console.log("Hi day",selectedDay)
- },[])
- const [search,setSearch]=useState("")
+ const [filteredAppointments, setFilteredAppointments] = useState([]);  //list for storing appointment 
+ const [search,setSearch]=useState("")  //for storing search text of doctors
   const drawer = (
     <div>
       <Toolbar />
@@ -110,7 +95,6 @@ function ResDay() {
           </Grid>
     </div>
   );
-
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
@@ -159,7 +143,7 @@ function ResDay() {
           sm:'35px',
           xs:'30px'
         },width:'100%', height:'100%'}} item xs={9} sm={11} md={9}>
-        {renderVal ?  <SearchPatientPage setAppCountUseEff={setAppCountUseEff} appCountUseEff={appCountUseEff} dayAppTotal={dayAppTotal} filteredAppointments={filteredAppointments} setFilteredAppointments={setFilteredAppointments} selectedDay={selectedDay} docid={doctorid} renderVal={renderVal} setRenderVal={setRenderVal}/> :<ResDayList setAppCountUseEff={setAppCountUseEff} appCountUseEff={appCountUseEff} dayAppTotal={dayAppTotal} setDayAppTotal={setDayAppTotal} filteredAppointments={filteredAppointments} setFilteredAppointments={setFilteredAppointments} selectedDay={selectedDay}  docid={doctorid}  renderVal={renderVal} setRenderVal={setRenderVal}/>}   
+        {renderVal ?  <SearchPatientPage  dayAppTotal={dayAppTotal} setDayAppTotal={setDayAppTotal} filteredAppointments={filteredAppointments} setFilteredAppointments={setFilteredAppointments} selectedDay={selectedDay} docid={doctorid} renderVal={renderVal} setRenderVal={setRenderVal}/> :<ResDayList  dayAppTotal={dayAppTotal} setDayAppTotal={setDayAppTotal} filteredAppointments={filteredAppointments} setFilteredAppointments={setFilteredAppointments} selectedDay={selectedDay}  docid={doctorid}  renderVal={renderVal} setRenderVal={setRenderVal}/>}   
           </Grid>        
       </Box>
     </Box>

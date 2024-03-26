@@ -12,7 +12,9 @@ import { Sideunit_Doctor } from "../../sidebar/Sideunits";
 import AppAddPopup from "../AppAddPopup/AppAddPopup";
 import AllAppDeletePopup from "../AllAppDeletePopup/AllAppDeletePopup";
 import DayAppList from "./DayAppList";
+ 
 
+//This component is not used
 
 
 
@@ -48,7 +50,9 @@ const DayList = (props) => {
     const newappointments=appointments.filter((item)=>item.did===props.docid)
     setFilteredAppointments(newappointments);
     setIsDisabled(newappointments.length === 0);
-  }, [delcount]);
+    console.log(newappointments);
+
+  }, []);
 
   return (
     <Box>
@@ -126,6 +130,7 @@ const DayList = (props) => {
             }).map((item) => (
               <div key={item.nic}>
                 <AppointmentCard 
+                  
                   delcount={delcount}
                   setDelcount={setDelcount}
                   filteredAppointments={filteredAppointments}
@@ -139,6 +144,7 @@ const DayList = (props) => {
       </div>
       <AppAddPopup filteredAppointments={filteredAppointments} apopen={apopen} setApopen={setApopen} />
       <AllAppDeletePopup
+       
         isDisabled={isDisabled}
         setIsDisabled={setIsDisabled}
         filteredAppointments={filteredAppointments}
