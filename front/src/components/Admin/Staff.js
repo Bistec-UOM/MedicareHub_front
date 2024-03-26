@@ -331,7 +331,6 @@ const RoleFields = ["Doctor", "Receptionist", "Lab Assistant", "Cashier"];
     >
       <MenuItem value="Male">Male</MenuItem>
       <MenuItem value="Female">Female</MenuItem>
-      {/* <MenuItem value="other">Other</MenuItem> */}
     </Select>
     </div>
   </DialogContent>
@@ -397,12 +396,14 @@ const RoleFields = ["Doctor", "Receptionist", "Lab Assistant", "Cashier"];
 </Paper>
 {/* recep Paper */}
 {row2.filter(row=>row.role === rolefild).map((row)=>
+
+//role data in here
 <Paper
 key={row.Id}
 
   sx={{
     cursor:'Pointer',
-    mt: 3,
+    mt: 1.1,
     display: "flex",
     flexDirection: "column", // Set to 'column' for vertical display
     paddingLeft: 2,
