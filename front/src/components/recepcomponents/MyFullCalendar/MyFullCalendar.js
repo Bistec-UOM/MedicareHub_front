@@ -22,7 +22,21 @@ function MyFullCalendar({doctorId,selectedTab,setSelectedTab}) {
     const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);  
     const lastDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1);
     const [validRange, setValidRange] = useState({ start: firstDayOfMonth, end: lastDayOfMonth });
+    const [disabledDates,setDisabledDates]=useState([]);  //var list for storing disabled dates
+
     const navigate = useNavigate();
+
+    useEffect(()=>
+    {
+      axios.get(`https://localhost:7205/api/Appointment/BlockedDates/${doctorId}`)
+      .then((response) => {
+        setDisabledDates(response.data);
+      })
+      .catch((error) => {
+          console.error('Error fetching disabled dates:', error);
+      });
+    },[doctorId]);
+
 
     // use effect for fetching the doctor list
     useEffect(()=>
@@ -51,6 +65,9 @@ function MyFullCalendar({doctorId,selectedTab,setSelectedTab}) {
           console.error('Error fetching appointments:', error);
       });
     },[doctorId,pasMonth]);
+
+   
+
    function getDayAppCount(day)   //function for calculating the app daycount of a given day
    {
      var total=0;
@@ -110,6 +127,29 @@ function MyFullCalendar({doctorId,selectedTab,setSelectedTab}) {
       </div>
     );
   }
+
+
+
+const getDayStatus=(target)=>
+{
+  return disabledDates.some(item=>item.date===target);
+
+
+}
+
+  const getDayCellClassNames = (arg) => {
+    const date=new Date(arg.date);
+    const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}T${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}.${date.getMilliseconds().toString().padStart(3, '0')}`;
+    const tar=new Date(formattedDate);
+  //  const checkStatus=disabledDates.find(item => item.date == tar);
+    if(getDayStatus(tar))
+    {
+      return 'blocked-date';
+    }
+    else{
+      return 'nonblocked-date';
+    }
+};
   return (
     <div className="App">
       <Box sx={{overflowY: 'hidden' }}>
@@ -120,6 +160,7 @@ function MyFullCalendar({doctorId,selectedTab,setSelectedTab}) {
         dateClick={handleDateClick}
         datesSet ={handleDatesSet}
         selectable={false}
+        dayCellClassNames={getDayCellClassNames}
         headerToolbar={{
           left: 'prev',
           center: 'title',

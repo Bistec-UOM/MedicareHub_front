@@ -226,7 +226,7 @@ const DoctorAppList = (props) => {
           </Box>
         }
       </div>
-      <DayBlockPopup docDayBlockPopup={docDayBlockPopup} setDocDayBlockPopup={setDocDayBlockPopup} handleNotification={handleNotification}/>
+      <DayBlockPopup selectedDay={selectedDay} doctorId={props.docid} docDayBlockPopup={docDayBlockPopup} setDocDayBlockPopup={setDocDayBlockPopup} handleNotification={handleNotification}/>
     
       <DoctorAllAppDeletePopup
         selectedDay={selectedDay}

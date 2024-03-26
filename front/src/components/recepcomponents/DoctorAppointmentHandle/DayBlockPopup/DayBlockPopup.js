@@ -9,21 +9,38 @@ import CloseIcon from "@mui/icons-material/Close";
 import ErrorIcon from "@mui/icons-material/Error";
 import { useEffect } from "react";
 
-export default function DayBlockPopup({handleNotification,item,delcount,setDelcount, docDayBlockPopup, setDocDayBlockPopup,filteredAppointments,setFilteredAppointments,isDisabled,setIsDisabled}) {
-
- 
+export default function DayBlockPopup({selectedDay,doctorId,handleNotification,item,delcount,setDelcount, docDayBlockPopup, setDocDayBlockPopup,filteredAppointments,setFilteredAppointments,isDisabled,setIsDisabled}) {
 
   const handleClose = () => {
     setDocDayBlockPopup(false);
   };
 
   useEffect(() => {
-    console.log(docDayBlockPopup+"suck");
+    console.log(doctorId+"suck");
 
 }, []);
+
+async function handleSubmit(event)
+  {
+      event.preventDefault();
+      const date=new Date(selectedDay);
+      const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}T${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}.${date.getMilliseconds().toString().padStart(3, '0')}`;
+      let obj= {
+        doctorId:doctorId,
+        Date:formattedDate
+      }
+      try{
+          await axios.post("https://localhost:7205/api/Appointment/unableDates",obj
+         );
+          setDocDayBlockPopup(false);
+          handleNotification("Day Blocked succesfully!");
+      }
+      catch(err)
+      {
+      var msg=err.response.data;
+      }
+  }
  
-
-
   return (
     <React.Fragment>
       <Dialog open={docDayBlockPopup} onClose={handleClose}>
@@ -53,6 +70,7 @@ export default function DayBlockPopup({handleNotification,item,delcount,setDelco
           </Box>
           <Box sx={{display:'flex',justifyContent:'flex-end',paddingRight:'5%'}}>
             <Button 
+              onClick={handleSubmit}
               sx={{
                 backgroundColor: "#F44336", // Replace with your desired color
                 "&:hover": {
