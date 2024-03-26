@@ -10,17 +10,18 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import Navbar from "../../components/navbar/Navbar";
+import Navbar from "../components/navbar/Navbar";
 import { useState } from "react";
 import ShowChartIcon from "@mui/icons-material/ShowChart";
 import AccessibleIcon from "@mui/icons-material/Accessible";
 import PersonIcon from "@mui/icons-material/Person";
-import Analysis from "./Analytics";
-import Patient from "./Patient";
-import ResNavBar from "../../components/recepcomponents/ResNavBar/ResNabBar";
-import Staff from "./Staff";
-import View from "./View";
+import Analysis from "../components/Admin/Analytics";
+import Patient from "../components/Admin/Patient";
+import ResNavBar from "../components/recepcomponents/ResNavBar/ResNabBar";
+import Staff from "../components/Admin/Staff";
+import View from "../components/Admin/View";
 import SpaceDashboardIcon from '@mui/icons-material/SpaceDashboard';
+
 
 const drawerWidth = 210;
 
