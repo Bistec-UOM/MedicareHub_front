@@ -69,14 +69,14 @@ const findOpacityStatus=(label)=>
 }
 
 
-    console.log(props.items)
+    //console.log(props.items)
   return (
     <Box  >
       <Stepper orientation='vertical' activeStep={0} >
         {props.items && props.items.filter((item)=>{
            return props.search.toLowerCase()===''?item:item.patient.fullName.toLowerCase().includes(props.search.toLowerCase())
         }).map((label) => (
-          <Step key={label.patient.nic}>
+          <Step key={label.appointment.id}>
             <StepLabel  sx={{opacity:findOpacityStatus(label.appointment?.status)?0.5:1}}>{getStartTime(label.appointment?.dateTime)}- {getEndingTime(label.appointment?.dateTime)} </StepLabel>
           </Step>
         ))}

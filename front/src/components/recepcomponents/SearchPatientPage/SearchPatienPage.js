@@ -1,59 +1,34 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { Grid, Stack, Typography, Button, Container, Box } from "@mui/material";
-import Navbar from "../../navbar/Navbar";
-import AppointmentCard from "../AppointmentCard/AppointmentCard";
 import SearchBar from "../Searchbar/Searchbar";
-import Steper from "../Setper/Steper";
-import { SidebarContainer } from "../../sidebar/Sidebar";
-import { SidebarTop, SidebarList } from "../../sidebar/Sidebar";
-import { Sideunit_Doctor } from "../../sidebar/Sideunits";
-
 import SuccessNotification from "../SnackBar/SuccessNotification";
-
-import Snackbar from '@mui/material/Snackbar';
-import Alert from '@mui/material/Alert';
-
 import AppAddPopup from "../AppAddPopup/AppAddPopup";
-import AllAppDeletePopup from "../AllAppDeletePopup/AllAppDeletePopup";
-import DayAppList from "../DayAppList/DayAppList";
 import PatientDetailCard from "../PatientDetailCard/PatientDetailCard";
 import PatientRegpopup from "../PatRegPopup/PatientRegPopup";
 import '../../../recep.css'
-
 
 const SearchPatientPage = (props) => {
 
   const [notificationOpen,setNotificationOpen]=useState(false);
   const [notiMessage,setNotiMessage]=useState("");
-
   const [patientCount,setPatientCount]=useState(0); //use for patient rendering useffect
-
-
   const [search,setSearch]=useState("")
-  const [dayapp, setDayApp] = useState([]);
-  const [isDisabled, setIsDisabled] = useState(true);
-  const [filteredAppointments, setFilteredAppointments] = useState([]);
-
   const [appAddPopupCount,setAppAddPopupCount]=useState(0);
-
-  const [apopen, setApopen] = useState(false);
-  const [dopen, setDopen] = useState(false);
-
-  const [regopen,setRegopen]=useState(false);
-
-
+  const [apopen, setApopen] = useState(false);  //bool variable for open app add popup
+  const [regopen,setRegopen]=useState(false);  //bool variable for open patient reg popup open
+  const [patientList,setPatientList] = useState(null);
+  const [activeId, setActiveId] = useState("");  //var for selected patient id
+  var location = useLocation();
+  var loc = location.state;
 
  const handleNotification=(msg)=>
  {
      //console.log(msg)
      setNotiMessage(msg);
     setNotificationOpen(true);
-    console.log(notiMessage);
-   
-    
+   // console.log(notiMessage);   
  }
-
   const handleBackToList = () => {
     props.setRenderVal(false);
   };
@@ -70,29 +45,21 @@ const SearchPatientPage = (props) => {
      return response.json();
    }).then((responseData)=>
    {
-     console.log("Hello docid",props.docid)
-     console.log(responseData);
-     console.log("insied searchpa",props.selectedDay)
+    //  console.log("Hello docid",props.docid)
+    //  console.log(responseData);
+    // console.log("insied searchpa",props.selectedDay)
      setPatientList(responseData);
-     console.log("kkr ",props.dayAppTotal);
+    // console.log("kkr ",props.dayAppTotal);
 
    })
 
   },[patientCount]);
-
-  const [patientList,setPatientList] = useState(null);
-  const [activeId, setActiveId] = useState("");
-  var location = useLocation();
-  var loc = location.state;
-
-
   return (
-  
     <Box sx={{height:'100%'}} >
       <Box
         sx={{
           display: "flex",
-         justifyContent: "space-between",
+          justifyContent: "space-between",
           alignItem: "center",
           position:'fixed',
           backgroundColor:'white',
@@ -113,10 +80,8 @@ const SearchPatientPage = (props) => {
           sx={{
             justifyContent: "flex-end",
             marginBottom: 3,
-           // bgcolor:'blue',
             width:{xs:'100%',sm:'auto'},
             marginRight:{xs:'0',sm:'5%',md:'5%'}
-           
           }}
           spacing={2}
           direction="row"
@@ -141,7 +106,6 @@ const SearchPatientPage = (props) => {
               backgroundColor: "#F44336",
               fontWeight: 25,
                whiteSpace: "nowrap",
-              
               "&:hover": {
                 backgroundColor: "#F34436", // Set hover background color to be the same
               },
@@ -180,7 +144,7 @@ const SearchPatientPage = (props) => {
             ))}
           </Box>
         }
-        <AppAddPopup appCountUseEff={props.appCountUseEff} setAppCountUseEff={props.setAppCountUseEff} dayAppTotal={props.dayAppTotal} filteredAppointments={props.filteredAppointments} setFilteredAppointments={props.setFilteredAppointments} selectedDay={props.selectedDay} handleNotification={handleNotification} docid={props.docid} appointmentList={props.appointlist} setAppointmentList={props.setAppointmentList} appAddPopupCount={appAddPopupCount} setAppAddPopupCount={setAppAddPopupCount} patientList={patientList} activeId={activeId} apopen={apopen} setApopen={setApopen} />
+        <AppAddPopup  dayAppTotal={props.dayAppTotal} setDayAppTotal={props.setDayAppTotal} filteredAppointments={props.filteredAppointments} setFilteredAppointments={props.setFilteredAppointments} selectedDay={props.selectedDay} handleNotification={handleNotification} docid={props.docid} appointmentList={props.appointlist} setAppointmentList={props.setAppointmentList} appAddPopupCount={appAddPopupCount} setAppAddPopupCount={setAppAddPopupCount} patientList={patientList} activeId={activeId} apopen={apopen} setApopen={setApopen} />
         <PatientRegpopup patientCount={patientCount} setPatientCount={setPatientCount} handleNotification={handleNotification} patientList={patientList} setPatientList={setPatientList} regopen={regopen} setRegopen={setRegopen}></PatientRegpopup>
       </div>
       <SuccessNotification setNotificationOpen={setNotificationOpen} notiMessage={notiMessage} notificationOpen={notificationOpen}/>

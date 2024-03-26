@@ -27,18 +27,17 @@ export default function AppAddPopup({
   setApopen,
   activeD,
   dayAppTotal,
-  appCountUseEff,
-  setAppCountUseEff
+  setDayAppTotal
 }) {
-  const [selectedTime, setSelectedTime] = useState(dayjs("2022-04-17T08:30"));
-  const [confirmDisabled,setConfirmDisabled]=useState(false);
-  const [appTime,setAppTime]=useState({
+  const [selectedTime, setSelectedTime] = useState(dayjs("2022-04-17T08:30"));  //default selected date and time of the date picker
+  const [confirmDisabled,setConfirmDisabled]=useState(false);  //var for confirm disabled for app limiting func
+  const [appTime,setAppTime]=useState({   //var for selected appointment time
     hours:" ",
     minutes:" ",
     ampm:" "
   })
-  const [activeData, setActiveData] = useState({});
-  function formatAMPM(date) {
+  const [activeData, setActiveData] = useState({});  //for storing the selected patient object
+  function formatAMPM(date) {  
     var hours = dayjs(date).get("hour");
     var minutes = dayjs(date).get("minute");
     var ampm = hours >= 12 ? 'pm' : 'am';
@@ -83,15 +82,10 @@ export default function AppAddPopup({
 }
  )
   const handleClose = () => {
-    console.log("se", selectedTime);
+   // console.log("se", selectedTime);
     setApopen(false);
   };
 
-  async function handleSubmit(event) {
-    event.preventDefault();
-    setApopen(false);
-    handleNotification("A new appointment added succesfully!");
-  }
   async function handleSubmit(event)
   {
       event.preventDefault();
@@ -114,11 +108,9 @@ export default function AppAddPopup({
           await axios.post("https://localhost:7205/api/Appointment",obj
          );
           //console.log(obj);
-          setAppCountUseEff(appCountUseEff+1);
           setApopen(false);
+          setDayAppTotal(dayAppTotal+1);
           handleNotification("Appointment Added succesfully!");
-         // console.log("Inside second useeff "+ appCountUseEff);
-         // console.log("Inside second useeff apptotal "+ dayAppTotal);    
       }
       catch(err)
       {
@@ -127,28 +119,18 @@ export default function AppAddPopup({
        //console.log(err.response.data);
          //setError(msg);
       }
-      
-
   }
-
-
-
   useEffect(() => {
-     console.log(activeId);
-    formatAMPM(selectedTime)
-   
-
-    if (patientList && Array.isArray(patientList)) {
+    // console.log(activeId);
+     formatAMPM(selectedTime)
+   //  console.log("dap"+dayAppTotal);
+    if (patientList && Array.isArray(patientList)) {  //getting the selected patient
       const filteredData = patientList.find(
         (patient) => patient.nic === activeId
       );
       setActiveData(filteredData);
     }
   }, [appAddPopupCount, activeId, patientList,selectedTime]);
-
-  useEffect(() => {
-    // console.log("Updated Active Data:", activeData);
-  }, [activeData]);
 
   return (
     <React.Fragment>
@@ -304,10 +286,6 @@ export default function AppAddPopup({
                   justifyContent: "space-between",
                   alignItems: "baseline",
                   width: "100%",
-                //  flexDirection:{
-                //     sm:"column",
-                //     md :"row"
-                //   }
                 }}
               >
                
@@ -323,13 +301,7 @@ export default function AppAddPopup({
                     }
                     return <Typography>{time}</Typography>;
                   }}  
-                  
-                 
-                  // setSelectedTimeH={(value) => setTimeValue({...timevalue,hour:value})}
-                  // setSelectedTimeM={(value) => setTimeValue({...timevalue,minutes:value})}
-                />
-               
-                  
+                />  
                 <Button
                   disabled={confirmDisabled}
                   sx={{
@@ -337,18 +309,13 @@ export default function AppAddPopup({
                     backgroundColor: "#79CCBE",
                     "&:hover": {
                       backgroundColor: "#79CCBE",
-                    },
-                    
-                   
+                    },  
                   }}
                   variant="contained"
                   type="submit"
                 >
                   Confirm
                 </Button>
-                
-               
-              
               </Stack>
             </DialogActions>
           </form>
