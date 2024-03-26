@@ -72,7 +72,7 @@ export default function Doctor() {
       const updatedAppointments = appointments.map(appointment => {
           if (appointment.id === select) {
               // Update status to "done"
-              appointment.status = "Completed";
+              appointment.status = "done";
 
               // Clear other fields if needed
               appointment.drugs = [];
@@ -246,7 +246,7 @@ const fetchData = async () => {
  ]*/
  
   const selectedAppointment = select ? appointments.filter(appointment => appointment.id === select) : [];//------------filter  the selected patient----------
-const filteredAppointments = showDonePatients ? appointments.filter(appointment => appointment.status === "New") : appointments;
+const filteredAppointments = showDonePatients ? appointments.filter(appointment => appointment.status === "pending") : appointments;
  
  return (
   <div>

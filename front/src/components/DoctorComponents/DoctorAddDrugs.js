@@ -14,7 +14,7 @@ export default function DoctorAddDrugs(props) {
     const { openBox, setOpenBox ,pres , setPres} = props;
     const [genericN, setGenericN] = useState('');
     const [weight, setWeight] = useState('');
-    const [quantitytype, setQuantitytype] = useState('mg');
+    const [unit, setUnit] = useState('mg');    
     const [period, setPeriod] = useState('BD');
     
     //const [pres, setPres] = useState([]);//---------------------------prescription array------------------------ 
@@ -33,14 +33,14 @@ export default function DoctorAddDrugs(props) {
     const handleAddDrug = () => {
       const newDrug = { 
         genericN:genericN,
-        prescriptionId:0,
         weight:weight,
+        unit:unit,
         period :period
     }
       setPres([...pres, newDrug]);
       setGenericN('');
       setWeight('');
-      setQuantitytype('');
+      setUnit('');
       setPeriod('');
   };
     const handleDeleteDrug = (index) => {
@@ -95,7 +95,7 @@ export default function DoctorAddDrugs(props) {
           />
           <Select 
                     sx={{ m: 1, top: '1px', border: '2px solid #0099cc', width: '70px', height: '40px', }}
-                     variant="standard" value={quantitytype} onChange={(e) => setQuantitytype(e.target.value)}>
+                     variant="standard" value={unit} onChange={(e) => setUnit(e.target.value)}>
                         {quantityOptions.map((option, index) => (
                             <MenuItem key={index} value={option}>{option}</MenuItem>
                         ))}
@@ -126,7 +126,7 @@ export default function DoctorAddDrugs(props) {
                           
                           <Typography gutterBottom variant="p" sx={{ flex: '3', marginLeft: '10px' }}>{drug.genericN}</Typography>
     
-                          <Typography gutterBottom variant="p" sx={{ flex: '2', marginLeft: '100px' }}>{drug.weight} {drug.quantitytype}</Typography>
+                          <Typography gutterBottom variant="p" sx={{ flex: '2', marginLeft: '100px' }}>{drug.weight} {drug.unit}</Typography>
     
                           <Typography gutterBottom variant="p" sx={{ flex: '1', marginLeft: '150px' }}>{drug.Period}</Typography>
     
