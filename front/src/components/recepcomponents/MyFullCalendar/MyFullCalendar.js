@@ -22,7 +22,6 @@ function MyFullCalendar({doctorId,selectedTab,setSelectedTab}) {
     const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);  
     const lastDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1);
     const [validRange, setValidRange] = useState({ start: firstDayOfMonth, end: lastDayOfMonth });
-
     const navigate = useNavigate();
 
     // use effect for fetching the doctor list
