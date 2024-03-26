@@ -12,10 +12,11 @@ import Autocomplete from '@mui/material/Autocomplete';
 
 export default function DoctorAddDrugs(props) {
     const { openBox, setOpenBox ,pres , setPres} = props;
-    const [name, setName] = useState('');
-    const [quantity, setQuantity] = useState('');
-    const [quantitytype, setQuantitytype] = useState('');
-    const [hour, setHour] = useState('');
+    const [genericN, setGenericN] = useState('');
+    const [weight, setWeight] = useState('');
+    const [quantitytype, setQuantitytype] = useState('mg');
+    const [period, setPeriod] = useState('BD');
+    
     //const [pres, setPres] = useState([]);//---------------------------prescription array------------------------ 
     
     
@@ -30,12 +31,17 @@ export default function DoctorAddDrugs(props) {
     };
 
     const handleAddDrug = () => {
-      const newDrug = { name, quantity,quantitytype, hour };
+      const newDrug = { 
+        genericN:genericN,
+        prescriptionId:0,
+        weight:weight,
+        period :period
+    }
       setPres([...pres, newDrug]);
-      setName('');
-      setQuantity('');
+      setGenericN('');
+      setWeight('');
       setQuantitytype('');
-      setHour('');
+      setPeriod('');
   };
     const handleDeleteDrug = (index) => {
       const updatedPres = [...pres];
@@ -60,9 +66,9 @@ export default function DoctorAddDrugs(props) {
     sx={{ flex: '1', marginRight: '10px', width: '200px', '& .MuiOutlinedInput-root': { '& fieldset': { borderColor: '#0099cc', borderWidth: '2px' } } }}
     freeSolo
     options={drugNames}
-    value={name}
+    value={genericN}
     onChange={(event, newValue) => {
-        setName(newValue);
+        setGenericN(newValue);
     }}
     renderInput={(params) => (
         <TextField
@@ -84,8 +90,8 @@ export default function DoctorAddDrugs(props) {
           </div>
           <TextField variant="outlined" size="small"  label="Amount"
                     sx={{ flex: '1',fontSize: '13px', marginRight: '11px', '& .MuiOutlinedInput-root': { '& fieldset': { borderColor: '#0099cc', borderWidth: '2px' } } }} 
-            value={quantity}
-            onChange={(e) => setQuantity(e.target.value)}            
+            value={weight}
+            onChange={(e) => setWeight(e.target.value)}            
           />
           <Select 
                     sx={{ m: 1, top: '1px', border: '2px solid #0099cc', width: '70px', height: '40px', }}
@@ -96,7 +102,7 @@ export default function DoctorAddDrugs(props) {
                     </Select>
                     <Select
                      sx={{ m: 1, top: '1px', border: '2px solid #0099cc', width: '70px', height: '40px', }}
-                      variant="standard" value={hour} onChange={(e) => setHour(e.target.value)}>
+                      variant="standard" value={period} onChange={(e) => setPeriod(e.target.value)}>
                         {hourOptions.map((option, index) => (
                             <MenuItem key={index} value={option}>{option}</MenuItem>
                         ))}
@@ -118,11 +124,11 @@ export default function DoctorAddDrugs(props) {
 
                         <Card style={{ display: 'flex', flexDirection: 'row',backgroundColor: '#0099cc', color: 'white',fontSize: '18px' }}>
                           
-                          <Typography gutterBottom variant="p" sx={{ flex: '3', marginLeft: '10px' }}>{drug.name}</Typography>
+                          <Typography gutterBottom variant="p" sx={{ flex: '3', marginLeft: '10px' }}>{drug.genericN}</Typography>
     
-                          <Typography gutterBottom variant="p" sx={{ flex: '2', marginLeft: '100px' }}>{drug.quantity} {drug.quantitytype}</Typography>
+                          <Typography gutterBottom variant="p" sx={{ flex: '2', marginLeft: '100px' }}>{drug.weight} {drug.quantitytype}</Typography>
     
-                          <Typography gutterBottom variant="p" sx={{ flex: '1', marginLeft: '150px' }}>{drug.hour}</Typography>
+                          <Typography gutterBottom variant="p" sx={{ flex: '1', marginLeft: '150px' }}>{drug.Period}</Typography>
     
                           </Card>
                         </Grid>

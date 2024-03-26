@@ -21,22 +21,24 @@ import { Sideunit_Patient } from '../components/sidebar/Sideunits';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import TopUnit from '../components/DoctorComponents/TopUnit';
-
+import axios from 'axios';
 export default function Doctor() {
   
   const [select,setSelect]=useState(null);//---------------hold the selected appoinment patient-----------------------------
   const [openPopup, setOpenPopup] = useState(false);
-  const [openBox, setOpenBox] = useState(false);
+  const [openBox, setOpenBox] = useState(false);// for add drugs
   const [openpopBox, setOpenpopBox] = useState(false);
-  const [openAreports, setOpenAreports] = useState(false);
-  const [description,setDescription] = useState ("");
+  const [openAreports, setOpenAreports] = useState(false);//for lab reports
+  const [description,setDescription] = useState (""); // hold the text field descriptions(patient description)
   const [open, setOpen] = React.useState(false); //for snapbar
   const [showDonePatients, setShowDonePatients] = useState(false);
-  const [showPendingPatients, setShowPendingPatients] =  useState(false);// State to track switch toggle
-  const [pres,setPres]=useState([]) // hold the pres details from doctoradd drug component
-  const [rep,setrep]=useState([]) // hold the  lab request from doctoradd drug component
+  const [pres,setPres]=useState([]) ;// hold the pres details from doctoradd drug component
+  const [rep,setrep]=useState([]); // hold the  lab request from doctoradd drug component
+  const [appointments, setAppointments] = useState([]);
+  
   useEffect(() => {
     document.body.style.margin = '0';
+    fetchData();
   }, [])
 
   const Item = styled(Paper)(({ theme }) => ({
@@ -53,7 +55,7 @@ export default function Doctor() {
   const handleAddDrugsClick = () => {
     setOpenBox(true);
   }; 
-
+  
   const handleViewReporsClick = () => {
     setOpenAreports(true);
   };  
@@ -61,16 +63,16 @@ export default function Doctor() {
   const handleAddButtonClick = () => {
     setOpenpopBox(true);
   };
-  const handlesnapbarClick = () => {
+  const handlesnapbarClick = () => {  
     setOpen(true);
   };
  
   const confirmRemoving = () => {
   if (select !== null) {
-      const updatedAppointments = x.map(appointment => {
+      const updatedAppointments = appointments.map(appointment => {
           if (appointment.id === select) {
               // Update status to "done"
-              appointment.status = "done";
+              appointment.status = "Completed";
 
               // Clear other fields if needed
               appointment.drugs = [];
@@ -82,7 +84,7 @@ export default function Doctor() {
 
       // Display updated appointments
       console.log("Updated Appointments:", updatedAppointments);
-      setX(updatedAppointments);
+      setAppointments(updatedAppointments);
       setSelect(null);
       setOpen(false); // Clear the selected patient account      
   }
@@ -90,14 +92,15 @@ export default function Doctor() {
 
 const handleClick = () => {
  
-  handlesnapbarClick();
+  handlesnapbarClick(); //show the snapbar component
+
   let obj = { //strore the all data in this object after click the confirm button
     id: select,
     drugs: pres, // drug array: from DoctorAddDrugs component
     labs: rep,  // lab test array: from Labrequest component
     descript: description
   }
-  //console.log(obj)
+  console.log(JSON.stringify(obj))
   setPres([])
   setrep([])
   setDescription('')
@@ -106,137 +109,144 @@ const handleClick = () => {
     confirmRemoving();
   }, 1500);
 };
- 
+
+const fetchData = async () => {
+  try {
+    const response = await axios.get('http://localhost:7205/api/Doctor/AppointList'); // Replace 'your_api_url_here' with the actual endpoint URL
+    setAppointments(response.data);
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+};
  //-------------------------->patients appointments Array<--------------------------------------------------------//
 
- const data=[
+ 
+ /*const data=[
+  {
+    date:1,
+     id:51,  // -----------------------------------> appointment Id-------  
+     patient:{
+         name:"Nethmi Eranga",
+         age:23,
+         gender:"female"
+       },
+       time: "9:15",
+       status: "pending"
+   },
    {
-     date:1,
-      id:51,  // -----------------------------------> appointment Id-------  
-      patient:{
-          name:"Nethmi Eranga",
-          age:23,
-          gender:"female"
-        },
-        time: "9:15",
-        status: "pending"
-    },
-    {
-      date:2,
-      id:52,    
-      patient:{
-          name:"Dammika mahendra",
-          age:18,
-          gender:"male"
-        },
-        time: "10:30",
-        status: "pending"
-    },
-    {
-      date:3,
-      id:53,    
-      patient:{
-          name:"Yasiru Ramosh",
-          age:8,
-          gender:"male",
-        },
-        time: "11:15",
-        status: "pending"
-    },
-    {
-      date:4,
-      id:54,    
-      patient:{
-          name:"Chathumini Pamodya",
-          age:32,
-          gender:"female"
-        },
-        time: "12:00",
-        status: "pending"
-    },
-    {
-      date:5,
-      id:55,    
-      patient:{
-          name:"Chalana Mihiran",
-          age:22,
-          gender:"male"
-        },
-        time: "13:05",
-        status: "pending"
-    },
-    {
-      date:6,
-      id:56,    
-      patient:{
-          name:"Dilini tharaka",
-          age:42,
-          gender:"female"
-        },
-        time: "14:15",
-        status: "pending"
-    },
-    {
-      date:7,
-      id:57,    
-      patient:{
-          name:"Hasini Chamodi",
-          age:52,
-          gender:"female"
-        },
-        time: "15:00",
-        status: "pending"
-    },
-    {
-      date:8,
-      id:58,    
-      patient:{
-          name:"Mihiran Iddamalgoda",
-          age:38,
-          gender:"male"
-        },
-        time: "15:30",
-        status: "pending"
-    },
-    {
-      date:9,
-      id:59,    
-      patient:{
-          name:"Sunil Perera",
-          age:22,
-          gender:"male"
-        },
-        time: "15:45",
-        status: "pending"
-    },
-    {
-      date:10,
-      id:60,    
-      patient:{
-          name:"Nimal Senarathna",
-          age:16,
-          gender:"male"
-        },
-        time: "16:00",
-        status: "pending"
-    },
-    {
-      date:11,
-      id:61,    
-      patient:{
-          name:"Kasun Perera",
-          age:60,
-          gender:"male"
-        },
-        time: "16:15",
-        status: "pending"
-    },    
-  ]
-  
-
-  const [x,setX]=useState(data)
-  const selectedAppointment = select ? x.filter(appointment => appointment.id === select) : [];//------------filter  the selected patient----------
-  const filteredAppointments = showDonePatients ? x.filter(appointment => appointment.status === "pending") : x;
+     date:2,
+     id:52,    
+     patient:{
+         name:"Dammika mahendra",
+         age:18,
+         gender:"male"
+       },
+       time: "10:30",
+       status: "pending"
+   },
+   {
+     date:3,
+     id:53,    
+     patient:{
+         name:"Yasiru Ramosh",
+         age:8,
+         gender:"male",
+       },
+       time: "11:15",
+       status: "pending"
+   },
+   {
+     date:4,
+     id:54,    
+     patient:{
+         name:"Chathumini Pamodya",
+         age:32,
+         gender:"female"
+       },
+       time: "12:00",
+       status: "pending"
+   },
+   {
+     date:5,
+     id:55,    
+     patient:{
+         name:"Chalana Mihiran",
+         age:22,
+         gender:"male"
+       },
+       time: "13:05",
+       status: "pending"
+   },
+   {
+     date:6,
+     id:56,    
+     patient:{
+         name:"Dilini tharaka",
+         age:42,
+         gender:"female"
+       },
+       time: "14:15",
+       status: "pending"
+   },
+   {
+     date:7,
+     id:57,    
+     patient:{
+         name:"Hasini Chamodi",
+         age:52,
+         gender:"female"
+       },
+       time: "15:00",
+       status: "pending"
+   },
+   {
+     date:8,
+     id:58,    
+     patient:{
+         name:"Mihiran Iddamalgoda",
+         age:38,
+         gender:"male"
+       },
+       time: "15:30",
+       status: "pending"
+   },
+   {
+     date:9,
+     id:59,    
+     patient:{
+         name:"Sunil Perera",
+         age:22,
+         gender:"male"
+       },
+       time: "15:45",
+       status: "pending"
+   },
+   {
+     date:10,
+     id:60,    
+     patient:{
+         name:"Nimal Senarathna",
+         age:16,
+         gender:"male"
+       },
+       time: "16:00",
+       status: "pending"
+   },
+   {
+     date:11,
+     id:61,    
+     patient:{
+         name:"Kasun Perera",
+         age:60,
+         gender:"male"
+       },
+       time: "16:15",
+       status: "pending"
+   },    
+ ]*/
+ 
+  const selectedAppointment = select ? appointments.filter(appointment => appointment.id === select) : [];//------------filter  the selected patient----------
+const filteredAppointments = showDonePatients ? appointments.filter(appointment => appointment.status === "New") : appointments;
  
  return (
   <div>
@@ -245,7 +255,7 @@ const handleClick = () => {
       <Grid item xs={3} style={{ height: '100%', backgroundColor:'#E7FFF9'}}>
           <SidebarContainer sx={{ backgroundColor:'#E7FFF9'}}>
               <SidebarTop>
-              <TopUnit appointments={x} ></TopUnit>
+              <TopUnit appointments={appointments} ></TopUnit>
               </SidebarTop>
               <SidebarList >
                 <Switch defaultChecked size="small" sx={{position:'fixed',left:'8px',top:'125px'}}
@@ -305,17 +315,17 @@ const handleClick = () => {
                       <br></br>
                       <Button variant="contained" sx={{ backgroundColor: '#00cca3', left: '80%' }} onClick={handleClick}>Confirm</Button>
                       <div>
-      
-      <Snackbar open={open} autoHideDuration={6000}  anchorOrigin={{ vertical: 'bottom', horizontal: 'left'}} >
-        <Alert             
-          severity="success"
-          variant="filled"          
-          sx={{ width: '100%', }}
-        >
-           Successfully  Confirm  !
-        </Alert>
-      </Snackbar>
-    </div>
+                   {/* snack bar component */}
+                   <Snackbar open={open} autoHideDuration={6000}  anchorOrigin={{ vertical: 'bottom', horizontal: 'left'}} >
+                   <Alert             
+                   severity="success"
+                   variant="filled"          
+                   sx={{ width: '100%', }}
+                  >
+                 Successfully  Confirm  !
+                 </Alert>
+                </Snackbar>
+                 </div>
                   </div>
               </>
           ) : (
