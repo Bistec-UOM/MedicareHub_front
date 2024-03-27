@@ -98,6 +98,18 @@ body > div.MuiDrawer-root.MuiDrawer-modal.MuiModal-root.css-hjb2rp-MuiModal-root
   display:none
 }
 
+.blocked-date {
+  pointer-events: none; /* Disable click events */
+  opacity: 0.5; /* Apply visual indication for blocked dates */
+  background-color: rgb(73, 7, 7);
+  
+}
+
+.nonblocked-date
+{
+  background-color: black;
+}
+
 
 
 
