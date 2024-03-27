@@ -410,7 +410,7 @@ export default function Pharmacy_drugstore() {
     >
     <Grid container spacing={2}>
   <Grid item xs={3}>
-    <Typography sx={{flex:1}}>{row.drug}</Typography>
+    <Typography sx={{flex:1, paddingLeft: '10px'}}>{row.drug}</Typography>
   </Grid>
   <Grid item xs={3}>
   <Typography sx={{flex:1}}>{row.brand}</Typography>
