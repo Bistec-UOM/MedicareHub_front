@@ -127,7 +127,7 @@ function MyFullCalendar({doctorId,selectedTab,setSelectedTab}) {
         navigate('/resday', { state: { selectedDay: today ,doctorid:doctorId,doctorList:doctorList} });
       }
     }else{
-       handleNotification("This date is has been blocked!","error")
+       handleNotification("This date has been blocked!","error")
     }
     };
   //handle datesset for setting the valid date range
