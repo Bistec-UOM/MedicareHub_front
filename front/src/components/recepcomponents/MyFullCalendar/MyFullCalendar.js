@@ -10,6 +10,7 @@ import interactionPlugin from '@fullcalendar/interaction';
 import LinearProgress from '@mui/material/LinearProgress';
 import { useState } from 'react';
 import '../../../recep.css'
+import SuccessNotification from '../SnackBar/SuccessNotification';
 
 //full calender for receptionist
 function MyFullCalendar({doctorId,selectedTab,setSelectedTab}) {
@@ -24,6 +25,8 @@ function MyFullCalendar({doctorId,selectedTab,setSelectedTab}) {
     const [validRange, setValidRange] = useState({ start: firstDayOfMonth, end: lastDayOfMonth });
     const [disabledDates,setDisabledDates]=useState([]);  //var list for storing disabled dates
 
+   
+
     const navigate = useNavigate();
 
     useEffect(()=>
@@ -31,6 +34,8 @@ function MyFullCalendar({doctorId,selectedTab,setSelectedTab}) {
       axios.get(`https://localhost:7205/api/Appointment/BlockedDates/${doctorId}`)
       .then((response) => {
         setDisabledDates(response.data);
+        //console.log(response.data,"dislist");
+       
       })
       .catch((error) => {
           console.error('Error fetching disabled dates:', error);
@@ -59,12 +64,27 @@ function MyFullCalendar({doctorId,selectedTab,setSelectedTab}) {
         // console.log("daycout"+response.data);
         // console.log(pasMonth+"doc"+doctorId)
         setDayAppCount(response.data);
+       // console.log("dis",disabledDates);
        // console.log(getDayAppCount(10));
       })
       .catch((error) => {
           console.error('Error fetching appointments:', error);
       });
     },[doctorId,pasMonth]);
+
+    const [notificationOpen,setNotificationOpen]=useState(false);  //var for open day block notificatio
+    const [notiMessage,setNotiMessage]=useState("");  //var for storig noti message
+    const [notiType,setNotiType]=useState("success");
+
+
+    const handleNotification=(msg,type)=>
+   {  
+      setNotiMessage(msg);
+      setNotificationOpen(true);
+      setNotiType(type);
+      
+     // console.log(notiMessage);
+   }
 
    
 
@@ -85,6 +105,7 @@ function MyFullCalendar({doctorId,selectedTab,setSelectedTab}) {
     //function for navigating to the app list page when a day cell clicked
     const handleDateClick = (arg) => {
       const selectedDate = moment(arg.dateStr);
+     
      // console.log("hello",selectedDate);
       today = selectedDate.format('MMMM D, YYYY');
     //  console.log("hello",today);
@@ -94,9 +115,20 @@ function MyFullCalendar({doctorId,selectedTab,setSelectedTab}) {
      // console.log("dd",selectedMonth);
       //console.log(currentMonth);
       //console.log("new",today)
+
+      const date=new Date(arg.date);
+      const milliseconds = date.getMilliseconds();
+      const millisecondsPart = milliseconds === 0 ? '' : `.${milliseconds.toString().padStart(3, '0')}`;
+      const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}T${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}${millisecondsPart}`;
+
+      if(!getDayStatus(formattedDate))
+      {
       if (selectedMonth === currentMonth) {
         navigate('/resday', { state: { selectedDay: today ,doctorid:doctorId,doctorList:doctorList} });
       }
+    }else{
+       handleNotification("This date is has been blocked!","error")
+    }
     };
   //handle datesset for setting the valid date range
   const handleDatesSet = (arg) => {
@@ -120,32 +152,35 @@ function MyFullCalendar({doctorId,selectedTab,setSelectedTab}) {
   };
   //for displaying day cell content
   function renderDayCellContent(dayCell) {
+    const renderingDate = dayCell.date;
+    const date=new Date(renderingDate);
+    const milliseconds = date.getMilliseconds();
+    const millisecondsPart = milliseconds === 0 ? '' : `.${milliseconds.toString().padStart(3, '0')}`;
+    const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}T${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}${millisecondsPart}`;
+    console.log(formattedDate);
     return (
       <div >
-        <div>{dayCell.dayNumberText} </div>       
-        <CustomizedProgressBars  value={getDayAppCount(dayCell.dayNumberText)*10}  />
+        <div>{dayCell.dayNumberText} </div>  
+        <Box sx={{display:getDayStatus(formattedDate)?'none':'flex'}}>
+        <CustomizedProgressBars  value={getDayAppCount(dayCell.dayNumberText)*10}  />       
+        </Box>
+       
       </div>
     );
   }
-
-
-
 const getDayStatus=(target)=>
 {
   return disabledDates.some(item=>item.date===target);
-
-
 }
-
   const getDayCellClassNames = (arg) => {
     const date=new Date(arg.date);
-    const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}T${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}.${date.getMilliseconds().toString().padStart(3, '0')}`;
-    const tar=new Date(formattedDate);
-  //  const checkStatus=disabledDates.find(item => item.date == tar);
-    if(getDayStatus(tar))
+    const milliseconds = date.getMilliseconds();
+    const millisecondsPart = milliseconds === 0 ? '' : `.${milliseconds.toString().padStart(3, '0')}`;
+    const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}T${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}${millisecondsPart}`;
+    if(getDayStatus(formattedDate))
     {
       return 'blocked-date';
-    }
+    } 
     else{
       return 'nonblocked-date';
     }
@@ -159,7 +194,7 @@ const getDayStatus=(target)=>
         dayCellContent={renderDayCellContent}
         dateClick={handleDateClick}
         datesSet ={handleDatesSet}
-        selectable={false}
+         selectable={false}
         dayCellClassNames={getDayCellClassNames}
         headerToolbar={{
           left: 'prev',
@@ -167,6 +202,7 @@ const getDayStatus=(target)=>
           right: 'next'
         }}
       />
+       <SuccessNotification type={notiType} setNotificationOpen={setNotificationOpen} notiMessage={notiMessage} notificationOpen={notificationOpen}/> 
       </Box> 
     </div>
   );

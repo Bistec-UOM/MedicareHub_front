@@ -127,7 +127,7 @@ export default function AppEditPopup({
     event.preventDefault();
     // setAppointmentList([...appointmentList,{name:activeData.name,city:activeData.city,nic:activeData.nic,phone:activeData.phone,did:docid,time:"9:00 AM"}]);
     setAppEditOpen(false);
-    handleNotification("Appointment Edited succesfully!");
+    handleNotification("Appointment Edited succesfully!","success");
   }
 
   const updateAppointment = async (id, appointment) => {

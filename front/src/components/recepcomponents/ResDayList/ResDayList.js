@@ -13,10 +13,12 @@ import axios from "axios";
 const ResDayList = (props) => {
   const [notificationOpen,setNotificationOpen]=useState(false);
   const [notiMessage,setNotiMessage]=useState("");
-  const handleNotification=(msg)=>
+  const [notiType,setNotiType]=useState("success")
+  const handleNotification=(msg,type)=>
  {  
     setNotiMessage(msg);
     setNotificationOpen(true);
+    setNotiType(type);
    // console.log(notiMessage);
  }
   const [addDisabled,setAddDisabled]=useState(false); //variable for Add button disabled
@@ -41,7 +43,7 @@ const ResDayList = (props) => {
     axios.get(`https://localhost:7205/api/Appointment/doctor/${props.docid}/day/${selectedDay}`)
         .then((response) => {
             // console.log("do",props.docid);
-            // console.log(selectedDay);
+             console.log("sel",selectedDay);
             // console.log("pure",response);
             console.log("response data",response.data)
             const responseData = response.data;
@@ -187,7 +189,7 @@ const ResDayList = (props) => {
         dopen={dopen}
         setDopen={setDopen}
       />
-       <SuccessNotification setNotificationOpen={setNotificationOpen} notiMessage={notiMessage} notificationOpen={notificationOpen}/>   
+       <SuccessNotification type={notiType} setNotificationOpen={setNotificationOpen} notiMessage={notiMessage} notificationOpen={notificationOpen}/>   
     </Box>
   );
 };

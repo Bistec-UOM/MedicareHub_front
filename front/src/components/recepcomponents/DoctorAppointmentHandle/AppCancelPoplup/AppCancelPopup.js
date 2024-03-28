@@ -55,7 +55,7 @@ export default function AppCancelPopup({appointlist,setAppointList,handleNotific
     });
     setDelcount(delcount+1);
     setCancelOpen(false);
-    handleNotification("Appointment Cancelled succesfully!");
+    handleNotification("Appointment Cancelled succesfully!","success");
    // console.log()
    // setAppEditOpen(false);
    // handleNotification("Appointment Edited succesfully!");
