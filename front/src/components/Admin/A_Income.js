@@ -6,16 +6,17 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import axios from 'axios';
+import  { useEffect } from 'react';
+import IncomeOfDay from './AnalyticsComponents.js/IncomeOfDay';
+
+
 
 let pdata = [];
-axios.get('https://localhost:7205/api/Analytic/total-Income')
-  .then(response => {
-    console.log(response.data);
-    pdata = response.data;
-  })
-  .catch(error => {
-    console.error(error);
-  });
+
+
+ 
+
+  
 
 const currentDate = new Date();
 let TimeGap = new Date(currentDate);
@@ -41,6 +42,19 @@ const AIncome = () => {
     setValue(event.target.value);
     change(event.target.value); // Call change function with selected value
   };
+
+  useEffect(() => {axios.get('https://localhost:7205/api/Analytic/total-Income')
+  .then(response => {
+    console.log(response.data);
+    pdata = response.data;
+  })
+  .catch(error => {
+    console.error(error);
+  });
+
+    console.log("Hello world");
+     
+   }, []); // Empty dependency array means this effect runs once on mount
 
   const change = (Gap) => {
     if (Gap === 'day') {
@@ -73,13 +87,7 @@ const AIncome = () => {
   return (
     <div>
       <Grid container spacing={3}>
-        <Grid item xs={4}>
-          <Paper style={{textAlign:'center',height:'35vh', paddingTop:"6%"}} >
-            <Typography fontSize={30}>Income of day</Typography>
-            <br></br>
-            <Typography fontSize={50}>{totalIncome.toFixed(2)}</Typography>
-          </Paper>
-        </Grid>
+      <IncomeOfDay totalIncome={totalIncome} />
         <Grid item xs={8} style={{textAlign:'right'}}>
           <Paper sx={{padding:'10px'}}>
             <FormControl sx={{width:'20%'}}>

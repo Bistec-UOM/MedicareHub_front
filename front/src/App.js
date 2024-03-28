@@ -22,7 +22,6 @@ function App() {
       <Routes>
       <Route path='/' element={<Log></Log>}></Route>
       <Route path='admin' element={<Admin></Admin>}></Route>
-      <Route path='recep' element={<Receptionist></Receptionist>}></Route>
       <Route path='doct' element={<Doctor></Doctor>}></Route>
       <Route path='pharm' element={<Pharmacy></Pharmacy>}></Route>
       <Route path='lab' element={<Lab></Lab>}></Route>
