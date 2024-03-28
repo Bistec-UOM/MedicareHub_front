@@ -1,33 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { Grid, Stack, Typography, Button, Container, Box, Hidden } from "@mui/material";
-
-import AppointmentCard from "../../AppointmentCard/AppointmentCard";
 import SearchBar from "../../Searchbar/Searchbar";
 import Steper from "../../Setper/Steper";
-import { SidebarContainer } from "../../../sidebar/Sidebar";
-import { SidebarTop, SidebarList } from "../../../sidebar/Sidebar";
-import { Sideunit_Doctor } from "../../../sidebar/Sideunits";
-
-
-import AppAddPopup from "../../AppAddPopup/AppAddPopup";
-import AllAppDeletePopup from "../../AllAppDeletePopup/AllAppDeletePopup";
 import '../../../../recep.css'
 import SuccessNotification from "../../SnackBar/SuccessNotification";
 import axios from "axios";
 import DoctorAppCard from "../DoctorAppCard/DoctorAppCard";
 import DoctorAllAppDeletePopup from "../DoctotAllAppDelelePopup/DoctorAllAppDeletePopup";
-
-
-
-
-
+import DayBlockPopup from "../DayBlockPopup/DayBlockPopup";
 
 
 const DoctorAppList = (props) => {
 
   const [notificationOpen,setNotificationOpen]=useState(false);
   const [notiMessage,setNotiMessage]=useState("");
+  const [docDayBlockPopup,setDocDayBlockPopup]=useState(false);  //var for doc day block popup
 
   const handleNotification=(msg)=>
  {
@@ -68,6 +56,11 @@ const DoctorAppList = (props) => {
 
   const handleCancelAll = () => {
     setCancelAll(true);
+  };
+
+  const handleBlockDay = () => {
+    setDocDayBlockPopup(true);
+    console.log("inside block");
   };
 
   var location = useLocation();
@@ -160,7 +153,7 @@ const DoctorAppList = (props) => {
             Add
           </Button> */}
           <Button
-            onClick={handleCancelAll}
+            onClick={handleBlockDay}
             disabled={isDisabledBlock}
             sx={{
               backgroundColor: "#F44336",
@@ -233,6 +226,7 @@ const DoctorAppList = (props) => {
           </Box>
         }
       </div>
+      <DayBlockPopup selectedDay={selectedDay} doctorId={props.docid} docDayBlockPopup={docDayBlockPopup} setDocDayBlockPopup={setDocDayBlockPopup} handleNotification={handleNotification}/>
     
       <DoctorAllAppDeletePopup
         selectedDay={selectedDay}

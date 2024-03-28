@@ -23,7 +23,7 @@ const ResDayList = (props) => {
   const [search,setSearch]=useState("");
   const [dopen, setDopen] = useState(false);
   const [delcount,setDelcount]=useState(0)
-  const [isDisabled, setIsDisabled] = useState(true);
+  const [isDisabled, setIsDisabled] = useState(true);  //variable for all app cancel disability func
   const [selectedDay,setSelectedDay]=useState(props.selectedDay);
 
   const handleDeleteAll = () => {
@@ -43,11 +43,11 @@ const ResDayList = (props) => {
             // console.log("do",props.docid);
             // console.log(selectedDay);
             // console.log("pure",response);
-          //  console.log("response data",response.data)
+            console.log("response data",response.data)
             const responseData = response.data;
            // setFilteredAppointments(responseData);
             setIsDisabled(responseData.length === 0); // Update isDisabled based on the fetched appointments
-            console.log("use effect appointments", responseData.result);
+           // console.log("use effect appointments", responseData.result);
             const sortedAppointments = responseData.slice().sort((a, b) => new Date(a.appointment.dateTime) - new Date(b.appointment.dateTime));  //this is used for sorting appointments based on their arrival time
             props.setFilteredAppointments(sortedAppointments);
             console.log("sorted appointments",sortedAppointments)
@@ -65,7 +65,7 @@ const ResDayList = (props) => {
             console.error('Error fetching appointments:', error);
         });
   
-}, [props.docid, selectedDay, delcount,props.appCountUseEff]); // Ensure dependencies are included in the dependency array
+}, [props.docid, selectedDay, delcount]); // Ensure dependencies are included in the dependency array
 
   return (   
     <Box sx={{height:'100%'}}>
@@ -150,13 +150,13 @@ const ResDayList = (props) => {
         </Box>
         {
           <Box sx={{ width: "70%",marginTop:{xs:'40%',sm:'20%',md:'7%'}}}>
-            {Array.isArray(props.filteredAppointments) && props.filteredAppointments.sort((a,b)=>{
+            {Array.isArray(props.filteredAppointments) && props.filteredAppointments.sort((a,b)=>{  //compare time objects and sort and store 
               return new Date(a.time)-new Date(b.time);
             })
             .filter((item)=>{
               return search.toLowerCase()===''?item:item.patient.fullName.toLowerCase().includes(search.toLowerCase())
             }).map((item) => (
-              <div key={item.patient?.nic}>
+              <div key={item.appointment?.id}>
                 <AppointmentCard  
                 selectedDay={selectedDay}
                   docid={props.docid}

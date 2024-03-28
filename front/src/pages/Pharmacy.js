@@ -15,9 +15,25 @@ import Divider from '@mui/material/Divider';
 import PrintIcon from '@mui/icons-material/Print';
 import { Sideunit_Bill } from '../components/sidebar/Sideunits';
 import MuiAlert from '@mui/material/Alert';
-
+import axios from 'axios';
 
 export default function Pharmacy() {
+
+  const [Data,SetData]=useState([])
+  useEffect(()=>{
+    getData();
+  },[])
+
+  const getData = () => {
+    axios.get('https://localhost:44346/api/Bill/DrugRequest')
+      .then((response) => {
+       SetData(response.data)
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+  
  
   const [open, setOpen] = useState(false);
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
@@ -70,25 +86,23 @@ const handleChange = (event,no) => {
 //              {name:"Rizatripan",quantity:"0.5",hour:"4H",value:"",unit_price:"",fullprice:""},
 // ];
 
-const result = 10 * 15
+
   useEffect(()=>{
     document.body.style.margin = '0';
    },[]) 
 
    const [select,setSelect]=useState(null)
 
+   
    //   data for when click storing
    const data=[
     {
        id:51,  // -----------------------------------> prescription Id-------  
-       patientdata:{
-           name:"Dhammika Mahendra",
-           age:30,
-           gender:"male"
-         },
-         name:"Dhammika Mahendra",
-         time: "08:10",
-         medicine :[{name:"Acetaminophe",quantity:"10",hour:"BID",value:"10",unit_price:"15.00",fullprice:"150.00"},
+      name:"Dhammika Mahendra",
+      age:30,
+      gender:"male",
+      time: "08:10",
+      medicine :[{name:"Acetaminophe",quantity:"10",hour:"BID",value:"10",unit_price:"15.00",fullprice:"150.00"},
              {name:"Sumatripan",quantity:"20",hour:"BID",value:"10",unit_price:"04.50",fullprice:"45.00"},
              {name:"Rizatripan",quantity:"0.5",hour:"4H",value:"",unit_price:"",fullprice:""},
 ]
@@ -97,12 +111,9 @@ const result = 10 * 15
      },
      {
        id:52,    
-       patientdata:{
-           name:"Nethmi Eranga",
-           age:18,
-           gender:"female"
-         },
-         name:"Nethmi Eranga",
+       name:"Nethmi Eranga",
+      age:18,
+      gender:"female",
          time: "09:15",
          medicine :[{name:"Acetaminophe",quantity:"10",hour:"BID",value:"10",unit_price:"15.00",fullprice:"150.00"},
          
@@ -110,12 +121,9 @@ const result = 10 * 15
      },
      {
        id:53,    
-       patientdata:{
-           name:"Chathumini Pamodya",
-           age:8,
-           gender:"female",
-         },
-         name:"Chathumini Pamodya",
+       name:"Chathumini Pamodya",
+       age:8,
+       gender:"female",
          time: "10:10",
          medicine :[{name:"Sumatripan",quantity:"20",hour:"BID",value:"10",unit_price:"04.50",fullprice:"45.00"},
          {name:"Rizatripan",quantity:"0.5",hour:"4H",value:"",unit_price:"",fullprice:""},
@@ -123,12 +131,9 @@ const result = 10 * 15
      },
      {
        id:54,    
-       patientdata:{
-           name:"Yasiru Ramosh",
-           age:22,
-           gender:"male"
-         },
-         name:"Yasiru Ramosh",
+       name:"Yasiru Ramosh",
+       age:22,
+       gender:"male",
          time: "10:25",
          medicine :[{name:"Sumatripan",quantity:"10",hour:"BID",value:"10",unit_price:"15.00",fullprice:"150.00"},
          {name:"Rizatripan",quantity:"0.5",hour:"4H",value:"",unit_price:"",fullprice:""},
@@ -136,12 +141,9 @@ const result = 10 * 15
      },
      {
        id:55,    
-       patientdata:{
-           name:"Chathura Ishara",
-           age:38,
-           gender:"male"
-         },
-         name:"Chathura Ishara",
+       name:"Chathura Ishara",
+       age:38,
+       gender:"male",
          time: "11:15",
          medicine :[{name:"Paracitamol",quantity:"10",hour:"BID",value:"10",unit_price:"15.00",fullprice:"150.00"},
          {name:"Zithraceene",quantity:"20",hour:"BID",value:"10",unit_price:"04.50",fullprice:"45.00"},
@@ -152,12 +154,9 @@ const result = 10 * 15
      },
      {
       id:75,    
-      patientdata:{
-          name:"Hasini Chamodi",
-          age:48,
-          gender:"female"
-        },
         name:"Hasini Chamodi",
+        age:48,
+        gender:"female",
         time: "13:15",
         medicine :[{name:"Acetaminophe",quantity:"10",hour:"BID",value:"10",unit_price:"15.00",fullprice:"150.00"},
         {name:"Sumatripan",quantity:"20",hour:"BID",value:"10",unit_price:"04.50",fullprice:"45.00"},
@@ -166,12 +165,9 @@ const result = 10 * 15
     },
     {
       id:76,    
-      patientdata:{
-          name:"Nelunika Nuwanthi",
-          age:18,
-          gender:"female"
-        },
         name:"Nelunika Nuwanthi",
+        age:18,
+        gender:"female",
         time: "13:35",
         medicine :[{name:"Acetaminophe",quantity:"10",hour:"BID",value:"10",unit_price:"15.00",fullprice:"150.00"},
         {name:"Sumatripan",quantity:"20",hour:"BID",value:"10",unit_price:"04.50",fullprice:"45.00"},
@@ -180,12 +176,9 @@ const result = 10 * 15
     },
     {
       id:79,    
-      patientdata:{
-          name:"Methnula Thisum",
-          age:18,
-          gender:"male"
-        },
         name:"Methnula Thisum",
+        age:18,
+        gender:"male",
         time: "14:15",
         medicine :[{name:"Acetaminophe",quantity:"10",hour:"BID",value:"10",unit_price:"15.00",fullprice:"150.00"},
         {name:"Sumatripan",quantity:"20",hour:"BID",value:"10",unit_price:"04.50",fullprice:"45.00"},
@@ -194,12 +187,9 @@ const result = 10 * 15
     },
     {
       id:81,    
-      patientdata:{
-          name:"Eranga Kumari",
-          age:48,
-          gender:"female"
-        },
         name:"Eranga Kumari",
+        age:48,
+        gender:"female",
         time: "14:45", 
         medicine :[ {name:"Sumatripan",quantity:"20",hour:"BID",value:"10",unit_price:"04.50",fullprice:"45.00"},
         {name:"Rizatripan",quantity:"0.5",hour:"4H",value:"",unit_price:"",fullprice:""},
@@ -207,14 +197,11 @@ const result = 10 * 15
     },
     {
       id:88,    
-      patientdata:{
-          name:"Kasun Kasun",
-          age:48,
-          gender:"male"
-        },
-        name:"Kasun Kasun",
-        time: "15:15",
-        medicine :[{name:"Acetaminophe",quantity:"10",hour:"BID",value:"10",unit_price:"15.00",fullprice:"150.00"},
+      name:"Kasun Kasun",
+      age:48,
+      gender:"male",
+      time: "15:15",
+      medicine :[{name:"Acetaminophe",quantity:"10",hour:"BID",value:"10",unit_price:"15.00",fullprice:"150.00"},
         {name:"Sumatripan",quantity:"20",hour:"BID",value:"10",unit_price:"04.50",fullprice:"45.00"},
         {name:"Rizatripan",quantity:"0.5",hour:"4H",value:"",unit_price:"",fullprice:""},
 ]
@@ -222,12 +209,9 @@ const result = 10 * 15
     },
     {
       id:90,    
-      patientdata:{
-          name:"Saman Perera",
-          age:48,
-          gender:"male"
-        },
         name:"Saman Perera",
+        age:48,
+        gender:"male",
         time: "15:19",
         medicine :[{name:"Acetaminophe",quantity:"10",hour:"BID",value:"10",unit_price:"15.00",fullprice:"150.00"},
         {name:"Sumatripan",quantity:"20",hour:"BID",value:"10",unit_price:"04.50",fullprice:"45.00"},
@@ -238,12 +222,9 @@ const result = 10 * 15
    
     {
       id:99,    
-      patientdata:{
-          name:"Pabodya Baumika",
-          age:48,
-          gender:"female"
-        },
         name:"Pabodya Baumika",
+        age:48,
+        gender:"female",
         time: "15:25",
         medicine :[{name:"Acetaminophe",quantity:"10",hour:"BID",value:"10",unit_price:"15.00",fullprice:"150.00"},
         {name:"Sumatripan",quantity:"20",hour:"BID",value:"10",unit_price:"04.50",fullprice:"45.00"},
@@ -254,12 +235,9 @@ const result = 10 * 15
     },
     {
       id:101,    
-      patientdata:{
-          name:"Akasha",
-          age:48,
-          gender:"female"
-        },
         name:"Akasha",
+        age:48,
+        gender:"female",
         time: "16:15",
         medicine :[{name:"Acetaminophe",quantity:"10",hour:"BID",value:"10",unit_price:"15.00",fullprice:"150.00"},
         {name:"Sumatripan",quantity:"20",hour:"BID",value:"10",unit_price:"04.50",fullprice:"45.00"},
@@ -271,7 +249,7 @@ const result = 10 * 15
    ] 
    
    const [x,setX]=useState(data)
-   const selectedPrescription = select ? x.filter(prescription => prescription.id === select) : [];//------------filter  the selected patient----------
+   const selectedPrescription = select ? Data.filter(data => data.id === select) : [];//------------filter  the selected patient----------
   return (
     <div>
     <Navbar></Navbar>
@@ -284,10 +262,10 @@ const result = 10 * 15
           </SidebarTop>
           <SidebarList>
           {
-         x.map((elm,ind)=>{
+         Data.map((elm,ind)=>{
             return(
              <>
-              <Sideunit_Bill key={ind} id={elm.id} name={elm["name"]} time={elm["time"]}  setSelect={setSelect} selected={elm.id==select?true:''}></Sideunit_Bill>
+              <Sideunit_Bill key={ind} id={elm.id} name={elm.name} time={elm["time"]}  setSelect={setSelect} selected={elm.id==select?true:''}></Sideunit_Bill>
              </>
             )
          })
@@ -302,9 +280,9 @@ const result = 10 * 15
           {selectedPrescription.map((patientdata, id) => (       // name card dispaly in patient detail
       <Card  key={id} sx={{ minWidth: 275 }}>
         <CardContent>
-         <div> <Typography gutterBottom variant='h6'>{selectedPrescription[0].patientdata.name}</Typography></div>
-          <div><Typography gutterBottom variant='20px' sx={{color:"#8E8B8B"}}>{selectedPrescription[0].patientdata.age} years</Typography></div>
-          <div><Typography gutterBottom variant='20px'sx={{color:"#8E8B8B"}}>{selectedPrescription[0].patientdata.gender}</Typography></div>
+         <div> <Typography gutterBottom variant='h6'>{patientdata.name}</Typography></div>
+          <div><Typography gutterBottom variant='20px' sx={{color:"#8E8B8B"}}>{patientdata.age} years</Typography></div>
+          <div><Typography gutterBottom variant='20px'sx={{color:"#8E8B8B"}}>{patientdata.gender}</Typography></div>
         </CardContent>
       </Card>
           ))}
