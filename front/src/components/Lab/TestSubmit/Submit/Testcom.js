@@ -4,7 +4,6 @@ import { Button, Divider, Typography } from '@mui/material';
 import axios from 'axios';
 import Fieldcom from './Fieldcom';
 import { baseURL,endPoints } from '../../../../Services/Lab';
-import CircularProgress from '@mui/material/CircularProgress';
 import { Load } from '../../../Other';
 
 export default function Testcom({handleClose,handleClick1,test}) {
@@ -15,7 +14,7 @@ export default function Testcom({handleClose,handleClick1,test}) {
 
   const clearData=()=>{
     let tmp=[...Fload]
-    tmp.map((el)=>{
+    tmp.forEach((el)=>{
        el.value=''
     })
     setFload(tmp)
@@ -30,7 +29,7 @@ export default function Testcom({handleClose,handleClick1,test}) {
 
       let tmp=[...Fload]
       let ob=[]
-      tmp.map((el,ind)=>{
+      tmp.forEach((el,ind)=>{
         let tmp2={
           "fieldid":el.fieldId,
           "result":el.value,
@@ -68,8 +67,8 @@ export default function Testcom({handleClose,handleClick1,test}) {
 
   const enterData=(indx,x)=>{
     let tmp=[...Fload]
-    tmp.map((el,ind)=>{
-      if(ind==indx){
+    tmp.forEach((el,ind)=>{
+      if(ind===indx){
        el.value=parseInt(x)
       }
     })
@@ -84,7 +83,7 @@ export default function Testcom({handleClose,handleClick1,test}) {
       //Adding value property to every object in Fload
       let tmp=[...res.data]
       let ob=[]
-      tmp.map((el,ind)=>{
+      tmp.forEach((el,ind)=>{
         let tmp2={
           fieldname:el.fieldname,
           fieldId:'',
@@ -107,7 +106,7 @@ export default function Testcom({handleClose,handleClick1,test}) {
     .catch(er=>{
       console.log(er.message)
     })
-  },[])
+  },[test])
 
 
   return (

@@ -31,7 +31,7 @@ export default function SubmitPage({setpage}) {
     //Pop up dialog box------------------------------------------------------------
     const [open, setOpen] = useState(false)
     const handleClickOpen = (x) => {
-        let t= load.filter((e)=>{return e.id==x})
+        let t= load.filter((e)=>{return e.id===x})
         settest(t); 
         setOpen(true)
     }
@@ -54,7 +54,7 @@ export default function SubmitPage({setpage}) {
         console.log(er.message)
       })
       }
-    },[])
+    },[loadOK])
 
   return (
     <div>

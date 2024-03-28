@@ -9,7 +9,6 @@ import TestDialogBox from './TestDialogBox';
 import CloseIcon from "@mui/icons-material/Close";
 import axios from 'axios'
 import { baseURL,endPoints} from '../../../Services/Lab';
-import CircularProgress from '@mui/material/CircularProgress';
 import { Load } from '../../Other';
 
 export default function LabTestList({setPage,settId,Tload,setTload}) {
@@ -19,7 +18,7 @@ export default function LabTestList({setPage,settId,Tload,setTload}) {
     const handleClickOpen = (x) => {
         setOpen(true)
         settId(x)
-        let t= Tload.filter((e)=>{return e.id==x})
+        let t= Tload.filter((e)=>{return e.id===x})
         setTest(t[0])
     }
     const handleClose = () => {setOpen(false)}  
@@ -33,7 +32,7 @@ export default function LabTestList({setPage,settId,Tload,setTload}) {
     const [loading,setLoading]=useState(true)
 
     useEffect(()=>{
-      if(Tload.length==0){
+      if(Tload.length===0){
         axios.get(baseURL+endPoints.TEST)
         .then(res=>{
           setTload(res.data)
@@ -41,7 +40,7 @@ export default function LabTestList({setPage,settId,Tload,setTload}) {
         })
         .catch(er=>{})
       }
-    },[Tload])
+    },[Tload,setTload])
 
   return (
     <div>
@@ -63,7 +62,7 @@ export default function LabTestList({setPage,settId,Tload,setTload}) {
         </Toolbar>
 
 
-        !setLoading?<Stack sx={{paddingTop:{xs:'60px',sm:'80px'},paddingLeft:{xs:'5%',sm:'8%'}}}>
+        {!loading?<Stack sx={{paddingTop:{xs:'60px',sm:'80px'},paddingLeft:{xs:'5%',sm:'8%'}}}>
             {
                 filteredData.map((el)=>{
                     return(
@@ -77,6 +76,7 @@ export default function LabTestList({setPage,settId,Tload,setTload}) {
                 })
             }
         </Stack>:<Load></Load>
+        }
 
       {/*------------------ Enter values pop up box ---------------------------------------------- */}
 
