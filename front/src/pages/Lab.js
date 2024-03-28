@@ -12,6 +12,7 @@ import SubmitPage from '../components/Lab/TestSubmit/Submit/SubmitPage';
 import Accept from '../components/Lab/TestSubmit/Accept';
 import axios from 'axios';
 import { baseURL, endPoints } from '../Services/Lab';
+import { Load } from '../components/Other';
 
 export default function Lab() {
 
@@ -125,6 +126,7 @@ export default function Lab() {
          <LabSearch setPage={setPage} setDate={setDate} date={date} query={query} setQuery={setQuery}></LabSearch>
       </SidebarTop>
       <SidebarList>
+      {        !RloadDone?<Load></Load>:''}
       {
          filteredData.map((elm)=>{
           if(elm.date==date){

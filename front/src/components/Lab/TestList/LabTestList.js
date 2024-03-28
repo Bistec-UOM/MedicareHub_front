@@ -10,6 +10,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import axios from 'axios'
 import { baseURL,endPoints} from '../../../Services/Lab';
 import CircularProgress from '@mui/material/CircularProgress';
+import { Load } from '../../Other';
 
 export default function LabTestList({setPage,settId,Tload,setTload}) {
 
@@ -75,9 +76,7 @@ export default function LabTestList({setPage,settId,Tload,setTload}) {
                     )
                 })
             }
-        </Stack>:<div style={{display:'flex',width:'100%',justifyContent:'center'}}>
-          <CircularProgress></CircularProgress>
-        </div>
+        </Stack>:<Load></Load>
 
       {/*------------------ Enter values pop up box ---------------------------------------------- */}
 

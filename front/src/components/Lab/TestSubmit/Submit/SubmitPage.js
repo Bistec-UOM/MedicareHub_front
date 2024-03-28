@@ -1,4 +1,4 @@
-import { Paper, Typography, InputBase, IconButton, Divider, Toolbar,Stack, Dialog, DialogTitle} from '@mui/material'
+import { Paper, Typography, InputBase, IconButton, Divider, Toolbar,Stack, Dialog, DialogTitle, Snackbar, Alert} from '@mui/material'
 import React, { useEffect, useState } from 'react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import SearchIcon from "@mui/icons-material/Search";
@@ -6,8 +6,27 @@ import CloseIcon from "@mui/icons-material/Close";
 import Testcom from './Testcom';
 import axios from 'axios';
 import { baseURL, endPoints } from '../../../../Services/Lab';
+import { Load } from '../../../Other';
+
 
 export default function SubmitPage({setpage}) {
+
+  
+    // SnackBar component====================================================================================
+    //----- for submit test result successfully
+    const [open1, setOpen1] = React.useState(false);
+
+    const handleClick1 = () => {
+      setOpen1(true);
+    };
+  
+    const handleClose1 = (event, reason) => {
+      if (reason === 'clickaway') {
+        return;
+      }
+      setOpen1(false);
+    }
+    //======================================================================================================
 
     //Pop up dialog box------------------------------------------------------------
     const [open, setOpen] = useState(false)
@@ -30,6 +49,9 @@ export default function SubmitPage({setpage}) {
       .then((res)=>{
         setLoad(res.data)
         setLoadOk(false)
+      })
+      .catch((er)=>{
+        console.log(er.message)
       })
       }
     },[])
@@ -65,6 +87,7 @@ export default function SubmitPage({setpage}) {
       {/*------------------ List of accepted samples ---------------------------------------------- */}
 
         <Stack sx={{paddingTop:{xs:'60px',sm:'80px'},paddingLeft:{xs:'5%',sm:'8%'}}}>
+        {loadOK?<Load></Load>:''}
         {
             load.map((i,ind)=>{
                 return <Paper sx={{width:'70%',display:'flex',justifyContent:'space-between',alignItems:'center',mt:'10px',p:'10px',cursor:'pointer'}} onClick={()=>handleClickOpen(i.id)}>
@@ -84,9 +107,20 @@ export default function SubmitPage({setpage}) {
             <Typography sx={{fontSize:'16px'}}>Enter test results</Typography>
           <CloseIcon onClick={handleClose} sx={{cursor:'pointer'}} />
           </DialogTitle>
-      <Testcom handleClose={handleClose} test={test} settest={settest}></Testcom>
+      <Testcom handleClose={handleClose} handleClick1={handleClick1} test={test} settest={settest}></Testcom>
       </Dialog>
         
+    {/* ----------------- snack bar ----------------------------------------------------------------*/}
+    <Snackbar open={open1} autoHideDuration={2000} onClose={handleClose1}>
+        <Alert
+          onClose={handleClose1}
+          severity="success"
+          variant="filled"
+          sx={{ width: '100%' }}
+        >
+          Results added successfuly
+        </Alert>
+    </Snackbar>
     </div>
   )
 }
