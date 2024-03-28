@@ -110,7 +110,7 @@ export default function AppAddPopup({
           //console.log(obj);
           setApopen(false);
           setDayAppTotal(dayAppTotal+1);
-          handleNotification("Appointment Added succesfully!");
+          handleNotification("Appointment Added succesfully!","success");
       }
       catch(err)
       {

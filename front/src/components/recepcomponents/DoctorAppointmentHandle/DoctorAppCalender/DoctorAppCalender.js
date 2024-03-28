@@ -50,6 +50,7 @@ const DoctorAppCalender=({doctorId})=>
 
     const [notificationOpen,setNotificationOpen]=useState(false);
     const [notiMessage,setNotiMessage]=useState("");
+    const [notiType,setNotiType]=useState("success");
 
 
     const currentDate = new Date();
@@ -65,6 +66,8 @@ const DoctorAppCalender=({doctorId})=>
     const [dayAppCount,setDayAppCount]=useState([]);
 
     const [pasMonth,setPasMonth]=useState(null);
+
+    const [disabledDates,setDisabledDates]=useState([]);  //var list for storing disabled dates
 
  
 
@@ -97,6 +100,19 @@ const DoctorAppCalender=({doctorId})=>
 
 
     },[doctorId,pasMonth]);
+
+    useEffect(()=>
+    {
+      axios.get(`https://localhost:7205/api/Appointment/BlockedDates/${doctorId}`)
+      .then((response) => {
+        setDisabledDates(response.data);
+        //console.log(response.data,"dislist");
+       
+      })
+      .catch((error) => {
+          console.error('Error fetching disabled dates:', error);
+      });
+    },[doctorId]);
   
 
     function getDayAppCount(day)
@@ -114,6 +130,11 @@ const DoctorAppCalender=({doctorId})=>
       }
       return total;
     }
+
+    const getDayStatus=(target)=>
+{
+  return disabledDates.some(item=>item.date===target);
+}
  
 
 
@@ -129,12 +150,19 @@ const DoctorAppCalender=({doctorId})=>
     
     
     function renderDayCellContent(dayCell) {
+      const renderingDate = dayCell.date;
+      const date=new Date(renderingDate);
+      const milliseconds = date.getMilliseconds();
+      const millisecondsPart = milliseconds === 0 ? '' : `.${milliseconds.toString().padStart(3, '0')}`;
+      const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}T${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}${millisecondsPart}`;
+      console.log(formattedDate);
       return (
         <div >
           <div>{dayCell.dayNumberText} </div>
           
-         
-          <CustomizedProgressBars  value={getDayAppCount(dayCell.dayNumberText)*10}  />
+          <Box sx={{display:getDayStatus(formattedDate)?'none':'flex'}}>
+        <CustomizedProgressBars  value={getDayAppCount(dayCell.dayNumberText)*10}  />       
+        </Box>
           
                
     
@@ -180,16 +208,31 @@ const DoctorAppCalender=({doctorId})=>
     };
     
   
-    const handleNotification=(msg)=>
+    const handleNotification=(msg,type)=>
    {
        //console.log(msg)
        setDoctorAppDeleteOpen(false);
        setNotiMessage(msg);
       setNotificationOpen(true);
+      setNotiType(type);
       console.log(notiMessage);
      
       
    }
+
+   const getDayCellClassNames = (arg) => {
+    const date=new Date(arg.date);
+    const milliseconds = date.getMilliseconds();
+    const millisecondsPart = milliseconds === 0 ? '' : `.${milliseconds.toString().padStart(3, '0')}`;
+    const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}T${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}${millisecondsPart}`;
+    if(getDayStatus(formattedDate))
+    {
+      return 'blocked-date';
+    } 
+    else{
+      return 'nonblocked-date';
+    }
+};
 
    const handleDelete=(event)=>
    {
@@ -223,12 +266,27 @@ const DoctorAppCalender=({doctorId})=>
     const displayedDate = arg.view.currentStart;
     const selectedMonth = selectedDate.month();
     const currentMonth = displayedDate.getMonth(); 
-    console.log("dd",selectedMonth);
-    console.log(currentMonth);
-    //console.log("new",today)
+
+    const date=new Date(arg.date);
+      const milliseconds = date.getMilliseconds();
+      const millisecondsPart = milliseconds === 0 ? '' : `.${milliseconds.toString().padStart(3, '0')}`;
+      const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}T${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}${millisecondsPart}`;
+  
+
+    if(!getDayStatus(formattedDate))
+    {
+      
     if (selectedMonth === currentMonth) {
       navigate('/dappList', { state: { selectedDay: today ,doctorid:doctorId,doctorList:doctorList} });
     }
+
+    }
+    else{
+      handleNotification("This date is has been blocked!","error")
+
+    }
+
+
   };
 
   const handleNavigate = (newDate) => {
@@ -302,6 +360,7 @@ const DoctorAppCalender=({doctorId})=>
         dateClick={handleDateClick}
         datesSet ={handleDatesSet}
         selectable={false}
+        dayCellClassNames={getDayCellClassNames}
         headerToolbar={{
           left: 'prev',
           center: 'title',
@@ -315,7 +374,7 @@ const DoctorAppCalender=({doctorId})=>
 
       </Box>
       <DoctorAppDeletePopup setNotificationOpen={setNotificationOpen} setNotiMessage={setNotiMessage} notiMessage={notiMessage} handleNotification={handleNotification} setDoctorAppDeleteOpen={setDoctorAppDeleteOpen} doctorAppDeleteOpen={doctorAppDeleteOpen}  ></DoctorAppDeletePopup>
-      <SuccessNotification setNotificationOpen={setNotificationOpen} notiMessage={notiMessage} notificationOpen={notificationOpen}/>
+      <SuccessNotification type={notiType} setNotificationOpen={setNotificationOpen} notiMessage={notiMessage} notificationOpen={notificationOpen}/>
     </div>
     
    

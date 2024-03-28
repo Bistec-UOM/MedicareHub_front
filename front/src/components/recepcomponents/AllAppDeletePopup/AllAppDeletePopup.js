@@ -18,6 +18,7 @@ export default function AllAppDeletePopup({selectedDay,delcount,setDelcount,doci
       setDelcount(delcount+1);
       setDopen(false);
       handleNotification("All appointments deleted succesfully!");
+      
     })
     .catch(error => {
       console.error('Error deleting resource:', error);
