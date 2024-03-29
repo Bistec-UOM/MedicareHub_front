@@ -8,12 +8,11 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Lab_template from "./pages/Lab_template";
 import Pharmacy_drugstore from "./pages/Pharmacy_drugstore";
 import Stest from "./pages/Admin/Stest";
-import ResponseAppCalender from "./components/recepcomponents/ResponseAppointmentCalender/ResponseAppCalender";
 import ResDay from "./components/recepcomponents/ResDay/ResDay";
-import TestPractise from "./components/recepcomponents/testpractice/TestPractise";
 import DoctorPage from "./components/recepcomponents/DoctorAppointmentHandle/DoctorPage.js/DoctorPage";
 import DoctorList from "./components/recepcomponents/DoctorAppointmentHandle/DoctorList/DoctorList";
 import Doctor_analytics from "./components/Doctor_analytics";
+import ResponseAppCalender from "./components/recepcomponents/ResponseAppointmentCalender/ResponseAppCalender";
 
 function App() {
   return (

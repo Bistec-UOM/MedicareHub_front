@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import {
-  Paper,
   Typography,
   Button,
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogActions,
   TextField,
   FormControl,
   InputLabel,
@@ -16,14 +14,12 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import { IconButton } from "@mui/material";
 import { Box } from "@mui/material";
-import dayjs from 'dayjs';
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DateField } from '@mui/x-date-pickers/DateField';
+import dayjs from "dayjs";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DateField } from "@mui/x-date-pickers/DateField";
 import axios from "axios";
-
-
 const PatientRegpopup = ({
   handleNotification,
   regopen,
@@ -31,7 +27,7 @@ const PatientRegpopup = ({
   setPatientList,
   patientList,
   patientCount,
-  setPatientCount
+  setPatientCount,
 }) => {
   const [name, setName] = useState("");
   const [nic, setNic] = useState("");
@@ -40,7 +36,7 @@ const PatientRegpopup = ({
   const [email, setEmail] = useState("");
   const [age, setAge] = useState(0);
   const [gender, setGender] = useState("");
-  const [dob,setDob]=useState(null);
+  const [dob, setDob] = useState(null);
 
   const [nameError, setNameError] = useState(false);
   const [nicError, setNicError] = useState(false);
@@ -48,48 +44,18 @@ const PatientRegpopup = ({
   const [phoneError, setPhoneError] = useState(false);
   const [nameDisplayError, setNameDisplayError] = useState("");
 
-
-  const handleDob=(newvalue)=>
-  {
+  const handleDob = (newvalue) => {
     setDob(newvalue);
-
-  }
-
-  // const handleClickOpen = () => {
-  //     setOpen(true);
-  //   };
+  };
 
   const handleClose = () => {
     setRegopen(false);
   };
-  //   const handleNameError=()=>
-  //   {
-  //     if(name==" ")
-  //     {
-  //         setNameError(true);
-  //     }
-  //     else{
-  //         setNameError(false);
-  //     }
-  //   }
-
-  //   const handleEditClickOpen = () => {
-  //     setEditOpen(true);
-  //   };
 
   const handleAddClose = () => {
     setRegopen(false);
   };
 
-  const handleSave = () => {
-    // Handle saving edited data here
-    console.log("Saved data:");
-    setRegopen(false);
-  };
-
-  //   const handleName=(e)=>{
-
-  //   }
   const handleNic = (e) => {
     setNic(e.target.value);
   };
@@ -172,51 +138,30 @@ const PatientRegpopup = ({
   async function handleSubmit(e) {
     e.preventDefault();
     const agenumber = Number(age);
-    console.log("inside handle submit");
-    //handleNicError()
     if (!nameError && !nicError && !ageError && agenumber != 0 && !phoneError) {
-      let obj= {
+      let obj = {
         Id: 0,
-        NIC:nic,
-        Name:name,
-        FullName:name,
-        DOB:dob,
-        ContactNumber:phone,
-        Address:address,
-        Email:email,
-        Gender:gender,
-       
-      }
+        NIC: nic,
+        Name: name,
+        FullName: name,
+        DOB: dob,
+        ContactNumber: phone,
+        Address: address,
+        Email: email,
+        Gender: gender,
+      };
 
-      try{
-          await axios.post("https://localhost:7205/api/Appointment/patients",obj
-         );
-         console.log(obj);
-         setPatientCount(patientCount+1);
-         console.log("inside post");
-         setRegopen(false);
-        handleNotification("Patient Registered succesfully!");
-
+      try {
+        await axios.post(
+          "https://localhost:7205/api/Appointment/patients",
+          obj
+        );
+        setPatientCount(patientCount + 1);
+        setRegopen(false);
+        handleNotification("Patient Registered succesfully!", "success");
+      } catch (err) {
+        var msg = err.response.data;
       }
-      catch(err)
-      {
-      var msg=err.response.data;
-      console.log("Inseide error");
-         console.log(err.response.data);
-         //setError(msg);
-      }
-
-      // setPatientList([
-      //   ...patientList,
-      //   {
-      //     name: name,
-      //     nic: nic,
-      //     age: age,
-      //     phone: phone,
-      //     email: email,
-      //     city: address,
-      //   },
-      // ]);
       setName("");
       setAge(0);
       setAddress("");
@@ -224,15 +169,11 @@ const PatientRegpopup = ({
       setEmail("");
       setPhone("");
       setDob(null);
-
-      console.log("Data saved");
-      handleNotification("A new patient registered succesfully!");
+      handleNotification("A new patient registered succesfully!", "success");
       setRegopen(false);
     } else {
-      console.log("not saved");
-      console.log(nicError);
     }
-  };
+  }
 
   return (
     <React.Fragment>
@@ -284,7 +225,6 @@ const PatientRegpopup = ({
               onChange={handleNameError}
               value={name}
               sx={{ marginTop: "3%" }}
-              // onChange={handleName}
             />
             <TextField
               label="NIC"
@@ -320,8 +260,6 @@ const PatientRegpopup = ({
                   onChange={(newValue) => handleDob(newValue)}
                   renderInput={(props) => <TextField {...props} />}
                   style={{ width: "225px" }}
-                //  disabled={isDisabled}
-                  // format="YYYY/MM/DD" // You can add this line back if it's needed
                 />
               </DemoContainer>
             </LocalizationProvider>
@@ -364,9 +302,9 @@ const PatientRegpopup = ({
           >
             <Button
               sx={{
-                backgroundColor: "#79CCBE", // Replace with your desired color
+                backgroundColor: "#79CCBE",
                 "&:hover": {
-                  backgroundColor: "#79CCBE", // Replace with your desired hover color
+                  backgroundColor: "#79CCBE",
                 },
                 margin: "2%",
               }}

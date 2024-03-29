@@ -4,7 +4,6 @@ import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 
 export default function SuccessNotification({setNotificationOpen,notiMessage,notificationOpen,type}) {
- // const [open, setOpen] = React.useState(notificationOpen);
   
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
