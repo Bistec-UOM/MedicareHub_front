@@ -135,6 +135,9 @@ const SearchPatientPage = (props) => {
                       apopen={apopen}
                       setApopen={setApopen}
                       item={item}
+                      filteredAppointments={props.filteredAppointments}
+                      docid={props.docid}
+                      handleNotification={handleNotification}
                     />
                   </div>
                 ))}
