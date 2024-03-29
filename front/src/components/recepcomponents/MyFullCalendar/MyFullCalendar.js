@@ -25,24 +25,20 @@ function MyFullCalendar({doctorId,selectedTab,setSelectedTab}) {
     const [validRange, setValidRange] = useState({ start: firstDayOfMonth, end: lastDayOfMonth });
     const [disabledDates,setDisabledDates]=useState([]);  //var list for storing disabled dates
 
-   
-
     const navigate = useNavigate();
 
     useEffect(()=>
     {
       axios.get(`https://localhost:7205/api/Appointment/BlockedDates/${doctorId}`)
       .then((response) => {
-        setDisabledDates(response.data);
 
-        //console.log(response.data,"dislist");
-       
+        setDisabledDates(response.data);  
+
       })
       .catch((error) => {
           console.error('Error fetching disabled dates:', error);
       });
     },[doctorId]);
-
 
     // use effect for fetching the doctor list
     useEffect(()=>
@@ -61,9 +57,6 @@ function MyFullCalendar({doctorId,selectedTab,setSelectedTab}) {
     {
       axios.get(`https://localhost:7205/api/Appointment/doctor/${doctorId}/month/${pasMonth}`)
       .then((response) => {
-        // console.log(response.data);
-        // console.log("daycout"+response.data);
-        // console.log(pasMonth+"doc"+doctorId)
         setDayAppCount(response.data);
        // console.log("dis",disabledDates);
        // console.log(getDayAppCount(10));
@@ -83,12 +76,7 @@ function MyFullCalendar({doctorId,selectedTab,setSelectedTab}) {
       setNotiMessage(msg);
       setNotificationOpen(true);
       setNotiType(type);
-      
-     // console.log(notiMessage);
    }
-
-   
-
    function getDayAppCount(day)   //function for calculating the app daycount of a given day
    {
      var total=0;
@@ -106,23 +94,16 @@ function MyFullCalendar({doctorId,selectedTab,setSelectedTab}) {
     //function for navigating to the app list page when a day cell clicked
     const handleDateClick = (arg) => {
       const selectedDate = moment(arg.dateStr);
-     
-     // console.log("hello",selectedDate);
       today = selectedDate.format('MMMM D, YYYY');
-    //  console.log("hello",today);
       const displayedDate = arg.view.currentStart;
       const selectedMonth = selectedDate.month();
       const currentMonth = displayedDate.getMonth(); 
-     // console.log("dd",selectedMonth);
-      //console.log(currentMonth);
-      //console.log("new",today)
 
       const date=new Date(arg.date);
       const milliseconds = date.getMilliseconds();
-      const millisecondsPart = milliseconds === 0 ? '' : `.${milliseconds.toString().padStart(3, '0')}`;
+      const millisecondsPart = milliseconds === 0 ? '' : `.${milliseconds.toString().padStart(3, '0')}`; //ensuring milisecond part has 3 digits
       const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}T${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}${millisecondsPart}`;
-
-      if(!getDayStatus(formattedDate))
+      if(!getDayStatus(formattedDate))  //check day is blocked or not
       {
       if (selectedMonth === currentMonth) {
         navigate('/resday', { state: { selectedDay: today ,doctorid:doctorId,doctorList:doctorList} });
@@ -158,22 +139,20 @@ function MyFullCalendar({doctorId,selectedTab,setSelectedTab}) {
     const milliseconds = date.getMilliseconds();
     const millisecondsPart = milliseconds === 0 ? '' : `.${milliseconds.toString().padStart(3, '0')}`;
     const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}T${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}${millisecondsPart}`;
-    console.log(formattedDate);
     return (
       <div >
         <div>{dayCell.dayNumberText} </div>  
         <Box sx={{display:getDayStatus(formattedDate)?'none':'flex'}}>
         <CustomizedProgressBars  value={getDayAppCount(dayCell.dayNumberText)*10}  />       
-        </Box>
-       
+        </Box>      
       </div>
     );
   }
-const getDayStatus=(target)=>
+const getDayStatus=(target)=>  //check date is in the disabledDates list
 {
-  return disabledDates.some(item=>item.date===target);
+  return disabledDates.some(item=>item.date===target);  
 }
-  const getDayCellClassNames = (arg) => {
+  const getDayCellClassNames = (arg) => {  //return css class names for day cells
     const date=new Date(arg.date);
 
     const milliseconds = date.getMilliseconds();
@@ -197,7 +176,7 @@ const getDayStatus=(target)=>
         dayCellContent={renderDayCellContent}
         dateClick={handleDateClick}
         datesSet ={handleDatesSet}
-         selectable={false}
+        selectable={false}
         dayCellClassNames={getDayCellClassNames}
         headerToolbar={{
           left: 'prev',
