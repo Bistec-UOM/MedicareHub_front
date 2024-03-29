@@ -3,7 +3,7 @@ import BasicTimePicker from "../TimePicker/TimePicker";
 import axios from "axios";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
-import { CardContent, IconButton, TextField, Typography } from "@mui/material";
+import {  IconButton,  Typography } from "@mui/material";
 import { useState } from "react";
 import { useEffect } from "react";
 import dayjs from "dayjs";
@@ -56,7 +56,7 @@ export default function AppAddPopup({
   } else if (timeObject.ampm === 'am' && hours === 12) {
       hours = 0;
   }
- // console.log("selected",selectedDay)
+
   const date = new Date(selectedDay);
   date.setHours(hours, timeObject.minutes, 0, 0);
   return date;
@@ -65,13 +65,7 @@ export default function AppAddPopup({
     return dayjs(appointment.appointment.dateTime).format('HH:mm');
   });
 
-  const isTimeDisabled = (time) => {
-    const selectedTimeStr = dayjs(time).format('HH:mm');
-    return scheduledTimes.includes(selectedTimeStr);
-  };
   useEffect(() => {
-    //console.log("filt",scheduledTimes);
-   // console.log("day app total inside appadd"+dayAppTotal);
     if(dayAppTotal>=10)  //disabling confirm button from adding more than 10 appointments for a day
     {
       setConfirmDisabled(true);
@@ -82,7 +76,6 @@ export default function AppAddPopup({
 }
  )
   const handleClose = () => {
-   // console.log("se", selectedTime);
     setApopen(false);
   };
 
@@ -93,9 +86,6 @@ export default function AppAddPopup({
       var date=finalTime;
       //format the time to string form
       const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}T${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}.${date.getMilliseconds().toString().padStart(3, '0')}`;
-    //  console.log("isostring",formattedDate);
-      //console.log(activeData.id)
-     // console.log(docid);
       let obj= {
         id: 0,
         dateTime:formattedDate,
@@ -107,7 +97,6 @@ export default function AppAddPopup({
       try{
           await axios.post("https://localhost:7205/api/Appointment",obj
          );
-          //console.log(obj);
           setApopen(false);
           setDayAppTotal(dayAppTotal+1);
           handleNotification("Appointment Added succesfully!","success");
@@ -115,15 +104,10 @@ export default function AppAddPopup({
       catch(err)
       {
       var msg=err.response.data;
-     // console.log("Inseide error");
-       //console.log(err.response.data);
-         //setError(msg);
       }
   }
   useEffect(() => {
-    // console.log(activeId);
      formatAMPM(selectedTime)
-   //  console.log("dap"+dayAppTotal);
     if (patientList && Array.isArray(patientList)) {  //getting the selected patient
       const filteredData = patientList.find(
         (patient) => patient.nic === activeId
@@ -287,20 +271,11 @@ export default function AppAddPopup({
                   alignItems: "baseline",
                   width: "100%",
                 }}
-              >
-               
+              >         
                 <BasicTimePicker
                 sx={{overflow:{xs:'hidden'}}}
                   selectedTime={selectedTime}
                   setSelectedTime={setSelectedTime}
-                  disabledItems={isTimeDisabled}
-
-                  renderOption={(time, { selected }) => {
-                    if (scheduledTimes.includes(time)) {
-                      return <Typography style={{ color: 'gray' }}>{time}</Typography>;
-                    }
-                    return <Typography>{time}</Typography>;
-                  }}  
                 />  
                 <Button
                   disabled={confirmDisabled}
