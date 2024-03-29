@@ -1,7 +1,19 @@
 import { Typography } from '@mui/material'
 import React from 'react'
+import LensIcon from '@mui/icons-material/Lens';
 
-export default function Fieldcom({field,unit,value,enterData,indx}) {
+export default function Fieldcom({field,unit,value,status,enterData,indx}) {
+
+  const statColor=()=>{
+    if (status==null){
+      return 'grey'
+    }else if(status=='low'||status=='high'){
+      return 'red'
+    }else{
+      return 'lime'
+    }
+  }
+
   return (
     <div style={{
       display:'flex',
@@ -22,7 +34,8 @@ export default function Fieldcom({field,unit,value,enterData,indx}) {
           value={value}
         ></input>
         
-        <Typography sx={{ml:'10px',fontSize:'14px',flex:1,color:'gray'}}>{unit}</Typography>
+        <Typography sx={{ml:'10px',fontSize:'14px',flex:1,color:'grey'}}>{unit}</Typography>
+        <LensIcon fontSize='5px' sx={{color:statColor()}} ></LensIcon>
     </div>
   )
 }

@@ -44,11 +44,28 @@ export default function LabTestList({setPage,settId,Tload,setTload}) {
 
   return (
     <div>
-        <Toolbar sx={{width:{xs:'100%',sm:'70%'},justifyContent:'space-between',position:'fixed',backgroundColor:'white',pt:{xs:'10px'}}}>
+        <Toolbar 
+          sx={{
+            width:{xs:'100%',sm:'70%'},
+            justifyContent:'space-between',
+            position:'fixed',
+            backgroundColor:'white',
+            pt:{xs:'10px'}
+            }}
+        >
             <ArrowBackIcon sx={{cursor:'pointer'}} onClick={()=>setPage(1)}></ArrowBackIcon>
 
             {/*-------Search bar--------------- */}
-            <Box component="form" sx={{p: "2px 4px",display: "flex",alignItems: "center",height:'30px',width:{xs:'40%',sm:'40%'},borderRadius: "20px",boxShadow: 1}}>
+            <Box component="form" 
+              sx={{
+              p: "2px 4px",
+              display: "flex",
+              alignItems: "center",
+              height:'30px',
+              width:{xs:'40%',sm:'40%'},
+              borderRadius: "20px",
+              boxShadow: 1
+              }}>
             <InputBase type="text" className="form-control" sx={{ flex: 1 }} placeholder="Search tests" onChange={(e)=>setQuery(e.target.value)}/>
             <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
             <IconButton type="button" sx={{ p: "10px" }} aria-label="search">

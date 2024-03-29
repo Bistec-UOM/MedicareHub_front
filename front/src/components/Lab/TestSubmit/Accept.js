@@ -77,8 +77,17 @@ export default function Accept({req,reqOK,RLoad,setRLoad}) {
                         >
                 <Box>
                     <Typography sx={{fontSize:'18px',mb:'5px'}}>{i.testName} Test</Typography>
-                    <Typography sx={{fontSize:'15px'}}>Token No: <Chip label={i.repId} sx={{height:'20px',borderRadius:'5px',color:'white',backgroundColor:'#568a91'}}></Chip></Typography>
-                    <Typography sx={{fontSize:'16px'}}>Rs. {i.price}</Typography>
+                    <Typography sx={{fontSize:'15px',display:'flex',alignItems:'center'}}>
+                        Token No: <Chip label={i.repId} 
+                                    sx={{
+                                      height:'20px',
+                                      borderRadius:'5px',
+                                      color:'white',
+                                      backgroundColor:'#568a91'
+                                      }}
+                                    ></Chip>
+                    </Typography>
+                    <Typography sx={{fontSize:'15px'}}>Rs. {i.price}</Typography>
                 </Box>
                 <Button variant='contained' onClick={()=>AccIdSet(i.repId)}>Accept</Button>
             </Paper>

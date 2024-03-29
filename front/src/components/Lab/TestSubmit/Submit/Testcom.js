@@ -54,22 +54,26 @@ export default function Testcom({handleClose,handleClick1,test}) {
     .catch((er)=>{
       console.log(er.message)
     })
-/*     setTimeout(() => {
-      handleClose()
-      let tmp=[...load]
-      tmp.pop()
-      setLoad(tmp)
-    }, 3000)
-    setTimeout(() => {
-      handleClick1()
-    }, 2500) */
+
   }
 
   const enterData=(indx,x)=>{
+
+    let stat=(min,max,val)=>{
+      if(val<min){
+        return 'low'
+      }else if(val>max){
+        return 'high'
+      }else{
+        return 'normal'
+      }
+    }
+
     let tmp=[...Fload]
     tmp.forEach((el,ind)=>{
       if(ind===indx){
        el.value=parseInt(x)
+       el.status=stat(el.minRef,el.maxRef,x)
       }
     })
     setFload(tmp)
@@ -91,7 +95,7 @@ export default function Testcom({handleClose,handleClick1,test}) {
           maxRef:'',
           unit:'',
           value:'',
-          status:''
+          status:null
         }
         tmp2.fieldId=el.id
         tmp2.minRef=el.minRef
@@ -117,7 +121,7 @@ export default function Testcom({handleClose,handleClick1,test}) {
       <Box sx={{height:'300px',overflowY:'scroll'}}>
         {
           !loading ? Fload.map((el,indx)=>{
-            return <Fieldcom field={el.fieldname} unit={el.unit} value={el.value} indx={indx} enterData={enterData}> </Fieldcom>
+            return <Fieldcom field={el.fieldname} unit={el.unit} value={el.value} status={el.status} indx={indx} enterData={enterData}> </Fieldcom>
           }) :<Load></Load>
         }
       </Box>
