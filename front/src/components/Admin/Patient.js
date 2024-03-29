@@ -104,11 +104,7 @@ const [update,forceUpdate]=useState(0);
       }
     });
   
-    // If any required field is empty, set form errors and return
-    if (!isValid) {
-      setFormErrors(errors);
-      return;
-    }
+
   
     // Check for duplicates only if the required fields are not empty
     const isDuplicateName = rows.some((row) => row.name.toLowerCase() === formData.name.toLowerCase());
@@ -134,7 +130,20 @@ const [update,forceUpdate]=useState(0);
       errors.nic = 'NIC already exists';
       isValid = false;
     }
-  
+    if (!/^[0-9]{9}[vV]$/.test(formData.nic)||!/^[0-9]{12}$/.test(formData.nic)) {
+      errors.nic = 'invalid NIC';
+      isValid = false;
+    }
+    if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
+      errors.email = 'Invalid email';
+      isValid = false;
+    }
+    const dob = new Date(formData.dob);
+
+    if (isNaN(dob)) {
+      errors.dob = 'Invalid date of birth';
+      isValid = false;
+    }
     // If any duplicates are found, set form errors and return
     if (!isValid) {
       setFormErrors(errors);
@@ -166,7 +175,7 @@ const [update,forceUpdate]=useState(0);
         console.error('Error adding data:', error.message);
       });
   };
-  
+ 
   
 
 
@@ -329,6 +338,48 @@ const [formErrors, setFormErrors] = useState({
 
 
 
+useEffect(() => {
+  if (!open || !editOpen) {
+    setFormErrors({
+      fullName: '',
+      name: '',
+      nic: '',
+      address: '',
+      contactNumber: '',
+      email: '',
+      dob: '',
+      gender: ''
+    });
+
+  }
+}, [open,editOpen]);
+useEffect(() => {
+  if (!open) {
+    setFormErrors({
+      fullName: '',
+      name: '',
+      nic: '',
+      address: '',
+      contactNumber: '',
+      email: '',
+      dob: '',
+      gender: ''
+    });
+    setFormData({
+      fullName: '',
+      name: '',
+      nic: '',
+      address: '',
+      contactNumber: '',
+      email: '',
+      dob: '',
+      gender: ''
+    });
+
+
+  }
+}, [open]);
+
 
   return (
     <div >
@@ -396,19 +447,17 @@ const [formErrors, setFormErrors] = useState({
           <TextField required label="E-mail" fullWidth sx={{ mb: 1 }} onChange={(e) => handleInputChange("email", e.target.value)} error={!!formErrors.email} helperText={formErrors.email}/>
 <div style={{display:'flex'}}>
 <LocalizationProvider dateAdapter={AdapterDayjs}>
-  <DemoContainer components={['DateField']}>
-    <DateField
-      label="Date Of Birth"
-      value={formData.dob ? dayjs(formData.dob) : null}
-      onChange={(newValue) => handleInputChange('dob', newValue)}
-      renderInput={(props) => <TextField {...props} />}
-      style={{ width: '225px' }}
-      required
-      error={!!formErrors.dob}
-      helperText={formErrors.dob}
-    />
-  </DemoContainer>
-</LocalizationProvider>
+          <DemoContainer components={['DateField']}>
+            <DateField
+              label="Date Of Birth"
+              value={formData.dob ? dayjs(formData.dob) : null}
+              onChange={(newValue) => handleInputChange('dob', newValue)}
+              renderInput={(props) => <TextField {...props} />}
+              style={{ width: '225px' }}
+              required // Ensure date of birth is required
+            />
+          </DemoContainer>
+        </LocalizationProvider>
           <FormControl style={{marginLeft:'15px',marginTop:'8px'}}>
         <InputLabel id="demo-simple-select-label">Gender</InputLabel>
         <Select

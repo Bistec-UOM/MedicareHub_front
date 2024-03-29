@@ -1,4 +1,4 @@
-import { Grid, Paper, Typography } from '@mui/material';
+import { Grid, Paper, Typography,Box,Button } from '@mui/material';
 import React from 'react';
 import { LineChart, ResponsiveContainer, Legend, Tooltip, Line, XAxis, YAxis, Label } from "recharts";
 import Table from '@mui/material/Table';
@@ -9,23 +9,16 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-function createData(name,peratten, attendance,reason) {
-  return { name,peratten, attendance,reason };
-}
-
-// const rows = [
-//   createData('chamath','80%', 159 ,12),
-//   createData('kasun','90%', 237 ,5),
-//   createData('wimal','94%', 262 ,12),
-//   createData('kanchana','98%', 305 ,2),
-//   createData('manula','100%', 356 ,0),
-// ];
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DateField } from '@mui/x-date-pickers/DateField';
 
 const AOther = () => {
   const [rows, setRows] = useState([]);
 
   useEffect(() => {
-    axios.get('https://localhost:7205/api/Analytic/attendance')
+    axios.get('https://localhost:7205/api/Analytic/users')
       .then(response => {
         console.log(response.data);
         setRows(response.data); 
@@ -33,8 +26,12 @@ const AOther = () => {
       .catch(error => {
         console.error(error);
       });
-  }, []); // Empty dependency array means this effect runs once on mount
-
+  }, []);
+  const HandleSearch = (id) => {
+    console.log("Search ID: " + id + ", Date: " + date);
+}
+const [date, setDate] = useState(null);
+  const rolekey = ['Doctor','Receptionist','Pharmacist','Lab Assistant','Cashier']; 
     return (
         <div>
               <Typography sx={{textAlign:'center',fontWeight:'bolder',fontSize:'20px'}}>Attendance of Staff</Typography>
@@ -43,82 +40,36 @@ const AOther = () => {
         <TableHead>
           <TableRow>
             <TableCell align='center' sx={{ fontWeight: 'bold' }}>Name </TableCell>
+            <TableCell align='center' sx={{ fontWeight: 'bold' }}>Date</TableCell>
           <TableCell align='center' sx={{ fontWeight: 'bold' }}>Attendance</TableCell>
 
           </TableRow>
         </TableHead>
         <TableBody>
-        
-        <TableRow>
-          <TableCell align='center' colSpan={2} sx={{backgroundColor:'rgb(244, 244, 244)'}}>Doctor</TableCell>
-          </TableRow>
-  {rows.map((row) => (
-    row.d_at.map((item) => (
-      <TableRow
-        key={item.doctName}
-        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-      >
-        <TableCell align='center' component="th" scope="row">
-          {item.doctName}
-        </TableCell>
-        <TableCell align="center">{item.count}</TableCell>
-
-      </TableRow>
-    ))
-  ))}
-<TableRow>
-          <TableCell align='center' colSpan={2} sx={{backgroundColor:'rgb(244, 244, 244)'}}>Lab Assistant</TableCell>
-          </TableRow>
-  {rows.map((row) => (
-    row.l_at.map((item) => (
-      <TableRow
-        key={item.labAstName}
-        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-      >
-        <TableCell align='center' component="th" scope="row">
-          {item.labAstName}
-        </TableCell>
-        <TableCell align="center">{item.count}</TableCell>
-
-      </TableRow>
-    ))
-  ))}
-
-<TableRow>
-          <TableCell align='center' colSpan={2} sx={{backgroundColor:'rgb(244, 244, 244)'}}>Receptionist</TableCell>
-          </TableRow>
-  {rows.map((row) => (
-    row.r_at.map((item) => (
-      <TableRow
-        key={item.recepName}
-        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-      >
-        <TableCell align='center' component="th" scope="row">
-          {item.recepName}
-        </TableCell>
-        <TableCell align="center">{item.count}</TableCell>
-
-      </TableRow>
-    ))
-  ))}
-          <TableRow>
-          <TableCell align='center' colSpan={2} sx={{backgroundColor:'rgb(244, 244, 244)'}}>Cashiers</TableCell>
-          </TableRow>
-  {rows.map((row) => (
-    row.c_at.map((item) => (
-      <TableRow
-        key={item.cashierName}
-        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-      >
-        <TableCell align='center' component="th" scope="row">
-          {item.cashierName}
-        </TableCell>
-        <TableCell align="center">{item.count}</TableCell>
-
-      </TableRow>
-    ))
-  ))}
-</TableBody>
+        {rolekey.map((role) => (
+          <>
+            <TableRow>
+              <TableCell align='center' colSpan={3} sx={{backgroundColor:'rgb(244, 244, 244)'}}>{role}</TableCell>
+            </TableRow>
+            {rows.filter(item=>item.role === role).map((item) => (
+              <TableRow key={item.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                <TableCell align='center' component="th" scope="row">
+                  {item.name}
+                </TableCell>
+                <TableCell align='center' component="th" scope="row">
+                  <Box display="flex" justifyContent="center" alignItems="center">
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DemoContainer components={['DateField']}>
+                      <DateField label="Enter Date" format="YYYY-MM" size='small' value={date} onChange={(newValue) => setDate(newValue)} />                      </DemoContainer>
+                    </LocalizationProvider>
+                    <Button variant="contained" onClick={() => HandleSearch(item.id)} sx={{width:"40px",height:'30px',marginLeft:5}}>Find</Button>                  </Box>
+                </TableCell>
+                <TableCell align="center" component="th" scope="row">{item.count}</TableCell>
+              </TableRow>
+            ))}
+          </>
+        ))}
+        </TableBody>
       </Table>
       </Paper>
         </div>
