@@ -1,20 +1,38 @@
 import { Grid, Paper,MenuItem,FormControl,InputLabel,Select, Typography } from '@mui/material';
 import React, { useEffect } from 'react';
 import { LineChart,BarChart,Bar, ResponsiveContainer, Legend, Tooltip, Line, XAxis, YAxis, Label } from "recharts";
-
-const pdata = [
-  { datefor: "2022.02.20", child_male: 12, child_female: 2, adult_male: 12, adult_female: 2, old_male: 12, old_female: 2 },
-  { datefor: "2023.04.21", child_male: 12, child_female: 2, adult_male: 12, adult_female: 2, old_male: 12, old_female: 2 },
-  { datefor: "2024.03.12", child_male: 12, child_female: 2, adult_male: 12, adult_female: 2, old_male: 12, old_female: 2 },
-  { datefor: "2024.03.12", child_male: 12, child_female: 9, adult_male: 12, adult_female: 2, old_male: 12, old_female: 2 },
-  { datefor: "2024.03.12", child_male: 12, child_female: 2, adult_male: 12, adult_female: 2, old_male: 12, old_female: 2 },
-  { datefor: "2024.03.13", child_male: 12, child_female: 2, adult_male: 12, adult_female: 2, old_male: 12, old_female: 2 },
-  { datefor: "2024.03.13", child_male: 1, child_female: 2, adult_male: 1, adult_female: 2, old_male: 2, old_female: 2 },
-  { datefor: "2024.03.13", child_male: 11, child_female: 26, adult_male: 1, adult_female: 25, old_male: 22, old_female: 24 },
-];
+import axios from 'axios';
+import { useState } from 'react';
+// const pdata = [
+//   { datefor: "2022.02.20", child_male: 12, child_female: 2, adult_male: 12, adult_female: 2, old_male: 12, old_female: 2 },
+//   { datefor: "2023.04.21", child_male: 12, child_female: 2, adult_male: 12, adult_female: 2, old_male: 12, old_female: 2 },
+//   { datefor: "2024.03.12", child_male: 12, child_female: 2, adult_male: 12, adult_female: 2, old_male: 12, old_female: 2 },
+//   { datefor: "2024.03.12", child_male: 12, child_female: 9, adult_male: 12, adult_female: 2, old_male: 12, old_female: 2 },
+//   { datefor: "2024.03.12", child_male: 12, child_female: 2, adult_male: 12, adult_female: 2, old_male: 12, old_female: 2 },
+//   { datefor: "2024.03.13", child_male: 12, child_female: 2, adult_male: 12, adult_female: 2, old_male: 12, old_female: 2 },
+//   { datefor: "2024.03.13", child_male: 1, child_female: 2, adult_male: 1, adult_female: 2, old_male: 2, old_female: 2 },
+//   { datefor: "2024.03.13", child_male: 11, child_female: 26, adult_male: 1, adult_female: 25, old_male: 22, old_female: 24 },
+// ];
 
 const APatient = () => {
+  const [pdata, setPdata] = useState([]);
 
+  useEffect(() => {
+    axios.get('https://localhost:7205/api/Analytic/male-female-patients-count')
+      .then(response => {
+        console.log('data is ');
+        console.log(response.data);
+        setPdata(response.data);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, []); // Empty dependency array means this effect runs once on mount
+
+
+
+
+  
   const [count, setcount] = React.useState();
   //date filter
   const currentDate = new Date(); // Initialize currentDate

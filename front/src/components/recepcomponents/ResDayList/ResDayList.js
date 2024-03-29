@@ -39,6 +39,9 @@ const ResDayList = (props) => {
     document.body.style.margin = "0";
     axios.get(`https://localhost:7205/api/Appointment/doctor/${props.docid}/day/${selectedDay}`)
         .then((response) => {
+
+             console.log("sel",selectedDay);
+            console.log("response data",response.data)
             const responseData = response.data;
             setIsDisabled(responseData.length === 0); // Update isDisabled based on the fetched appointments
             const sortedAppointments = responseData.slice().sort((a, b) => new Date(a.appointment.dateTime) - new Date(b.appointment.dateTime));  //this is used for sorting appointments based on their arrival time

@@ -10,15 +10,18 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import Navbar from "../../components/navbar/Navbar";
+import Navbar from "../components/navbar/Navbar";
 import { useState } from "react";
 import ShowChartIcon from "@mui/icons-material/ShowChart";
 import AccessibleIcon from "@mui/icons-material/Accessible";
 import PersonIcon from "@mui/icons-material/Person";
-import Analysis from "./Analytics";
-import Patient from "./Patient";
-import ResNavBar from "../../components/recepcomponents/ResNavBar/ResNabBar";
-import Staff from "./Staff";
+import Analysis from "../components/Admin/Analytics";
+import Patient from "../components/Admin/Patient";
+import ResNavBar from "../components/recepcomponents/ResNavBar/ResNabBar";
+import Staff from "../components/Admin/Staff";
+import View from "../components/Admin/View";
+import SpaceDashboardIcon from '@mui/icons-material/SpaceDashboard';
+
 
 const drawerWidth = 210;
 
@@ -37,7 +40,7 @@ export default function Stest() {
     setIsClosing(false);
   };
   const [selectedItem, setSelectedItem] = useState(null);
-  const [selectedNavItem, setSelectedNavItem] = React.useState("Staff");
+  const [selectedNavItem, setSelectedNavItem] = React.useState("Dashboard");
 
   const handleNavigationItemClick = (text) => {
     setSelectedItem(text);
@@ -50,7 +53,7 @@ export default function Stest() {
       <Divider />
       <Box>
         <List>
-          {["Staff", "Patient", "Analysis"].map((text, index) => (
+          {["Dashboard","Staff", "Patient", "Analysis"].map((text, index) => (
             <ListItem key={text} disablePadding>
               <ListItemButton
                 sx={{
@@ -66,9 +69,10 @@ export default function Stest() {
                 onClick={() => handleNavigationItemClick(text)}
               >
                 <ListItemIcon>
-                  {index === 0 ? <PersonIcon /> : null}
-                  {index === 1 ? <AccessibleIcon /> : null}
-                  {index === 2 ? <ShowChartIcon /> : null}
+                  {index === 0 ? <SpaceDashboardIcon /> : null}
+                  {index === 1 ? <PersonIcon /> : null}
+                  {index === 2 ? <AccessibleIcon /> : null}
+                  {index === 3 ? <ShowChartIcon /> : null}
                 </ListItemIcon>
                 <ListItemText primary={text} />
               </ListItemButton>
@@ -81,6 +85,8 @@ export default function Stest() {
 
   const renderContent = () => {
     switch (selectedNavItem) {
+      case "Dashboard":
+        return <View />;
       case "Staff":
         return <Staff />;
       case "Patient":
