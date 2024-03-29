@@ -16,8 +16,10 @@ export default function SubmitPage({setpage}) {
     //----- for submit test result successfully
     const [open1, setOpen1] = React.useState(false);
 
-    const handleClick1 = () => {
+    const handleClick1 = (x) => {
       setOpen1(true);
+      let tmp=load.filter((el)=>{return el.id!==x})
+      setLoad(tmp)
     };
   
     const handleClose1 = (event, reason) => {
@@ -26,9 +28,9 @@ export default function SubmitPage({setpage}) {
       }
       setOpen1(false);
     }
-    //======================================================================================================
 
-    //Pop up dialog box------------------------------------------------------------
+
+    //Pop up dialog box===========================================================================
     const [open, setOpen] = useState(false)
     const handleClickOpen = (x) => {
         let t= load.filter((e)=>{return e.id===x})

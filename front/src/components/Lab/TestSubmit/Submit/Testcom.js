@@ -5,9 +5,10 @@ import axios from 'axios';
 import Fieldcom from './Fieldcom';
 import { baseURL,endPoints } from '../../../../Services/Lab';
 import { Load } from '../../../Other';
+import LoadingButton from '@mui/lab/LoadingButton';
+import SendIcon from '@mui/icons-material/Send';
 
-export default function Testcom({handleClose,handleClick1,test}) {
-
+export default function Testcom({handleClick1,handleClose,test}) {
 
   const [Fload,setFload]=useState([])//field set according to the needed test
   const [loading,setloading]=useState(true)
@@ -25,7 +26,11 @@ export default function Testcom({handleClose,handleClick1,test}) {
     const dateString = date.toISOString().slice(0, -5); // Remove milliseconds and 'Z'
     return `${dateString}.000Z`; // Add '000' as milliseconds
 }
+
+  const [loadingB, setLoadingB] = useState(false)//Loading button
+
   const submitData=()=>{
+      setLoadingB(true)//loading button
 
       let tmp=[...Fload]
       let ob=[]
@@ -44,17 +49,15 @@ export default function Testcom({handleClose,handleClick1,test}) {
       "results":ob
     }
 
-    console.log(JSON.stringify(obj))
     axios.post(baseURL+endPoints.RESULT,obj)
     .then((res)=>{
       console.log(res.data)
-      handleClick1()
+      handleClick1(test[0].id)
       handleClose()
     })
     .catch((er)=>{
       console.log(er.message)
-    })
-
+    }) 
   }
 
   const enterData=(indx,x)=>{
@@ -133,7 +136,14 @@ export default function Testcom({handleClose,handleClick1,test}) {
         pt:'20px'
         }}
     >
-        <Button variant='contained'onClick={submitData} size='small' sx={{ml:'10px'}}>Submit</Button>
+        <LoadingButton           
+          size="small"
+          endIcon={<SendIcon />}
+          loading={loadingB}
+          loadingPosition="end"
+          variant="contained" onClick={submitData} 
+          sx={{ml:'10px'}}
+        >Submit</LoadingButton>
         <Button variant='outlined'onClick={clearData} size='small' >Clear</Button>
     </Box>
 
