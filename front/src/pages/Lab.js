@@ -1,4 +1,4 @@
-import { Grid,CssBaseline, Box, Drawer} from '@mui/material'
+import { Grid,CssBaseline, Box, Drawer, Alert} from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import {SidebarContainer,SidebarTop,SidebarList} from '../components/sidebar/Sidebar'
 import { Sideunit_Test } from '../components/sidebar/Sideunits';
@@ -64,6 +64,7 @@ export default function Lab() {
     const [Tload,setTload]=useState([])//Lab test list <----- from back end
     const [RLoad,setRLoad]=useState([])
     const [RloadDone,setRloadDone]=useState(false)
+    const [Er,setEr]=useState(false)
 
     //const [Fields,setFields]=useState([])//store set of fields by the selected test
     const [Test,setTest]=useState([])//store the selected test
@@ -81,8 +82,11 @@ export default function Lab() {
       .then((res)=>{
         setRLoad(res.data)
         setRloadDone(true)
+        setEr(false)
       })
       .catch((er)=>{
+        setEr(true)
+        setRloadDone(true)
         console.log(er.massage)
       })
      }
@@ -125,7 +129,8 @@ export default function Lab() {
          <LabSearch setPage={setPage} setDate={setDate} date={date} query={query} setQuery={setQuery}></LabSearch>
       </SidebarTop>
       <SidebarList>
-      {        !RloadDone?<Load></Load>:''}
+      {!RloadDone?<Load></Load>:''}
+      {Er?<Alert severity="error" variant='outlined'>Error occured</Alert>:''}
       {
          filteredData.map((elm)=>{
           if(elm.date===date){
