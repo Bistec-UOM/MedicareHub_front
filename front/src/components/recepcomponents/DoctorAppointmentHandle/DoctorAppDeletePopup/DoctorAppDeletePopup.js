@@ -21,7 +21,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Grid, Stack } from "@mui/material";
 import ErrorIcon from "@mui/icons-material/Error";
 
-export default function DoctorAppDeletePopup({doctorAppDeleteOpen,setDoctorAppDeleteOpen,setNotificationOpen,setNotiMessage,notiMessage}) {
+export default function DoctorAppDeletePopup({doctorAppDeleteOpen,setDoctorAppDeleteOpen,setNotificationOpen,setNotiMessage,notiMessage,notiType,setNotiType}) {
   // const [enameError,seteNameError]=useState(false)
   // const [eaddressError,seteAddressError]=useState(false)
   // const [enicError,seteNicError]=useState(false)
@@ -34,13 +34,14 @@ export default function DoctorAppDeletePopup({doctorAppDeleteOpen,setDoctorAppDe
   const [rdelete,setRdelete]=useState(false);
 
 
-  const handleNotification=(msg)=>
+  const handleNotification=(msg,type)=>
   {
       //console.log(msg)
       setDoctorAppDeleteOpen(false);
       setNotiMessage(msg);
-     setNotificationOpen(true);
-     console.log(notiMessage);
+      setNotificationOpen(true);
+      setNotiType(type);
+      console.log(notiMessage);
     
      
   }

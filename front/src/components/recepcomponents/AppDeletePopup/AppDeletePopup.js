@@ -17,7 +17,7 @@ export default function AppDeletePopup({appointlist,setAppointList,handleNotific
     //console.log('Resource deleted successfully:', response.data);
     setDelcount(delcount+1);  //for fetching the newly updated app list
     setDaopen(false);
-    handleNotification("Appointment deleted succesfully!");
+    handleNotification("Appointment deleted succesfully!","success");
    // console.log("inside real delte"+filteredAppointments);
   })
   .catch(error => {

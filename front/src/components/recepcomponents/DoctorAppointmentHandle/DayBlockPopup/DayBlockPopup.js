@@ -33,7 +33,7 @@ async function handleSubmit(event)
           await axios.post("https://localhost:7205/api/Appointment/unableDates",obj
          );
           setDocDayBlockPopup(false);
-          handleNotification("Day Blocked succesfully!");
+          handleNotification("Day Blocked succesfully!","success");
       }
       catch(err)
       {

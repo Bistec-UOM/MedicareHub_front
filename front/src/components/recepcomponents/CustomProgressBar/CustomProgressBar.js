@@ -6,7 +6,7 @@ import CircularProgress, {
 } from '@mui/material/CircularProgress';
 import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress';
 
-const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
+const BorderLinearProgress = styled(LinearProgress)(({ theme,value }) => ({
   height: 10,
   borderRadius: 5,
   [`&.${linearProgressClasses.colorPrimary}`]: {
@@ -14,11 +14,11 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   },
   [`& .${linearProgressClasses.bar}`]: {
     borderRadius: 5,
-    backgroundColor: theme.palette.mode === 'light' ? '#78AAF5' : '#308fe8',
+    backgroundColor: value<30?'yellow':value<60?'green':'red'
   },
 }));
 
-// Inspired by the former Facebook spinners.
+// Inspired by the former Facebook spinners.  
 function FacebookCircularProgress(props) {
   return (
     <Box sx={{ position: 'relative' }}>

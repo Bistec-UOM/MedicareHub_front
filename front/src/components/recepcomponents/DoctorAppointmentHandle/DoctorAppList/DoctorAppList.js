@@ -15,14 +15,16 @@ const DoctorAppList = (props) => {
 
   const [notificationOpen,setNotificationOpen]=useState(false);
   const [notiMessage,setNotiMessage]=useState("");
+  const [notiType,setNotiType]=useState("success");
   const [docDayBlockPopup,setDocDayBlockPopup]=useState(false);  //var for doc day block popup
 
-  const handleNotification=(msg)=>
+  const handleNotification=(msg,type)=>
  {
      //console.log(msg)
      setNotiMessage(msg);
     setNotificationOpen(true);
-    console.log(notiMessage);
+    setNotiType(type);
+    //console.log(notiMessage);
    
     
  }
@@ -241,7 +243,7 @@ const DoctorAppList = (props) => {
         cancelAll={cancelAll}
         setCancelAll={setCancelAll}
       />
-       <SuccessNotification setNotificationOpen={setNotificationOpen} notiMessage={notiMessage} notificationOpen={notificationOpen}/>
+       <SuccessNotification type={notiType} setNotificationOpen={setNotificationOpen} notiMessage={notiMessage} notificationOpen={notificationOpen}/>
     
     </Box>
   );
