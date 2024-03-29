@@ -1,4 +1,4 @@
-import { Paper, Toolbar, Typography,InputBase,Divider,IconButton, Button,Box } from '@mui/material'
+import { Paper, Toolbar, Typography,InputBase,Divider,IconButton, Button,Box, Snackbar, Alert } from '@mui/material'
 import { Stack } from '@mui/system'
 import React, { useEffect, useState } from 'react'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -10,10 +10,26 @@ import CloseIcon from "@mui/icons-material/Close";
 import axios from 'axios'
 import { baseURL,endPoints} from '../../../Services/Lab';
 import { Load } from '../../Other';
+import AddIcon from '@mui/icons-material/Add';
 
 export default function LabTestList({setPage,settId,Tload,setTload}) {
 
-    //Pop up dialog box------------------------------------------------------------
+    // SnackBar component====================================================================================
+    const [open1, setOpen1] = React.useState(false);
+
+    const handleClick1 = () => {
+      setOpen1(true)
+    };
+  
+    const handleClose1 = (event, reason) => {
+      if (reason === 'clickaway') {
+        return;
+      }
+      setOpen1(false);
+    }
+
+
+    //Pop up dialog box========================================================================
     const [open, setOpen] = useState(false)
     const handleClickOpen = (x) => {
         setOpen(true)
@@ -74,7 +90,12 @@ export default function LabTestList({setPage,settId,Tload,setTload}) {
             </Box>  
 
             {/*-------Add new button--------------- */}
-            <Button size='small' variant='contained' onClick={()=>setPage(3)} sx={{mr:{xs:'5px',sm:'10%'}}} >Add new</Button>
+            <Button size='small' 
+              variant='contained' 
+              onClick={()=>setPage(3)} 
+            sx={{mr:{xs:'5px',sm:'10%'}}} 
+            endIcon={<AddIcon/>}
+            >New</Button>
             
         </Toolbar>
 
@@ -102,8 +123,21 @@ export default function LabTestList({setPage,settId,Tload,setTload}) {
             <Typography sx={{fontSize:'18px'}}>Edit test</Typography>
           <CloseIcon onClick={handleClose} sx={{cursor:'pointer'}} />
           </DialogTitle>
-       <TestDialogBox test={test} setPage={setPage} setTload={setTload} handleClose={handleClose}></TestDialogBox>
+       <TestDialogBox test={test} setPage={setPage} setTload={setTload} handleClose={handleClose} handleClick1={handleClick1}></TestDialogBox>
       </Dialog>
+
+
+    {/* ----------------- snack bar ----------------------------------------------------------------*/}
+    <Snackbar open={open1} autoHideDuration={2000} onClose={handleClose1}>
+        <Alert
+          onClose={handleClose1}
+          severity="success"
+          variant="filled"
+          sx={{ width: '100%' }}
+        >
+          Details edited successfuly
+        </Alert>
+    </Snackbar>
 
     </div>
   )

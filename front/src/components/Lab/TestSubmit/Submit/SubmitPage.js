@@ -11,9 +11,7 @@ import { Load } from '../../../Other';
 
 export default function SubmitPage({setpage}) {
 
-  
     // SnackBar component====================================================================================
-    //----- for submit test result successfully
     const [open1, setOpen1] = React.useState(false);
 
     const handleClick1 = (x) => {
