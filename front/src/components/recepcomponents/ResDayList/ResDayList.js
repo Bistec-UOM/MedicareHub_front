@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { Grid, Stack, Typography, Button, Container, Box, Hidden } from "@mui/material";
+import {  Stack,  Button, Box } from "@mui/material";
 import AppointmentCard from "../AppointmentCard/AppointmentCard";
 import SearchBar from "../Searchbar/Searchbar";
 import Steper from "../Setper/Steper";
@@ -19,11 +19,10 @@ const ResDayList = (props) => {
     setNotiMessage(msg);
     setNotificationOpen(true);
     setNotiType(type);
-   // console.log(notiMessage);
  }
   const [addDisabled,setAddDisabled]=useState(false); //variable for Add button disabled
   const [search,setSearch]=useState("");
-  const [dopen, setDopen] = useState(false);
+  const [dopen, setDopen] = useState(false);  //var for all app delete popup
   const [delcount,setDelcount]=useState(0)
   const [isDisabled, setIsDisabled] = useState(true);  //variable for all app cancel disability func
   const [selectedDay,setSelectedDay]=useState(props.selectedDay);
@@ -37,23 +36,16 @@ const ResDayList = (props) => {
     props.setRenderVal(true);
   };
   useEffect(() => {
-    // console.log("use effect doctorid", props.docid);
-    // console.log("use effect selected", selectedDay);
     document.body.style.margin = "0";
     axios.get(`https://localhost:7205/api/Appointment/doctor/${props.docid}/day/${selectedDay}`)
         .then((response) => {
-            // console.log("do",props.docid);
 
              console.log("sel",selectedDay);
-            // console.log("pure",response);
             console.log("response data",response.data)
             const responseData = response.data;
-           // setFilteredAppointments(responseData);
             setIsDisabled(responseData.length === 0); // Update isDisabled based on the fetched appointments
-           // console.log("use effect appointments", responseData.result);
             const sortedAppointments = responseData.slice().sort((a, b) => new Date(a.appointment.dateTime) - new Date(b.appointment.dateTime));  //this is used for sorting appointments based on their arrival time
             props.setFilteredAppointments(sortedAppointments);
-            console.log("sorted appointments",sortedAppointments)
             props.setDayAppTotal(sortedAppointments.length);
             if(sortedAppointments.length>=10)  //blocked more than 10 appointments for a day
             {
@@ -62,7 +54,6 @@ const ResDayList = (props) => {
             else{
               setAddDisabled(false);
             }
-            console.log(props.dayAppTotal+" daytotal mana")  
         })
         .catch((error) => {
             console.error('Error fetching appointments:', error);

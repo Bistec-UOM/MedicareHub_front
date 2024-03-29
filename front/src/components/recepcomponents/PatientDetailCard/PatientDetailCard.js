@@ -3,84 +3,78 @@ import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import { useState } from "react";
 import { Stack } from "@mui/material";
-import {IconButton} from "@mui/material";
-import AddIcon from '@mui/icons-material/Add';
+import { IconButton } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
 import { useEffect } from "react";
 
-const PatientDetailCard = ({ appAddPopupCount,setAppAddPopupCount,setActiveId,item,apopen, setApopen }) => {
-
- 
-
-  const handleDeleteAppointment = () => {
-   // setFilteredAppointments(filteredAppointments.filter((itemf)=>itemf.nic!==item.nic));
-    
-  };
-
+const PatientDetailCard = ({
+  appAddPopupCount,
+  setAppAddPopupCount,
+  setActiveId,
+  item,
+  apopen,
+  setApopen,
+}) => {
   const handleAppAddPopup = () => {
-    // setActiveId(item.nic)
-    setAppAddPopupCount(appAddPopupCount+1);
-   setApopen(true)
-   setActiveId(item.nic)
+    setAppAddPopupCount(appAddPopupCount + 1);
+    setApopen(true);
+    setActiveId(item.nic);
   };
-  useEffect(()=>{
-    setActiveId(item.nic)
-
-  },[]);
+  useEffect(() => {
+    setActiveId(item.nic);
+  }, []);
 
   return (
-    
     <div>
-        
-        <Box  sx={{ width: { md:"80%",xs:'100%'}, marginLeft: "auto", marginRight: "auto"}}>
-          <Card
-            sx={{
-              backgroundColor: "#FFFF",
-              textAlign: "left",
-              marginBottom: 2,
-              border: "1px solid #3B877A",
-              borderRadius: 5,
-              
-        
-            }}
-          >
-            <Stack direction={'column'}>
+      <Box
+        sx={{
+          width: { md: "80%", xs: "100%" },
+          marginLeft: "auto",
+          marginRight: "auto",
+        }}
+      >
+        <Card
+          sx={{
+            backgroundColor: "#FFFF",
+            textAlign: "left",
+            marginBottom: 2,
+            border: "1px solid #3B877A",
+            borderRadius: 5,
+          }}
+        >
+          <Stack direction={"column"}>
             <CardContent>
-              <Stack direction={'row'} sx={{justifyContent:'space-between',alignItem:'center'}}>
-        
-                  <Typography variant="h5" >
-                    {item.fullName}
-                  </Typography>
-        
+              <Stack
+                direction={"row"}
+                sx={{ justifyContent: "space-between", alignItem: "center" }}
+              >
+                <Typography variant="h5">{item.fullName}</Typography>
                 <Box>
-        
-                
-                  <IconButton onClick={handleAppAddPopup}><AddIcon  sx={{ color: "#F66444", }} /></IconButton>
-        
-        
+                  <IconButton onClick={handleAppAddPopup}>
+                    <AddIcon sx={{ color: "#F66444" }} />
+                  </IconButton>
                 </Box>
               </Stack>
-              <Stack sx={{justifyContent:'space-between',alignItem:'center',flexDirection:{xs:'column',sm:'column',md:'row'}}} >
+              <Stack
+                sx={{
+                  justifyContent: "space-between",
+                  alignItem: "center",
+                  flexDirection: { xs: "column", sm: "column", md: "row" },
+                }}
+              >
                 <Typography variant="body2" color="text.secondary">
                   {item.address}
                 </Typography>
-                <Typography  color="text.secondary">
-                  {item.nic}
-                </Typography>
+                <Typography color="text.secondary">{item.nic}</Typography>
                 <Typography variant="body2" color="text.secondary">
                   {item.contactNumber}
                 </Typography>
-        
               </Stack>
-              </CardContent>
-            </Stack>
-        
-          </Card>
-          
-         
-        </Box>
-       
+            </CardContent>
+          </Stack>
+        </Card>
+      </Box>
     </div>
   );
 };

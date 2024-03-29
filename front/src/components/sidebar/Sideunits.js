@@ -26,11 +26,8 @@ function Sideunit_Doctor({ name, title ,selectedTab,index}) {
         display: "flex", 
         flexDirection: "column", 
         marginTop:0,
-       // disabled:true,
-        //alignItems: "center", 
         padding: "8px", 
         justifyContent:'flex-start',
-        //backgroundColor: isSelected ? "green" : "transparent",
       }}
     >
       <Typography 

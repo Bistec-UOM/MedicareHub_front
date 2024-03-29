@@ -4,18 +4,10 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import dayjs from "dayjs";
-export default function BasicTimePicker({
-  selectedTime,
-  setSelectedTime,
- 
-}) {
-
-  const saveTime = (time) =>{
+export default function BasicTimePicker({ selectedTime, setSelectedTime }) {
+  const saveTime = (time) => {
     setSelectedTime(time);
-
-    
-  
-  }
+  };
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DemoContainer components={["TimePicker"]}>
@@ -24,7 +16,7 @@ export default function BasicTimePicker({
           format="hh:mm"
           value={selectedTime}
           onChange={(newValue) => {
-            saveTime(newValue)
+            saveTime(newValue);
           }}
           label="Select your time"
         />
