@@ -2,29 +2,19 @@ import { AppBar, Toolbar } from "@mui/material";
 import React from "react";
 import Typography from "@mui/material/Typography";
 import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
-import { Avatar } from "@mui/material";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
-
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from "@mui/icons-material/Logout";
-import { useState } from "react";
 
-// ... (imports)
-
-const ResNavBar = ({isClosing,setMobileOpen,mobileOpen}) => {
+const ResNavBar = ({ isClosing, setMobileOpen, mobileOpen }) => {
   const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const drawerWidth = 358.4;
-
-  const handleChange = (event) => {
-    setAuth(event.target.checked);
-  };
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -40,18 +30,16 @@ const ResNavBar = ({isClosing,setMobileOpen,mobileOpen}) => {
     }
   };
 
- 
-
   return (
     <div>
       <AppBar
         position="fixed"
         sx={{
-          width: { sm: '100%' },
-          zIndex:1300,
+          width: { sm: "100%" },
+          zIndex: 1300,
           ml: { sm: `${drawerWidth}px` },
           backgroundColor: "#f7f8f7",
-          boxShadow:'none'
+          boxShadow: "none",
         }}
       >
         <Toolbar style={{ justifyContent: "space-between" }}>
@@ -84,7 +72,13 @@ const ResNavBar = ({isClosing,setMobileOpen,mobileOpen}) => {
           </Typography>
 
           {auth && (
-            <div style={{ display: "flex", alignItems: "center",marginLeft:'2%' }}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                marginLeft: "2%",
+              }}
+            >
               <Typography color="#9F9D9D">Mario</Typography>
               <IconButton
                 size="large"

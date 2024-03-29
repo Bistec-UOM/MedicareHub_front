@@ -3,7 +3,7 @@ import BasicTimePicker from "../TimePicker/TimePicker";
 import axios from "axios";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
-import { CardContent, IconButton, TextField, Typography } from "@mui/material";
+import {  IconButton,  Typography } from "@mui/material";
 import { useState } from "react";
 import { useEffect } from "react";
 import dayjs from "dayjs";
@@ -27,18 +27,17 @@ export default function AppAddPopup({
   setApopen,
   activeD,
   dayAppTotal,
-  appCountUseEff,
-  setAppCountUseEff
+  setDayAppTotal
 }) {
-  const [selectedTime, setSelectedTime] = useState(dayjs("2022-04-17T08:30"));
-  const [confirmDisabled,setConfirmDisabled]=useState(false);
-  const [appTime,setAppTime]=useState({
+  const [selectedTime, setSelectedTime] = useState(dayjs("2022-04-17T08:30"));  //default selected date and time of the date picker
+  const [confirmDisabled,setConfirmDisabled]=useState(false);  //var for confirm disabled for app limiting func
+  const [appTime,setAppTime]=useState({   //var for selected appointment time
     hours:" ",
     minutes:" ",
     ampm:" "
   })
-  const [activeData, setActiveData] = useState({});
-  function formatAMPM(date) {
+  const [activeData, setActiveData] = useState({});  //for storing the selected patient object
+  function formatAMPM(date) {  
     var hours = dayjs(date).get("hour");
     var minutes = dayjs(date).get("minute");
     var ampm = hours >= 12 ? 'pm' : 'am';
@@ -57,7 +56,7 @@ export default function AppAddPopup({
   } else if (timeObject.ampm === 'am' && hours === 12) {
       hours = 0;
   }
- // console.log("selected",selectedDay)
+
   const date = new Date(selectedDay);
   date.setHours(hours, timeObject.minutes, 0, 0);
   return date;
@@ -66,13 +65,7 @@ export default function AppAddPopup({
     return dayjs(appointment.appointment.dateTime).format('HH:mm');
   });
 
-  const isTimeDisabled = (time) => {
-    const selectedTimeStr = dayjs(time).format('HH:mm');
-    return scheduledTimes.includes(selectedTimeStr);
-  };
   useEffect(() => {
-    //console.log("filt",scheduledTimes);
-   // console.log("day app total inside appadd"+dayAppTotal);
     if(dayAppTotal>=10)  //disabling confirm button from adding more than 10 appointments for a day
     {
       setConfirmDisabled(true);
@@ -83,15 +76,9 @@ export default function AppAddPopup({
 }
  )
   const handleClose = () => {
-    console.log("se", selectedTime);
     setApopen(false);
   };
 
-  async function handleSubmit(event) {
-    event.preventDefault();
-    setApopen(false);
-    handleNotification("A new appointment added succesfully!");
-  }
   async function handleSubmit(event)
   {
       event.preventDefault();
@@ -99,9 +86,6 @@ export default function AppAddPopup({
       var date=finalTime;
       //format the time to string form
       const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}T${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}.${date.getMilliseconds().toString().padStart(3, '0')}`;
-    //  console.log("isostring",formattedDate);
-      //console.log(activeData.id)
-     // console.log(docid);
       let obj= {
         id: 0,
         dateTime:formattedDate,
@@ -113,42 +97,24 @@ export default function AppAddPopup({
       try{
           await axios.post("https://localhost:7205/api/Appointment",obj
          );
-          //console.log(obj);
-          setAppCountUseEff(appCountUseEff+1);
           setApopen(false);
-          handleNotification("Appointment Added succesfully!");
-         // console.log("Inside second useeff "+ appCountUseEff);
-         // console.log("Inside second useeff apptotal "+ dayAppTotal);    
+          setDayAppTotal(dayAppTotal+1);
+          handleNotification("Appointment Added succesfully!","success");
       }
       catch(err)
       {
       var msg=err.response.data;
-     // console.log("Inseide error");
-       //console.log(err.response.data);
-         //setError(msg);
       }
-      
-
   }
-
-
-
   useEffect(() => {
-     console.log(activeId);
-    formatAMPM(selectedTime)
-   
-
-    if (patientList && Array.isArray(patientList)) {
+     formatAMPM(selectedTime)
+    if (patientList && Array.isArray(patientList)) {  //getting the selected patient
       const filteredData = patientList.find(
         (patient) => patient.nic === activeId
       );
       setActiveData(filteredData);
     }
   }, [appAddPopupCount, activeId, patientList,selectedTime]);
-
-  useEffect(() => {
-    // console.log("Updated Active Data:", activeData);
-  }, [activeData]);
 
   return (
     <React.Fragment>
@@ -304,32 +270,13 @@ export default function AppAddPopup({
                   justifyContent: "space-between",
                   alignItems: "baseline",
                   width: "100%",
-                //  flexDirection:{
-                //     sm:"column",
-                //     md :"row"
-                //   }
                 }}
-              >
-               
+              >         
                 <BasicTimePicker
                 sx={{overflow:{xs:'hidden'}}}
                   selectedTime={selectedTime}
                   setSelectedTime={setSelectedTime}
-                  disabledItems={isTimeDisabled}
-
-                  renderOption={(time, { selected }) => {
-                    if (scheduledTimes.includes(time)) {
-                      return <Typography style={{ color: 'gray' }}>{time}</Typography>;
-                    }
-                    return <Typography>{time}</Typography>;
-                  }}  
-                  
-                 
-                  // setSelectedTimeH={(value) => setTimeValue({...timevalue,hour:value})}
-                  // setSelectedTimeM={(value) => setTimeValue({...timevalue,minutes:value})}
-                />
-               
-                  
+                />  
                 <Button
                   disabled={confirmDisabled}
                   sx={{
@@ -337,18 +284,13 @@ export default function AppAddPopup({
                     backgroundColor: "#79CCBE",
                     "&:hover": {
                       backgroundColor: "#79CCBE",
-                    },
-                    
-                   
+                    },  
                   }}
                   variant="contained"
                   type="submit"
                 >
                   Confirm
                 </Button>
-                
-               
-              
               </Stack>
             </DialogActions>
           </form>

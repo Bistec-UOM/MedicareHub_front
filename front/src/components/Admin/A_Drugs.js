@@ -5,106 +5,42 @@ import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
-
-//need to take data from //drugs// table to take available data
-
+import axios from 'axios';
 
 
-const pdata = [
-  { 
-    datefor: "2021.02.21", 
-    drugType: [
-      {name: "amoxilin", quantity: 2},
-      {name: "dopamine", quantity: 23},
-      {name: "dopaminec", quantity: 23},
-    ] 
-  },  { 
-    datefor: "2022.02.22", 
-    drugType: [
-      {name: "amoxilin", quantity: 2},
-      {name: "dopamine", quantity: 23},
-      {name: "dopaminec", quantity: 23},
-    ] 
-  },  { 
-    datefor: "2023.03.23", 
-    drugType: [
-      {name: "amoxilin", quantity: 2},
-      {name: "dopamine", quantity: 23},
-      {name: "dopaminec", quantity: 23},
-    ] 
-  },  { 
-    datefor: "2024.02.24", 
-    drugType: [
-      {name: "amoxilin", quantity: 2},
-      {name: "dopamine", quantity: 23},
-      {name: "dopaminec", quantity: 23},
-    ] 
-  },
-  { 
-    datefor: "2024.02.25", 
-    drugType: [
-      {name: "amoxilin", quantity: 2000},
-      {name: "dopamine", quantity: 23},
-      {name: "dopaminec", quantity: 23},
-    ] 
-  },
-  { 
-    datefor: "2024.02.26", 
-    drugType: [
-      {name: "amoxilin", quantity: 122},
-      {name: "dopamine", quantity: 23},
-    ] 
-  },
-  { 
-    datefor: "2024.02.27", 
-    drugType: [
-      {name: "amoxilin", quantity: 12},
-      {name: "dopamine", quantity: 23},
-    ] 
-  },
-  { 
-    datefor: "2024.03.11", 
-    drugType: [
-      {name: "amoxilin", quantity: 33},
-      {name: "dopamine", quantity: 4},
-      {name: "lodrine", quantity: 4},
-      {name: "panadol", quantity: 42},
-    ] 
-  },
-  { 
-    datefor: "2024.03.12", 
-    drugType: [
-      {name: "amoxilin", quantity: 12},
-      {name: "dopamine", quantity: 233},
-    ] 
-  },
-  { 
-    datefor: "2024.03.13", 
-    drugType: [
-      {name: "amoxilin", quantity: 33},
-      {name: "dopamine", quantity: 43},
-      {name: "lodrine", quantity: 4},
-      {name: "panadol", quantity: 42},
-    ] 
-  },
+const ADrugs = () => {
+  const [pdata, setPdata] = useState([]);
+  const [rows, setrows] = useState([]);
+  useEffect(() => {
+    axios.get('https://localhost:7205/api/Analytic/daily-drug-usage')
+      .then(response => {
+        console.log(response.data);
+        setPdata(response.data);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+      axios.get('https://localhost:7205/api/Analytic/available-count')
+      .then(res => {
+        console.log(res.data);
+        setrows(res.data);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, []); // Empty dependency array means this effect runs once on mount
   
-];
-function createData(name,available) {
-  return { name,available };
-}
-
-const rows = [
-  createData('amoxilin','800'),
-  createData('lodrine','900'),
-  createData('panadol','940'),
-  ];
-
-const drugTypes = pdata.flatMap(data => data.drugType);
+  // Rest of your component
+  const drugTypes = pdata.flatMap(data => data.drugType);
 
 const uniqueDrugTypes = drugTypes.reduce((unique, item) => 
   unique.some(drug => drug.name === item.name) ? unique : [...unique, item], []);
 
-const ADrugs = () => {
+
+
+
+
+
   const currentDate = new Date(); // Initialize currentDate
   // const [TimeGap, setTimeGap] = React.useState(new Date(currentDate)); // Initialize TimeGap with current date
 
@@ -200,7 +136,7 @@ useEffect(() => {
         <Grid item xs={4}>
           <Paper style={{ textAlign: 'center', height: '35vh', paddingTop: "6%" }} >
             <Typography fontSize={25}>Most Used Drug(last 30 days)</Typography>
-            <Typography fontSize={40}>{loading ? 'Loading...' : mostUsedDrug}</Typography>
+            <Typography fontSize={30}sx={{marginTop:4}}>{loading ? 'Loading...' : mostUsedDrug}</Typography>
           </Paper>
         </Grid>
         <Grid item xs={8} style={{textAlign:'right'}}>

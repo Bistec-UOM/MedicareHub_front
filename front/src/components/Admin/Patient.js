@@ -15,7 +15,7 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateField } from '@mui/x-date-pickers/DateField';
-import SuccessNotification from "../../components/recepcomponents/SnackBar/SuccessNotification";
+import SuccessNotification from "../recepcomponents/SnackBar/SuccessNotification";
 
 
 function createData(id, name, nic, address,dob, email,gender,fullName,contactNumber) {
