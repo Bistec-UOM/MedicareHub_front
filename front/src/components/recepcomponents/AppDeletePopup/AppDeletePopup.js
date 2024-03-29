@@ -55,9 +55,9 @@ export default function AppDeletePopup({appointlist,setAppointList,handleNotific
           <Box sx={{display:'flex',justifyContent:'flex-end',paddingRight:'5%'}}>
             <Button onClick={()=>handleRealDelete(item)}
               sx={{
-                backgroundColor: "#F44336", // Replace with your desired color
+                backgroundColor: "#F44336", 
                 "&:hover": {
-                  backgroundColor: "#F44336", // Replace with your desired hover color
+                  backgroundColor: "#F44336", 
                 },
                 marginLeft: "20px",
               }}

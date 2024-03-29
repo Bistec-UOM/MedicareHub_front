@@ -9,7 +9,6 @@ import { Typography } from "@mui/material";
 import { Box } from "@mui/material";
 import axios from "axios";
 import "../../.././../recep.css";
-import DoctorAppDeletePopup from "../DoctorAppDeletePopup/DoctorAppDeletePopup";
 import SuccessNotification from "../../SnackBar/SuccessNotification";
 import CloseIcon from "@mui/icons-material/Close";
 import FullCalendar from "@fullcalendar/react";
@@ -227,14 +226,6 @@ const DoctorAppCalender = ({ doctorId }) => {
           }}
         />
       </Box>
-      <DoctorAppDeletePopup
-        setNotificationOpen={setNotificationOpen}
-        setNotiMessage={setNotiMessage}
-        notiMessage={notiMessage}
-        handleNotification={handleNotification}
-        setDoctorAppDeleteOpen={setDoctorAppDeleteOpen}
-        doctorAppDeleteOpen={doctorAppDeleteOpen}
-      ></DoctorAppDeletePopup>
       <SuccessNotification
         type={notiType}
         setNotificationOpen={setNotificationOpen}
