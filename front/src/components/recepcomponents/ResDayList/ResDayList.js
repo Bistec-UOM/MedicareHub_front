@@ -39,6 +39,7 @@ const ResDayList = (props) => {
     document.body.style.margin = "0";
     axios.get(`https://localhost:7205/api/Appointment/doctor/${props.docid}/day/${selectedDay}`)
         .then((response) => {
+
              console.log("sel",selectedDay);
             console.log("response data",response.data)
             const responseData = response.data;

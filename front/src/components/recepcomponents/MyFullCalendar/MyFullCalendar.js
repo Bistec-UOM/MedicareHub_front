@@ -31,7 +31,9 @@ function MyFullCalendar({doctorId,selectedTab,setSelectedTab}) {
     {
       axios.get(`https://localhost:7205/api/Appointment/BlockedDates/${doctorId}`)
       .then((response) => {
+
         setDisabledDates(response.data);  
+
       })
       .catch((error) => {
           console.error('Error fetching disabled dates:', error);
@@ -152,9 +154,11 @@ const getDayStatus=(target)=>  //check date is in the disabledDates list
 }
   const getDayCellClassNames = (arg) => {  //return css class names for day cells
     const date=new Date(arg.date);
+
     const milliseconds = date.getMilliseconds();
     const millisecondsPart = milliseconds === 0 ? '' : `.${milliseconds.toString().padStart(3, '0')}`;
     const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}T${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}${millisecondsPart}`;
+
     if(getDayStatus(formattedDate))
     {
       return 'blocked-date';
