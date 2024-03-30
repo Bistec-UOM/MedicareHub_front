@@ -15,11 +15,20 @@ const PatientDetailCard = ({
   item,
   apopen,
   setApopen,
+  filteredAppointments,
+  docid,
+  handleNotification
 }) => {
   const handleAppAddPopup = () => {
-    setAppAddPopupCount(appAddPopupCount + 1);
-    setApopen(true);
-    setActiveId(item.nic);
+    var patEligibility =filteredAppointments.find(obj=>obj.patient.id===item.id);
+    if (patEligibility) {
+      handleNotification("You Already have an appointment","error");
+      
+    } else {
+      setAppAddPopupCount(appAddPopupCount + 1);
+      setApopen(true);
+      setActiveId(item.nic);
+    }
   };
   useEffect(() => {
     setActiveId(item.nic);
