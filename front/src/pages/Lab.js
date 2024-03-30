@@ -1,4 +1,4 @@
-import { Grid,Card, Typography, CssBaseline, Box, Drawer, Button } from '@mui/material'
+import { Grid,CssBaseline, Box, Drawer, Alert} from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import {SidebarContainer,SidebarTop,SidebarList} from '../components/sidebar/Sidebar'
 import { Sideunit_Test } from '../components/sidebar/Sideunits';
@@ -12,6 +12,7 @@ import SubmitPage from '../components/Lab/TestSubmit/Submit/SubmitPage';
 import Accept from '../components/Lab/TestSubmit/Accept';
 import axios from 'axios';
 import { baseURL, endPoints } from '../Services/Lab';
+import { Load } from '../components/Other';
 
 export default function Lab() {
 
@@ -22,7 +23,7 @@ export default function Lab() {
   const [selectedT,setSelectedT]=useState()//selected req <---------- from Sideunit
   const [query, setQuery] = useState('')//searchbar value
 
-  const x=[
+/*   const x=[
   {date:1,id:51,name: "Sarah Johnson", load:[{repId:23,test: 'Thyroxin',testId:3}]},
   {date:1,id:52,name: "Michael Smith", load:[{repId:24,test:'urine',testId:2}]},
   {date:1,id:54,name: "John Davis", load:[{repId:25,test: 'BMT',testId:8}]},
@@ -59,14 +60,14 @@ export default function Lab() {
     {repId:19,test:'Lipid',testId:7},
     {repId:20,test:'FBC',testId:1},
    ]
-
+ */
     const [Tload,setTload]=useState([])//Lab test list <----- from back end
     const [RLoad,setRLoad]=useState([])
     const [RloadDone,setRloadDone]=useState(false)
+    const [Er,setEr]=useState(false)
 
     //const [Fields,setFields]=useState([])//store set of fields by the selected test
     const [Test,setTest]=useState([])//store the selected test
-    const [loadIn,setLoadIn]=useState([])//selected reqs by a date
     const [accLoad,setAccLoad]=useState([])//set sample accepted test list
     const [req,setReq]=useState()//store selected reqs details
     const [reqOK,setReqOk]=useState(true)//to stop keeping previous reqs details after it poped up
@@ -81,28 +82,31 @@ export default function Lab() {
       .then((res)=>{
         setRLoad(res.data)
         setRloadDone(true)
+        setEr(false)
       })
       .catch((er)=>{
+        setEr(true)
+        setRloadDone(true)
         console.log(er.massage)
       })
      }
 
       //selected test name
       let t=Tload.filter(el=>{
-        return el.id==tId
+        return el.id===tId
       })
       setTest(t[0])
 
       //select a lab request
       let found=false
-      RLoad.map((x)=>{
-        if(x.id==selectedT){
+      RLoad.forEach((x)=>{
+        if(x.id===selectedT){
           setReq(x)
           found=true
         }
       })
       if(!found){setReqOk(false)}else{setReqOk(true)}//to not render previous req details
-     },[date,tId,page,Tload,selectedT,RLoad])
+     },[date,tId,page,Tload,selectedT,RLoad,RloadDone])
 
 //Responsive drawer==================================================================================
  const drawerW=320
@@ -125,9 +129,11 @@ export default function Lab() {
          <LabSearch setPage={setPage} setDate={setDate} date={date} query={query} setQuery={setQuery}></LabSearch>
       </SidebarTop>
       <SidebarList>
+      {!RloadDone?<Load></Load>:''}
+      {Er?<Alert severity="error" variant='outlined'>Error occured</Alert>:''}
       {
          filteredData.map((elm)=>{
-          if(elm.date==date){
+          if(elm.date===date){
             return(
               <Sideunit_Test key={elm.id} id={elm.id} name={elm.name} load={elm.load} setSelectedT={setSelectedT} selectedT={selectedT}></Sideunit_Test>
             )
@@ -165,11 +171,11 @@ export default function Lab() {
 
     <Grid item sm={9} spacing={0} sx={{height:'100%',marginLeft:{sm:'320px',xs:'0px'},width:{xs:'100vw',sm:'60vw'}}}>
     {
-              page==1 && req!=null ? <Accept req={req} accLoad={accLoad} setAccLoad={setAccLoad} RLoad={RLoad} setRLoad={setRLoad} reqOK={reqOK}></Accept>
-              :page==2?<LabTestList settId={settId} setPage={setPage} Tload={Tload} setTload={setTload}></LabTestList>
-              :page==3?<CreateLabTemplate setPage={setPage} setTload={setTload}></CreateLabTemplate>
-              :page==4?<Edittemplate setPage={setPage} tId={tId} Tdata={Test} setTload={setTload}></Edittemplate>
-              :page==5?<SubmitPage setpage={setPage} load={accLoad} setLoad={setAccLoad}></SubmitPage>
+              page===1 && req!=null ? <Accept req={req} accLoad={accLoad} setAccLoad={setAccLoad} RLoad={RLoad} setRLoad={setRLoad} reqOK={reqOK}></Accept>
+              :page===2?<LabTestList settId={settId} setPage={setPage} Tload={Tload} setTload={setTload}></LabTestList>
+              :page===3?<CreateLabTemplate setPage={setPage} setTload={setTload}></CreateLabTemplate>
+              :page===4?<Edittemplate setPage={setPage} tId={tId} Tdata={Test} setTload={setTload}></Edittemplate>
+              :page===5?<SubmitPage setpage={setPage} load={accLoad} setLoad={setAccLoad}></SubmitPage>
               :''
       }
 

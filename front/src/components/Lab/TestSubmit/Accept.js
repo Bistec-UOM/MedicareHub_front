@@ -4,6 +4,7 @@ import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import axios from 'axios';
 import { baseURL, endPoints } from '../../../Services/Lab';
+import { PersonDetail } from '../../Other';
 
 export default function Accept({req,reqOK,RLoad,setRLoad}) {
 
@@ -54,21 +55,8 @@ export default function Accept({req,reqOK,RLoad,setRLoad}) {
 
   return (
     <div>
-       { reqOK?<Card 
-                  sx={{
-                    width:'100%',
-                    height:'30px',
-                    pl:'35px',
-                    height:'50px',
-                    pt:'20px',
-                    position:'fixed',
-                    zIndex:'10'
-                  }} square
-                >
-                <Typography>{req.name}</Typography>
-                </Card>:''
-      }
-
+       { reqOK?<PersonDetail name={req.name} gender={req.gender} age={req.age}></PersonDetail>:''}
+        
         <Box sx={{width:'100%',padding:'40px',paddingTop:'90px'}}>
 
         {reqOK?<Typography sx={{fontSize:'16px',mb:'30px',color:'gray'}}>Accept samples & payments</Typography>:''}
@@ -89,8 +77,17 @@ export default function Accept({req,reqOK,RLoad,setRLoad}) {
                         >
                 <Box>
                     <Typography sx={{fontSize:'18px',mb:'5px'}}>{i.testName} Test</Typography>
-                    <Typography sx={{fontSize:'15px'}}>Token No: <Chip label={i.repId} sx={{height:'20px',borderRadius:'5px',color:'white',backgroundColor:'#568a91'}}></Chip></Typography>
-                    <Typography sx={{fontSize:'16px'}}>Rs. {i.price}</Typography>
+                    <Typography sx={{fontSize:'15px',display:'flex',alignItems:'center'}}>
+                        Token No: <Chip label={i.repId} 
+                                    sx={{
+                                      height:'20px',
+                                      borderRadius:'5px',
+                                      color:'white',
+                                      backgroundColor:'#568a91'
+                                      }}
+                                    ></Chip>
+                    </Typography>
+                    <Typography sx={{fontSize:'15px'}}>Rs. {i.price}</Typography>
                 </Box>
                 <Button variant='contained' onClick={()=>AccIdSet(i.repId)}>Accept</Button>
             </Paper>
