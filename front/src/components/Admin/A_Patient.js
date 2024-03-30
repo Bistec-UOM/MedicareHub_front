@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { LineChart,BarChart,Bar, ResponsiveContainer, Legend, Tooltip, Line, XAxis, YAxis, Label } from "recharts";
 import axios from 'axios';
 import { useState } from 'react';
+import TotalPatientCount from './AnalyticsComponents.js/TotalPatientCount';
 // const pdata = [
 //   { datefor: "2022.02.20", child_male: 12, child_female: 2, adult_male: 12, adult_female: 2, old_male: 12, old_female: 2 },
 //   { datefor: "2023.04.21", child_male: 12, child_female: 2, adult_male: 12, adult_female: 2, old_male: 12, old_female: 2 },
@@ -195,12 +196,9 @@ const handletypeChange = (event) => {
     return (
         <div>
           <Grid container spacing={2}>
-            <Grid item xs={4}>
-              <Paper style={{textAlign:'center', paddingTop:"6%"}} >
-                <Typography fontSize={20}>Patient count within today</Typography>
-                <Typography fontSize={90}>{count}</Typography>
-              </Paper>
-            </Grid>
+          <Grid item xs={4}>
+          <TotalPatientCount count={count}></TotalPatientCount>
+          </Grid>
             <Grid item xs={8}>
               <Paper sx={{padding:'10px'}}>
               <Typography fontSize={20} sx={{textAlign:'center'}}>Patient count within a time period</Typography>

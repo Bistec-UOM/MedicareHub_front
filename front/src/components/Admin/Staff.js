@@ -11,8 +11,8 @@ import { DateField } from '@mui/x-date-pickers/DateField';
 
 
 
-function createData(id,fullName,name,nic,address,contactNumber,qualifications,role,email,dob,gender) {
-    return {id,fullName,name,nic,address,contactNumber,qualifications,role,email,dob,gender};
+function createData(id,fullName,name,nic,address,contactNumber,qualifications,role,email,dob,gender,password) {
+    return {id,fullName,name,nic,address,contactNumber,qualifications,role,email,dob,gender,password};
   }
 export default function Staff() {
 
@@ -31,7 +31,8 @@ const [isDisabled, setIsDisabled] = useState(true);
     dob: "",
     gender: "",
     role:"",
-    qualifications:""
+    qualifications:"",
+    password:""
   });
   const [update,forceUpdate]=useState(0);
   useEffect(() => {
@@ -51,7 +52,7 @@ const [isDisabled, setIsDisabled] = useState(true);
         data.dob,
         data.gender,
         data.role,
-        
+        data.password
         // data.dob
       ));
       setStaffData(apiData);
@@ -77,7 +78,8 @@ const [isDisabled, setIsDisabled] = useState(true);
     dob: formData.dob,
     gender: formData.gender,
     qualifications:formData.qualifications,
-    role:formData.role
+    role:formData.role,
+    password:formData.password
   };
 
 const [Role, setRole] = useState("");
@@ -119,10 +121,6 @@ const [Role, setRole] = useState("");
   };
 
 
-  // const [value, setValue] = React.useState(dayjs('2022-04-17'));
-
-
-
   const handleEditClick = () =>{
     setIsDisabled(false)
   }
@@ -157,7 +155,7 @@ try {
 
   const handleEditClickOpen = (row) => {
     // setType(`Edit ${buttonNumber}`);
-    setFormData({...formData,id: row.id, name: row.name,role:row.role, fullName: row.fullName, nic: row.nic,address: row.address,contactNumber:row.contactNumber,email:row.email,dob:row.dob,gender:row.gender,qualifications:row.qualifications});
+    setFormData({...formData,id: row.id, name: row.name,role:row.role, fullName: row.fullName, nic: row.nic,address: row.address,contactNumber:row.contactNumber,email:row.email,dob:row.dob,gender:row.gender,qualifications:row.qualifications,password:row.password});
 console.log(pData.id)
     // setSelectedPaper(row);
     setEditOpen(true);
@@ -205,6 +203,7 @@ const fields = [
   { label: "Contact Number", key: "contactNumber" },
   { label: "Qualifications", key: "qualifications" ,style:{ml:'20px'}},
   { label: "Email Address", key: "email" },
+  { label: "Password", key: "password" },
 ];
 const RoleFields = ["Doctor", "Receptionist", "Lab Assistant", "Cashier"];
 
@@ -233,7 +232,8 @@ const RoleFields = ["Doctor", "Receptionist", "Lab Assistant", "Cashier"];
           <TextField required label="Address" fullWidth sx={{ mb: 1 }} onChange={(e) => handleInputChange("address", e.target.value)}/>
           <TextField required label="Contact Number" sx={{ mb: 1 }} onChange={(e) => handleInputChange("contactNumber", e.target.value)}/>
           <TextField required label="qualifications" sx={{ ml: 4, mb: 1 }} onChange={(e) => handleInputChange("qualifications", e.target.value)}/>
-          <TextField required label="E-mail" fullWidth sx={{ mb: 1 }} onChange={(e) => handleInputChange("email", e.target.value)}/>
+          <TextField required label="E-mail"  sx={{ mb: 1 }} onChange={(e) => handleInputChange("email", e.target.value)}/>
+          <TextField required label="Password"  sx={{ mb: 1 }} onChange={(e) => handleInputChange("password", e.target.value)}/>
           <div style={{display:'flex'}}>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DemoContainer components={['DateField']}>
