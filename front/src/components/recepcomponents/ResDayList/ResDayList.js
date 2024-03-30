@@ -65,11 +65,6 @@ const ResDayList = (props) => {
   
 }, [props.docid, selectedDay, delcount]); // Ensure dependencies are included in the dependency array
 
-if(ePage)
-{
-  return <PageNotFound/>
-}
-
   return (   
     <Box sx={{height:'100%'}}>
       

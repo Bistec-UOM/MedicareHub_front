@@ -32,19 +32,15 @@ function ResponseAppCalender() {
     const fetchData = async () => {
       try {
         const response = await fetch("https://localhost:7205/api/Appointment/doctors");
-        if (!response.ok) {
-          setEpage(true);
-        }
         const responseData = await response.json();
         setDoctorCount((prevCount) => prevCount + 1);
         setDoctorList(responseData.result);
         setRloadDone(true)
         setSelectedTab(responseData.result[0].id);
+       
       } catch (error) {
         console.error('Error fetching doctor data:', error);
-        setEpage(true);
-        setRloadDone(true)
-        // Handle the error here, you can set a notification or update state to indicate the error.
+        setRloadDone(true);
       }
     };
   
@@ -55,7 +51,7 @@ function ResponseAppCalender() {
   };
 
   const [mobileOpen, setMobileOpen] = React.useState(false); //variable for mobile screen drawer open
-  const [isClosing, setIsClosing] = React.useState(false);
+  const [isClosing, setIsClosing] = React.useState(false);  //variable for mobile view navbar open
   const [selectedTab, setSelectedTab] = useState(0);
   const [RloadDone,setRloadDone]=useState(false)  //state for doctorlist loading 
 
@@ -134,7 +130,6 @@ function ResponseAppCalender() {
       </Grid>
     </div>
   );
-
 
   return (
     <Box sx={{ display: "flex", height: "100%" }}>

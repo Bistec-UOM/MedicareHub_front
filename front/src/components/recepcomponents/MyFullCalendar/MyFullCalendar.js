@@ -34,11 +34,10 @@ function MyFullCalendar({epage,setEpage,doctorId,selectedTab,setSelectedTab}) {
     {
       axios.get(`https://localhost:7205/api/Appointment/BlockedDates/${doctorId}`)
       .then((response) => {
-        setDisabledDates(response.data);  
+        setDisabledDates(response.data);        
       })
       .catch((error) => {
-          console.error('Error fetching disabled dates:', error);
-          setEpage(true);
+          console.error('Error fetching disabled dates:', error);        
       });
     },[doctorId]);
 
@@ -47,16 +46,12 @@ function MyFullCalendar({epage,setEpage,doctorId,selectedTab,setSelectedTab}) {
       const fetchData = async () => {
         try {
           const response = await fetch("https://localhost:7205/api/Appointment/doctors");
-          if (!response.ok) {
-            setEpage(true);
-            //throw new Error("Network response was not ok");
-          }
           const responseData = await response.json();
           setDoctorCount((prevCount) => prevCount + 1);
           setDoctorList(responseData.result);
+          setEpage(false);
         } catch (error) {
-          console.error('Error fetching doctor data:', error);
-          setEpage(true);
+          console.error('Error fetching doctor data:', error);   
         }
       };
     
@@ -69,11 +64,12 @@ function MyFullCalendar({epage,setEpage,doctorId,selectedTab,setSelectedTab}) {
       axios.get(`https://localhost:7205/api/Appointment/doctor/${doctorId}/month/${pasMonth}`)
       .then((response) => {
         setDayAppCount(response.data);
+        
        
       })
       .catch((error) => {
           console.error('Error fetching appointments:', error);
-          setEpage(true);
+          
           
       });
     },[doctorId,pasMonth]);
