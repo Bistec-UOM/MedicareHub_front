@@ -8,12 +8,16 @@ import AllAppDeletePopup from "../AllAppDeletePopup/AllAppDeletePopup";
 import '../../../recep.css'
 import SuccessNotification from "../SnackBar/SuccessNotification";
 import axios from "axios";
+import PageNotFound from "../PageNotFound/PageNotFound";
+import { Load } from "../../Other";
 //day app list page for a day
 
 const ResDayList = (props) => {
   const [notificationOpen,setNotificationOpen]=useState(false);
   const [notiMessage,setNotiMessage]=useState("");
   const [notiType,setNotiType]=useState("success")
+  const [ePage,setEpage]=useState(false);
+  const [RloadDone,setRloadDone]=useState(false)  //state for applist loading 
   const handleNotification=(msg,type)=>
  {  
     setNotiMessage(msg);
@@ -39,13 +43,11 @@ const ResDayList = (props) => {
     document.body.style.margin = "0";
     axios.get(`https://localhost:7205/api/Appointment/doctor/${props.docid}/day/${selectedDay}`)
         .then((response) => {
-
-             console.log("sel",selectedDay);
-            console.log("response data",response.data)
             const responseData = response.data;
             setIsDisabled(responseData.length === 0); // Update isDisabled based on the fetched appointments
             const sortedAppointments = responseData.slice().sort((a, b) => new Date(a.appointment.dateTime) - new Date(b.appointment.dateTime));  //this is used for sorting appointments based on their arrival time
             props.setFilteredAppointments(sortedAppointments);
+            setRloadDone(true);
             props.setDayAppTotal(sortedAppointments.length);
             if(sortedAppointments.length>=10)  //blocked more than 10 appointments for a day
             {
@@ -57,12 +59,20 @@ const ResDayList = (props) => {
         })
         .catch((error) => {
             console.error('Error fetching appointments:', error);
+            setEpage(true);
+            setRloadDone(true); 
         });
   
 }, [props.docid, selectedDay, delcount]); // Ensure dependencies are included in the dependency array
 
+if(ePage)
+{
+  return <PageNotFound/>
+}
+
   return (   
     <Box sx={{height:'100%'}}>
+      
       <Box 
         sx={{
           display: "flex",
@@ -136,14 +146,17 @@ const ResDayList = (props) => {
          
         }}
       >
+        
         <Box sx={{ padding:{
             sm: "3% 0 0 8%",
             xs:"5% 0 0 2%",
         },display:{xs:'none',sm:'none',md:'flex'},marginRight:{xs:'3%',sm:'0%'},marginTop:{xs:'50%',sm:'20%',md:'7%'} }}>
+          
           <Steper  search={search} items={props.filteredAppointments}></Steper>
         </Box>
         {
           <Box sx={{ width: "70%",marginTop:{xs:'40%',sm:'20%',md:'7%'}}}>
+             {!RloadDone?<Load></Load>:''}
             {Array.isArray(props.filteredAppointments) && props.filteredAppointments.sort((a,b)=>{  //compare time objects and sort and store 
               return new Date(a.time)-new Date(b.time);
             })

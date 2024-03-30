@@ -6,6 +6,7 @@ import SuccessNotification from "../SnackBar/SuccessNotification";
 import AppAddPopup from "../AppAddPopup/AppAddPopup";
 import PatientDetailCard from "../PatientDetailCard/PatientDetailCard";
 import PatientRegpopup from "../PatRegPopup/PatientRegPopup";
+import { Load } from "../../Other";
 import "../../../recep.css";
 
 const SearchPatientPage = (props) => {
@@ -19,6 +20,8 @@ const SearchPatientPage = (props) => {
   const [regopen, setRegopen] = useState(false); //bool variable for open patient reg popup open
   const [patientList, setPatientList] = useState(null);
   const [activeId, setActiveId] = useState(""); //var for selected patient id
+  const [RloadDone,setRloadDone]=useState(false)  //state for patientList loading 
+
   var location = useLocation();
   var loc = location.state;
 
@@ -36,14 +39,24 @@ const SearchPatientPage = (props) => {
   };
 
   useEffect(() => {
-    fetch(`https://localhost:7205/api/Appointment/patients`)
-      .then((response) => {
-        return response.json();
-      })
-      .then((responseData) => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`https://localhost:7205/api/Appointment/patients`);
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const responseData = await response.json();
         setPatientList(responseData);
-      });
+        setRloadDone(true);
+      } catch (error) {
+        console.error('Error fetching patient data:', error);
+        setRloadDone(true);   
+      }
+    };
+  
+    fetchData();
   }, [patientCount]);
+  
   return (
     <Box sx={{ height: "100%" }}>
       <Box
@@ -117,6 +130,7 @@ const SearchPatientPage = (props) => {
       >
         {
           <Box sx={{ width: "80%", marginTop: { xs: "20%", sm: "0%" } }}>
+                      {!RloadDone?<Load></Load>:''}
             {Array.isArray(patientList) &&
               patientList
                 .filter((item) => {
