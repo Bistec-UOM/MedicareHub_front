@@ -235,5 +235,4 @@ const DoctorAppCalender = ({ doctorId }) => {
     </div>
   );
 };
-
 export default DoctorAppCalender;

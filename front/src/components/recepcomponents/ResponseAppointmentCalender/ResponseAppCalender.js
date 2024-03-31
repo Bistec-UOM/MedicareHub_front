@@ -14,6 +14,8 @@ import { Tabs } from "@mui/material";
 import { Sideunit_Doctor } from "../../sidebar/Sideunits";
 import ResNavBar from "../ResNavBar/ResNabBar";
 import MyFullCalendar from "../MyFullCalendar/MyFullCalendar";
+import PageNotFound from "../PageNotFound/PageNotFound";
+import { Load } from "../../Other";
 
 const drawerWidth = 358.4;
 
@@ -24,25 +26,34 @@ function ResponseAppCalender() {
 
   const [doctorList, setDoctorList] = useState([]); //doctor list of sidebar
   const [doctorCount, setDoctorCount] = useState(1);
+  const [epage,setEpage]=useState(false);  //state for errorpage
 
   useEffect(() => {
-    fetch("https://localhost:7205/api/Appointment/doctors")
-      .then((response) => {
-        return response.json();
-      })
-      .then((responseData) => {
-        setDoctorCount(doctorCount + 1);
+    const fetchData = async () => {
+      try {
+        const response = await fetch("https://localhost:7205/api/Appointment/doctors");
+        const responseData = await response.json();
+        setDoctorCount((prevCount) => prevCount + 1);
         setDoctorList(responseData.result);
-        setSelectedTab(responseData.result[0].id); //set the selected doctor id
-      });
+        setRloadDone(true)
+        setSelectedTab(responseData.result[0].id);
+       
+      } catch (error) {
+        console.error('Error fetching doctor data:', error);
+        setRloadDone(true);
+      }
+    };
+  
+    fetchData();
   }, []);
   const handleChanges = (event, newValue) => {
     setSelectedTab(newValue);
   };
 
   const [mobileOpen, setMobileOpen] = React.useState(false); //variable for mobile screen drawer open
-  const [isClosing, setIsClosing] = React.useState(false);
+  const [isClosing, setIsClosing] = React.useState(false);  //variable for mobile view navbar open
   const [selectedTab, setSelectedTab] = useState(0);
+  const [RloadDone,setRloadDone]=useState(false)  //state for doctorlist loading 
 
   const handleDrawerClose = () => {
     setIsClosing(true);
@@ -70,6 +81,7 @@ function ResponseAppCalender() {
             ></SearchBar>
           </SidebarTop>
           <SidebarList sx={{ backgroundColor: "#DEF4F2" }}>
+          {!RloadDone?<Load></Load>:''}
             <Box sx={{ overflowY: "scroll", height: "81vh" }}>
               <Tabs
                 orientation="vertical"
@@ -192,7 +204,7 @@ function ResponseAppCalender() {
           sm={11}
           md={9}
         >
-          <MyFullCalendar doctorId={selectedTab} />
+          <MyFullCalendar epage={epage} setEpage={setEpage} doctorId={selectedTab} />
         </Grid>
       </Box>
     </Box>

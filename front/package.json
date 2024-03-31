@@ -11,7 +11,7 @@
     "@hookform/resolvers": "^3.3.4",
     "@mui/icons-material": "^5.15.5",
     "@mui/lab": "^5.0.0-alpha.161",
-    "@mui/material": "^5.15.5",
+    "@mui/material": "^5.15.14",
     "@mui/x-charts": "^6.19.4",
     "@mui/x-data-grid": "^7.1.0",
     "@mui/x-date-pickers": "^6.19.0",
