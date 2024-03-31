@@ -10,11 +10,16 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import SuccessNotification from '../recepcomponents/SnackBar/SuccessNotification';
 
 const AOther = () => {
+  const [notificationOpen,setNotificationOpen]=useState(false);
+  const [notiMessage,setNotiMessage]=useState("");
+  const [typenoti, settypenoti] = useState('success');
+
+
   const [rows, setRows] = useState([]);
-  const [date, setDate] = useState(null); // Add this line
-  const [Attendace, setAttendace] = useState([]);
+  const [date, setDate] = useState(null); 
 
 
   const [year, setYear] = useState(null);
@@ -37,7 +42,14 @@ const AOther = () => {
           // Add a date field to each item
         })
         .catch(error => {
+          if (error.message === 'Network Error') { 
+            console.error('You are not connected to internet');
+            setNotiMessage("You are not connected to internet");
+            settypenoti('error')
+            setNotificationOpen(true);
+        } else {
           console.error(error);
+        }
         });
     }
   }, [year, month]);
@@ -87,6 +99,7 @@ const AOther = () => {
           </TableBody>
         </Table>
       </Paper>
+      <SuccessNotification setNotificationOpen={setNotificationOpen} notiMessage={notiMessage} notificationOpen={notificationOpen} type={typenoti}></SuccessNotification>
     </div>
   );
 }

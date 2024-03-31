@@ -8,6 +8,8 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateField } from '@mui/x-date-pickers/DateField';
+import AskDelete from "./DialogComponents/AskDelete";
+import SuccessNotification from "../recepcomponents/SnackBar/SuccessNotification";
 
 
 
@@ -15,7 +17,9 @@ function createData(id,fullName,name,nic,address,contactNumber,qualifications,ro
     return {id,fullName,name,nic,address,contactNumber,qualifications,role,email,dob,gender,password};
   }
 export default function Staff() {
-
+  const [notificationOpen,setNotificationOpen]=useState(false);
+  const [notiMessage,setNotiMessage]=useState("");
+  const [typenoti, settypenoti] = useState('success');
 
 // calling for edit
 const [isDisabled, setIsDisabled] = useState(true);
@@ -58,7 +62,14 @@ const [isDisabled, setIsDisabled] = useState(true);
       setStaffData(apiData);
     })
     .catch(err=>{
-      console.log(err);
+      if (err.message === 'Network Error') { 
+          console.error('You are not connected to internet');
+          setNotiMessage("You are not connected to internet");
+          settypenoti('error')
+          setNotificationOpen(true);
+      } else {
+        console.error(err);
+      }
     });
     
   }, [update]);
@@ -78,8 +89,8 @@ const [isDisabled, setIsDisabled] = useState(true);
     dob: formData.dob,
     gender: formData.gender,
     qualifications:formData.qualifications,
+    password:formData.password,
     role:formData.role,
-    password:formData.password
   };
 
 const [Role, setRole] = useState("");
@@ -165,6 +176,7 @@ console.log(pData.id)
   const handleEditClose = () => {
     setSelectedPaper(null);
     setEditOpen(false);
+    setDeleteOpen(false);
     // setIsDisabled(en);
   };
 
@@ -434,24 +446,9 @@ key={row.Id}
 </div>
 
  ))}  
-<React.Fragment>
-      <Dialog
-        open={deleteOpen}
-        onClose={handleClose}
-        // PaperComponent={PaperComponent}
-        aria-labelledby="draggable-dialog-title"
-      >
-        <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
-          are you shure do you want to delete this ?
-        </DialogTitle>
-        <DialogActions>
-          <Button autoFocus onClick={handleClose}>
-            Cancel
-          </Button>
-          <Button onClick={handleRemove} style={{color:"red"}}>Remove</Button>
-        </DialogActions>
-      </Dialog>
-    </React.Fragment>
+<AskDelete deleteOpen={deleteOpen} handleClose={handleClose} handleRemove={handleRemove}></AskDelete>
+<SuccessNotification setNotificationOpen={setNotificationOpen} notiMessage={notiMessage} notificationOpen={notificationOpen} type={typenoti}></SuccessNotification>
+
     </div>
   );
 }

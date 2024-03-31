@@ -6,8 +6,9 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import axios from 'axios';
-import  { useEffect } from 'react';
+import  { useEffect ,useState} from 'react';
 import IncomeOfDay from './AnalyticsComponents.js/IncomeOfDay';
+import SuccessNotification from '../recepcomponents/SnackBar/SuccessNotification';
 
 
 
@@ -37,6 +38,11 @@ const totalIncome = pdata.reduce((total, entry) => {
 }, 0);
 
 const AIncome = () => {
+  const [notificationOpen,setNotificationOpen]=useState(false);
+  const [notiMessage,setNotiMessage]=useState("");
+  const [typenoti, settypenoti] = useState('success');
+
+
   const [Value, setValue] = React.useState('day'); // Initialize Value state with 'day'
   const handleChange = (event) => {
     setValue(event.target.value);
@@ -48,8 +54,15 @@ const AIncome = () => {
     console.log(response.data);
     pdata = response.data;
   })
-  .catch(error => {
-    console.error(error);
+  .catch(err => {
+    if (err.message === 'Network Error') { 
+      console.error('You are not connected to internet');
+      setNotiMessage("You are not connected to internet");
+      settypenoti('error')
+      setNotificationOpen(true);
+  } else {
+    console.error(err);
+  }
   });
 
     console.log("Hello world");
@@ -125,6 +138,8 @@ const AIncome = () => {
           </Paper>
         </Grid>
       </Grid>
+
+      <SuccessNotification setNotificationOpen={setNotificationOpen} notiMessage={notiMessage} notificationOpen={notificationOpen} type={typenoti}></SuccessNotification>
     </div>
   );
 }
