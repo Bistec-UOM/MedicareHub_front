@@ -11,6 +11,7 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import SuccessNotification from '../recepcomponents/SnackBar/SuccessNotification';
+import YoutubeSearchedForIcon from '@mui/icons-material/YoutubeSearchedFor';
 
 const AOther = () => {
   const [notificationOpen,setNotificationOpen]=useState(false);
@@ -67,7 +68,7 @@ const AOther = () => {
                 setDate(newValue); // Update the date state
               }} />
             </LocalizationProvider>
-            <Button variant="contained" onClick={() => HandleSearch(date)} sx={{width:"40px",height:'30px',marginLeft:5}}>Find</Button>
+            <Button variant="contained" onClick={() => HandleSearch(date)} sx={{marginLeft:5,paddingLeft:5,paddingRight:5,padding:1}}>Find <YoutubeSearchedForIcon sx={{marginLeft:2}}></YoutubeSearchedForIcon></Button>
           </Box>
         </Grid>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">

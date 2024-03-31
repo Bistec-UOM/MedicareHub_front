@@ -154,6 +154,11 @@ const [update,forceUpdate]=useState(0);
       errors.dob = 'Invalid date of birth';
       isValid = false;
     }
+    if (!/^\d+$/.test(formData.contactNumber)) {
+      errors.contactNumber = 'Invalid contact number, only integers allowed';
+      isValid = false;
+    }
+
     // If any duplicates are found, set form errors and return
     if (!isValid) {
       setFormErrors(errors);
