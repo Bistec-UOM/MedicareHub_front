@@ -11,9 +11,11 @@ import LinearProgress from '@mui/material/LinearProgress';
 import { useState } from 'react';
 import '../../../recep.css'
 import SuccessNotification from '../SnackBar/SuccessNotification';
+import PageNotFound from '../PageNotFound/PageNotFound';
+import { Load } from '../../Other';
 
 //full calender for receptionist
-function MyFullCalendar({doctorId,selectedTab,setSelectedTab}) {
+function MyFullCalendar({epage,setEpage,doctorId,selectedTab,setSelectedTab}) {
     let today;
     const [doctorList,setDoctorList]=useState([]);  //doctor list for sidebar
     const [doctorCount,setDoctorCount]=useState(0);  // changing state for fetching the doctor list
@@ -24,6 +26,7 @@ function MyFullCalendar({doctorId,selectedTab,setSelectedTab}) {
     const lastDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1);
     const [validRange, setValidRange] = useState({ start: firstDayOfMonth, end: lastDayOfMonth });
     const [disabledDates,setDisabledDates]=useState([]);  //var list for storing disabled dates
+ 
 
     const navigate = useNavigate();
 
@@ -31,44 +34,50 @@ function MyFullCalendar({doctorId,selectedTab,setSelectedTab}) {
     {
       axios.get(`https://localhost:7205/api/Appointment/BlockedDates/${doctorId}`)
       .then((response) => {
-
-        setDisabledDates(response.data);  
-
+        setDisabledDates(response.data);        
       })
       .catch((error) => {
-          console.error('Error fetching disabled dates:', error);
+          console.error('Error fetching disabled dates:', error);        
       });
     },[doctorId]);
 
     // use effect for fetching the doctor list
-    useEffect(()=>
-    {
-      fetch("https://localhost:7205/api/Appointment/doctors").then((response)=>
-      {
-        return response.json();
-      }).then((responseData)=>
-      {
-        setDoctorCount(doctorCount+1);
-        setDoctorList(responseData.result);
-      })
-    },[]);
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const response = await fetch("https://localhost:7205/api/Appointment/doctors");
+          const responseData = await response.json();
+          setDoctorCount((prevCount) => prevCount + 1);
+          setDoctorList(responseData.result);
+          setEpage(false);
+        } catch (error) {
+          console.error('Error fetching doctor data:', error);   
+        }
+      };
+    
+      fetchData();
+    }, []);
+    
     //  use effect for getting the app day count for the current displayed month
     useEffect(()=>
     {
       axios.get(`https://localhost:7205/api/Appointment/doctor/${doctorId}/month/${pasMonth}`)
       .then((response) => {
         setDayAppCount(response.data);
-       // console.log("dis",disabledDates);
-       // console.log(getDayAppCount(10));
+        
+       
       })
       .catch((error) => {
           console.error('Error fetching appointments:', error);
+          
+          
       });
     },[doctorId,pasMonth]);
 
     const [notificationOpen,setNotificationOpen]=useState(false);  //var for open day block notificatio
     const [notiMessage,setNotiMessage]=useState("");  //var for storig noti message
     const [notiType,setNotiType]=useState("success");
+    const [RloadDone,setRloadDone]=useState(false)  //state for calender loading 
 
 
     const handleNotification=(msg,type)=>
@@ -167,9 +176,12 @@ const getDayStatus=(target)=>  //check date is in the disabledDates list
       return 'nonblocked-date';
     }
 };
+
   return (
     <div className="App">
+     
       <Box sx={{overflowY: 'hidden' }}>
+      
       <FullCalendar
         plugins={[dayGridPlugin,interactionPlugin]}
         initialView='dayGridMonth'

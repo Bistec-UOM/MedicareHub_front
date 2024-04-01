@@ -3,18 +3,16 @@ import React, { useEffect } from 'react';
 import { LineChart,BarChart,Bar, ResponsiveContainer, Legend, Tooltip, Line, XAxis, YAxis, Label } from "recharts";
 import axios from 'axios';
 import { useState } from 'react';
-// const pdata = [
-//   { datefor: "2022.02.20", child_male: 12, child_female: 2, adult_male: 12, adult_female: 2, old_male: 12, old_female: 2 },
-//   { datefor: "2023.04.21", child_male: 12, child_female: 2, adult_male: 12, adult_female: 2, old_male: 12, old_female: 2 },
-//   { datefor: "2024.03.12", child_male: 12, child_female: 2, adult_male: 12, adult_female: 2, old_male: 12, old_female: 2 },
-//   { datefor: "2024.03.12", child_male: 12, child_female: 9, adult_male: 12, adult_female: 2, old_male: 12, old_female: 2 },
-//   { datefor: "2024.03.12", child_male: 12, child_female: 2, adult_male: 12, adult_female: 2, old_male: 12, old_female: 2 },
-//   { datefor: "2024.03.13", child_male: 12, child_female: 2, adult_male: 12, adult_female: 2, old_male: 12, old_female: 2 },
-//   { datefor: "2024.03.13", child_male: 1, child_female: 2, adult_male: 1, adult_female: 2, old_male: 2, old_female: 2 },
-//   { datefor: "2024.03.13", child_male: 11, child_female: 26, adult_male: 1, adult_female: 25, old_male: 22, old_female: 24 },
-// ];
+import TotalPatientCount from './AnalyticsComponents.js/TotalPatientCount';
+import SuccessNotification from '../recepcomponents/SnackBar/SuccessNotification';
+import YoutubeSearchedForIcon from '@mui/icons-material/YoutubeSearchedFor';
 
 const APatient = () => {
+  const [notificationOpen,setNotificationOpen]=useState(false);
+  const [notiMessage,setNotiMessage]=useState("");
+  const [typenoti, settypenoti] = useState('success');
+
+
   const [pdata, setPdata] = useState([]);
 
   useEffect(() => {
@@ -25,12 +23,28 @@ const APatient = () => {
         setPdata(response.data);
       })
       .catch(error => {
+        if (error.message === 'Network Error') { 
+          console.error('You are not connected to internet');
+          setNotiMessage("You are not connected to internet");
+          settypenoti('error')
+          setNotificationOpen(true);
+      } else {
         console.error(error);
+      }
       });
   }, []); // Empty dependency array means this effect runs once on mount
 
 
-
+  // const dummyData = [
+  //   { datefor: "2024-03-31", child_male: 10, child_female: 15, adult_male: 20, adult_female: 25, old_male: 5, old_female: 8 },
+  //   { datefor: "2024-03-30", child_male: 8, child_female: 12, adult_male: 18, adult_female: 22, old_male: 4, old_female: 6 },
+  //   { datefor: "2024-03-29", child_male: 12, child_female: 18, adult_male: 22, adult_female: 28, old_male: 6, old_female: 10 },
+  //   // Add more dummy data entries as needed
+  // ];
+  
+  // Assuming you have a state variable 'pdata' to store the data
+  // const [pdata, setPdata] = useState(dummyData);
+  
 
   
   const [count, setcount] = React.useState();
@@ -149,8 +163,8 @@ const handletypeChange = (event) => {
 
 
 
-  const totalperday = {};
-  let currentDate1 = new Date().toISOString().slice(0,10).replace(/-/g, '.');
+  const totalperday = [];
+  // let currentDate1 = new Date().toISOString().slice(0,10).replace(/-/g, '.');
   pdata.forEach((data) => {
     const date = data.datefor;
     const total = data.child_male + data.child_female + data.adult_female + data.adult_male + data.old_male + data.old_female;
@@ -160,31 +174,19 @@ const handletypeChange = (event) => {
     }
       totalperday[date] = total;
     });
-    useEffect(() => {
-      const totalPatientsForCurrentDay = pdata.reduce((total, data) => {
-        if (data.datefor === currentDate1) {
-          return total + data.child_male + data.child_female + data.adult_female + data.adult_male + data.old_male + data.old_female;
-        }
-        return total;
-      }, 0);
-    
-      setcount(totalPatientsForCurrentDay); // Set the count state to the total patients for the current day
-    
-      console.log('Total patients for current day:', totalPatientsForCurrentDay);
-    }, [pdata, currentDate1]);
-  useEffect(() => {
-    const totalPatientsForCurrentDay = pdata.reduce((total, data) => {
-      if (data.datefor === currentDate1) {
-        return total + data.child_male + data.child_female + data.adult_female + data.adult_male + data.old_male + data.old_female;
-      }
-      return total;
-    }, 0);
-  
-    console.log('Total patients for current day:', totalPatientsForCurrentDay);
-  }, [pdata, currentDate1]);
+// Assuming you have a state variable for totalPatientsForCurrentDay
+let todaysData;
+const today = new Date();
+const todaydate = today.getFullYear()+'-'+(today.getMonth()+1).toString().padStart(2, '0')+'-'+today.getDate().toString().padStart(2, '0');
+console.log(todaydate,'today date')
+todaysData = totalperday[todaydate];
+if (!todaysData) {
+  todaysData = 0;
+}
+console.log('all data for today', todaysData)
 
   
-  console.log(totalperday,'current date',currentDate1,'data','total')
+  // console.log(totalperday,'current date',currentDate1,'data','total')
 
      const dataForChart = filteredData1.map(data => ({
       totalPatients: totalperday[data.datefor], // Add total patients for the corresponding day
@@ -195,12 +197,9 @@ const handletypeChange = (event) => {
     return (
         <div>
           <Grid container spacing={2}>
-            <Grid item xs={4}>
-              <Paper style={{textAlign:'center', paddingTop:"6%"}} >
-                <Typography fontSize={20}>Patient count within today</Typography>
-                <Typography fontSize={90}>{count}</Typography>
-              </Paper>
-            </Grid>
+          <Grid item xs={4}>
+          <TotalPatientCount count={todaysData}></TotalPatientCount>
+          </Grid>
             <Grid item xs={8}>
               <Paper sx={{padding:'10px'}}>
               <Typography fontSize={20} sx={{textAlign:'center'}}>Patient count within a time period</Typography>
@@ -220,16 +219,24 @@ const handletypeChange = (event) => {
           <MenuItem value={'5'}>Last 5 Year</MenuItem>
         </Select>
       </FormControl>
-                  <LineChart data={dataForChart} style={{ padding: '0px'}} >
-                    <XAxis dataKey="datefor" fontSize={10} interval={"preserveStartEnd"} >
-                      <Label value="Date" position="insideBottom" offset={-5} />
-                    </XAxis>
-                    <YAxis >
-                      <Label value="Patients" angle={-90} position="insideLeft" offset={4}/>
-                    </YAxis>
-                    <Tooltip />
-                    <Line dataKey="totalPatients" fill='#f4acb7' name="Total Patients" stroke="rgb(244, 172, 183)" activeDot={{ r: 6 }} type="monotone" />
-                  </LineChart>
+      <LineChart data={dataForChart} style={{ padding: '0px'}} >
+  <XAxis dataKey="datefor" fontSize={10} interval={"preserveStartEnd"} >
+    <Label value="Date" position="insideBottom" offset={-5} />
+  </XAxis>
+  <YAxis >
+    <Label value="Patients" angle={-90} position="insideLeft" offset={4}/>
+  </YAxis>
+  <Tooltip />
+  <Line 
+    dataKey="totalPatients" 
+    fill='#f4acb7' 
+    name="Total Patients" 
+    stroke="rgb(244, 172, 183)" 
+    activeDot={{ r: 6 }} 
+    type="monotone" 
+    isAnimationActive={true} // Enable animation
+  />
+</LineChart>
                 </ResponsiveContainer>
               </Paper>
   
@@ -289,6 +296,7 @@ const handletypeChange = (event) => {
 
               </Paper>
           </Grid>
+          <SuccessNotification setNotificationOpen={setNotificationOpen} notiMessage={notiMessage} notificationOpen={notificationOpen} type={typenoti}></SuccessNotification>
         </div>
       );
 }

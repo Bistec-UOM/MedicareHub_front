@@ -8,18 +8,85 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateField } from '@mui/x-date-pickers/DateField';
+import AskDelete from "./DialogComponents/AskDelete";
+import SuccessNotification from "../recepcomponents/SnackBar/SuccessNotification";
 
 
 
-function createData(id,fullName,name,nic,address,contactNumber,qualifications,role,email,dob,gender) {
-    return {id,fullName,name,nic,address,contactNumber,qualifications,role,email,dob,gender};
+function createData(id,fullName,name,nic,address,contactNumber,qualifications,role,email,dob,gender,password) {
+    return {id,fullName,name,nic,address,contactNumber,qualifications,role,email,dob,gender,password};
   }
 export default function Staff() {
-
+  const [notificationOpen,setNotificationOpen]=useState(false);
+  const [notiMessage,setNotiMessage]=useState("");
+  const [typenoti, settypenoti] = useState('success');
 
 // calling for edit
 const [isDisabled, setIsDisabled] = useState(true);
 
+
+
+const [open, setOpen] = useState(false);
+const [editOpen, setEditOpen] = useState(false);
+const [deleteOpen, setDeleteOpen] = useState(false);
+
+// const [selectedPaper, setSelectedPaper] = useState(null);
+const [Type, setType] = useState('');
+
+
+const [row2, setStaffData] = useState([]);
+const [records, setRecords] = useState(row2);
+
+
+useEffect(() => {
+  if (!open || !editOpen) {
+    setFormErrors({
+      name: "",
+      fullName: "",
+      nic: "",
+      address: "",
+      contactNumber: "",
+      email: "",
+      dob: "",
+      gender: "",
+      role:"",
+      qualifications:"",
+      password:""
+    });
+  }
+}, [open,editOpen]);
+useEffect(() => {
+  if (open) {
+    setFormData({
+      name: "",
+      fullName: "",
+      nic: "",
+      address: "",
+      contactNumber: "",
+      email: "",
+      dob: "",
+      gender: "",
+      role:"",
+      qualifications:"",
+      password:""
+    });
+  }
+}, [open]);
+
+
+const [formErrors, setFormErrors] = useState({
+  name: "",
+  fullName: "",
+  nic: "",
+  address: "",
+  contactNumber: "",
+  email: "",
+  dob: "",
+  gender: "",
+  role:"",
+  qualifications:"",
+  password:""
+});
   const [formData, setFormData] = useState({
     id:0,
     name: "",
@@ -31,14 +98,14 @@ const [isDisabled, setIsDisabled] = useState(true);
     dob: "",
     gender: "",
     role:"",
-    qualifications:""
+    qualifications:"",
+    password:""
   });
   const [update,forceUpdate]=useState(0);
   useEffect(() => {
     axios.get(`https://localhost:7205/api/User`)
     .then(res => {
       const apiData = res.data.map((data,index) => createData(
-        // index+1,
         data.id,
         data.fullName,
         data.name,
@@ -51,18 +118,23 @@ const [isDisabled, setIsDisabled] = useState(true);
         data.dob,
         data.gender,
         data.role,
-        
-        // data.dob
+        data.password
       ));
       setStaffData(apiData);
+      setRecords(apiData);
     })
     .catch(err=>{
-      console.log(err);
+      if (err.message === 'Network Error') { 
+          console.error('You are not connected to internet');
+          setNotiMessage("You are not connected to internet");
+          settypenoti('error')
+          setNotificationOpen(true);
+      } else {
+        console.error(err);
+      }
     });
     
   }, [update]);
-
-  const [row2, setStaffData] = useState([]);
 
 
 
@@ -77,11 +149,77 @@ const [isDisabled, setIsDisabled] = useState(true);
     dob: formData.dob,
     gender: formData.gender,
     qualifications:formData.qualifications,
-    role:formData.role
+    password:formData.password,
+    role:formData.role,
   };
 
 const [Role, setRole] = useState("");
   const handleAddSaveClose = () =>{
+    let errors = {};
+    let isValid = true;
+
+    const fields = ['fullName', 'name', 'address', 'contactNumber', 'gender', 'nic','dob','email','qualifications','password'];
+   // Check if any of the required fields are empty
+  
+   fields.forEach(field => {
+     if (!formData[field] || (typeof formData[field] === 'string' && formData[field].trim() === '')) {
+       errors[field] = `${field.charAt(0).toUpperCase() + field.slice(1)} is required`;
+       isValid = false;
+     }
+   });
+ 
+
+
+
+     // Check for duplicates only if row2 is not null
+//  if (isValid) {
+  const isDuplicateName = row2.some((row) => row.name.toLowerCase() === formData.name.toLowerCase());
+  const isDuplicateFullName = row2.some((row) => row.fullName.toLowerCase() === formData.fullName.toLowerCase());
+  const isDuplicateContactNumber = row2.some((row) => row.contactNumber === formData.contactNumber);
+  const isDuplicateNIC = row2.some((row) => row.nic.toLowerCase() === formData.nic.toLowerCase());
+
+  if (isDuplicateName) {
+      errors.name = 'Name already exists';
+      isValid = false;
+  }
+  if (isDuplicateFullName) {
+      errors.fullName = 'Full Name already exists';
+      isValid = false;
+  }
+  if (isDuplicateContactNumber) {
+      errors.contactNumber = 'Contact number already exists';
+      isValid = false;
+  }
+  if (isDuplicateNIC) {
+      errors.nic = 'NIC already exists';
+      isValid = false;
+  }
+  if (!(/^[0-9]{9}[vV]$/.test(formData.nic) || /^[0-9]{12}$/.test(formData.nic))) {
+    errors.nic = 'invalid NIC';
+    isValid = false;
+  }
+  if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
+    errors.email = 'Invalid email';
+    isValid = false;
+  }
+  const dob = new Date(formData.dob);
+
+  if (isNaN(dob)) {
+    errors.dob = 'Invalid date of birth';
+    isValid = false;
+  }
+  if (!/^\d+$/.test(formData.contactNumber)) {
+    errors.contactNumber = 'Invalid contact number, only integers allowed';
+    isValid = false;
+  }
+// }
+    // If any duplicates are found, set form errors and return
+    if (!isValid) {
+      setFormErrors(errors);
+      return;
+    }
+
+
     let temp = pData
     temp.id = 0;
     temp.role = Role;
@@ -89,13 +227,26 @@ const [Role, setRole] = useState("");
     axios.post(`https://localhost:7205/api/User`,temp)
     .then(res => {
       console.log('success')
+      settypenoti('success')
+      setNotiMessage("Member Added successfully");
+      setNotificationOpen(true);
+     
           forceUpdate(prevCount => prevCount + 1); // Trigger a re-render
+          setOpen(false);
 
-    }).catch(er => {
-      console.error(er);
+    }).catch(error => {
+      if (error.message === 'Network Error') {
+        setNotiMessage("You are not connected to internet");
+        settypenoti('error')
+        setNotificationOpen(true);
+      } else {
+        console.error(error);
+      }
     });
-    setOpen(false);
   };
+
+
+
 
   const handleAddClickOpen = (buttonNumber) => {
     setType(`Add ${buttonNumber}`);
@@ -105,12 +256,6 @@ const [Role, setRole] = useState("");
   };
 
 
-  const [open, setOpen] = useState(false);
-  const [editOpen, setEditOpen] = useState(false);
-  const [deleteOpen, setDeleteOpen] = useState(false);
-  
-  const [selectedPaper, setSelectedPaper] = useState(null);
-  const [Type, setType] = useState('');
 
   const handleClose = () => {
     setOpen(false);
@@ -119,24 +264,88 @@ const [Role, setRole] = useState("");
   };
 
 
-  // const [value, setValue] = React.useState(dayjs('2022-04-17'));
-
-
-
   const handleEditClick = () =>{
     setIsDisabled(false)
   }
   const handleEditSave = () => {
-    // Handle saving edited data here
-    console.log("Edited data:", selectedPaper);
 
-    
+    let errors = {};
+    let isValid = true;
+    // Handle saving edited data here
+    console.log("Edited data:", row2);
+
+
+
+     // Check if any of the required fields are empty
+     const fieldsName = ['fullName', 'name', 'address', 'contactNumber', 'gender', 'nic','dob','email'];
+  
+     fieldsName.forEach(field => {
+       if (!formData[field] || (typeof formData[field] === 'string' && formData[field].trim() === '')) {
+         errors[field] = `${field.charAt(0).toUpperCase() + field.slice(1)} is required`;
+         isValid = false;
+       }
+     });
+   
+ 
+   
+  // Check for duplicates only if the required fields are not empty
+  if (isValid) {
+    const isDuplicateName = row2.some((row) => row.id !== formData.id && row.name.toLowerCase() === formData.name.toLowerCase());
+    const isDuplicateFullName = row2.some((row) => row.id !== formData.id && row.fullName.toLowerCase() === formData.fullName.toLowerCase());
+    const isDuplicateContactNumber = row2.some((row) => row.id !== formData.id && row.contactNumber === formData.contactNumber);
+    const isDuplicateNIC = row2.some((row) => row.id !== formData.id && row.nic.toLowerCase() === formData.nic.toLowerCase());
+  
+     if (isDuplicateName) {
+       errors.name = 'Name already exists';
+       isValid = false;
+     }
+     if (isDuplicateFullName) {
+       errors.fullName = 'Full Name already exists';
+       isValid = false;
+     }
+   
+     if (isDuplicateContactNumber) {
+       errors.contactNumber = 'Contact number already exists';
+       isValid = false;
+     }
+   
+     if (isDuplicateNIC) {
+       errors.nic = 'NIC already exists';
+       isValid = false;
+     }
+   
+    if (!/^[0-9]{9}[vV]$/.test(formData.nic)||!/^[0-9]{12}$/.test(formData.nic)) {
+      errors.nic = 'invalid NIC';
+      isValid = false;
+    }
+    if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
+      errors.email = 'Invalid email';
+      isValid = false;
+    }
+    const dob = new Date(formData.dob);
+
+    if (isNaN(dob)) {
+      errors.dob = 'Invalid date of birth';
+      isValid = false;
+    }
+    if (!/^\d+$/.test(formData.contactNumber)) {
+      errors.contactNumber = 'Invalid contact number, only integers allowed';
+      isValid = false;
+    }}
+      // If any errors are found, set form errors and return
+  if (!isValid) {
+    setFormErrors(errors);
+    return;
+  }
 try {
   console.log(pData,"fid",pData.id);
 
           // Assuming you have an API endpoint for updating a patient
           axios.put(`https://localhost:7205/api/User/`+`${pData.id}` , pData)
           .then(response => {
+            settypenoti('success')
+            setNotiMessage("Member Edited successfully");
+            setNotificationOpen(true);
             // Handle success, maybe update local state or dispatch an action
             console.log('Patient updated successfully:', response.data);
             handleEditClose();
@@ -155,18 +364,19 @@ try {
     setEditOpen(false);
   };
 
-  const handleEditClickOpen = (row) => {
+  const handleEditClickOpen = (row2) => {
     // setType(`Edit ${buttonNumber}`);
-    setFormData({...formData,id: row.id, name: row.name,role:row.role, fullName: row.fullName, nic: row.nic,address: row.address,contactNumber:row.contactNumber,email:row.email,dob:row.dob,gender:row.gender,qualifications:row.qualifications});
+    setFormData({...formData,id: row2.id, name: row2.name,role:row2.role, fullName: row2.fullName, nic: row2.nic,address: row2.address,contactNumber:row2.contactNumber,email:row2.email,dob:row2.dob,gender:row2.gender,qualifications:row2.qualifications,password:row2.password});
 console.log(pData.id)
-    // setSelectedPaper(row);
+    // setSelectedPaper(row2);
     setEditOpen(true);
     setIsDisabled(true);
   };
 
   const handleEditClose = () => {
-    setSelectedPaper(null);
+    // setSelectedPaper(null);
     setEditOpen(false);
+    setDeleteOpen(false);
     // setIsDisabled(en);
   };
 
@@ -181,11 +391,16 @@ console.log(pData.id)
     console.log('removed'+formData.id)
     axios.delete(`https://localhost:7205/api/User/${pData.id}`)
       .then(res => {
+        settypenoti('success')
+        setNotiMessage("Staff Member removed successfully");
+        setNotificationOpen(true);
         forceUpdate(prevCount => prevCount + 1); // Trigger a re-render
         console.log("success", formData);
       })
       .catch(error => {
-        console.error("Error deleting user:", error);
+        setNotiMessage("Staff Member has Assigned for Appointment So we cant remove this member");
+        settypenoti('error')
+        setNotificationOpen(true);
       });
   
     setEditOpen(false);
@@ -205,6 +420,7 @@ const fields = [
   { label: "Contact Number", key: "contactNumber" },
   { label: "Qualifications", key: "qualifications" ,style:{ml:'20px'}},
   { label: "Email Address", key: "email" },
+  { label: "Password", key: "password" ,style:{ml:'20px'}},
 ];
 const RoleFields = ["Doctor", "Receptionist", "Lab Assistant", "Cashier"];
 
@@ -227,13 +443,14 @@ const RoleFields = ["Doctor", "Receptionist", "Lab Assistant", "Cashier"];
         </DialogTitle>
         <DialogContent>
           {/* Add form fields or other content here */}
-          <TextField required label="Full Name" fullWidth sx={{mb:2}}  onChange={(e) => handleInputChange("fullName", e.target.value)}/>
-          <TextField required label="Usual Name"  sx={{ mb: 1 }} onChange={(e) => handleInputChange("name", e.target.value)}/>
-          <TextField required  label="NIC" sx={{ ml: 4, mb: 1 }} onChange={(e) => handleInputChange("nic", e.target.value)}/>
-          <TextField required label="Address" fullWidth sx={{ mb: 1 }} onChange={(e) => handleInputChange("address", e.target.value)}/>
-          <TextField required label="Contact Number" sx={{ mb: 1 }} onChange={(e) => handleInputChange("contactNumber", e.target.value)}/>
-          <TextField required label="qualifications" sx={{ ml: 4, mb: 1 }} onChange={(e) => handleInputChange("qualifications", e.target.value)}/>
-          <TextField required label="E-mail" fullWidth sx={{ mb: 1 }} onChange={(e) => handleInputChange("email", e.target.value)}/>
+          <TextField required label="Full Name" fullWidth sx={{mb:1}}  onChange={(e) => handleInputChange("fullName", e.target.value)} error={!!formErrors.fullName}helperText={formErrors.fullName}/>
+          <TextField required label="Usual Name"  sx={{ mb: 1 }} onChange={(e) => handleInputChange("name", e.target.value)} error={!!formErrors.name} helperText={formErrors.name}/>
+          <TextField required label="NIC" sx={{ ml: 4, mb: 1 }} onChange={(e) => handleInputChange("nic", e.target.value)} error={!!formErrors.nic} helperText={formErrors.nic}/>
+          <TextField required label="Address" fullWidth sx={{ mb: 1 }} onChange={(e) => handleInputChange("address", e.target.value)} error={!!formErrors.address} helperText={formErrors.address}/>
+          <TextField required label="Contact Number" sx={{ mb: 1 }} onChange={(e) => handleInputChange("contactNumber", e.target.value)} error={!!formErrors.contactNumber} helperText={formErrors.contactNumber}/>
+          <TextField required label="qualifications" sx={{ ml: 4, mb: 1 }} onChange={(e) => handleInputChange("qualifications", e.target.value)} error={!!formErrors.qualifications} helperText={formErrors.qualifications}/>
+          <TextField required label="E-mail"  sx={{ mb: 1 }} onChange={(e) => handleInputChange("email", e.target.value)} error={!!formErrors.email} helperText={formErrors.email}/>
+          <TextField required label="Password"  sx={{ mb: 1 ,ml:4}} onChange={(e) => handleInputChange("password", e.target.value)} error={!!formErrors.password} helperText={formErrors.password}/>
           <div style={{display:'flex'}}>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DemoContainer components={['DateField']}>
@@ -244,6 +461,7 @@ const RoleFields = ["Doctor", "Receptionist", "Lab Assistant", "Cashier"];
           onChange={(newValue) => handleInputChange('dob', newValue)}
           renderInput={(props) => <TextField {...props} />} // You may need to import TextField from '@mui/material/TextField'
           // format="YYYY/MM/DD"
+          error={!!formErrors.dob} helperText={formErrors.dob}
         />
       </DemoContainer>
     </LocalizationProvider>
@@ -257,6 +475,7 @@ const RoleFields = ["Doctor", "Receptionist", "Lab Assistant", "Cashier"];
       // value={handleInputChange("gender", e.target.value)} // Ensure you're using the correct value here
       label="Gender"
       onChange={(e) => handleInputChange("gender", e.target.value)}
+      error={!!formErrors.gender} helperText={formErrors.gender}
     >
       <MenuItem value={'Female'}>Female</MenuItem>
       <MenuItem value={'Male'}>Male</MenuItem>
@@ -295,6 +514,8 @@ const RoleFields = ["Doctor", "Receptionist", "Lab Assistant", "Cashier"];
       <TextField
         label={field.label}
         sx={field.style}
+        error={!!formErrors[field.key]}
+        helperText={formErrors[field.key]}
         fullWidth={field.fullWidth || false}
         margin="normal"
         value={formData[field.key]}
@@ -313,7 +534,7 @@ const RoleFields = ["Doctor", "Receptionist", "Lab Assistant", "Cashier"];
             value={formData.dob ? dayjs(formData.dob) : null} // Ensure formData.dob is a valid date or null
             onChange={(newValue) => handleInputChange('dob', newValue)}
             renderInput={(props) => <TextField {...props} />}
-            style={{width:'200px',marginTop:'9px'}}
+            style={{width:'210px',marginTop:'9px'}}
             disabled= {isDisabled}
             // format="YYYY/MM/DD" // You can add this line back if it's needed
           />
@@ -326,8 +547,8 @@ const RoleFields = ["Doctor", "Receptionist", "Lab Assistant", "Cashier"];
       onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
       label="Gender"
       disabled={isDisabled}
-      style={{width:"200px",height:'8vh'}}
-      sx={{m:1,mt:2}}
+      style={{width:"200px",height:'6vh'}}
+      sx={{ml:3,mt:2}}
     >
       <MenuItem value="Male">Male</MenuItem>
       <MenuItem value="Female">Female</MenuItem>
@@ -395,11 +616,11 @@ const RoleFields = ["Doctor", "Receptionist", "Lab Assistant", "Cashier"];
   </Button>
 </Paper>
 {/* recep Paper */}
-{row2.filter(row=>row.role === rolefild).map((row)=>
+{row2.filter(row2=>row2.role === rolefild).map((row2)=>
 
 //role data in here
 <Paper
-key={row.Id}
+key={row2.Id}
 
   sx={{
     cursor:'Pointer',
@@ -409,16 +630,16 @@ key={row.Id}
     paddingLeft: 2,
     paddingRight: 2,
   }}
-  onClick={() => handleEditClickOpen(row)} // Open the edit window when clicking on the paper
+  onClick={() => handleEditClickOpen(row2)} // Open the edit window when clicking on the paper
 >
   <Typography variant="h6" sx={{ paddingTop: 0.75 }}>
-    {row.fullName}
+    {row2.fullName}
   </Typography>
   <Typography
     variant="h10"
     sx={{ fontSize: 10, color: "rgb(186, 177, 177)" }}
   >
-    {row.qualifications}
+    {row2.qualifications}
   </Typography>
   <Typography
     variant="h10"
@@ -428,30 +649,15 @@ key={row.Id}
       color: "rgb(186, 177, 177)",
     }}
   >
-    {row.role}
+    {row2.role}
   </Typography>
 </Paper>)}
 </div>
 
  ))}  
-<React.Fragment>
-      <Dialog
-        open={deleteOpen}
-        onClose={handleClose}
-        // PaperComponent={PaperComponent}
-        aria-labelledby="draggable-dialog-title"
-      >
-        <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
-          are you shure do you want to delete this ?
-        </DialogTitle>
-        <DialogActions>
-          <Button autoFocus onClick={handleClose}>
-            Cancel
-          </Button>
-          <Button onClick={handleRemove} style={{color:"red"}}>Remove</Button>
-        </DialogActions>
-      </Dialog>
-    </React.Fragment>
+<AskDelete deleteOpen={deleteOpen} handleEditClose={handleClose} handleRemove={handleRemove}></AskDelete>
+<SuccessNotification setNotificationOpen={setNotificationOpen} notiMessage={notiMessage} notificationOpen={notificationOpen} type={typenoti}></SuccessNotification>
+
     </div>
   );
 }
