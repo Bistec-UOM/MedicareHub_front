@@ -113,7 +113,6 @@ export default function Log() {
           backgroundColor:'white',
           height:'200px',
           alignSelf:'center',
-          borderRadius:'8px',
           border:'1px solid lightgrey'
           }}
       >

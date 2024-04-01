@@ -7,7 +7,7 @@ import Testcom from './Testcom';
 import axios from 'axios';
 import { baseURL, endPoints } from '../../../../Services/Lab';
 import { Load } from '../../../Other';
-
+import ScienceIcon from '@mui/icons-material/Science';
 
 export default function SubmitPage({setpage}) {
 
@@ -90,7 +90,19 @@ export default function SubmitPage({setpage}) {
         {loadOK?<Load></Load>:''}
         {
             load.map((i,ind)=>{
-                return <Paper sx={{width:'70%',display:'flex',justifyContent:'space-between',alignItems:'center',mt:'10px',p:'10px',cursor:'pointer'}} onClick={()=>handleClickOpen(i.id)}>
+                return <Paper 
+                          sx={{
+                            width:'70%',
+                            display:'flex',
+                            justifyContent:'space-between',
+                            alignItems:'center',
+                            mt:'10px',
+                            p:'10px',
+                            cursor:'pointer',
+                            borderRadius:'0px'
+                            }} 
+                          onClick={()=>handleClickOpen(i.id)}
+                        >
                     <Typography sx={{fontSize:'12px',flex:'1',color:'grey'}}>{ind+1}</Typography>
                     <Typography sx={{fontSize:'15px',flex:'1'}}>{i.id}</Typography>
                     <Typography sx={{fontSize:'15px',flex:'1'}}>{i.abb}</Typography>
@@ -103,8 +115,11 @@ export default function SubmitPage({setpage}) {
       {/*------------------ Enter values pop up box ---------------------------------------------- */}
 
       <Dialog open={open} onClose={handleClose}>
-          <DialogTitle sx={{backgroundColor: "rgb(222, 244, 242)",display: "flex",justifyContent: "space-between"}}>
-            <Typography sx={{fontSize:'16px'}}>Enter test results</Typography>
+          <DialogTitle sx={{backgroundColor: "rgb(222, 244, 242)",display: "flex",justifyContent: "space-between", backgroundColor:'#438ad1',color:'white'}}>
+            <div style={{display:'flex',justifyContent:'start'}}>
+              <ScienceIcon></ScienceIcon>
+              <Typography sx={{fontSize:'18px',fontWeight:'medium'}}>Enter test results</Typography>
+            </div>
           <CloseIcon onClick={handleClose} sx={{cursor:'pointer'}} />
           </DialogTitle>
       <Testcom handleClose={handleClose} handleClick1={handleClick1} test={test} settest={settest}></Testcom>
