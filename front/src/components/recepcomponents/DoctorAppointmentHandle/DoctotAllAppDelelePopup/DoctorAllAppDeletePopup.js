@@ -42,6 +42,10 @@ export default function DoctorAllAppDeletePopup({
 
   const [timevalue, setTimeValue] = useState("");
   const [rdelete, setRdelete] = useState(false);
+  const [notificationOpen,setNotificationOpen]=useState(false);
+  const [notiMessage,setNotiMessage]=useState("");
+
+  
 
   async function handleAllAppDelete() {
     try {
@@ -52,6 +56,7 @@ export default function DoctorAllAppDeletePopup({
       setCancelAll(false);
       handleNotification("All appointment Cancelled succesfully!");
     } catch (err) {
+      handleNotification(err.response.data,"error");
       
     }
   }

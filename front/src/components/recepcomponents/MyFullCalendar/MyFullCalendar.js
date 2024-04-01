@@ -63,23 +63,15 @@ function MyFullCalendar({epage,setEpage,doctorId,selectedTab,setSelectedTab}) {
     {
       axios.get(`https://localhost:7205/api/Appointment/doctor/${doctorId}/month/${pasMonth}`)
       .then((response) => {
-        setDayAppCount(response.data);
-        
-       
+        setDayAppCount(response.data); 
       })
       .catch((error) => {
-          console.error('Error fetching appointments:', error);
-          
-          
+          console.error('Error fetching appointments:', error);   
       });
     },[doctorId,pasMonth]);
-
     const [notificationOpen,setNotificationOpen]=useState(false);  //var for open day block notificatio
     const [notiMessage,setNotiMessage]=useState("");  //var for storig noti message
     const [notiType,setNotiType]=useState("success");
-    const [RloadDone,setRloadDone]=useState(false)  //state for calender loading 
-
-
     const handleNotification=(msg,type)=>
    {  
       setNotiMessage(msg);
@@ -163,11 +155,9 @@ const getDayStatus=(target)=>  //check date is in the disabledDates list
 }
   const getDayCellClassNames = (arg) => {  //return css class names for day cells
     const date=new Date(arg.date);
-
     const milliseconds = date.getMilliseconds();
     const millisecondsPart = milliseconds === 0 ? '' : `.${milliseconds.toString().padStart(3, '0')}`;
     const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}T${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}${millisecondsPart}`;
-
     if(getDayStatus(formattedDate))
     {
       return 'blocked-date';
@@ -179,9 +169,7 @@ const getDayStatus=(target)=>  //check date is in the disabledDates list
 
   return (
     <div className="App">
-     
       <Box sx={{overflowY: 'hidden' }}>
-      
       <FullCalendar
         plugins={[dayGridPlugin,interactionPlugin]}
         initialView='dayGridMonth'
@@ -201,5 +189,4 @@ const getDayStatus=(target)=>  //check date is in the disabledDates list
     </div>
   );
 }
-
 export default MyFullCalendar;

@@ -118,7 +118,7 @@ export default function AppAddPopup({
 
       }
     } catch (err) {
-      var msg = err.response.data;
+      handleNotification(err.response.data,"error");  //handling api request error
     }
   }
   useEffect(() => {

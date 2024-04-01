@@ -20,6 +20,22 @@ import { Load } from "../../Other";
 const drawerWidth = 358.4;
 
 function ResponseAppCalender() {
+
+  const [notificationOpen,setNotificationOpen]=useState(false);
+  const [notiMessage,setNotiMessage]=useState("");
+  const [notiType,setNotiType]=useState("success")
+
+  const handleNotification=(msg,type)=>
+  {  
+     setNotiMessage(msg);
+     setNotificationOpen(true);
+     setNotiType(type);
+  }
+
+
+
+
+
   useEffect(() => {
     document.body.style.margin = "0";
   }, []);
@@ -39,8 +55,9 @@ function ResponseAppCalender() {
         setSelectedTab(responseData.result[0].id);
        
       } catch (error) {
-        console.error('Error fetching doctor data:', error);
+        
         setRloadDone(true);
+        handleNotification(error.response.data,"error");
       }
     };
   

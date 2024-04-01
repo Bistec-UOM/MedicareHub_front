@@ -1,25 +1,10 @@
 import * as React from "react";
-
 import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
 import axios from "axios";
-
 import { CardContent, IconButton, TextField, Typography } from "@mui/material";
-
-import { useState } from "react";
-
-import dayjs from "dayjs";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import Button from "@mui/material/Button";
 import { Box } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { Grid, Stack } from "@mui/material";
 import ErrorIcon from "@mui/icons-material/Error";
 
 export default function MarkAsCompleted({
@@ -33,15 +18,10 @@ export default function MarkAsCompleted({
   const handleClose = () => {
     setMarkAsCompleted(false);
   };
-
-  async function handleSubmit(event) {
-    event.preventDefault();
-  }
-
   async function handleMarkAsCompelted(item) {
     try {
       await axios.put(
-        `https://localhost:7205/updateStatus/${item.appointment.id}`,
+        `https://localhost:7205/updateStatus/${item.appointment.id}`,  //update the status of app to completed
         {
           id: item.appointment.id,
           Datetime: item.appointment.dateTime,
@@ -53,10 +33,11 @@ export default function MarkAsCompleted({
       );
       setDelcount(delcount + 1);
       setMarkAsCompleted(false);
-      handleNotification("Appointment Completed succesfully!");
-    } catch (err) {}
+      handleNotification("Appointment Completed succesfully!","success");
+    } catch (err) {
+      handleNotification(err.response.data,"error");
+    }
   }
-
   return (
     <React.Fragment>
       <Dialog open={markOpen} onClose={handleClose}>
