@@ -47,7 +47,6 @@ const EditPatientDialog = ({ editOpen, handleEditClose, formFields, formErrors, 
                   setFormData({ ...formData, [field.key]: e.target.value })
                 }
                 sx={field.sx}
-                required={field.required}
               />
             ))}
             <div style={{ display: 'flex' }}>
@@ -57,9 +56,8 @@ const EditPatientDialog = ({ editOpen, handleEditClose, formFields, formErrors, 
                   value={formData.dob ? dayjs(formData.dob) : null}
                   onChange={(newValue) => handleInputChange('dob', newValue)}
                   renderInput={(props) => <TextField {...props} />}
-                  style={{ width: '225px' }}
+                  sx={{ mr: 1,mt:1}}
                   disabled={isDisabled}
-                  required
                 />
               </LocalizationProvider>
               <Select
@@ -69,8 +67,7 @@ const EditPatientDialog = ({ editOpen, handleEditClose, formFields, formErrors, 
                 onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
                 label="Gender"
                 disabled={isDisabled}
-                sx={{ m: 1, ml: 1 }}
-                required
+                sx={{ mt: 1, width: '38%'}}
               >
                 <MenuItem>Select Gender</MenuItem>
                 <MenuItem value="Male">Male</MenuItem>

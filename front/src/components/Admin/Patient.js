@@ -105,7 +105,7 @@ const [update,forceUpdate]=useState(0);
     console.log(formData)
 
     // Check if any of the required fields are empty
-    const fields = ['fullName', 'name', 'address', 'contactNumber', 'gender', 'nic'];
+    const fields = ['fullName', 'name', 'address', 'contactNumber', 'gender', 'nic','dob','email'];
   
     fields.forEach(field => {
       if (!formData[field] || (typeof formData[field] === 'string' && formData[field].trim() === '')) {
@@ -140,7 +140,7 @@ const [update,forceUpdate]=useState(0);
       errors.nic = 'NIC already exists';
       isValid = false;
     }
-    if (!/^[0-9]{9}[vV]$/.test(formData.nic)||!/^[0-9]{12}$/.test(formData.nic)) {
+    if (!(/^[0-9]{9}[vV]$/.test(formData.nic) || /^[0-9]{12}$/.test(formData.nic))) {
       errors.nic = 'invalid NIC';
       isValid = false;
     }
@@ -220,7 +220,7 @@ const [update,forceUpdate]=useState(0);
       })
       .catch(err => {
         console.error(err);
-        setNotiMessage("Patient Assigned for Appointment So we cant remove patient");
+        setNotiMessage("Patient has Assigned for Appointment So we cant remove this patient patient");
         settype('error')
         setNotificationOpen(true);
       });
@@ -274,6 +274,24 @@ const [isDisabled, setIsDisabled] = useState(true);
 
     if (isDuplicateNIC) {
       errors.nic = 'NIC already exists';
+      isValid = false;
+    }
+    if (!/^[0-9]{9}[vV]$/.test(formData.nic)||!/^[0-9]{12}$/.test(formData.nic)) {
+      errors.nic = 'invalid NIC';
+      isValid = false;
+    }
+    if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
+      errors.email = 'Invalid email';
+      isValid = false;
+    }
+    const dob = new Date(formData.dob);
+
+    if (isNaN(dob)) {
+      errors.dob = 'Invalid date of birth';
+      isValid = false;
+    }
+    if (!/^\d+$/.test(formData.contactNumber)) {
+      errors.contactNumber = 'Invalid contact number, only integers allowed';
       isValid = false;
     }
   }
@@ -395,7 +413,7 @@ useEffect(() => {
   }
 }, [open,editOpen]);
 useEffect(() => {
-  if (!open) {
+  if (open) {
     setFormData({
       fullName: '',
       name: '',
