@@ -69,7 +69,7 @@ const AIncome = () => {
      
    }, []); // Empty dependency array means this effect runs once on mount
 
-  const change = (Gap) => {
+      const change = (Gap) => {
     if (Gap === 'day') {
       TimeGap = new Date(currentDate); // Reset TimeGap to current date
       TimeGap.setDate(currentDate.getDate() - 1);
@@ -84,6 +84,11 @@ const AIncome = () => {
       TimeGap.setFullYear(currentDate.getFullYear() - 5);
     }
   };
+
+  useEffect(() => {
+    change(Value);
+  }, [Value]); // Run the effect whenever Value1 changes
+  
 
   const filteredData = pdata.filter(entry => {
     const entryDate = new Date(entry.datefor);

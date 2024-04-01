@@ -1,6 +1,7 @@
 import { Grid, Paper, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';    
 import IncomeOfDay from './AnalyticsComponents.js/IncomeOfDay';
+import TotalPatientCount from './AnalyticsComponents.js/TotalPatientCount';
 
 const View = () => {
     const [time, setTime] = useState('');
@@ -28,6 +29,8 @@ const View = () => {
                 <Grid item xs={12} md={6}>
                     <IncomeOfDay  />
                 </Grid>
+                <br/>
+                    <TotalPatientCount></TotalPatientCount>
         </div>
     );
 }
