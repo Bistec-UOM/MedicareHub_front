@@ -23,50 +23,38 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Grid, Stack } from "@mui/material";
 import ErrorIcon from "@mui/icons-material/Error";
 
-export default function DoctorAllAppDeletePopup({cancelAll,setCancelAll,selectedDay,delcount,setDelcount,docid,handleNotification, dopen, setDopen,filteredAppointments,setFilteredAppointments,isDisabledCancel,setIsDisabledCancel }) {
-  // const [enameError,seteNameError]=useState(false)
-  // const [eaddressError,seteAddressError]=useState(false)
-  // const [enicError,seteNicError]=useState(false)
+export default function DoctorAllAppDeletePopup({
+  cancelAll,
+  setCancelAll,
+  selectedDay,
+  delcount,
+  setDelcount,
+  docid,
+  handleNotification,
+  dopen,
+  setDopen,
+  filteredAppointments,
+  setFilteredAppointments,
+  isDisabledCancel,
+  setIsDisabledCancel,
+}) {
   const [etimevalueError, seteTimeValueError] = useState(false);
 
-  // const [ename,setEName]=useState(item.name)
-  // const [eaddress,setEAddress]=useState(item.address)
-  // const [enic,setENic]=useState(item.nic)
   const [timevalue, setTimeValue] = useState("");
-  const [rdelete,setRdelete]=useState(false);
+  const [rdelete, setRdelete] = useState(false);
 
-  async function  handleAllAppDelete()
-  {
-
-    try
-    {
-        // console.log(item.appointment.id)
-        // console.log(item.appointment.dateTime)
-        // console.log(item.appointment.doctorId)
-        console.log("docid",docid);
-        console.log("selectedday",selectedDay);
-        await axios.put(`https://localhost:7205/api/Appointment/doctor/${docid}/day/${selectedDay}`);
-        setDelcount(delcount+1);
-        setCancelAll(false);
-        handleNotification("All appointment Cancelled succesfully!");
-   // console.log()
-   // setAppEditOpen(false);
-   // handleNotification("Appointment Edited succesfully!");
-    // setSuccessState("Student succesfully updated!")
-    // navigate('/');
-     
-
-     
-    
+  async function handleAllAppDelete() {
+    try {
+      await axios.put(
+        `https://localhost:7205/api/Appointment/doctor/${docid}/day/${selectedDay}`
+      );
+      setDelcount(delcount + 1);
+      setCancelAll(false);
+      handleNotification("All appointment Cancelled succesfully!");
+    } catch (err) {
+      
     }
-catch(err)
-    {
-      //setNerror(err.response.data);
-    }
-    
-
   }
-
 
   const handleClickOpen = () => {
     setDopen(true);
@@ -83,7 +71,7 @@ catch(err)
   return (
     <React.Fragment>
       <Dialog open={cancelAll} onClose={handleClose}>
-        <Box sx={{ width: {xs:"100%",sm:"500px"}, height: "150px" }}>
+        <Box sx={{ width: { xs: "100%", sm: "500px" }, height: "150px" }}>
           <Box>
             <Box
               sx={{
@@ -99,16 +87,30 @@ catch(err)
               </IconButton>
             </Box>
           </Box>
-          <Box  sx={{display:'flex',flexDirection:'row' ,alignItem: "center", margin: "3%" }}>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              alignItem: "center",
+              margin: "3%",
+            }}
+          >
             <ErrorIcon
-              sx={{ color: "red", marginRight: "2%",fontSize:'2rem' }}
+              sx={{ color: "red", marginRight: "2%", fontSize: "2rem" }}
             />
-            <Typography  sx={{ marginTop:'1%',color:'#000000' }}>
-              Are you sure the entire list  to be Canceled?
+            <Typography sx={{ marginTop: "1%", color: "#000000" }}>
+              Are you sure the entire list to be Canceled?
             </Typography>
           </Box>
-          <Box sx={{display:'flex',justifyContent:'flex-end',paddingRight:'5%'}}>
-            <Button onClick={handleAllAppDelete}
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "flex-end",
+              paddingRight: "5%",
+            }}
+          >
+            <Button
+              onClick={handleAllAppDelete}
               sx={{
                 backgroundColor: "#F44336", // Replace with your desired color
                 "&:hover": {

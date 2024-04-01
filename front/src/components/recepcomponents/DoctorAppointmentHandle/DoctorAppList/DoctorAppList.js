@@ -16,12 +16,14 @@ import axios from "axios";
 import DoctorAppCard from "../DoctorAppCard/DoctorAppCard";
 import DoctorAllAppDeletePopup from "../DoctotAllAppDelelePopup/DoctorAllAppDeletePopup";
 import DayBlockPopup from "../DayBlockPopup/DayBlockPopup";
+import { Load } from "../../../Other";
 
 const DoctorAppList = (props) => {
   const [notificationOpen, setNotificationOpen] = useState(false);
   const [notiMessage, setNotiMessage] = useState("");
   const [notiType, setNotiType] = useState("success");
   const [docDayBlockPopup, setDocDayBlockPopup] = useState(false); //var for doc day block popup
+  const [RloadDone,setRloadDone]=useState(false)  //state for doctorapplist loading 
 
   const handleNotification = (msg, type) => {
     setNotiMessage(msg);
@@ -71,9 +73,11 @@ const DoctorAppList = (props) => {
               new Date(b.appointment.dateTime)
           ); //this is used for sorting appointments based on their arrival time
         setFilteredAppointments(sortedAppointments);
+        setRloadDone(true);
       })
       .catch((error) => {
         console.error("Error fetching appointments:", error);
+        setRloadDone(true);
       });
   }, [props.docid, selectedDay, delcount]); // Ensure dependencies are included in the dependency array
   return (
@@ -168,6 +172,7 @@ const DoctorAppList = (props) => {
           <Box
             sx={{ width: "70%", marginTop: { xs: "40%", sm: "20%", md: "7%" } }}
           >
+             {!RloadDone?<Load></Load>:''}
             {Array.isArray(filteredAppointments) &&
               filteredAppointments
                 .sort((a, b) => {

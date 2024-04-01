@@ -35,7 +35,7 @@ const SidebarTop = ({ children }) => {
         display:'flex',
         justifyContent:'center',
         alignItems:'center',
-        paddingTop:'10px'
+        paddingTop:'15px'
       }}
     >
       {children}
