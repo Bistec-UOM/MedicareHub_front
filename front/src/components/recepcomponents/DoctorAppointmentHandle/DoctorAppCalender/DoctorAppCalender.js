@@ -36,6 +36,10 @@ const DoctorAppCalender = ({ doctorId }) => {
     currentDate.getMonth() + 1,
     1
   );
+
+ 
+
+
   const [validRange, setValidRange] = useState({
     start: firstDayOfMonth,
     end: lastDayOfMonth,
@@ -56,8 +60,8 @@ const DoctorAppCalender = ({ doctorId }) => {
         .then((response) => {
           setDayAppCount(response.data);
         })
-        .catch((error) => {
-          console.error("Error fetching appointments:", error);
+        .catch((err) => {
+          handleNotification(err.response.data,"error");
         });
     }, [doctorId, pasMonth]);
 
@@ -69,8 +73,8 @@ const DoctorAppCalender = ({ doctorId }) => {
         .then((response) => {
           setDisabledDates(response.data);
         })
-        .catch((error) => {
-          console.error("Error fetching disabled dates:", error);
+        .catch((err) => {
+          handleNotification(err.response.data,"error");
         });
     }, [doctorId]);
   function getDayAppCount(day) {

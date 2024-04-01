@@ -160,7 +160,7 @@ const PatientRegpopup = ({
         setRegopen(false);
         handleNotification("Patient Registered succesfully!", "success");
       } catch (err) {
-        var msg = err.response.data;
+        handleNotification(err.response.data,"error");
       }
       setName("");
       setAge(0);

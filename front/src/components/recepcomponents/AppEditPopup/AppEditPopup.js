@@ -82,7 +82,7 @@ export default function AppEditPopup({
       .toString()
       .padStart(2, "0")}.${date.getMilliseconds().toString().padStart(3, "0")}`;
     try {
-      await axios.put(
+      var response = await axios.put(
         `https://localhost:7205/api/Appointment/${item.appointment.id}`,
         {
           id: item.appointment.id,
@@ -93,17 +93,23 @@ export default function AppEditPopup({
           recepId: item.appointment.recepId,
         }
       );
-      setDelcount(delcount + 1);
-      setAppEditOpen(false);
-      handleNotification("Appointment Edited succesfully!", "success");
-    } catch (err) {}
+      if (response.data == 0) {
+        setDelcount(delcount + 1);
+        setAppEditOpen(false);
+        handleNotification("Appointment Edited succesfully!", "success");
+      } else if (response.data == 1) {
+        handleNotification(
+          "Time slot has been already booked!. Select another time slot",
+          "error"
+        );
+      }
+    } catch (err) {
+      handleNotification(err.response.data,"error");
+    }
   }
 
   useEffect(() => {
-    //console.log("sele",formatAMPM(selectedTime))
-    // console.log(activeId);
     formatAMPM(selectedTime);
-
     if (patientList && Array.isArray(patientList)) {
       const filteredData = patientList.find(
         (patient) => patient.nic === activeId
@@ -112,9 +118,7 @@ export default function AppEditPopup({
     }
   }, [appAddPopupCount, activeId, patientList, selectedTime]);
 
-  useEffect(() => {
-    // console.log("Updated Active Data:", activeData);
-  }, [activeData]);
+  useEffect(() => {}, [activeData]);
 
   return (
     <React.Fragment>

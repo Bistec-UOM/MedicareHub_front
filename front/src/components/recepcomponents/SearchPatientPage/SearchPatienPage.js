@@ -48,8 +48,8 @@ const SearchPatientPage = (props) => {
         const responseData = await response.json();
         setPatientList(responseData);
         setRloadDone(true);
-      } catch (error) {
-        console.error('Error fetching patient data:', error);
+      } catch (err) {
+        handleNotification(err.response.data,"error");
         setRloadDone(true);   
       }
     };
