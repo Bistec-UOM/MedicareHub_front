@@ -6,9 +6,16 @@ import Autocomplete from '@mui/material/Autocomplete';
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
 import axios from 'axios';
+import SuccessNotification from '../recepcomponents/SnackBar/SuccessNotification';
 
 
 const ADrugs = () => {
+  const [notificationOpen,setNotificationOpen]=useState(false);
+  const [notiMessage,setNotiMessage]=useState("");
+  const [typenoti, settypenoti] = useState('success');
+
+
+
   const [pdata, setPdata] = useState([]);
   const [rows, setrows] = useState([]);
   useEffect(() => {
@@ -17,16 +24,24 @@ const ADrugs = () => {
         console.log(response.data);
         setPdata(response.data);
       })
-      .catch(error => {
-        console.error(error);
+      .catch(err => {
+        if (err.message === 'Network Error') { 
+          console.error('You are not connected to internet');
+          setNotiMessage("You are not connected to internet");
+          settypenoti('error')
+          setNotificationOpen(true);
+      } else {
+        console.error(err);
+      }
       });
+
       axios.get('https://localhost:7205/api/Analytic/available-count')
       .then(res => {
         console.log(res.data);
         setrows(res.data);
       })
       .catch(error => {
-        console.error(error);
+        console.log("error in available count axios method");
       });
   }, []); // Empty dependency array means this effect runs once on mount
   
@@ -229,6 +244,8 @@ useEffect(() => {
       </Table>
       </Paper>
       </Grid>
+
+      <SuccessNotification setNotificationOpen={setNotificationOpen} notiMessage={notiMessage} notificationOpen={notificationOpen} type={typenoti}></SuccessNotification>
     </div>
   );
 }

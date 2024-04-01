@@ -16,6 +16,8 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateField } from '@mui/x-date-pickers/DateField';
 import SuccessNotification from "../recepcomponents/SnackBar/SuccessNotification";
+import EditPatientDialog from "./DialogComponents/EditPatientDialog";
+import AskDelete from "./DialogComponents/AskDelete";
 
 
 function createData(id, name, nic, address,dob, email,gender,fullName,contactNumber) {
@@ -26,6 +28,8 @@ function createData(id, name, nic, address,dob, email,gender,fullName,contactNum
 function Patient() {
   const [notificationOpen,setNotificationOpen]=useState(false);
   const [notiMessage,setNotiMessage]=useState("");
+  const [type, settype] = useState('success');
+
 
 
 const [update,forceUpdate]=useState(0);
@@ -48,12 +52,18 @@ const [update,forceUpdate]=useState(0);
         setRecords(apiData); // Initialize records with the fetched data
       })
       .catch(error => {
-        console.error('Error fetching data from API:', error.message);
+        if (error.message === 'Network Error') {
+          console.error('You are not connected to internet');
+          setNotiMessage("You are not connected to internet");
+          settype('error')
+          setNotificationOpen(true);
+        } else {
+          console.error(error);
+        }
       });
   }, [update]);
   const [rows, setData] = useState([]);
  
-
 
 
   
@@ -95,7 +105,7 @@ const [update,forceUpdate]=useState(0);
     console.log(formData)
 
     // Check if any of the required fields are empty
-    const fields = ['fullName', 'name', 'address', 'contactNumber', 'gender', 'nic'];
+    const fields = ['fullName', 'name', 'address', 'contactNumber', 'gender', 'nic','dob','email'];
   
     fields.forEach(field => {
       if (!formData[field] || (typeof formData[field] === 'string' && formData[field].trim() === '')) {
@@ -130,7 +140,7 @@ const [update,forceUpdate]=useState(0);
       errors.nic = 'NIC already exists';
       isValid = false;
     }
-    if (!/^[0-9]{9}[vV]$/.test(formData.nic)||!/^[0-9]{12}$/.test(formData.nic)) {
+    if (!(/^[0-9]{9}[vV]$/.test(formData.nic) || /^[0-9]{12}$/.test(formData.nic))) {
       errors.nic = 'invalid NIC';
       isValid = false;
     }
@@ -144,6 +154,11 @@ const [update,forceUpdate]=useState(0);
       errors.dob = 'Invalid date of birth';
       isValid = false;
     }
+    if (!/^\d+$/.test(formData.contactNumber)) {
+      errors.contactNumber = 'Invalid contact number, only integers allowed';
+      isValid = false;
+    }
+
     // If any duplicates are found, set form errors and return
     if (!isValid) {
       setFormErrors(errors);
@@ -164,7 +179,8 @@ const [update,forceUpdate]=useState(0);
   console.log("level last"+newData)
     axios.post('https://localhost:7205/api/Patient', newData)
       .then(response => {
-        setNotiMessage("Patient added successfully");
+        settype('success')
+        setNotiMessage("Patient Added successfully");
         setNotificationOpen(true);
         setOpen(false);
         console.log('Data added successfully:', response.data);
@@ -172,19 +188,43 @@ const [update,forceUpdate]=useState(0);
         // Optionally, fetch updated data from the API and update the state
       })
       .catch(error => {
-        console.error('Error adding data:', error.message);
+        if (error.message === 'Network Error') {
+          setNotiMessage("You are not connected to internet");
+          settype('error')
+          setNotificationOpen(true);
+        } else {
+          console.error(error);
+        }
       });
   };
  
-  
+  const [deleteOpen, setDeleteOpen] = useState(false);
 
 
-  const handleRemove =()=>{
-    axios.delete(`https://localhost:7205/api/patient/`+`${pData.id}`)
-    .then(res=>{
-      console.log("success")
-      forceUpdate(prevCount => prevCount + 1); // Trigger a re-render
-    });
+  const handleEditClose = () => {
+    setOpen(false);
+    setEditOpen(false);
+    setDeleteOpen(false);
+  };
+  const deletePopUp = () =>{
+    setDeleteOpen(true);
+  }
+  const handleRemove = () => {
+    axios.delete(`https://localhost:7205/api/patient/${pData.id}`)
+      .then(res => {
+        settype('success')
+        setNotiMessage("Patient removed successfully");
+        setNotificationOpen(true);
+        console.log("success");
+        forceUpdate(prevCount => prevCount + 1); // Trigger a re-render
+      })
+      .catch(err => {
+        console.error(err);
+        setNotiMessage("Patient has Assigned for Appointment So we cant remove this patient patient");
+        settype('error')
+        setNotificationOpen(true);
+      });
+      setDeleteOpen(false);
     setEditOpen(false);
   }
 
@@ -195,7 +235,6 @@ const [isDisabled, setIsDisabled] = useState(true);
 //edit dialogbox functionalities
   const [editOpen, setEditOpen] = useState(false);
   const [showPatient, setShowPatient] = useState(false); // State to control visibility
-
 
 
 
@@ -237,6 +276,24 @@ const [isDisabled, setIsDisabled] = useState(true);
       errors.nic = 'NIC already exists';
       isValid = false;
     }
+    if (!/^[0-9]{9}[vV]$/.test(formData.nic)||!/^[0-9]{12}$/.test(formData.nic)) {
+      errors.nic = 'invalid NIC';
+      isValid = false;
+    }
+    if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
+      errors.email = 'Invalid email';
+      isValid = false;
+    }
+    const dob = new Date(formData.dob);
+
+    if (isNaN(dob)) {
+      errors.dob = 'Invalid date of birth';
+      isValid = false;
+    }
+    if (!/^\d+$/.test(formData.contactNumber)) {
+      errors.contactNumber = 'Invalid contact number, only integers allowed';
+      isValid = false;
+    }
   }
 
   // If any errors are found, set form errors and return
@@ -250,6 +307,9 @@ try {
           // Assuming you have an API endpoint for updating a patient
           axios.put('https://localhost:7205/api/patient/'+ `${pData.id}` , pData)
           .then(response => {
+            settype('success')
+            setNotiMessage("Patient Edited successfully");
+            setNotificationOpen(true);
             // Handle success, maybe update local state or dispatch an action
             console.log('Patient updated successfully:', response.data);
             handleEditClose();
@@ -275,11 +335,11 @@ try {
     setEditOpen(true);
     setIsDisabled(true);
   };
-  const handleEditClose = () => {
-    // setSelectedPaper(null);
-    setIsDisabled(true);
-    setEditOpen(false);
-  };
+  // const handleEditClose = () => {
+  //   // setSelectedPaper(null);
+  //   setIsDisabled(true);
+  //   setEditOpen(false);
+  // };
   //edit asking button
   const handleEditClick = () => {
     setIsDisabled(false);
@@ -350,21 +410,10 @@ useEffect(() => {
       dob: '',
       gender: ''
     });
-
   }
 }, [open,editOpen]);
 useEffect(() => {
-  if (!open) {
-    setFormErrors({
-      fullName: '',
-      name: '',
-      nic: '',
-      address: '',
-      contactNumber: '',
-      email: '',
-      dob: '',
-      gender: ''
-    });
+  if (open) {
     setFormData({
       fullName: '',
       name: '',
@@ -375,8 +424,6 @@ useEffect(() => {
       dob: '',
       gender: ''
     });
-
-
   }
 }, [open]);
 
@@ -531,89 +578,10 @@ useEffect(() => {
       </Grid>
 
       {/* pop up data editing */}
-      <Grid>
-  <Dialog open={editOpen} onClose={handleEditClose}>
-    <DialogTitle
-      sx={{
-        backgroundColor: "rgb(222, 244, 242)",
-        display: "flex",
-        justifyContent: "space-between",
-      }}
-    >
-      Edit Patient
-      <CloseIcon onClick={handleEditClose} sx={{ cursor: 'pointer' }} />
-    </DialogTitle>
-    <DialogContent>
-      {formFields.map((field) => (
-        <TextField
-          key={field.key}
-          error={!!formErrors[field.key]}
-          helperText={formErrors[field.key]}
-          disabled={isDisabled}
-          label={field.label}
-          fullWidth={field.isfull}
-          margin="dense"
-          value={formData[field.key] || ''} // Ensure value is not null
-          onChange={(e) =>
-            setFormData({ ...formData, [field.key]: e.target.value })
-          }
-          sx={field.sx}
-          required={field.required} // Add required prop based on form field requirements
-        />
-      ))}
-      <div style={{ display: 'flex' }}>
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DemoContainer components={['DateField']}>
-            <DateField
-              label="Date Of Birth"
-              value={formData.dob ? dayjs(formData.dob) : null}
-              onChange={(newValue) => handleInputChange('dob', newValue)}
-              renderInput={(props) => <TextField {...props} />}
-              style={{ width: '225px' }}
-              disabled={isDisabled}
-              required // Ensure date of birth is required
-            />
-          </DemoContainer>
-        </LocalizationProvider>
-        <Select
-          labelId="gender-label"
-          id="gender"
-          value={formData.gender || ''} // Ensure value is not null
-          onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
-          label="Gender"
-          disabled={isDisabled}
-          sx={{ m: 1, ml: 1 }}
-          required // Ensure gender is required
-        >
-          <MenuItem >Select Gender</MenuItem> {/* Add a default value */}
-          <MenuItem value="Male">Male</MenuItem>
-          <MenuItem value="Female">Female</MenuItem>
-        </Select>
-      </div>
-    </DialogContent>
-    <DialogActions>
-      {!isDisabled && (
-        <Button
-          onClick={handleRemove}
-          variant="outlined"
-          color="error"
-          sx={{ m: 2 }}
-        >
-          Delete
-        </Button>
-      )}
-      <Button
-        onClick={isDisabled ? handleEditClick : handleEditSave}
-        variant="contained"
-        sx={{ backgroundColor: "rgb(121, 204, 190)", m: 2 }}
-      >
-        {isDisabled ? 'Edit' : 'Save'}
-      </Button>
-    </DialogActions>
-  </Dialog>
+  <EditPatientDialog editOpen={editOpen} handleEditClose={handleEditClose} formFields={formFields} formErrors={formErrors} isDisabled={isDisabled} formData={formData} setFormData={setFormData} handleInputChange={handleInputChange} deletePopUp={deletePopUp} handleEditClick={handleEditClick} handleEditSave={handleEditSave}></EditPatientDialog>
+  <SuccessNotification setNotificationOpen={setNotificationOpen} notiMessage={notiMessage} notificationOpen={notificationOpen} type={type}></SuccessNotification>
 </Grid>
-<SuccessNotification setNotificationOpen={setNotificationOpen} notiMessage={notiMessage} notificationOpen={notificationOpen}></SuccessNotification>
-</Grid>
+<AskDelete deleteOpen={deleteOpen} handleEditClose={handleEditClose} handleRemove={handleRemove}></AskDelete>
     </div>
   );
 }
