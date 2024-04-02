@@ -19,6 +19,7 @@ import SuccessNotification from "../recepcomponents/SnackBar/SuccessNotification
 import EditPatientDialog from "./DialogComponents/EditPatientDialog";
 import AskDelete from "./DialogComponents/AskDelete";
 import { baseURL,endPoints } from "../../Services/Admin";
+import AddPatientDialog from "./DialogComponents/AddPatientDialog";
 
 
 function createData(id, name, nic, address,dob, email,gender,fullName,contactNumber) {
@@ -475,67 +476,7 @@ useEffect(() => {
      
 <Grid>
 {/* for popup when adding */}
-<Dialog open={open} onClose={handleAddClose}>
-        <DialogTitle
-          sx={{
-            backgroundColor: "rgb(222, 244, 242)",
-            display: "flex",
-            justifyContent: "space-between",
-          }}
-        >
-          Add Patient
-          <CloseIcon onClick={handleAddClose} sx={{cursor:'pointer'}}/>
-        </DialogTitle>
-        <DialogContent>
-          {/* Add form fields or other content here */}
-          <TextField required label="Full Name" fullWidth sx={{ mb: 1, mt: 3 }} onChange={(e) => handleInputChange("fullName", e.target.value)} error={!!formErrors.fullName}helperText={formErrors.fullName}/>          
-          <TextField required label="Name" sx={{ mb: 1 }}  onChange={(e) => handleInputChange("name", e.target.value)} error={!!formErrors.name}helperText={formErrors.name}/>
-          <TextField required label="Address" fullWidth sx={{ mb: 1 }}  onChange={(e) => handleInputChange("address", e.target.value)} error={!!formErrors.address}helperText={formErrors.address}/>
-          <TextField required label="NIC" sx={{  mb: 1 }}  onChange={(e) => handleInputChange("nic", e.target.value)} error={!!formErrors.nic}helperText={formErrors.nic}/>
-          <TextField required label="Contact Number" sx={{ mb: 1 ,ml:2}}  onChange={(e) => handleInputChange("contactNumber", e.target.value)} error={!!formErrors.contactNumber}helperText={formErrors.contactNumber}/>
-          <TextField required label="E-mail" fullWidth sx={{ mb: 1 }} onChange={(e) => handleInputChange("email", e.target.value)} error={!!formErrors.email} helperText={formErrors.email}/>
-<div style={{display:'flex'}}>
-<LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DemoContainer components={['DateField']}>
-            <DateField
-              label="Date Of Birth"
-              value={formData.dob ? dayjs(formData.dob) : null}
-              onChange={(newValue) => handleInputChange('dob', newValue)}
-              renderInput={(props) => <TextField {...props} />}
-              style={{ width: '225px' }}
-              required // Ensure date of birth is required
-            />
-          </DemoContainer>
-        </LocalizationProvider>
-          <FormControl style={{marginLeft:'15px',marginTop:'8px'}}>
-        <InputLabel id="demo-simple-select-label">Gender</InputLabel>
-        <Select
-        required
-        style={{width:'200px'}}
-        labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          label="Gender"
-          onChange={(e) => handleInputChange("gender", e.target.value)}
-          error={!!formErrors.gender} helperText={formErrors.gender}
-        >
-          <MenuItem value={'Female'}>Female</MenuItem>
-          <MenuItem value={'Male'}>Male</MenuItem>
-
-        </Select>
-      </FormControl>
-          </div>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            onClick={handleAddSaveClose}
-            variant="contained"
-            sx={{ backgroundColor: "rgb(121, 204, 190)", m: 2 }}
-          >
-            Add
-          </Button>
-
-        </DialogActions>
-      </Dialog>
+<AddPatientDialog open={open} handleAddClose={handleAddClose} handleInputChange={handleInputChange} formErrors={formErrors} formData={formData} handleAddSaveClose={handleAddSaveClose}></AddPatientDialog>
 </Grid>
       <Grid>
       <Paper
