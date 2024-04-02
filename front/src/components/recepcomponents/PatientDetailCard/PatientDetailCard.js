@@ -54,6 +54,7 @@ const PatientDetailCard = ({
         >
           <Stack direction={"column"}>
             <CardContent>
+              
               <Stack
                 direction={"row"}
                 sx={{ justifyContent: "space-between", alignItem: "center" }}

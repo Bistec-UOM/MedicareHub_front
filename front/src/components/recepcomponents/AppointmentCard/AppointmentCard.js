@@ -96,52 +96,7 @@ const AppointmentCard = ({
         >
           <Stack direction={"column"}>
             <CardContent sx={{ display: "flex" }}>
-              {/* 
-              <Stack
-                direction={"row"}
-                
-                sx={{ justifyContent: "space-between", alignItem: "center",flexGrow:1 }}
-              >
-                <Typography variant="h5">{item.patient?.fullName}</Typography>
-                {completedStatus(item)}
-              </Stack>
-              <Stack
-                sx={{
-                  justifyContent: "space-between",
-                  alignItem: "center",
-                  flexDirection: { xs: "column", md: "row" },
-                }}
-              >
-                <Typography variant="body2" color="text.secondary">
-                  {item.patient?.address}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {item.patient?.contactNumber}
-                </Typography>
-                {isCompletedOrCancelled ? (
-                  <div></div>
-                ) : (
-                  <Box>
-                    <IconButton onClick={handleDeleteAppointment}>
-                      <DeleteIcon
-                        sx={{ marginLeft: "auto", color: "#E60000" }}
-                      />
-                    </IconButton>
-                    <IconButton onClick={handleEditAppointment}>
-                      <EditIcon sx={{ color: "#F66444" }} />
-                    </IconButton>
-                  </Box>
-                )}
-
-                <Typography //display time range only inside the app card for small and xs screen
-                  sx={{ display: { xs: "flex", sm: "flex", md: "none" } }}
-                  variant="body2"
-                  color="text.secondary"
-                >
-                  {getStartingTime(item.appointment?.dateTime)}-
-                  {getEndingTime(item.appointment?.dateTime)}
-                </Typography>
-              </Stack> */}
+             
               <Grid container>
                 <Grid item xs={12} sm={6}>
                   <Stack
@@ -187,8 +142,7 @@ const AppointmentCard = ({
                         <EditIcon sx={{ color: "#F66444" }} />
                       </IconButton>
                     </Box>
-                   } 
-                
+                   }                
                 </Grid>
               </Grid>
             </CardContent>

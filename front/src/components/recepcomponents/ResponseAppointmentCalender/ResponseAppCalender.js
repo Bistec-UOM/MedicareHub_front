@@ -16,6 +16,7 @@ import ResNavBar from "../ResNavBar/ResNabBar";
 import MyFullCalendar from "../MyFullCalendar/MyFullCalendar";
 import PageNotFound from "../PageNotFound/PageNotFound";
 import { Load } from "../../Other";
+import { baseURL,endPoints } from "../../../Services/Appointment";
 
 const drawerWidth = 358.4;
 
@@ -47,7 +48,7 @@ function ResponseAppCalender() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("https://localhost:7205/api/Appointment/doctors");
+        const response = await fetch(baseURL+endPoints.DoctorsList);
         const responseData = await response.json();
         setDoctorCount((prevCount) => prevCount + 1);
         setDoctorList(responseData.result);
