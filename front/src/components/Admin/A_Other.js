@@ -1,19 +1,21 @@
-import { Grid, Paper, Typography,Box,Button } from '@mui/material';
-import React, { useState } from 'react';
+import React from 'react';
 import axios from 'axios';
-import { useEffect } from 'react';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateField } from '@mui/x-date-pickers/DateField';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
 import SuccessNotification from '../recepcomponents/SnackBar/SuccessNotification';
-import YoutubeSearchedForIcon from '@mui/icons-material/YoutubeSearchedFor';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';import { useState,useEffect } from 'react';
+import { Grid, Paper,MenuItem,InputLabel,Select,FormControl, Typography,TableCell,TableRow,TableHead,TableBody,Table, Box } from '@mui/material';
+import { AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis, Label, Area } from "recharts";
+import TextField from '@mui/material/TextField';
+import Autocomplete from '@mui/material/Autocomplete';
+import parse from 'autosuggest-highlight/parse';
+import match from 'autosuggest-highlight/match';
+import { Button } from '@mui/material';
+import { baseURL, endPoints } from '../../Services/Admin';
 
 const AOther = () => {
+  
   const [notificationOpen,setNotificationOpen]=useState(false);
   const [notiMessage,setNotiMessage]=useState("");
   const [typenoti, settypenoti] = useState('success');
@@ -33,10 +35,10 @@ const AOther = () => {
     setYear(year);
     setMonth(month);
   }
-  
+  //for attendance
   useEffect(() => {
     if (year && month) {
-      axios.get(`https://localhost:7205/api/Analytic/userCheck${year}-${month}`)
+      axios.get(baseURL+endPoints.A_Attendance+`${year}-${month}`)
         .then(response => {
           console.log(response.data);
           setRows(response.data);
@@ -57,6 +59,34 @@ const AOther = () => {
 
   const rolekey = ['Doctor','Receptionist','Lab Assistant','Cashier']; 
 
+
+
+//for lab reports
+const [labReports, setLabReports] = useState([]);
+
+useEffect(() => {
+  axios.get(baseURL+endPoints.A_LabReports)
+    .then(response => {
+      console.log(response.data);
+      setLabReports(response.data);
+    })
+    .catch(error => {
+      if (error.message === 'Network Error') { 
+        console.error('You are not connected to the internet');
+        // Handle error notification or logging
+      } else {
+        console.error(error);
+        // Handle other errors
+      }
+    });
+}, []);
+
+// Extract test names from labReports
+const testNames = labReports.map(report => report.testName);
+
+
+
+
   return (
     <div>
       <Typography sx={{textAlign:'center',fontWeight:'bolder',fontSize:'20px'}}>Attendance of Staff</Typography>
@@ -68,7 +98,8 @@ const AOther = () => {
                 setDate(newValue); // Update the date state
               }} />
             </LocalizationProvider>
-            <Button variant="contained" onClick={() => HandleSearch(date)} sx={{marginLeft:5,paddingLeft:5,paddingRight:5,padding:1}}>Find <YoutubeSearchedForIcon sx={{marginLeft:2}}></YoutubeSearchedForIcon></Button>
+            <Button variant="contained" onClick={() => HandleSearch(date)} sx={{marginLeft:5,paddingLeft:5,paddingRight:5,padding:1}}>Find <PlayArrowIcon sx={{marginLeft:1}}></PlayArrowIcon></Button>
+          
           </Box>
         </Grid>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -100,6 +131,16 @@ const AOther = () => {
           </TableBody>
         </Table>
       </Paper>
+     <Paper>
+
+     <Autocomplete
+      disablePortal
+      id="combo-box-demo"
+      options={testNames}
+      sx={{ width: 300 }}
+      renderInput={(params) => <TextField {...params} label="Test Name" />}
+    />
+     </Paper>
       <SuccessNotification setNotificationOpen={setNotificationOpen} notiMessage={notiMessage} notificationOpen={notificationOpen} type={typenoti}></SuccessNotification>
     </div>
   );

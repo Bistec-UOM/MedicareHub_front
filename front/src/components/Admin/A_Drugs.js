@@ -7,6 +7,7 @@ import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
 import axios from 'axios';
 import SuccessNotification from '../recepcomponents/SnackBar/SuccessNotification';
+import { baseURL, endPoints } from '../../Services/Admin';
 
 
 const ADrugs = () => {
@@ -19,7 +20,7 @@ const ADrugs = () => {
   const [pdata, setPdata] = useState([]);
   const [rows, setrows] = useState([]);
   useEffect(() => {
-    axios.get('https://localhost:7205/api/Analytic/daily-drug-usage')
+    axios.get(baseURL+endPoints.A_DrugUsage)
       .then(response => {
         console.log(response.data);
         setPdata(response.data);
@@ -35,7 +36,7 @@ const ADrugs = () => {
       }
       });
 
-      axios.get('https://localhost:7205/api/Analytic/available-count')
+      axios.get(baseURL+endPoints.A_DrugAvailable)
       .then(res => {
         console.log(res.data);
         setrows(res.data);

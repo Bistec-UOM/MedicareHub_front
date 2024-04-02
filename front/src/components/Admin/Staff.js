@@ -10,6 +10,8 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateField } from '@mui/x-date-pickers/DateField';
 import AskDelete from "./DialogComponents/AskDelete";
 import SuccessNotification from "../recepcomponents/SnackBar/SuccessNotification";
+import EditUserDialog from "./DialogComponents/EditUserDialog";
+import { baseURL, endPoints } from "../../Services/Admin";
 
 
 
@@ -103,7 +105,7 @@ const [formErrors, setFormErrors] = useState({
   });
   const [update,forceUpdate]=useState(0);
   useEffect(() => {
-    axios.get(`https://localhost:7205/api/User`)
+    axios.get(baseURL+endPoints.StaffList)
     .then(res => {
       const apiData = res.data.map((data,index) => createData(
         data.id,
@@ -224,7 +226,7 @@ const [Role, setRole] = useState("");
     temp.id = 0;
     temp.role = Role;
     console.log(temp.role)
-    axios.post(`https://localhost:7205/api/User`,temp)
+    axios.post(baseURL+endPoints.StaffList,temp)
     .then(res => {
       console.log('success')
       settypenoti('success')
@@ -313,8 +315,7 @@ const [Role, setRole] = useState("");
        errors.nic = 'NIC already exists';
        isValid = false;
      }
-   
-    if (!/^[0-9]{9}[vV]$/.test(formData.nic)||!/^[0-9]{12}$/.test(formData.nic)) {
+    if (!(/^[0-9]{9}[vV]$/.test(formData.nic) || /^[0-9]{12}$/.test(formData.nic))) {
       errors.nic = 'invalid NIC';
       isValid = false;
     }
@@ -341,7 +342,7 @@ try {
   console.log(pData,"fid",pData.id);
 
           // Assuming you have an API endpoint for updating a patient
-          axios.put(`https://localhost:7205/api/User/`+`${pData.id}` , pData)
+          axios.put(baseURL+endPoints.StaffList+`/${pData.id}` , pData)
           .then(response => {
             settypenoti('success')
             setNotiMessage("Member Edited successfully");
@@ -389,7 +390,7 @@ console.log(pData.id)
   };
   const handleRemove = () => {
     console.log('removed'+formData.id)
-    axios.delete(`https://localhost:7205/api/User/${pData.id}`)
+    axios.delete(baseURL+endPoints.StaffList+`/${pData.id}`)
       .then(res => {
         settypenoti('success')
         setNotiMessage("Staff Member removed successfully");
@@ -498,84 +499,7 @@ const RoleFields = ["Doctor", "Receptionist", "Lab Assistant", "Cashier"];
       </Dialog>
 
       {/* data editing */}
-      <Dialog open={editOpen} onClose={handleEditClose}>
-  <DialogTitle
-    sx={{
-      backgroundColor: "rgb(222, 244, 242)",
-      display: "flex",
-      justifyContent: "space-between",
-    }}
-  >
-    Edit User
-    <CloseIcon onClick={handleEditClose} sx={{cursor:'pointer'}} />
-  </DialogTitle>
-  <DialogContent>
-    {fields.map((field) => (
-      <TextField
-        label={field.label}
-        sx={field.style}
-        error={!!formErrors[field.key]}
-        helperText={formErrors[field.key]}
-        fullWidth={field.fullWidth || false}
-        margin="normal"
-        value={formData[field.key]}
-        disabled={isDisabled}
-        onChange={(e) => setFormData({...formData, [field.key]: e.target.value})}
-      />
-    ))}
-    <FormControl sx={{m:2,ml:4}}>
-      <InputLabel id="demo-simple-select-label">Gender</InputLabel>
-    </FormControl>
-    <div style={{display:'flex'}}>
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <DemoContainer components={['DateField']}>
-          <DateField
-            label="Date Of Birth"
-            value={formData.dob ? dayjs(formData.dob) : null} // Ensure formData.dob is a valid date or null
-            onChange={(newValue) => handleInputChange('dob', newValue)}
-            renderInput={(props) => <TextField {...props} />}
-            style={{width:'210px',marginTop:'9px'}}
-            disabled= {isDisabled}
-            // format="YYYY/MM/DD" // You can add this line back if it's needed
-          />
-        </DemoContainer>
-      </LocalizationProvider>
-    <Select
-      labelId="gender-label"
-      id="gender"
-      value={formData.gender}
-      onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
-      label="Gender"
-      disabled={isDisabled}
-      style={{width:"200px",height:'6vh'}}
-      sx={{ml:3,mt:2}}
-    >
-      <MenuItem value="Male">Male</MenuItem>
-      <MenuItem value="Female">Female</MenuItem>
-    </Select>
-    </div>
-  </DialogContent>
-  <DialogActions>
-  {!isDisabled && (
-    <Button
-      onClick={deletePopUp}
-      variant="outlined"
-      color="error"
-      sx={{ m: 2 }}
-    >
-      Delete
-    </Button>
-  )}
-    <Button
-      onClick={isDisabled? handleEditClick : handleEditSave}
-      variant="contained"
-      sx={{ backgroundColor: "rgb(121, 204, 190)", m: 2 }}
-    >
-      {isDisabled ? 'Edit' : 'Save'}
-    </Button>
-  </DialogActions>
-</Dialog>
-
+<EditUserDialog  editOpen={editOpen} handleEditClose={handleEditClose} fields={fields} formErrors={formErrors} formData={formData} isDisabled={isDisabled} setFormData={setFormData} handleInputChange={handleInputChange} deletePopUp={deletePopUp} handleEditClick={handleEditClick} handleEditSave={handleEditSave}></EditUserDialog>
  {/*mapping data*/}
  {RoleFields.map((rolefild) => (
      

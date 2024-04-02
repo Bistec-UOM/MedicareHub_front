@@ -21,17 +21,17 @@ const View = () => {
     }, []);
 
     return (
-        <div>
-            <Paper sx={{paddingLeft:4}}>
-                <h1>Good {time}, Yasiru!</h1>
-            </Paper>
+<div style={{ width: '100%' }}>
+  <Paper sx={{paddingLeft:4}}>
+    <h1>Good {time}, Yasiru!</h1>
+  </Paper>
 
-                <Grid item xs={12} md={6}>
-                    <IncomeOfDay  />
-                </Grid>
-                <br/>
-                    <TotalPatientCount></TotalPatientCount>
-        </div>
+  <Grid container direction="row">
+    <IncomeOfDay/>
+    <TotalPatientCount />
+  </Grid>
+  <br/>
+</div>
     );
 }
 

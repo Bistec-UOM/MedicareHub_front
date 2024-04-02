@@ -18,6 +18,7 @@ import { DateField } from '@mui/x-date-pickers/DateField';
 import SuccessNotification from "../recepcomponents/SnackBar/SuccessNotification";
 import EditPatientDialog from "./DialogComponents/EditPatientDialog";
 import AskDelete from "./DialogComponents/AskDelete";
+import { baseURL,endPoints } from "../../Services/Admin";
 
 
 function createData(id, name, nic, address,dob, email,gender,fullName,contactNumber) {
@@ -35,7 +36,7 @@ function Patient() {
 const [update,forceUpdate]=useState(0);
 
   useEffect(() => {
-    axios.get('https://localhost:7205/api/Patient')
+    axios.get(baseURL+endPoints.PatientList)
       .then(response => {
         const apiData = response.data.map((data, index) => createData(
           data.id,
@@ -177,7 +178,7 @@ const [update,forceUpdate]=useState(0);
       gender: formData.gender,
     };
   console.log("level last"+newData)
-    axios.post('https://localhost:7205/api/Patient', newData)
+    axios.post(baseURL+endPoints.PatientList, newData)
       .then(response => {
         settype('success')
         setNotiMessage("Patient Added successfully");
@@ -210,7 +211,7 @@ const [update,forceUpdate]=useState(0);
     setDeleteOpen(true);
   }
   const handleRemove = () => {
-    axios.delete(`https://localhost:7205/api/patient/${pData.id}`)
+    axios.delete(baseURL+endPoints.PatientList+`/${pData.id}`)
       .then(res => {
         settype('success')
         setNotiMessage("Patient removed successfully");
@@ -276,7 +277,8 @@ const [isDisabled, setIsDisabled] = useState(true);
       errors.nic = 'NIC already exists';
       isValid = false;
     }
-    if (!/^[0-9]{9}[vV]$/.test(formData.nic)||!/^[0-9]{12}$/.test(formData.nic)) {
+
+    if (!(/^[0-9]{9}[vV]$/.test(formData.nic) || /^[0-9]{12}$/.test(formData.nic))) {
       errors.nic = 'invalid NIC';
       isValid = false;
     }
@@ -305,7 +307,7 @@ try {
   
   console.log(pData)
           // Assuming you have an API endpoint for updating a patient
-          axios.put('https://localhost:7205/api/patient/'+ `${pData.id}` , pData)
+          axios.put(baseURL+endPoints.PatientList+ `/${pData.id}` , pData)
           .then(response => {
             settype('success')
             setNotiMessage("Patient Edited successfully");
@@ -548,33 +550,33 @@ useEffect(() => {
         borderRadius:'12px'
       }}
       >
-      <Typography sx={{ flex: 1 }}>Name</Typography>
+      <Typography sx={{ flex: 1 }}>Full Name</Typography>
       <Typography sx={{ flex: 1 }}>NIC</Typography>
-      <Typography sx={{ flex: 1 }}>Gender</Typography>
+      <Typography sx={{ flex: 1 }}>E-mail</Typography>
       <Typography sx={{ flex: 1 }}>Address</Typography>
       </Paper>
-        {records.map((row) => (
-          <Paper
-          key={row.Id}
-          sx={{
-            cursor:'pointer',
-            display: {sm:'flex',xs:'gird'},
-            justifyContent: "space-between",
-              alignItems: "center",
-              marginBottom: "10px",
-              padding: 2,
-              boxShadow: 2,
-              borderRadius:'12px',
-              pl:{sm:'2',xs:'30px'}
-            }}
-            onClick={() => handleEditOpen(row)} // Pass the row to handleEditClickOpen
-          >
-            <Typography sx={{ flex: 1 }}>{row.name}</Typography>
-            <Typography sx={{ flex: 1 }}>{row.nic}</Typography>
-            <Typography sx={{ flex: 1 }}>{row.gender}</Typography>
-            <Typography sx={{ flex: 1 }}>{row.email}</Typography>
-          </Paper>
-        ))}
+      {records.sort((a, b) => a.fullName.localeCompare(b.fullName)).map((row) => (
+  <Paper
+    key={row.Id}
+    sx={{
+      cursor:'pointer',
+      display: {sm:'flex',xs:'gird'},
+      justifyContent: "space-between",
+      alignItems: "center",
+      marginBottom: "10px",
+      padding: 2,
+      boxShadow: 2,
+      borderRadius:'12px',
+      pl:{sm:'2',xs:'30px'}
+    }}
+    onClick={() => handleEditOpen(row)} // Pass the row to handleEditClickOpen
+  >
+    <Typography sx={{ flex: 1 }}>{row.fullName}</Typography>
+    <Typography sx={{ flex: 1 }}>{row.nic}</Typography>
+    <Typography sx={{ flex: 1 }}>{row.email}</Typography>
+    <Typography sx={{ flex: 1 }}>{row.address}</Typography>
+  </Paper>
+))}
       </Grid>
 
       {/* pop up data editing */}

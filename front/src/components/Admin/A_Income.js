@@ -9,6 +9,7 @@ import axios from 'axios';
 import  { useEffect ,useState} from 'react';
 import IncomeOfDay from './AnalyticsComponents.js/IncomeOfDay';
 import SuccessNotification from '../recepcomponents/SnackBar/SuccessNotification';
+import { baseURL, endPoints } from '../../Services/Admin';
 
 
 
@@ -49,7 +50,7 @@ const AIncome = () => {
     change(event.target.value); // Call change function with selected value
   };
 
-  useEffect(() => {axios.get('https://localhost:7205/api/Analytic/total-Income')
+  useEffect(() => {axios.get(baseURL+endPoints.A_income)
   .then(response => {
     console.log(response.data);
     pdata = response.data;
