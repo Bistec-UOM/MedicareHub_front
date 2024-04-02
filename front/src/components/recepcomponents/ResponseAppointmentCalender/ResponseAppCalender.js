@@ -15,8 +15,8 @@ import { Sideunit_Doctor } from "../../sidebar/Sideunits";
 import ResNavBar from "../ResNavBar/ResNabBar";
 import MyFullCalendar from "../MyFullCalendar/MyFullCalendar";
 import PageNotFound from "../PageNotFound/PageNotFound";
-import { Load } from "../../Other";
 import { baseURL,endPoints } from "../../../Services/Appointment";
+import { Load } from "../../Other";
 
 const drawerWidth = 358.4;
 
@@ -33,10 +33,6 @@ function ResponseAppCalender() {
      setNotiType(type);
   }
 
-
-
-
-
   useEffect(() => {
     document.body.style.margin = "0";
   }, []);
@@ -45,9 +41,10 @@ function ResponseAppCalender() {
   const [doctorCount, setDoctorCount] = useState(1);
   const [epage,setEpage]=useState(false);  //state for errorpage
 
-  useEffect(() => {
+  useEffect(() => {  //fetching doctors list
     const fetchData = async () => {
       try {
+      //  const response = await fetch("https://localhost:7205/api/Appointment/doctors");
         const response = await fetch(baseURL+endPoints.DoctorsList);
         const responseData = await response.json();
         setDoctorCount((prevCount) => prevCount + 1);

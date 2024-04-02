@@ -11,6 +11,7 @@ import Button from "@mui/material/Button";
 import { Box } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { Grid, Stack } from "@mui/material";
+import { baseURL,endPoints } from "../../../Services/Appointment";
 
 export default function AppEditPopup({
   delcount,
@@ -82,16 +83,27 @@ export default function AppEditPopup({
       .toString()
       .padStart(2, "0")}.${date.getMilliseconds().toString().padStart(3, "0")}`;
     try {
-      var response = await axios.put(
-        `https://localhost:7205/api/Appointment/${item.appointment.id}`,
-        {
-          id: item.appointment.id,
-          Datetime: formattedDate,
-          status: item.appointment.status,
-          patientId: item.appointment.patientId,
-          doctorId: item.appointment.doctorId,
-          recepId: item.appointment.recepId,
-        }
+      // var response = await axios.put(
+      //   `https://localhost:7205/api/Appointment/${item.appointment.id}`,
+      //   {
+      //     id: item.appointment.id,
+      //     Datetime: formattedDate,
+      //     status: item.appointment.status,
+      //     patientId: item.appointment.patientId,
+      //     doctorId: item.appointment.doctorId,
+      //     recepId: item.appointment.recepId,
+      //   }
+
+        var response = await axios.put(
+          baseURL+endPoints.Appoinment+`${item.appointment.id}`,
+          {
+            id: item.appointment.id,
+            Datetime: formattedDate,
+            status: item.appointment.status,
+            patientId: item.appointment.patientId,
+            doctorId: item.appointment.doctorId,
+            recepId: item.appointment.recepId,
+          }
       );
       if (response.data == 0) {
         setDelcount(delcount + 1);

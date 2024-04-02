@@ -13,7 +13,7 @@ import '../../../recep.css'
 import SuccessNotification from '../SnackBar/SuccessNotification';
 import PageNotFound from '../PageNotFound/PageNotFound';
 import { Load } from '../../Other';
-import { baseURL,endPoints } from "../../../Services/Appointment";
+import { baseURL,endPoints} from '../../../Services/Appointment';
 
 //full calender for receptionist
 function MyFullCalendar({epage,setEpage,doctorId,selectedTab,setSelectedTab}) {
@@ -30,10 +30,12 @@ function MyFullCalendar({epage,setEpage,doctorId,selectedTab,setSelectedTab}) {
  
 
     const navigate = useNavigate();
-    //use effect for fetching the blocked dates of a specific doctor
+    
+    //fetching blocked dates of a doctor
     useEffect(()=>
     {
-      axios.get(baseURL+endPoints.BlockedDates+{doctorId})
+      axios.get(`https://localhost:7205/api/Appointment/BlockedDates/${doctorId}`)
+     // axios.get(baseURL+endPoints.BlockedDates+`${doctorId}`)
       .then((response) => {
         setDisabledDates(response.data);        
       })
@@ -46,6 +48,7 @@ function MyFullCalendar({epage,setEpage,doctorId,selectedTab,setSelectedTab}) {
     useEffect(() => {
       const fetchData = async () => {
         try {
+         // const response = await fetch("https://localhost:7205/api/Appointment/doctors");
           const response = await fetch(baseURL+endPoints.DoctorsList);
           const responseData = await response.json();
           setDoctorCount((prevCount) => prevCount + 1);
@@ -62,7 +65,8 @@ function MyFullCalendar({epage,setEpage,doctorId,selectedTab,setSelectedTab}) {
     //  use effect for getting the app day count for the current displayed month
     useEffect(()=>
     {
-      axios.get(baseURL+endPoints.AppDayCount+{doctorId}+"/month/"+{pasMonth})
+     // axios.get(`https://localhost:7205/api/Appointment/doctor/${doctorId}/month/${pasMonth}`)
+      axios.get(baseURL+endPoints.AppDay+`${doctorId}`+"/month/"+`${pasMonth}`)
       .then((response) => {
         setDayAppCount(response.data); 
       })
