@@ -11,6 +11,7 @@ import Button from "@mui/material/Button";
 import { Box } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { Grid, Stack } from "@mui/material";
+import { baseURL,endPoints } from "../../../Services/Appointment";
 
 export default function AppAddPopup({
   filteredAppointments,
@@ -103,7 +104,7 @@ export default function AppAddPopup({
     };
     try {
       var response = await axios.post(
-        "https://localhost:7205/api/Appointment",
+        baseURL+endPoints.Appoinment,
         obj
       );
       if (response.data == 0) { //check already appointments
@@ -126,7 +127,7 @@ export default function AppAddPopup({
     if (patientList && Array.isArray(patientList)) {
       //getting the selected patient
       const filteredData = patientList.find(
-        (patient) => patient.nic === activeId
+        (patient) => patient.id === activeId
       );
       setActiveData(filteredData);
     }

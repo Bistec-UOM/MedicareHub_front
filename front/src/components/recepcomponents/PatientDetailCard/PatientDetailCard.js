@@ -27,7 +27,7 @@ const PatientDetailCard = ({
     } else {
       setAppAddPopupCount(appAddPopupCount + 1);
       setApopen(true);
-      setActiveId(item.nic);
+      setActiveId(item.id);
     }
   };
   useEffect(() => {
