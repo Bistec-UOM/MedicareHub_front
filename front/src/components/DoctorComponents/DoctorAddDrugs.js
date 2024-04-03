@@ -61,16 +61,16 @@ export default function DoctorAddDrugs(props) {
 
         <form onSubmit={handleSubmit} style={{ display: 'flex', alignItems: 'center', }}>
         {openBox && (
-  <div style={{ position: 'relative' }}>      
+       <div style={{ position: 'relative' }}>      
       <Autocomplete
-    sx={{ flex: '1', marginRight: '10px', width: '200px', '& .MuiOutlinedInput-root': { '& fieldset': { borderColor: '#0099cc', borderWidth: '2px' } } }}
-    freeSolo
-    options={drugNames}
-    value={genericN}
-    onChange={(event, newValue) => {
-        setGenericN(newValue);
+      sx={{ flex: '1', marginRight: '10px', width: '200px', '& .MuiOutlinedInput-root': { '& fieldset': { borderColor: '#0099cc', borderWidth: '2px' } } }}
+      freeSolo
+      options={drugNames}
+      value={genericN}
+      onChange={(event, newValue) => {
+      setGenericN(newValue);
     }}
-    renderInput={(params) => (
+      renderInput={(params) => (
         <TextField
             {...params}
             label="Search"
