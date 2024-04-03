@@ -164,19 +164,20 @@ export default function TopUnit(props) {
                    </Toolbar>
                     </AppBar>
                                   
-                     <Grid container spacing={5} sx={{justifyContent: 'flex-end', marginTop: '940px', marginLeft: '1900px',}}>          
-                      {filteredAppointmentsdone.slice().reverse().map((appointment) => (
-                       <Grid key={appointment.id} item  sm={100} sx={{ display: 'flex', justifyContent: 'center', }}>      
+                     <Grid container spacing={5} sx={{justifyContent: 'flex-end', marginTop: '940px', marginLeft: '1900px',}}> 
+
+                      {filteredAppointmentsdone.slice().reverse().map((ele) => (
+                       <Grid key={ele.id} item  sm={100} sx={{ display: 'flex', justifyContent: 'center', }}>      
                          <Card style={{width: '950px', display: 'flex', flexDirection: 'row',fontSize: '17px' }}>                          
-                          <Typography gutterBottom variant="p" sx={{ flex: '3', marginLeft: '10px' }}>{appointment.patient.name}</Typography>    
-                          <Typography gutterBottom variant="p" sx={{ flex: '1', marginLeft: '100px' }}>{appointment.patient.age} years</Typography>    
-                          <Typography gutterBottom variant="p" sx={{ flex: '0.5', marginLeft: '150px' }}>{appointment.patient.gender}</Typography>
-                          <Typography gutterBottom variant="p" sx={{ flex: '0.5', marginLeft: '150px' }}>{appointment.time}</Typography> 
+                          <Typography gutterBottom variant="p" sx={{ flex: '3', marginLeft: '10px' }}>{ele.patient.name}</Typography>    
+                          <Typography gutterBottom variant="p" sx={{ flex: '1', marginLeft: '100px' }}>{ele.patient.age} years</Typography>    
+                          <Typography gutterBottom variant="p" sx={{ flex: '0.5', marginLeft: '150px' }}>{ele.patient.gender}</Typography>
+                          <Typography gutterBottom variant="p" sx={{ flex: '0.5', marginLeft: '150px' }}>{ele.time}</Typography> 
                           <Typography gutterBottom variant="p" sx={{ flex: '1', marginLeft: '140px' }}>Done</Typography>    
                           </Card>
                        </Grid>   
                          ))}                        
-                         
+      {/*........................ map damydata set....... just display a list......................................................................... */}
                           {data.map((appointment) => (
                         <Grid key={data.id} item  sm={100} sx={{ display: 'flex', justifyContent: 'center', }}>      
                         <Card style={{width: '950px', display: 'flex', flexDirection: 'row',fontSize: '17px' }}>                          

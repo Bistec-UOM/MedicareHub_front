@@ -60,10 +60,8 @@ export default function PatientsRecords(props) {
                             <Card sx={{m: 2, backgroundColor: 'rgb(209, 224, 250)', color: 'blue', fontSize: '20px',height:'200px',width:'600px', }}>
                                                            
                               </Card> 
-                        </Grid>                 
-                             
-                                          
-                    </Grid>                  
+                        </Grid>              
+                        </Grid>                  
          </DialogContent>
       </Dialog>
     </div>

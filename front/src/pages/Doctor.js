@@ -30,7 +30,7 @@ export default function Doctor() {
   const [openpopBox, setOpenpopBox] = useState(false);
   const [openAreports, setOpenAreports] = useState(false);//for lab reports
   const [description,setDescription] = useState (""); // hold the text field descriptions(patient description)
-  const [open, setOpen] = React.useState(false); //for snapbar
+  const [open, setOpen] = useState(false); //for snapbar
   const [showDonePatients, setShowDonePatients] = useState(false);
   const [pres,setPres]=useState([]) ;// hold the pres details from doctoradd drug component
   const [rep,setrep]=useState([]); // hold the  lab request from doctoradd drug component
@@ -73,7 +73,6 @@ export default function Doctor() {
           if (appointment.id === select) {
               // Update status to "done"
               appointment.status = "done";
-
               // Clear other fields if needed
               appointment.drugs = [];
               appointment.labs = [];
@@ -81,7 +80,6 @@ export default function Doctor() {
           }
           return appointment;
       });
-
       // Display updated appointments
       console.log("Updated Appointments:", updatedAppointments);
       setAppointments(updatedAppointments);
@@ -98,21 +96,32 @@ const handleClick = () => {
     id: select,
     drugs: pres, // drug array: from DoctorAddDrugs component
     labs: rep,  // lab test array: from Labrequest component
-    descript: description
+    description: description
   }
   console.log(JSON.stringify(obj))
-  setPres([])
-  setrep([])
-  setDescription('')
-  // Call the confirmRemoving function after showing the Snackbar
-  setTimeout(() => {
-    confirmRemoving();
-  }, 1500);
+
+  
+  axios.post('http://localhost:7205/api/Doctor/Prescription', obj)
+  .then(response => {
+    // Handle success
+    console.log('Response:', response.data);
+    setPres([])
+    setrep([])
+    setDescription('')
+    // Call the confirmRemoving function after showing the Snackbar
+    setTimeout(() => {
+      confirmRemoving();
+    }, 1500);
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
 };
+
 
 const fetchData = async () => {
   try {
-    const response = await axios.get('http://localhost:7205/api/Doctor/AppointList'); // Replace 'your_api_url_here' with the actual endpoint URL
+    const response = await axios.get('http://localhost:7205/api/Doctor/AppointList'); 
     setAppointments(response.data);
   } catch (error) {
     console.error('Error fetching data:', error);
@@ -133,28 +142,7 @@ const fetchData = async () => {
        time: "9:15",
        status: "pending"
    },
-   {
-     date:2,
-     id:52,    
-     patient:{
-         name:"Dammika mahendra",
-         age:18,
-         gender:"male"
-       },
-       time: "10:30",
-       status: "pending"
-   },
-   {
-     date:3,
-     id:53,    
-     patient:{
-         name:"Yasiru Ramosh",
-         age:8,
-         gender:"male",
-       },
-       time: "11:15",
-       status: "pending"
-   },
+   
    {
      date:4,
      id:54,    
@@ -176,78 +164,13 @@ const fetchData = async () => {
        },
        time: "13:05",
        status: "pending"
-   },
-   {
-     date:6,
-     id:56,    
-     patient:{
-         name:"Dilini tharaka",
-         age:42,
-         gender:"female"
-       },
-       time: "14:15",
-       status: "pending"
-   },
-   {
-     date:7,
-     id:57,    
-     patient:{
-         name:"Hasini Chamodi",
-         age:52,
-         gender:"female"
-       },
-       time: "15:00",
-       status: "pending"
-   },
-   {
-     date:8,
-     id:58,    
-     patient:{
-         name:"Mihiran Iddamalgoda",
-         age:38,
-         gender:"male"
-       },
-       time: "15:30",
-       status: "pending"
-   },
-   {
-     date:9,
-     id:59,    
-     patient:{
-         name:"Sunil Perera",
-         age:22,
-         gender:"male"
-       },
-       time: "15:45",
-       status: "pending"
-   },
-   {
-     date:10,
-     id:60,    
-     patient:{
-         name:"Nimal Senarathna",
-         age:16,
-         gender:"male"
-       },
-       time: "16:00",
-       status: "pending"
-   },
-   {
-     date:11,
-     id:61,    
-     patient:{
-         name:"Kasun Perera",
-         age:60,
-         gender:"male"
-       },
-       time: "16:15",
-       status: "pending"
-   },    
+   },     
+    
  ]*/
  
   const selectedAppointment = select ? appointments.filter(appointment => appointment.id === select) : [];//------------filter  the selected patient----------
 const filteredAppointments = showDonePatients ? appointments.filter(appointment => appointment.status === "pending") : appointments;
- 
+ //...............filter pending patiens............................
  return (
   <div>
   <Navbar></Navbar>
@@ -258,6 +181,7 @@ const filteredAppointments = showDonePatients ? appointments.filter(appointment 
               <TopUnit appointments={appointments} ></TopUnit>
               </SidebarTop>
               <SidebarList >
+{/*..........................................................show staus in done patients..................................................*/}
                 <Switch defaultChecked size="small" sx={{position:'fixed',left:'8px',top:'125px'}}
                 onChange={() => setShowDonePatients(prev => !prev)}/>
                 {filteredAppointments.map((elm, ind) => (
@@ -269,13 +193,14 @@ const filteredAppointments = showDonePatients ? appointments.filter(appointment 
                                     status={elm.status}
                                     setSelect={setSelect}
                                     selected={elm.id === select ? true : ''}
-                                />
+                                />                                
                             ))}
               </SidebarList>
           </SidebarContainer>
       </Grid>
 
       <Grid item xs={9} style={{ height: '100%', overflowY: 'scroll' }}>
+        
           {select ? (
               <>
                   <div sx={{ display: 'flex' ,}}>
@@ -296,11 +221,14 @@ const filteredAppointments = showDonePatients ? appointments.filter(appointment 
                       ))}
                       </div>
                   <div>
+
                   <DoctorAddDrugs pres={pres} setPres={setPres} openBox={openBox} setOpenBox={setOpenBox} />
                   <AddCircleIcon sx={{ color: '#00cc66', marginLeft: '10%', fontSize: '30px', float: 'left', marginTop: '27px', cursor: 'pointer' }} onClick={handleAddDrugsClick} />
                   </div>
                   <ThermostatIcon sx={{ color: '#33cc33', marginLeft: '74%', fontSize: '45px', marginTop: '48px', cursor: 'pointer' }} onClick={() =>handleAddButtonClick(selectedAppointment)} />
                   <LabRequest openpopBox={openpopBox} setOpenpopBox={setOpenpopBox} rep={rep} setrep={setrep}/>
+
+{/*..........................................................add patient extra details field..................................................*/}
                   <div sx={{ display: 'flex' }}>
                       <Box
                           component="form"
@@ -312,10 +240,12 @@ const filteredAppointments = showDonePatients ? appointments.filter(appointment 
                           <TextField id="outlined-multiline-flexible" placeholder="Patient extra details" multiline rows={7} onChange={(event) => setDescription(event.target.value)}
                           InputProps={{ style: { backgroundColor: 'rgb(209, 224, 250)', borderRadius: '15px', fontSize: '22px', color: 'blue', textAlign: 'center', }, }} />
                       </Box>
+                      <div>
+{/*...............................................................confirm button..............................................................*/}
                       <br></br>
                       <Button variant="contained" sx={{ backgroundColor: '#00cca3', left: '80%' }} onClick={handleClick}>Confirm</Button>
-                      <div>
-                   {/* snack bar component */}
+                     
+ {/*............................................................snack bar component........................................................ */}
                    <Snackbar open={open} autoHideDuration={6000}  anchorOrigin={{ vertical: 'bottom', horizontal: 'left'}} >
                    <Alert             
                    severity="success"
@@ -325,6 +255,7 @@ const filteredAppointments = showDonePatients ? appointments.filter(appointment 
                  Successfully  Confirm  !
                  </Alert>
                 </Snackbar>
+ {/*....................................................................................................................................... */}
                  </div>
                   </div>
               </>
