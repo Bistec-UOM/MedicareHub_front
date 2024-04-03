@@ -53,14 +53,6 @@ const AppointmentCalender = () => {
         sx={{marginTop:0}}
         
       >
-              {/* {data.filter((item)=>{
-                  return search.toLowerCase()===''?item:item.name.toLowerCase().includes(search.toLowerCase());
-              }).map((item,index)=>(
-                <Tab key={index} label="" style={{ display: 'none' }} />
-                
-                
-                //<Sideunit_Doctor name={item.name} title={item.title} key={index}></Sideunit_Doctor>
-              ))} */}
               </Tabs>
               <div style={{width:'100%'}}>
               {data.filter((item)=>{

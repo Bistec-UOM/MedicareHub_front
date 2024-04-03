@@ -15,11 +15,24 @@ import { Sideunit_Doctor } from "../../sidebar/Sideunits";
 import ResNavBar from "../ResNavBar/ResNabBar";
 import MyFullCalendar from "../MyFullCalendar/MyFullCalendar";
 import PageNotFound from "../PageNotFound/PageNotFound";
+import { baseURL,endPoints } from "../../../Services/Appointment";
 import { Load } from "../../Other";
 
 const drawerWidth = 358.4;
 
 function ResponseAppCalender() {
+
+  const [notificationOpen,setNotificationOpen]=useState(false);
+  const [notiMessage,setNotiMessage]=useState("");
+  const [notiType,setNotiType]=useState("success")
+
+  const handleNotification=(msg,type)=>
+  {  
+     setNotiMessage(msg);
+     setNotificationOpen(true);
+     setNotiType(type);
+  }
+
   useEffect(() => {
     document.body.style.margin = "0";
   }, []);
@@ -28,10 +41,11 @@ function ResponseAppCalender() {
   const [doctorCount, setDoctorCount] = useState(1);
   const [epage,setEpage]=useState(false);  //state for errorpage
 
-  useEffect(() => {
+  useEffect(() => {  //fetching doctors list
     const fetchData = async () => {
       try {
-        const response = await fetch("https://localhost:7205/api/Appointment/doctors");
+      //  const response = await fetch("https://localhost:7205/api/Appointment/doctors");
+        const response = await fetch(baseURL+endPoints.DoctorsList);
         const responseData = await response.json();
         setDoctorCount((prevCount) => prevCount + 1);
         setDoctorList(responseData.result);
@@ -39,8 +53,9 @@ function ResponseAppCalender() {
         setSelectedTab(responseData.result[0].id);
        
       } catch (error) {
-        console.error('Error fetching doctor data:', error);
+        
         setRloadDone(true);
+        handleNotification(error.response.data,"error");
       }
     };
   

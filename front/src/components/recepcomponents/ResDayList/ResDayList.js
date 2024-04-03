@@ -10,6 +10,7 @@ import SuccessNotification from "../SnackBar/SuccessNotification";
 import axios from "axios";
 import PageNotFound from "../PageNotFound/PageNotFound";
 import { Load } from "../../Other";
+import { baseURL,endPoints } from "../../../Services/Appointment";
 //day app list page for a day
 
 const ResDayList = (props) => {
@@ -39,9 +40,13 @@ const ResDayList = (props) => {
   const handleAppAd = () => {
     props.setRenderVal(true);
   };
+
+  //useeffect for fetching the app of a day of a selected doctor
   useEffect(() => {
     document.body.style.margin = "0";
-    axios.get(`https://localhost:7205/api/Appointment/doctor/${props.docid}/day/${selectedDay}`)
+   // axios.get(`https://localhost:7205/api/Appointment/doctor/${props.docid}/day/${selectedDay}`)
+    axios.get(baseURL+endPoints.AppDay+`${props.docid}`+"/day/"+`${selectedDay}`)
+   // axios.get()
         .then((response) => {
             const responseData = response.data;
             setIsDisabled(responseData.length === 0); // Update isDisabled based on the fetched appointments
@@ -158,7 +163,7 @@ const ResDayList = (props) => {
             .filter((item)=>{
               return search.toLowerCase()===''?item:item.patient.fullName.toLowerCase().includes(search.toLowerCase())
             }).map((item) => (
-              <div key={item.appointment?.id}>
+              <div key={item?.id}>
                 <AppointmentCard  
                 selectedDay={selectedDay}
                   docid={props.docid}

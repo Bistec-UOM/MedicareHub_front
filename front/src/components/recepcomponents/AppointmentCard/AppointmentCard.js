@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useState } from "react";
-import { Stack } from "@mui/material";
+import { Grid, Stack } from "@mui/material";
 import { IconButton } from "@mui/material";
 import AppDeletePopup from "../AppDeletePopup/AppDeletePopup";
 import AppEditPopup from "../AppEditPopup/AppEditPopup";
@@ -95,51 +95,56 @@ const AppointmentCard = ({
           }}
         >
           <Stack direction={"column"}>
-            <CardContent>
-              <Stack
-                direction={"row"}
-                sx={{ justifyContent: "space-between", alignItem: "center" }}
-              >
-                <Typography variant="h5">{item.patient?.fullName}</Typography>
-                {completedStatus(item)}
-              </Stack>
-              <Stack
-                sx={{
-                  justifyContent: "space-between",
-                  alignItem: "center",
-                  flexDirection: { xs: "column", md: "row" },
-                }}
-              >
-                <Typography variant="body2" color="text.secondary">
-                  {item.patient?.address}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {item.patient?.contactNumber}
-                </Typography>
-                {isCompletedOrCancelled ? (
-                  <div></div>
-                ) : (
-                  <Box>
-                    <IconButton onClick={handleDeleteAppointment}>
-                      <DeleteIcon
-                        sx={{ marginLeft: "auto", color: "#E60000" }}
-                      />
-                    </IconButton>
-                    <IconButton onClick={handleEditAppointment}>
-                      <EditIcon sx={{ color: "#F66444" }} />
-                    </IconButton>
-                  </Box>
-                )}
-
-                <Typography //display time range only inside the app card for small and xs screen
-                  sx={{ display: { xs: "flex", sm: "flex", md: "none" } }}
-                  variant="body2"
-                  color="text.secondary"
-                >
-                  {getStartingTime(item.appointment?.dateTime)}-
-                  {getEndingTime(item.appointment?.dateTime)}
-                </Typography>
-              </Stack>
+            <CardContent sx={{ display: "flex" }}>
+             
+              <Grid container>
+                <Grid item xs={12} sm={6}>
+                  <Stack
+                    direction={"row"}
+                    sx={{
+                      justifyContent: "space-between",
+                      alignItem: "center",
+                    }}
+                  >
+                    <Typography variant="h5">
+                      {item.patient?.fullName}
+                    </Typography>
+                  
+                  </Stack>
+                </Grid>
+                <Grid item xs={12} sm={4}>
+                  <Typography variant="body2" color="text.secondary">
+                    {item.patient?.address}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {item.patient?.contactNumber}
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} sm={2}>
+                  <Typography //display time range only inside the app card for small and xs screen
+                    sx={{ display: { xs: "flex", sm: "flex", md: "none" } }}
+                    variant="body2"
+                    color="text.secondary"
+                  >
+                    {getStartingTime(item.appointment?.dateTime)}-
+                    {getEndingTime(item.appointment?.dateTime)}
+                  </Typography>
+                  {isCompletedOrCancelled ? 
+                    <div>   {completedStatus(item)} </div>
+                   : 
+                    <Box>
+                      <IconButton onClick={handleDeleteAppointment}>
+                        <DeleteIcon
+                          sx={{  color: "#E60000" }}
+                        />
+                      </IconButton>
+                      <IconButton onClick={handleEditAppointment}>
+                        <EditIcon sx={{ color: "#F66444" }} />
+                      </IconButton>
+                    </Box>
+                   }                
+                </Grid>
+              </Grid>
             </CardContent>
           </Stack>
         </Card>

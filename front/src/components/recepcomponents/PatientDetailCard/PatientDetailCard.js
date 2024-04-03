@@ -27,7 +27,7 @@ const PatientDetailCard = ({
     } else {
       setAppAddPopupCount(appAddPopupCount + 1);
       setApopen(true);
-      setActiveId(item.nic);
+      setActiveId(item.id);
     }
   };
   useEffect(() => {
@@ -54,6 +54,7 @@ const PatientDetailCard = ({
         >
           <Stack direction={"column"}>
             <CardContent>
+              
               <Stack
                 direction={"row"}
                 sx={{ justifyContent: "space-between", alignItem: "center" }}

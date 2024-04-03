@@ -7,6 +7,7 @@ import Button from "@mui/material/Button";
 import { Box } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import ErrorIcon from "@mui/icons-material/Error";
+import { baseURL, endPoints } from "../../../../Services/Appointment";
 
 export default function AppCancelPopup({
   appointlist,
@@ -25,7 +26,7 @@ export default function AppCancelPopup({
   async function handleStatusUpdate(item) {
     try {
       await axios.put(
-        `https://localhost:7205/updateStatus/${item.appointment.id}`,
+        `https://localhost:7205/updateStatus/${item.appointment.id}`,  //update the app status to cancelled
         {
           id: item.appointment.id,
           Datetime: item.appointment.dateTime,
@@ -35,10 +36,12 @@ export default function AppCancelPopup({
           recepId: item.appointment.recepId,
         }
       );
-      setDelcount(delcount + 1); //for fetching newlye status updated appointments
+      setDelcount(delcount + 1); //for fetching newly status updated appointments
       setCancelOpen(false);
       handleNotification("Appointment Cancelled succesfully!", "success");
-    } catch (err) {}
+    } catch (err) {
+      handleNotification(err.response.data,"error");
+    }
   }
   const handleClose = () => {
     setCancelOpen(false);

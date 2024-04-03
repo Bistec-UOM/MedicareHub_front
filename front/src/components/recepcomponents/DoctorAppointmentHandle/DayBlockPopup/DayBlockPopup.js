@@ -49,7 +49,7 @@ export default function DayBlockPopup({
       setDocDayBlockPopup(false);
       handleNotification("Day Blocked succesfully!", "success");
     } catch (err) {
-      var msg = err.response.data;
+      handleNotification(err.response.data,"error");
     }
   }
 
@@ -97,9 +97,9 @@ export default function DayBlockPopup({
             <Button
               onClick={handleSubmit}
               sx={{
-                backgroundColor: "#F44336", // Replace with your desired color
+                backgroundColor: "#F44336", 
                 "&:hover": {
-                  backgroundColor: "#F44336", // Replace with your desired hover color
+                  backgroundColor: "#F44336", 
                 },
                 marginLeft: "20px",
               }}

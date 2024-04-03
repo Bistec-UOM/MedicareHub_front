@@ -75,8 +75,8 @@ const DoctorAppList = (props) => {
         setFilteredAppointments(sortedAppointments);
         setRloadDone(true);
       })
-      .catch((error) => {
-        console.error("Error fetching appointments:", error);
+      .catch((err) => {
+        handleNotification(err.response.data,"error");
         setRloadDone(true);
       });
   }, [props.docid, selectedDay, delcount]); // Ensure dependencies are included in the dependency array
