@@ -240,98 +240,102 @@ const [isDisabled, setIsDisabled] = useState(true);
 
 
 
-  const handleEditSave = () => {
-  // Validate form fields
-  let errors = {};
-  let isValid = true;
+//   const handleEditSave = () => {
+//   // Validate form fields
+//   let errors = {};
+//   let isValid = true;
 
-  // Check if any of the required fields are empty or null
-  formFields.forEach((field) => {
-    if (!formData[field.key] || formData[field.key].trim() === '') {
-      errors[field.key] = `${field.label} is required`;
-      isValid = false;
-    }
-  });
+//   // Check if any of the required fields are empty or null
+//   formFields.forEach((field) => {
+//     if (!formData[field.key] || formData[field.key].trim() === '') {
+//       errors[field.key] = `${field.label} is required`;
+//       isValid = false;
+//     }
+//   });
 
-  // Check for duplicates only if the required fields are not empty
-  if (isValid) {
-    const isDuplicateName = rows.some((row) => row.id !== formData.id && row.name.toLowerCase() === formData.name.toLowerCase());
-    const isDuplicateFullName = rows.some((row) => row.id !== formData.id && row.fullName.toLowerCase() === formData.fullName.toLowerCase());
-    const isDuplicateContactNumber = rows.some((row) => row.id !== formData.id && row.contactNumber === formData.contactNumber);
-    const isDuplicateNIC = rows.some((row) => row.id !== formData.id && row.nic.toLowerCase() === formData.nic.toLowerCase());
+//   // Check for duplicates only if the required fields are not empty
+//   if (isValid) {
+//     const isDuplicateName = rows.some((row) => row.id !== formData.id && row.name.toLowerCase() === formData.name.toLowerCase());
+//     const isDuplicateFullName = rows.some((row) => row.id !== formData.id && row.fullName.toLowerCase() === formData.fullName.toLowerCase());
+//     const isDuplicateContactNumber = rows.some((row) => row.id !== formData.id && row.contactNumber === formData.contactNumber);
+//     const isDuplicateNIC = rows.some((row) => row.id !== formData.id && row.nic.toLowerCase() === formData.nic.toLowerCase());
   
-    if (isDuplicateName) {
-      errors.name = 'Name already exists';
-      isValid = false;
-    }
-    if (isDuplicateFullName) {
-      errors.name = 'Name already exists';
-      isValid = false;
-    }
+//     if (isDuplicateName) {
+//       errors.name = 'Name already exists';
+//       isValid = false;
+//     }
+//     if (isDuplicateFullName) {
+//       errors.name = 'Name already exists';
+//       isValid = false;
+//     }
 
-    if (isDuplicateContactNumber) {
-      errors.contactNumber = 'Contact number already exists';
-      isValid = false;
-    }
+//     if (isDuplicateContactNumber) {
+//       errors.contactNumber = 'Contact number already exists';
+//       isValid = false;
+//     }
 
-    if (isDuplicateNIC) {
-      errors.nic = 'NIC already exists';
-      isValid = false;
-    }
+//     if (isDuplicateNIC) {
+//       errors.nic = 'NIC already exists';
+//       isValid = false;
+//     }
 
-    if (!(/^[0-9]{9}[vV]$/.test(formData.nic) || /^[0-9]{12}$/.test(formData.nic))) {
-      errors.nic = 'invalid NIC';
-      isValid = false;
-    }
-    if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
-      errors.email = 'Invalid email';
-      isValid = false;
-    }
-    const dob = new Date(formData.dob);
+//     if (!(/^[0-9]{9}[vV]$/.test(formData.nic) || /^[0-9]{12}$/.test(formData.nic))) {
+//       errors.nic = 'invalid NIC';
+//       isValid = false;
+//     }
+//     if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
+//       errors.email = 'Invalid email';
+//       isValid = false;
+//     }
+//     const dob = new Date(formData.dob);
 
-    if (isNaN(dob)) {
-      errors.dob = 'Invalid date of birth';
-      isValid = false;
-    }
-    if (!/^\d+$/.test(formData.contactNumber)) {
-      errors.contactNumber = 'Invalid contact number, only integers allowed';
-      isValid = false;
-    }
-  }
+//     if (isNaN(dob)) {
+//       errors.dob = 'Invalid date of birth';
+//       isValid = false;
+//     }
+//     if (!/^\d+$/.test(formData.contactNumber)) {
+//       errors.contactNumber = 'Invalid contact number, only integers allowed';
+//       isValid = false;
+//     }
+//   }
 
-  // If any errors are found, set form errors and return
-  if (!isValid) {
-    setFormErrors(errors);
-    return;
-  }
-try {
+//   // If any errors are found, set form errors and return
+//   if (!isValid) {
+//     setFormErrors(errors);
+//     return;
+//   }
+// try {
   
-  console.log(pData)
-          // Assuming you have an API endpoint for updating a patient
-          axios.put(baseURL+endPoints.PatientList+ `/${pData.id}` , pData)
-          .then(response => {
-            settype('success')
-            setNotiMessage("Patient Edited successfully");
-            setNotificationOpen(true);
-            // Handle success, maybe update local state or dispatch an action
-            console.log('Patient updated successfully:', response.data);
-            handleEditClose();
-            // Assume the Axios request is successful, then set showPatient to true
-            setShowPatient(true);
-            forceUpdate(prevCount => prevCount + 1); // Trigger a re-render
-            // Close the edit dialog
-            setEditOpen(false);
-          })
-} catch (error) {
-  // Handle error, show an error message or dispatch an error action
-  console.error('Error updating patient:', error);
+//   console.log(pData)
+//           // Assuming you have an API endpoint for updating a patient
+//           axios.put(baseURL+endPoints.PatientList+ `/${pData.id}` , pData)
+//           .then(response => {
+//             settype('success')
+//             setNotiMessage("Patient Edited successfully");
+//             setNotificationOpen(true);
+//             // Handle success, maybe update local state or dispatch an action
+//             console.log('Patient updated successfully:', response.data);
+//             handleEditClose();
+//             // Assume the Axios request is successful, then set showPatient to true
+//             setShowPatient(true);
+//             forceUpdate(prevCount => prevCount + 1); // Trigger a re-render
+//             // Close the edit dialog
+//             setEditOpen(false);
+//           })
+// } catch (error) {
+//   // Handle error, show an error message or dispatch an error action
+//   console.error('Error updating patient:', error);
   
-}
+// }
         
-    setEditOpen(false);
-    setIsDisabled(true);
+//     setEditOpen(false);
+//     setIsDisabled(true);
 
-  };
+//   };
+
+
+
+
   const handleEditOpen = (row) => {
     setFormData({...formData,id: row.id, name: row.name, fullName: row.fullName, nic: row.nic,address: row.address,contactNumber:row.contactNumber,email:row.email,dob:row.dob,gender:row.gender});
     // setSelectedPaper(row);
@@ -521,7 +525,7 @@ useEffect(() => {
       </Grid>
 
       {/* pop up data editing */}
-  <EditPatientDialog editOpen={editOpen} handleEditClose={handleEditClose} formFields={formFields} formErrors={formErrors} isDisabled={isDisabled} formData={formData} setFormData={setFormData} handleInputChange={handleInputChange} deletePopUp={deletePopUp} handleEditClick={handleEditClick} handleEditSave={handleEditSave}></EditPatientDialog>
+  <EditPatientDialog editOpen={editOpen} handleEditClose={handleEditClose} formFields={formFields} formErrors={formErrors} isDisabled={isDisabled} formData={formData} setFormData={setFormData} handleInputChange={handleInputChange} deletePopUp={deletePopUp} handleEditClick={handleEditClick} setFormErrors={setFormErrors} rows={rows} pData={pData} settype={settype} setNotiMessage={setNotiMessage} setNotificationOpen={setNotificationOpen} setShowPatient={setShowPatient} forceUpdate={forceUpdate} setEditOpen={setEditOpen} setIsDisabled={setIsDisabled}></EditPatientDialog>
   <SuccessNotification setNotificationOpen={setNotificationOpen} notiMessage={notiMessage} notificationOpen={notificationOpen} type={type}></SuccessNotification>
 </Grid>
 <AskDelete deleteOpen={deleteOpen} handleEditClose={handleEditClose} handleRemove={handleRemove}></AskDelete>
