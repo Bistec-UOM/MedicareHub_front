@@ -13,6 +13,7 @@ import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
 import { Button } from '@mui/material';
 import { baseURL, endPoints } from '../../Services/Admin';
+import SearchGraph from './AnalyticsComponents.js/SearchGraph';
 
 const AOther = () => {
   
@@ -81,9 +82,62 @@ useEffect(() => {
     });
 }, []);
 
-// Extract test names from labReports
-const testNames = labReports.map(report => report.testName);
+const labReportTypes = labReports.flatMap(data => data.reports);
+const uniqueLabReportTypes = labReportTypes.reduce((unique, item) =>
+  unique.some(report => report.name === item.name) ? unique : [...unique, item], []);
 
+  //const date
+  const currentDate = new Date();
+  const [selectedLabReport, setSelectedLabReport] = useState(null);
+  const [Value, setValue] = React.useState('month'); // Initialize Value state with 'day'
+  const selectLabReportType = (value) => {
+    setSelectedLabReport(value);
+  }
+
+  const initialTimeGap = new Date();
+  initialTimeGap.setDate(currentDate.getDate() - 30);
+  const [TimeGap, setTimeGap] = React.useState(initialTimeGap);
+
+  const handleChange = (event) => {
+    setValue(event.target.value);
+    const newDate = new Date(currentDate);
+    if (event.target.value === 'month') {
+      newDate.setMonth(currentDate.getMonth() - 1);
+    } else if (event.target.value === 'year') {
+      newDate.setFullYear(currentDate.getFullYear() - 1);
+    }
+    setTimeGap(newDate);
+  }
+
+  const filteredData = labReports.filter(entry => {
+    const entryDate = new Date(entry.date);
+    return entryDate >= TimeGap && entryDate <= currentDate;
+  });
+
+const TestData = selectedLabReport?
+  filteredData.flatMap(data => 
+  data.reports
+    .filter(type => type.name === selectedLabReport.name)
+    .map(type=>({
+      ...type,
+      date:data.date
+    }))
+    ):[];
+const labReportCounter = filteredData.flatMap(data => data.reports);
+useEffect(() => {
+  const freqMap = labReportCounter.reduce((map, report) => {
+    map[report.name] = (map[report.name] || 0) + report.count;
+  return map;
+}, {});
+
+
+
+});
+let graph = {
+  x: 'date',
+  y: 'count',
+  var:'select a type'
+};
 
 
 
@@ -132,14 +186,7 @@ const testNames = labReports.map(report => report.testName);
         </Table>
       </Paper>
      <Paper>
-
-     <Autocomplete
-      disablePortal
-      id="combo-box-demo"
-      options={testNames}
-      sx={{ width: 300 }}
-      renderInput={(params) => <TextField {...params} label="Test Name" />}
-    />
+     <SearchGraph uniqueModelTypes={uniqueLabReportTypes} selectModelType={selectLabReportType} Value={Value} handleChange={handleChange} ModelData={TestData} graph={graph}></SearchGraph>
      </Paper>
       <SuccessNotification setNotificationOpen={setNotificationOpen} notiMessage={notiMessage} notificationOpen={notificationOpen} type={typenoti}></SuccessNotification>
     </div>

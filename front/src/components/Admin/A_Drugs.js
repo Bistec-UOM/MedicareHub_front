@@ -1,16 +1,13 @@
 import React, { useState,useEffect } from 'react';
-import { Grid, Paper,MenuItem,InputLabel,Select,FormControl, Typography,TableCell,TableRow,TableHead,TableBody,Table, Box } from '@mui/material';
-import { AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis, Label, Area } from "recharts";
-import TextField from '@mui/material/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
-import parse from 'autosuggest-highlight/parse';
-import match from 'autosuggest-highlight/match';
+import { Grid, Paper, Typography,TableCell,TableRow,TableHead,TableBody,Table} from '@mui/material';
 import axios from 'axios';
 import SuccessNotification from '../recepcomponents/SnackBar/SuccessNotification';
 import { baseURL, endPoints } from '../../Services/Admin';
+import SearchGraph from './AnalyticsComponents.js/SearchGraph';
 
 
 const ADrugs = () => {
+  //notifications
   const [notificationOpen,setNotificationOpen]=useState(false);
   const [notiMessage,setNotiMessage]=useState("");
   const [typenoti, settypenoti] = useState('success');
@@ -53,12 +50,8 @@ const uniqueDrugTypes = drugTypes.reduce((unique, item) =>
   unique.some(drug => drug.name === item.name) ? unique : [...unique, item], []);
 
 
-
-
-
-
-  const currentDate = new Date(); // Initialize currentDate
-  // const [TimeGap, setTimeGap] = React.useState(new Date(currentDate)); // Initialize TimeGap with current date
+//date today
+  const currentDate = new Date(); 
 
   const [selectedDrug, setSelectedDrug] = useState(null);
   const [Value, setValue] = React.useState('month'); // Initialize Value state with 'day'
@@ -145,7 +138,11 @@ useEffect(() => {
   // Set loading to false
   setLoading(false);
 }, [drugconter]);  // Recalculate when drugconter changes
-
+let graph = {
+  x: 'datefor',
+  y: 'quantity',
+  var:'select a drug'
+};
   return (
     <div>
       <Grid container spacing={3}>
@@ -156,67 +153,10 @@ useEffect(() => {
           </Paper>
         </Grid>
         <Grid item xs={8} style={{textAlign:'right'}}>
-          <Paper sx={{ padding: '10px' }}>
-           <Box sx={{display:"flex",justifyContent:'flex-end',alignItems:'center'}}>
-           <Autocomplete
-              id="highlights-demo"
-              sx={{ width: 200, height: 100 ,marginRight:'3vw'}}
-              options={uniqueDrugTypes}
-              getOptionLabel={(option) => option.name}
-              onChange={(_, value) => selectDrugType(value)}
-              renderInput={(params) => (
-                <TextField {...params} label="Select a Drug" margin="normal" />
-              )}
-              renderOption={(props, option, { inputValue }) => {
-                const matches = match(option.name, inputValue, { insideWords: true });
-                const parts = parse(option.name, matches);
-                return (
-                  <li {...props}>
-                    <div>
-                      {parts.map((part, index) => (
-                        <span
-                          key={index}
-                          style={{
-                            fontWeight: part.highlight ? 700 : 400,
-                          }}
-                        >
-                          {part.text}
-                        </span>
-                      ))}
-                    </div>
-                  </li>
-                );
-              }}
-            />
-                  <FormControl sx={{ width: '20%',position:'relative',top:'-1vh' }}>
-        <InputLabel>Gap</InputLabel>
-        <Select
-          style={{ textAlign: 'left' }}
-          id="demo-simple-select"
-          value={Value} // Change value prop to Value
-          label="Gap"
-          onChange={handleChange}
-        >
-          <MenuItem value={'month'}>Last Month</MenuItem>
-          <MenuItem value={'year'}>Last Year</MenuItem>
-          <MenuItem value={'5'}>Last 5 Year</MenuItem>
-        </Select>
-      </FormControl>
-           </Box>
-            <ResponsiveContainer aspect={2}>
-              <AreaChart data={DrugData} style={{ padding: '0px' }}>
-                <XAxis  fontSize={10} dataKey="datefor" interval={"preserveStartEnd"}>
-                  <Label  value="Date" position="insideBottom" offset={-5} />
-                  
-                </XAxis>
-                <YAxis>
-                  <Label value="Amount" angle={-90} position="insideLeft" offset={2} />
-                </YAxis>
-                <Tooltip />
-                <Area dataKey="quantity" name="Used Amount" stroke="rgb(121, 204, 190)" fill="rgb(121, 204, 190)" activeDot={{ r: 6 }} type="monotone" />
-              </AreaChart>
-            </ResponsiveContainer>
-          </Paper>
+        
+<SearchGraph uniqueModelTypes={uniqueDrugTypes} selectModelType={selectDrugType} Value={Value} graph={graph} handleChange={handleChange} ModelData={DrugData}></SearchGraph>
+
+
         </Grid>
       </Grid>
       <Grid>
