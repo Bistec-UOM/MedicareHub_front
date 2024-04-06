@@ -18,7 +18,7 @@ import EventBusyIcon from "@mui/icons-material/EventBusy";
 import interactionPlugin from "@fullcalendar/interaction";
 import "../../../../recep.css";
 import CustomizedProgressBars from "../../CustomProgressBar/CustomProgressBar";
-
+import { baseURL,endPoints } from "../../../../Services/Appointment";
 const DoctorAppCalender = ({ doctorId }) => {
   const [doctorList, setDoctorList] = useState([]);
   const [doctorAppDeleteOpen, setDoctorAppDeleteOpen] = useState(false); //state variable for popup of the doctor appointment cancellation
@@ -56,7 +56,8 @@ const DoctorAppCalender = ({ doctorId }) => {
       console.log("pasmonth",pasMonth);
       axios
         .get(
-          `https://localhost:7205/api/Appointment/doctor/${doctorId}/month/${pasMonth}`
+         baseURL+endPoints.AppDay+`${doctorId}`+"/month/"+`${pasMonth}`
+
         )
         .then((response) => {
           setDayAppCount(response.data);

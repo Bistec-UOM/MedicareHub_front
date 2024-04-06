@@ -1,11 +1,12 @@
 import * as React from "react";
 import Dialog from "@mui/material/Dialog";
 import axios from "axios";
-import { CardContent, IconButton, TextField, Typography } from "@mui/material";
+import { IconButton, Typography } from "@mui/material";
 import Button from "@mui/material/Button";
 import { Box } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import ErrorIcon from "@mui/icons-material/Error";
+import { baseURL,endPoints } from "../../../../Services/Appointment";
 
 export default function MarkAsCompleted({
   item,
@@ -18,10 +19,11 @@ export default function MarkAsCompleted({
   const handleClose = () => {
     setMarkAsCompleted(false);
   };
+  //set for mark as completed of an appointment by doctor
   async function handleMarkAsCompelted(item) {
     try {
       await axios.put(
-        `https://localhost:7205/updateStatus/${item.appointment.id}`,  //update the status of app to completed
+        baseURL+endPoints.UpdateStatusCompleted+`${item.appointment.id}`,
         {
           id: item.appointment.id,
           Datetime: item.appointment.dateTime,
