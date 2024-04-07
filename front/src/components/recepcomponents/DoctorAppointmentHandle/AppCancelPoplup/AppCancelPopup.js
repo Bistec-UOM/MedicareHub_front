@@ -23,10 +23,11 @@ export default function AppCancelPopup({
   isDisabled,
   setIsDisabled,
 }) {
+  //changing the status of an app to canceled
   async function handleStatusUpdate(item) {
     try {
       await axios.put(
-        `https://localhost:7205/updateStatus/${item.appointment.id}`,  //update the app status to cancelled
+        baseURL + endPoints.AppCancel + `${item.appointment.id}`, //update the app status to cancelled
         {
           id: item.appointment.id,
           Datetime: item.appointment.dateTime,
@@ -40,7 +41,7 @@ export default function AppCancelPopup({
       setCancelOpen(false);
       handleNotification("Appointment Cancelled succesfully!", "success");
     } catch (err) {
-      handleNotification(err.response.data,"error");
+      handleNotification(err.response.data, "error");
     }
   }
   const handleClose = () => {

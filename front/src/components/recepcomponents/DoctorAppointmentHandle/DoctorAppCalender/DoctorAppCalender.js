@@ -18,7 +18,7 @@ import EventBusyIcon from "@mui/icons-material/EventBusy";
 import interactionPlugin from "@fullcalendar/interaction";
 import "../../../../recep.css";
 import CustomizedProgressBars from "../../CustomProgressBar/CustomProgressBar";
-
+import { baseURL,endPoints } from "../../../../Services/Appointment";
 const DoctorAppCalender = ({ doctorId }) => {
   const [doctorList, setDoctorList] = useState([]);
   const [doctorAppDeleteOpen, setDoctorAppDeleteOpen] = useState(false); //state variable for popup of the doctor appointment cancellation
@@ -45,7 +45,7 @@ const DoctorAppCalender = ({ doctorId }) => {
     end: lastDayOfMonth,
   });
   const [dayAppCount, setDayAppCount] = useState([]);
-  const [pasMonth, setPasMonth] = useState(null);
+  const [pasMonth, setPasMonth] = useState(currentDate.getMonth());
   const [disabledDates, setDisabledDates] = useState([]); //var list for storing disabled dates
 
   let newselectedDay;
@@ -53,15 +53,17 @@ const DoctorAppCalender = ({ doctorId }) => {
   useEffect(() =>
     //for fetching the appoinments of the month for a doctor
     {
+      console.log("pasmonth",pasMonth);
       axios
         .get(
-          `https://localhost:7205/api/Appointment/doctor/${doctorId}/month/${pasMonth}`
+         baseURL+endPoints.AppDay+`${doctorId}`+"/month/"+`${pasMonth}`
+
         )
         .then((response) => {
           setDayAppCount(response.data);
         })
         .catch((err) => {
-          handleNotification(err.response.data,"error");
+          handleNotification("Network error occured1!","error");
         });
     }, [doctorId, pasMonth]);
 
@@ -74,7 +76,7 @@ const DoctorAppCalender = ({ doctorId }) => {
           setDisabledDates(response.data);
         })
         .catch((err) => {
-          handleNotification(err.response.data,"error");
+          handleNotification("Network error occured!","error");
         });
     }, [doctorId]);
   function getDayAppCount(day) {
@@ -207,7 +209,7 @@ const DoctorAppCalender = ({ doctorId }) => {
         });
       }
     } else {
-      handleNotification("This date is has been blocked!", "error");
+      handleNotification("This date has been blocked!", "error");
     }
   };
 
