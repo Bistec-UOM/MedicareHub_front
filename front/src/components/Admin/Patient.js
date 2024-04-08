@@ -14,6 +14,7 @@ import EditPatientDialog from "./DialogComponents/EditPatientDialog";
 import AskDelete from "./DialogComponents/AskDelete";
 import { baseURL,endPoints } from "../../Services/Admin";
 import AddPatientDialog from "./DialogComponents/AddPatientDialog";
+import * as signalR from '@microsoft/signalr';
 
 
 function createData(id, name, nic, address,dob, email,gender,fullName,contactNumber) {
@@ -30,34 +31,7 @@ function Patient() {
 
 const [update,forceUpdate]=useState(0);
 
-  useEffect(() => {
-    axios.get(baseURL+endPoints.PatientList)
-      .then(response => {
-        const apiData = response.data.map((data, index) => createData(
-          data.id,
-          data.name,
-          data.nic,
-          data.address,
-          data.dob,
-          data.email,
-          data.gender,
-          data.fullName,
-          data.contactNumber
-        ));
-        setData(apiData);
-        setRecords(apiData); // Initialize records with the fetched data
-      })
-      .catch(error => {
-        if (error.message === 'Network Error') {
-          console.error('You are not connected to internet');
-          setNotiMessage("You are not connected to internet");
-          settype('error')
-          setNotificationOpen(true);
-        } else {
-          console.error(error);
-        }
-      });
-  }, [update]);
+
   const [rows, setData] = useState([]);
  
 
@@ -98,6 +72,38 @@ const [update,forceUpdate]=useState(0);
   const [deleteOpen, setDeleteOpen] = useState(false);
 
 
+  useEffect(() => {
+    let connection = new signalR.HubConnectionBuilder()
+      .withUrl("https://localhost:7205/admin") // replace 'yourHub' with the path to your hub
+      .build();
+  
+    connection.start()
+      .then(() => {
+        connection.on("admin1", (data) => {
+          console.log('DATA: ', data);
+          createData(
+            data.id,
+            data.name,
+            data.nic,
+            data.address,
+            data.dob,
+            data.email,
+            data.gender,
+            data.fullName,
+            data.contactNumber
+          );
+          setData(data);
+            setRecords(data);
+        });
+      })
+      .catch(err => console.error('SignalR connection error: ', err));
+  
+    // Cleanup function to stop the connection when the component unmounts
+    return () => {
+      connection.stop();
+    };
+  }, [update]);
+  
   const handleEditClose = () => {
     setOpen(false);
     setEditOpen(false);
