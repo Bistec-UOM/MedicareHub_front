@@ -11,7 +11,7 @@ const SearchGraph = ({ uniqueModelTypes, selectModelType, Value, handleChange, M
    
     return (
         <div>
-            <Paper sx={{ padding: '10px' }}>
+            <Paper sx={{ padding: '0vh' }}>
       <Box sx={{display:"flex",justifyContent:'flex-end',alignItems:'center'}}>
         <Autocomplete
           id="highlights-demo"
@@ -59,12 +59,12 @@ const SearchGraph = ({ uniqueModelTypes, selectModelType, Value, handleChange, M
         </FormControl>
       </Box>
       <ResponsiveContainer aspect={2}>
-        <AreaChart data={ModelData} style={{ padding: '0px' }}>
+        <AreaChart data={ModelData} style={{ paddingBottom: '5dvh',height:'70dvh' }}>
         {/* <XAxis  fontSize={10} dataKey="datefor" interval={"preserveStartEnd"}> */}
-        <XAxis  fontSize={10} dataKey={graph.x} interval={"preserveStartEnd"}>
+        <XAxis  fontSize={20} dataKey={graph.x} interval={"preserveStartEnd"}>
             <Label  value="Date" position="insideBottom" offset={-5} />
           </XAxis>
-          <YAxis>
+          <YAxis >
             <Label value="Amount" angle={-90} position="insideLeft" offset={2} />
           </YAxis>
           <Tooltip />

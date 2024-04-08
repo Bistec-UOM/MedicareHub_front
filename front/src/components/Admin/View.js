@@ -26,9 +26,13 @@ const View = () => {
     <h1>Good {time}, Yasiru!</h1>
   </Paper>
 
-  <Grid container direction="row">
+  <Grid container spacing={1}>
+  <Grid item xs={6} >
     <IncomeOfDay/>
+  </Grid>
+  <Grid item xs={6}>
     <TotalPatientCount />
+  </Grid>
   </Grid>
   <br/>
 </div>

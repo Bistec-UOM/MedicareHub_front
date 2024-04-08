@@ -106,7 +106,9 @@ const AIncome = () => {
   return (
     <div>
       <Grid container spacing={3}>
+        <Grid item xs={4}>
       <IncomeOfDay totalIncome={totalIncome} />
+        </Grid>
         <Grid item xs={8} style={{textAlign:'right'}}>
           <Paper sx={{padding:'10px'}}>
             <FormControl sx={{width:'20%'}}>
