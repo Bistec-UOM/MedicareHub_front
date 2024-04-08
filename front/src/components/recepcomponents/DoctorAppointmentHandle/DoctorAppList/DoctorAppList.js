@@ -17,6 +17,7 @@ import DoctorAppCard from "../DoctorAppCard/DoctorAppCard";
 import DoctorAllAppDeletePopup from "../DoctotAllAppDelelePopup/DoctorAllAppDeletePopup";
 import DayBlockPopup from "../DayBlockPopup/DayBlockPopup";
 import { Load } from "../../../Other";
+import { baseURL,endPoints } from "../../../../Services/Appointment";
 
 const DoctorAppList = (props) => {
   const [notificationOpen, setNotificationOpen] = useState(false);
@@ -59,7 +60,7 @@ const DoctorAppList = (props) => {
 
     axios
       .get(
-        `https://localhost:7205/api/Appointment/doctor/${props.docid}/day/${selectedDay}`
+        baseURL+endPoints.AppDay+`${props.docid}`+"/day/"+`${selectedDay}`
       )
       .then((response) => {
         const responseData = response.data;
@@ -75,8 +76,8 @@ const DoctorAppList = (props) => {
         setFilteredAppointments(sortedAppointments);
         setRloadDone(true);
       })
-      .catch((error) => {
-        console.error("Error fetching appointments:", error);
+      .catch((err) => {
+        handleNotification(err.response.data,"error");
         setRloadDone(true);
       });
   }, [props.docid, selectedDay, delcount]); // Ensure dependencies are included in the dependency array

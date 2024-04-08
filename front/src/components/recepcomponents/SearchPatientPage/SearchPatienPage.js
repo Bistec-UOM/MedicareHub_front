@@ -8,6 +8,7 @@ import PatientDetailCard from "../PatientDetailCard/PatientDetailCard";
 import PatientRegpopup from "../PatRegPopup/PatientRegPopup";
 import { Load } from "../../Other";
 import "../../../recep.css";
+import { baseURL, endPoints } from "../../../Services/Appointment";
 
 const SearchPatientPage = (props) => {
   const [notificationOpen, setNotificationOpen] = useState(false);
@@ -38,18 +39,21 @@ const SearchPatientPage = (props) => {
     setRegopen(true);
   };
 
+
+  //fetching the patient list
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`https://localhost:7205/api/Appointment/patients`);
+       // const response = await fetch(`https://localhost:7205/api/Appointment/patients`);
+        const response = await fetch(baseURL+endPoints.PatientList);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
         const responseData = await response.json();
         setPatientList(responseData);
         setRloadDone(true);
-      } catch (error) {
-        console.error('Error fetching patient data:', error);
+      } catch (err) {
+        handleNotification(err.response.data,"error");
         setRloadDone(true);   
       }
     };

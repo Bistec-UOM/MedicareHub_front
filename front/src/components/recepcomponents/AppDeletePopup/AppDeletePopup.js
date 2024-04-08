@@ -6,20 +6,22 @@ import Button from "@mui/material/Button";
 import { Box } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import ErrorIcon from "@mui/icons-material/Error";
+import { baseURL,endPoints } from "../../../Services/Appointment";
 
 export default function AppDeletePopup({appointlist,setAppointList,handleNotification,item,delcount,setDelcount, daopen, setDaopen,filteredAppointments,setFilteredAppointments,isDisabled,setIsDisabled }) {
 
   const handleRealDelete=(item)=>
   {
    
-    axios.delete(`https://localhost:7205/api/Appointment/${item.appointment.id}`)
+   // axios.delete(`https://localhost:7205/api/Appointment/${item.appointment.id}`)
+    axios.delete(baseURL+endPoints.Appoinment+`${item.appointment.id}`)
   .then(response => {
     setDelcount(delcount+1);  //for fetching the newly updated app list
     setDaopen(false);
     handleNotification("Appointment deleted succesfully!","success");
   })
   .catch(error => {
-    console.error('Error deleting resource:', error);
+    handleNotification(error.response.data,"error");
   });
   }
   const handleClose = () => {

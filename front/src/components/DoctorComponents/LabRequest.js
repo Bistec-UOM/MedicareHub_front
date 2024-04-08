@@ -39,7 +39,7 @@ const handleDeleteLabRequest = (index) => {
     <div>
        <Dialog open={openpopBox}>
       <DialogContent dividers 
-                    sx={{ '&::before': { content: "''", position: 'absolute', top: 0, right: 0, width: '35px', height: '100%', background: 'hsl(0, 0%, 90%)', }, }}>
+              sx={{ '&::before': { content: "''", position: 'absolute', top: 0, right: 0, width: '35px', height: '100%', background: 'hsl(0, 0%, 90%)', }, }}>
     
     <IconButton
               sx={{ position: 'absolute', left:'87%',}}
@@ -71,8 +71,7 @@ const handleDeleteLabRequest = (index) => {
         <Button variant="outlined" sx={{ top: '0.1px', color: 'Green', borderColor: 'Green', borderWidth:'3px',marginRight: '30px'}} 
          onClick={() => {handleAddLabRequest(); handleClose()}}> OK </Button>        
       </form>      
-     </DialogContent>  
-     
+     </DialogContent>      
       </Dialog> 
      <div >
       {rep.map((drug, index) => (
@@ -87,9 +86,7 @@ const handleDeleteLabRequest = (index) => {
                         </Grid>
                     </Grid>
       ))}
-      </div>
-        
-      </div>
-   
+      </div>        
+      </div>   
   );
 }

@@ -1,27 +1,13 @@
 import * as React from "react";
 import axios from "axios";
-
 import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
-
-import { CardContent, IconButton, TextField, Typography } from "@mui/material";
-
+import { IconButton, Typography } from "@mui/material";
 import { useState } from "react";
-
-import dayjs from "dayjs";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import Button from "@mui/material/Button";
-
 import { Box } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { Grid, Stack } from "@mui/material";
 import ErrorIcon from "@mui/icons-material/Error";
+import { baseURL, endPoints } from "../../../../Services/Appointment";
 
 export default function DoctorAllAppDeletePopup({
   cancelAll,
@@ -42,23 +28,23 @@ export default function DoctorAllAppDeletePopup({
 
   const [timevalue, setTimeValue] = useState("");
   const [rdelete, setRdelete] = useState(false);
+  const [notificationOpen, setNotificationOpen] = useState(false);
+  const [notiMessage, setNotiMessage] = useState("");
 
+  //for cancelling all prescheduled appoints of day by doctor
   async function handleAllAppDelete() {
     try {
       await axios.put(
-        `https://localhost:7205/api/Appointment/doctor/${docid}/day/${selectedDay}`
+        baseURL + endPoints.AppDay + `${docid}` + "/day/" + `${selectedDay}`
       );
       setDelcount(delcount + 1);
       setCancelAll(false);
       handleNotification("All appointment Cancelled succesfully!");
     } catch (err) {
-      
+      handleNotification(err.response.data, "error");
     }
   }
 
-  const handleClickOpen = () => {
-    setDopen(true);
-  };
 
   const handleClose = () => {
     setCancelAll(false);
@@ -112,9 +98,9 @@ export default function DoctorAllAppDeletePopup({
             <Button
               onClick={handleAllAppDelete}
               sx={{
-                backgroundColor: "#F44336", // Replace with your desired color
+                backgroundColor: "#F44336", 
                 "&:hover": {
-                  backgroundColor: "#F44336", // Replace with your desired hover color
+                  backgroundColor: "#F44336", 
                 },
                 marginLeft: "20px",
               }}

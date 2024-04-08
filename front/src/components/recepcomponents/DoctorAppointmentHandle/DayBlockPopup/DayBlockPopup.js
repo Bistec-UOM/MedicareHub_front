@@ -6,6 +6,7 @@ import Button from "@mui/material/Button";
 import { Box } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import ErrorIcon from "@mui/icons-material/Error";
+import { baseURL, endPoints } from "../../../../Services/Appointment";
 
 export default function DayBlockPopup({
   selectedDay,
@@ -24,7 +25,7 @@ export default function DayBlockPopup({
   const handleClose = () => {
     setDocDayBlockPopup(false);
   };
-
+  //addig blocked date and doctor id to the table
   async function handleSubmit(event) {
     event.preventDefault();
     const date = new Date(selectedDay);
@@ -42,14 +43,11 @@ export default function DayBlockPopup({
       Date: formattedDate,
     };
     try {
-      await axios.post(
-        "https://localhost:7205/api/Appointment/unableDates",
-        obj
-      );
+      await axios.post(baseURL + endPoints.UnableDates, obj);
       setDocDayBlockPopup(false);
       handleNotification("Day Blocked succesfully!", "success");
     } catch (err) {
-      var msg = err.response.data;
+      handleNotification(err.response.data, "error");
     }
   }
 
@@ -97,9 +95,9 @@ export default function DayBlockPopup({
             <Button
               onClick={handleSubmit}
               sx={{
-                backgroundColor: "#F44336", // Replace with your desired color
+                backgroundColor: "#F44336",
                 "&:hover": {
-                  backgroundColor: "#F44336", // Replace with your desired hover color
+                  backgroundColor: "#F44336",
                 },
                 marginLeft: "20px",
               }}
