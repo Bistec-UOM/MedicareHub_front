@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import SideDrawer from '../components/recepcomponents/sidedrawer/SideDrawer'
 import { Box, fontSize } from '@mui/system'
 import { Button, Divider, Paper, TextField, Typography,Snackbar,Alert } from '@mui/material'
 import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { baseURL,endPoints } from '../Services/Auth';
+import { jwtDecode } from "jwt-decode";
 
 export default function Log() {
   const navigate=useNavigate()
@@ -28,34 +28,7 @@ export default function Log() {
     setOpen(false);
   }
 
-  const usar=[
-    '123','4567','2839','4840','8409'
-  ]
   //======================================================================================================
-
-  const validate=()=>{
-    if(password=="" || user==""){
-      handleClick("Fill the empty fields",'warning')
-      return
-    }
-    if(user>8){
-      setTimeout(() => {
-        handleClick("Invalid user",'error')
-      }, 2500);
-      return
-    }
-    if(password!=usar[user-1]){
-      setTimeout(() => {
-        handleClick("Wrong password",'error')
-      }, 2500);
-      return
-    }else{
-      setTimeout(() => {
-        navigate('doct')
-      }, 2500);
-    }
-  }
-
   const setData=()=>{
     if(password=="" || user==""){
       handleClick("Fill the empty fields",'warning')
@@ -68,10 +41,20 @@ export default function Log() {
     axios.post(baseURL+endPoints.LOG,obj)
     .then((res)=>{
       localStorage.setItem('token', res.data)
-      console.log(localStorage.getItem('token'))
+      //console.log(jwtDecode(localStorage.getItem('token')).Role)
+      //Navigate User
+      let tmp=jwtDecode(localStorage.getItem('token')).Role
+      switch(tmp){
+        case 'Doctor':navigate('doct')
+        case 'Receptionist':navigate('res')
+        case 'Cashier':navigate('pharm')
+        case 'Lab Assistant':navigate('lab')
+      }
     })
     .catch((er)=>{
-      handleClick(er.response.data,'error')
+      if(er.response.data=='Invalid Password'||er.response.data=='Invalid User Id'){
+        handleClick(er.response.data,'error')
+      }
     })
   }
 
@@ -113,7 +96,6 @@ export default function Log() {
           backgroundColor:'white',
           height:'200px',
           alignSelf:'center',
-          borderRadius:'8px',
           border:'1px solid lightgrey'
           }}
       >

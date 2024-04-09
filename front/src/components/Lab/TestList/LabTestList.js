@@ -44,18 +44,17 @@ export default function LabTestList({setPage,settId,Tload,setTload}) {
 
     const [query, setQuery] = useState('')//searchbar value
 
-    const filteredData = Tload.filter(item => item.testName.toLowerCase().includes(query.toLowerCase()))//filtered Rload data by the search
     const [loading,setLoading]=useState(true)
+    //const [Tload,setTload]=useState([])
+    const filteredData = Tload.filter(item => item.testName.toLowerCase().includes(query.toLowerCase()))//filtered Rload data by the search
 
     useEffect(()=>{
-      if(Tload.length===0){
         axios.get(baseURL+endPoints.TEST)
         .then(res=>{
           setTload(res.data)
           setLoading(false)
         })
         .catch(er=>{})
-      }
     },[Tload,setTload])
 
   return (
@@ -96,10 +95,13 @@ export default function LabTestList({setPage,settId,Tload,setTload}) {
             sx={{mr:{xs:'5px',sm:'10%'}}} 
             endIcon={<AddIcon/>}
             >New</Button>
-            
+
         </Toolbar>
 
 
+        {loading?<div style={{paddingTop:'60px'}}>
+          <Load></Load>
+        </div>:''}
         {!loading?<Stack sx={{paddingTop:{xs:'60px',sm:'80px'},paddingLeft:{xs:'5%',sm:'8%'}}}>
             {
                 filteredData.map((el)=>{
@@ -113,7 +115,7 @@ export default function LabTestList({setPage,settId,Tload,setTload}) {
                     )
                 })
             }
-        </Stack>:<Load></Load>
+        </Stack>:''
         }
 
       {/*------------------ Enter values pop up box ---------------------------------------------- */}

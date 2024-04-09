@@ -37,7 +37,7 @@ export default function Testcom({handleClick1,handleClose,test}) {
       tmp.forEach((el,ind)=>{
         let tmp2={
           "fieldid":el.fieldId,
-          "result":el.value,
+          "result":parseFloat(el.value),
           "status":el.status
         }
         ob.push(tmp2)
@@ -58,6 +58,7 @@ export default function Testcom({handleClick1,handleClose,test}) {
     .catch((er)=>{
       console.log(er.message)
     }) 
+ 
   }
 
   const enterData=(indx,x)=>{
@@ -75,7 +76,7 @@ export default function Testcom({handleClick1,handleClose,test}) {
     let tmp=[...Fload]
     tmp.forEach((el,ind)=>{
       if(ind===indx){
-       el.value=parseInt(x)
+       el.value=x
        el.status=stat(el.minRef,el.maxRef,x)
       }
     })
@@ -117,14 +118,14 @@ export default function Testcom({handleClick1,handleClose,test}) {
 
 
   return (
-    <Box sx={{p:'10px',width:'450px'}}>
-      <Typography>{test[0].testName} Test</Typography>
+    <Box sx={{p:'10px',width:'550px'}}>
+      <Typography sx={{color:'grey',fontWeight:'bold',fontSize:'14px'}}>{test[0].testName} Test</Typography>
       <Divider sx={{mb:'15px'}}></Divider>
       
       <Box sx={{height:'300px',overflowY:'scroll'}}>
         {
           !loading ? Fload.map((el,indx)=>{
-            return <Fieldcom field={el.fieldname} unit={el.unit} value={el.value} status={el.status} indx={indx} enterData={enterData}> </Fieldcom>
+            return <Fieldcom field={el.fieldname} unit={el.unit} value={el.value} status={el.status} indx={indx} min={el.minRef}  max={el.maxRef} enterData={enterData}></Fieldcom>
           }) :<Load></Load>
         }
       </Box>

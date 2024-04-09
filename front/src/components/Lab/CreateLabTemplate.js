@@ -164,7 +164,7 @@ export default function CreateLabTemplate({setPage,setTload}) {
            {/* ------------------------Add Field-------------------------------------------------- */}
            {/* ----------------------------------------------------------------------------------- */}
            
-           <Paper sx={{display:'flex',alignItems:'center',width:{xs:'90%',sm:'80%'},marginTop:'40px',pb:'5px'}}>
+           <Paper sx={{display:'flex',alignItems:'center',width:{xs:'90%',sm:'80%'},marginTop:'40px',pb:'5px',borderRadius:0}}>
              
              <Box sx={{display:'flex',flexDirection:'column',alignItems:'flex-start',width:'45%',height:'100%',ml:'10px'}}>
                <Typography sx={{fontSize:'16px',mr:'5px'}}>Field name</Typography>

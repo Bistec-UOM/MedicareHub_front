@@ -5,6 +5,7 @@ import Alert from '@mui/material/Alert';
 import axios from 'axios';
 import { baseURL, endPoints } from '../../../Services/Lab';
 import { PersonDetail } from '../../Other';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 export default function Accept({req,reqOK,RLoad,setRLoad}) {
 
@@ -57,9 +58,12 @@ export default function Accept({req,reqOK,RLoad,setRLoad}) {
     <div>
        { reqOK?<PersonDetail name={req.name} gender={req.gender} age={req.age}></PersonDetail>:''}
         
-        <Box sx={{width:'100%',padding:'40px',paddingTop:'90px'}}>
+        <Box sx={{width:'100%',padding:'40px',paddingTop:'70px'}}>
 
-        {reqOK?<Typography sx={{fontSize:'16px',mb:'30px',color:'gray'}}>Accept samples & payments</Typography>:''}
+        {reqOK?<div style={{display:'flex',alignItems:'start'}}>
+          <KeyboardArrowDownIcon sx={{color:'#3f50b5'}}></KeyboardArrowDownIcon>
+          <Typography sx={{fontSize:'16px',mb:'10px',color:'gray'}}>Accept samples & payments</Typography>
+        </div>:''}
         {
             req.load.map((i)=>{
                 return <Paper 
@@ -70,9 +74,10 @@ export default function Accept({req,reqOK,RLoad,setRLoad}) {
                             alignItems:'center',
                             mt:'10px',
                             p:'10px',
-                            pr:'30px'
+                            pr:'30px',
+                            borderRadius:0
                           }} 
-                          elevation={3}
+                          elevation={1}
                         
                         >
                 <Box>
