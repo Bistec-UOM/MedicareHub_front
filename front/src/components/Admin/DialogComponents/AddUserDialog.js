@@ -1,14 +1,106 @@
-import {Paper,Typography,Button,Dialog,DialogTitle,DialogContent,DialogActions,TextField,FormControl,InputLabel,Select,MenuItem, Box} from "@mui/material";
+import {Typography,Button,Dialog,DialogTitle,DialogContent,DialogActions,TextField,FormControl,InputLabel,Select,MenuItem, Box} from "@mui/material";
 import * as React from "react";
 import CloseIcon from "@mui/icons-material/Close";
-import { useState,useEffect } from "react";
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateField } from '@mui/x-date-pickers/DateField';
+import axios from "axios";
+import { baseURL,endPoints } from "../../../Services/Admin";
 
-const AddUserDialog = ({ open, handleClose, handleInputChange, formErrors, handleAddSaveClose, Type }) => {
-    return (
+const AddUserDialog = ({ open, handleClose, handleInputChange, formErrors, Type,formData,row2,pData,setFormErrors,Role,settypenoti,setNotiMessage,setNotificationOpen,forceUpdate,setOpen }) => {
+  const handleAddSaveClose = () =>{
+    let errors = {};
+    let isValid = true;
+
+    const fields = ['fullName', 'name', 'address', 'contactNumber', 'gender', 'nic','dob','email','qualifications','password'];
+   // Check if any of the required fields are empty
+  
+   fields.forEach(field => {
+     if (!formData[field] || (typeof formData[field] === 'string' && formData[field].trim() === '')) {
+       errors[field] = `${field.charAt(0).toUpperCase() + field.slice(1)} is required`;
+       isValid = false;
+     }
+   });
+ 
+
+
+
+     // Check for duplicates only if row2 is not null
+//  if (isValid) {
+  const isDuplicateName = row2.some((row) => row.name.toLowerCase() === formData.name.toLowerCase());
+  const isDuplicateFullName = row2.some((row) => row.fullName.toLowerCase() === formData.fullName.toLowerCase());
+  const isDuplicateContactNumber = row2.some((row) => row.contactNumber === formData.contactNumber);
+  const isDuplicateNIC = row2.some((row) => row.nic.toLowerCase() === formData.nic.toLowerCase());
+
+  if (isDuplicateName) {
+      errors.name = 'Name already exists';
+      isValid = false;
+  }
+  if (isDuplicateFullName) {
+      errors.fullName = 'Full Name already exists';
+      isValid = false;
+  }
+  if (isDuplicateContactNumber) {
+      errors.contactNumber = 'Contact number already exists';
+      isValid = false;
+  }
+  if (isDuplicateNIC) {
+      errors.nic = 'NIC already exists';
+      isValid = false;
+  }
+  if (!(/^[0-9]{9}[vV]$/.test(formData.nic) || /^[0-9]{12}$/.test(formData.nic))) {
+    errors.nic = 'invalid NIC';
+    isValid = false;
+  }
+  if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
+    errors.email = 'Invalid email';
+    isValid = false;
+  }
+  const dob = new Date(formData.dob);
+
+  if (isNaN(dob)) {
+    errors.dob = 'Invalid date of birth';
+    isValid = false;
+  }
+  if (!/^\d+$/.test(formData.contactNumber)) {
+    errors.contactNumber = 'Invalid contact number';
+    isValid = false;
+  }
+// }
+    // If any duplicates are found, set form errors and return
+    if (!isValid) {
+      setFormErrors(errors);
+      return;
+    }
+
+
+    let temp = pData
+    temp.id = 0;
+    temp.role = Role;
+    console.log(temp.role)
+    axios.post(baseURL+endPoints.StaffList,temp)
+    .then(res => {
+      console.log('success')
+      settypenoti('success')
+      setNotiMessage("Member Added successfully");
+      setNotificationOpen(true);
+     
+          forceUpdate(prevCount => prevCount + 1); // Trigger a re-render
+          setOpen(false);
+
+    }).catch(error => {
+      if (error.message === 'Network Error') {
+        setNotiMessage("You are not connected to internet");
+        settypenoti('error')
+        setNotificationOpen(true);
+      } else {
+        console.error(error);
+      }
+    });
+  };  
+  
+  return (
         <Dialog open={open} onClose={handleClose} >
         <DialogTitle
           sx={{
