@@ -1,11 +1,13 @@
 import { Button, Paper, Typography,Card,Box, Chip} from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import axios from 'axios';
 import { baseURL, endPoints } from '../../../Services/Lab';
 import { PersonDetail } from '../../Other';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import LoadingButton from '@mui/lab/LoadingButton';
+import SendIcon from '@mui/icons-material/Send';
 
 export default function Accept({req,reqOK,RLoad,setRLoad}) {
 
@@ -41,15 +43,19 @@ export default function Accept({req,reqOK,RLoad,setRLoad}) {
 
   }
 
+  const [loadingB, setLoadingB] = useState(false)//Loading button states
+
   //Set sample to accepted
   const AccIdSet=(id)=>{
+    setLoadingB(true)
     axios.post(baseURL+endPoints.SET_ACCEPT+'?id='+id)
     .then((res)=>{
       handleClick()
       remTest(id)
     })
-    .catch(()=>{
-
+    .catch((er)=>{
+      console.log(er)
+      setLoadingB(false)
     })
   }
 
@@ -94,7 +100,15 @@ export default function Accept({req,reqOK,RLoad,setRLoad}) {
                     </Typography>
                     <Typography sx={{fontSize:'15px'}}>Rs. {i.price}</Typography>
                 </Box>
-                <Button variant='contained' onClick={()=>AccIdSet(i.repId)}>Accept</Button>
+
+                <LoadingButton           
+                  size="small"
+                  endIcon={<SendIcon />}
+                  loading={loadingB}
+                  loadingPosition="end"
+                  variant="contained" onClick={()=>AccIdSet(i.repId)} 
+                  sx={{ml:'5px'}}
+                >Accept</LoadingButton>
             </Paper>
             })
         }
