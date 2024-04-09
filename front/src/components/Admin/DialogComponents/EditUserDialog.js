@@ -1,16 +1,111 @@
-import {Paper,Typography,Button,Dialog,DialogTitle,DialogContent,DialogActions,TextField,FormControl,InputLabel,Select,MenuItem, Box} from "@mui/material";
+import {Button,Dialog,DialogTitle,DialogContent,DialogActions,TextField,FormControl,InputLabel,Select,MenuItem} from "@mui/material";
 import * as React from "react";
 import CloseIcon from "@mui/icons-material/Close";
-import { useState,useEffect } from "react";
 import axios from "axios";
 import dayjs from 'dayjs';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateField } from '@mui/x-date-pickers/DateField';
+import { baseURL,endPoints } from "../../../Services/Admin";
 
-const EditUserDialog = ({ editOpen, handleEditClose, fields, formErrors, formData, isDisabled, setFormData, handleInputChange, deletePopUp, handleEditClick, handleEditSave }) => {
-    return (
+const EditUserDialog = ({ editOpen, handleEditClose, fields, formErrors, formData, isDisabled, setFormData, handleInputChange, deletePopUp, handleEditClick,row2,setFormErrors,pData,settypenoti,setNotiMessage,setNotificationOpen,setIsDisabled ,setEditOpen,forceUpdate}) => {
+  const handleEditSave = () => {
+
+    let errors = {};
+    let isValid = true;
+    // Handle saving edited data here
+    console.log("Edited data:", row2);
+
+
+
+     // Check if any of the required fields are empty
+     const fieldsName = ['fullName', 'name', 'address', 'contactNumber', 'gender', 'nic','dob','email'];
+
+     fieldsName.forEach(field => {
+       if (!formData[field] || (typeof formData[field] === 'string' && formData[field].trim() === '')) {
+         errors[field] = `${field.charAt(0).toUpperCase() + field.slice(1)} is required`;
+         isValid = false;
+       }
+     });
+   
+ 
+   
+  // Check for duplicates only if the required fields are not empty
+  if (isValid) {
+    const isDuplicateName = row2.some((row) => row.id !== formData.id && row.name.toLowerCase() === formData.name.toLowerCase());
+    const isDuplicateFullName = row2.some((row) => row.id !== formData.id && row.fullName.toLowerCase() === formData.fullName.toLowerCase());
+    const isDuplicateContactNumber = row2.some((row) => row.id !== formData.id && row.contactNumber === formData.contactNumber);
+    const isDuplicateNIC = row2.some((row) => row.id !== formData.id && row.nic.toLowerCase() === formData.nic.toLowerCase());
+  
+     if (isDuplicateName) {
+       errors.name = 'Name already exists';
+       isValid = false;
+     }
+     if (isDuplicateFullName) {
+       errors.fullName = 'Full Name already exists';
+       isValid = false;
+     }
+   
+     if (isDuplicateContactNumber) {
+       errors.contactNumber = 'Contact number already exists';
+       isValid = false;
+     }
+   
+     if (isDuplicateNIC) {
+       errors.nic = 'NIC already exists';
+       isValid = false;
+     }
+    if (!(/^[0-9]{9}[vV]$/.test(formData.nic) || /^[0-9]{12}$/.test(formData.nic))) {
+      errors.nic = 'invalid NIC';
+      isValid = false;
+    }
+    if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
+      errors.email = 'Invalid email';
+      isValid = false;
+    }
+    const dob = new Date(formData.dob);
+
+    if (isNaN(dob)) {
+      errors.dob = 'Invalid date of birth';
+      isValid = false;
+    }
+    if (!/^\d+$/.test(formData.contactNumber)) {
+      errors.contactNumber = 'Invalid contact number, only integers allowed';
+      isValid = false;
+    }}
+      // If any errors are found, set form errors and return
+  if (!isValid) {
+    setFormErrors(errors);
+    return;
+  }
+try {
+  console.log(pData,"fid",pData.id);
+
+          // Assuming you have an API endpoint for updating a patient
+          axios.put(baseURL+endPoints.StaffList+`/${pData.id}` , pData)
+          .then(response => {
+            settypenoti('success')
+            setNotiMessage("Member Edited successfully");
+            setNotificationOpen(true);
+            // Handle success, maybe update local state or dispatch an action
+            console.log('Patient updated successfully:', response.data);
+            handleEditClose();
+            setIsDisabled(true);
+            forceUpdate(prevCount => prevCount + 1); // Trigger a re-render
+
+                // Assume the Axios request is successful, then set showPatient to true
+    // Close the edit dialog
+    setEditOpen(false);
+          })
+} catch (error) {
+  // Handle error, show an error messdob or dispatch an error action
+  console.error('Error updating patient:', error.response.data);
+  
+}
+    setEditOpen(false);
+  };  
+  return (
         <Dialog open={editOpen} onClose={handleEditClose}>
         <DialogTitle
           sx={{

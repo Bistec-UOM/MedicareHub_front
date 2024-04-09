@@ -1,13 +1,7 @@
-import {Paper,Typography,Button,Dialog,DialogTitle,DialogContent,DialogActions,TextField,FormControl,InputLabel,Select,MenuItem, Box} from "@mui/material";
+import {Paper,Typography,Button} from "@mui/material";
 import * as React from "react";
-import CloseIcon from "@mui/icons-material/Close";
 import { useState,useEffect } from "react";
 import axios from "axios";
-import dayjs from 'dayjs';
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DateField } from '@mui/x-date-pickers/DateField';
 import AskDelete from "./DialogComponents/AskDelete";
 import SuccessNotification from "../recepcomponents/SnackBar/SuccessNotification";
 import EditUserDialog from "./DialogComponents/EditUserDialog";
@@ -16,9 +10,6 @@ import AddUserDialog from "./DialogComponents/AddUserDialog";
 
 
 
-function createData(id,fullName,name,nic,address,contactNumber,qualifications,role,email,dob,gender,password) {
-    return {id,fullName,name,nic,address,contactNumber,qualifications,role,email,dob,gender,password};
-  }
 export default function Staff() {
   const [notificationOpen,setNotificationOpen]=useState(false);
   const [notiMessage,setNotiMessage]=useState("");
@@ -38,7 +29,7 @@ const [Type, setType] = useState('');
 
 
 const [row2, setStaffData] = useState([]);
-const [records, setRecords] = useState(row2);
+// const [records, setRecords] = useState(row2);
 
 
 useEffect(() => {
@@ -107,24 +98,9 @@ const [formErrors, setFormErrors] = useState({
   const [update,forceUpdate]=useState(0);
   useEffect(() => {
     axios.get(baseURL+endPoints.StaffList)
-    .then(res => {
-      const apiData = res.data.map((data,index) => createData(
-        data.id,
-        data.fullName,
-        data.name,
-        data.nic,
-        data.address,
-        data.contactNumber,
-        data.qualifications,
-        data.role,
-        data.email,
-        data.dob,
-        data.gender,
-        data.role,
-        data.password
-      ));
-      setStaffData(apiData);
-      setRecords(apiData);
+    .then(res => {      
+      setStaffData(res.data);
+      // setRecords(res.data);
     })
     .catch(err=>{
       if (err.message === 'Network Error') { 
@@ -157,96 +133,7 @@ const [formErrors, setFormErrors] = useState({
   };
 
 const [Role, setRole] = useState("");
-  const handleAddSaveClose = () =>{
-    let errors = {};
-    let isValid = true;
 
-    const fields = ['fullName', 'name', 'address', 'contactNumber', 'gender', 'nic','dob','email','qualifications','password'];
-   // Check if any of the required fields are empty
-  
-   fields.forEach(field => {
-     if (!formData[field] || (typeof formData[field] === 'string' && formData[field].trim() === '')) {
-       errors[field] = `${field.charAt(0).toUpperCase() + field.slice(1)} is required`;
-       isValid = false;
-     }
-   });
- 
-
-
-
-     // Check for duplicates only if row2 is not null
-//  if (isValid) {
-  const isDuplicateName = row2.some((row) => row.name.toLowerCase() === formData.name.toLowerCase());
-  const isDuplicateFullName = row2.some((row) => row.fullName.toLowerCase() === formData.fullName.toLowerCase());
-  const isDuplicateContactNumber = row2.some((row) => row.contactNumber === formData.contactNumber);
-  const isDuplicateNIC = row2.some((row) => row.nic.toLowerCase() === formData.nic.toLowerCase());
-
-  if (isDuplicateName) {
-      errors.name = 'Name already exists';
-      isValid = false;
-  }
-  if (isDuplicateFullName) {
-      errors.fullName = 'Full Name already exists';
-      isValid = false;
-  }
-  if (isDuplicateContactNumber) {
-      errors.contactNumber = 'Contact number already exists';
-      isValid = false;
-  }
-  if (isDuplicateNIC) {
-      errors.nic = 'NIC already exists';
-      isValid = false;
-  }
-  if (!(/^[0-9]{9}[vV]$/.test(formData.nic) || /^[0-9]{12}$/.test(formData.nic))) {
-    errors.nic = 'invalid NIC';
-    isValid = false;
-  }
-  if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
-    errors.email = 'Invalid email';
-    isValid = false;
-  }
-  const dob = new Date(formData.dob);
-
-  if (isNaN(dob)) {
-    errors.dob = 'Invalid date of birth';
-    isValid = false;
-  }
-  if (!/^\d+$/.test(formData.contactNumber)) {
-    errors.contactNumber = 'Invalid contact number, only integers allowed';
-    isValid = false;
-  }
-// }
-    // If any duplicates are found, set form errors and return
-    if (!isValid) {
-      setFormErrors(errors);
-      return;
-    }
-
-
-    let temp = pData
-    temp.id = 0;
-    temp.role = Role;
-    console.log(temp.role)
-    axios.post(baseURL+endPoints.StaffList,temp)
-    .then(res => {
-      console.log('success')
-      settypenoti('success')
-      setNotiMessage("Member Added successfully");
-      setNotificationOpen(true);
-     
-          forceUpdate(prevCount => prevCount + 1); // Trigger a re-render
-          setOpen(false);
-
-    }).catch(error => {
-      if (error.message === 'Network Error') {
-        setNotiMessage("You are not connected to internet");
-        settypenoti('error')
-        setNotificationOpen(true);
-      } else {
-        console.error(error);
-      }
-    });
-  };
 
 
 
@@ -270,106 +157,11 @@ const [Role, setRole] = useState("");
   const handleEditClick = () =>{
     setIsDisabled(false)
   }
-  const handleEditSave = () => {
-
-    let errors = {};
-    let isValid = true;
-    // Handle saving edited data here
-    console.log("Edited data:", row2);
-
-
-
-     // Check if any of the required fields are empty
-     const fieldsName = ['fullName', 'name', 'address', 'contactNumber', 'gender', 'nic','dob','email'];
-  
-     fieldsName.forEach(field => {
-       if (!formData[field] || (typeof formData[field] === 'string' && formData[field].trim() === '')) {
-         errors[field] = `${field.charAt(0).toUpperCase() + field.slice(1)} is required`;
-         isValid = false;
-       }
-     });
-   
- 
-   
-  // Check for duplicates only if the required fields are not empty
-  if (isValid) {
-    const isDuplicateName = row2.some((row) => row.id !== formData.id && row.name.toLowerCase() === formData.name.toLowerCase());
-    const isDuplicateFullName = row2.some((row) => row.id !== formData.id && row.fullName.toLowerCase() === formData.fullName.toLowerCase());
-    const isDuplicateContactNumber = row2.some((row) => row.id !== formData.id && row.contactNumber === formData.contactNumber);
-    const isDuplicateNIC = row2.some((row) => row.id !== formData.id && row.nic.toLowerCase() === formData.nic.toLowerCase());
-  
-     if (isDuplicateName) {
-       errors.name = 'Name already exists';
-       isValid = false;
-     }
-     if (isDuplicateFullName) {
-       errors.fullName = 'Full Name already exists';
-       isValid = false;
-     }
-   
-     if (isDuplicateContactNumber) {
-       errors.contactNumber = 'Contact number already exists';
-       isValid = false;
-     }
-   
-     if (isDuplicateNIC) {
-       errors.nic = 'NIC already exists';
-       isValid = false;
-     }
-    if (!(/^[0-9]{9}[vV]$/.test(formData.nic) || /^[0-9]{12}$/.test(formData.nic))) {
-      errors.nic = 'invalid NIC';
-      isValid = false;
-    }
-    if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
-      errors.email = 'Invalid email';
-      isValid = false;
-    }
-    const dob = new Date(formData.dob);
-
-    if (isNaN(dob)) {
-      errors.dob = 'Invalid date of birth';
-      isValid = false;
-    }
-    if (!/^\d+$/.test(formData.contactNumber)) {
-      errors.contactNumber = 'Invalid contact number, only integers allowed';
-      isValid = false;
-    }}
-      // If any errors are found, set form errors and return
-  if (!isValid) {
-    setFormErrors(errors);
-    return;
-  }
-try {
-  console.log(pData,"fid",pData.id);
-
-          // Assuming you have an API endpoint for updating a patient
-          axios.put(baseURL+endPoints.StaffList+`/${pData.id}` , pData)
-          .then(response => {
-            settypenoti('success')
-            setNotiMessage("Member Edited successfully");
-            setNotificationOpen(true);
-            // Handle success, maybe update local state or dispatch an action
-            console.log('Patient updated successfully:', response.data);
-            handleEditClose();
-            setIsDisabled(true);
-            forceUpdate(prevCount => prevCount + 1); // Trigger a re-render
-
-                // Assume the Axios request is successful, then set showPatient to true
-    // Close the edit dialog
-    setEditOpen(false);
-          })
-} catch (error) {
-  // Handle error, show an error messdob or dispatch an error action
-  console.error('Error updating patient:', error.response.data);
-  
-}
-    setEditOpen(false);
-  };
 
   const handleEditClickOpen = (row2) => {
     // setType(`Edit ${buttonNumber}`);
     setFormData({...formData,id: row2.id, name: row2.name,role:row2.role, fullName: row2.fullName, nic: row2.nic,address: row2.address,contactNumber:row2.contactNumber,email:row2.email,dob:row2.dob,gender:row2.gender,qualifications:row2.qualifications,password:row2.password});
-console.log(pData.id)
+console.log(pData)
     // setSelectedPaper(row2);
     setEditOpen(true);
     setIsDisabled(true);
@@ -437,12 +229,22 @@ const RoleFields = ["Doctor", "Receptionist", "Lab Assistant", "Cashier"];
   handleClose={handleClose}
   handleInputChange={handleInputChange}
   formErrors={formErrors}
-  handleAddSaveClose={handleAddSaveClose}
   Type={Type}
+  formData={formData}
+  row2={row2}
+  pData={pData}
+  setFormErrors={setFormErrors}
+  Role={Role}
+  settypenoti={settypenoti}
+  setNotiMessage={setNotiMessage}
+  setNotificationOpen={setNotificationOpen}
+  forceUpdate={forceUpdate}
+  setOpen={setOpen}
+  
 />
 
       {/* data editing */}
-<EditUserDialog  editOpen={editOpen} handleEditClose={handleEditClose} fields={fields} formErrors={formErrors} formData={formData} isDisabled={isDisabled} setFormData={setFormData} handleInputChange={handleInputChange} deletePopUp={deletePopUp} handleEditClick={handleEditClick} handleEditSave={handleEditSave}></EditUserDialog>
+<EditUserDialog  editOpen={editOpen} handleEditClose={handleEditClose} fields={fields} formErrors={formErrors} formData={formData} isDisabled={isDisabled} setFormData={setFormData} handleInputChange={handleInputChange} deletePopUp={deletePopUp} handleEditClick={handleEditClick} row2={row2} setFormErrors={setFormErrors} pData={pData} settypenoti={settypenoti} setNotiMessage={setNotiMessage} setNotificationOpen={setNotificationOpen} setIsDisabled={setIsDisabled} setEditOpen={setEditOpen} forceUpdate={forceUpdate}></EditUserDialog>
  {/*mapping data*/}
  {RoleFields.map((rolefild) => (
      
