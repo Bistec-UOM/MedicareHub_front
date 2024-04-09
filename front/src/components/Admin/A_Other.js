@@ -14,12 +14,15 @@ import match from 'autosuggest-highlight/match';
 import { Button } from '@mui/material';
 import { baseURL, endPoints } from '../../Services/Admin';
 import SearchGraph from './AnalyticsComponents.js/SearchGraph';
+import LoadingButton from '@mui/lab/LoadingButton';
 
 const AOther = () => {
   
   const [notificationOpen,setNotificationOpen]=useState(false);
   const [notiMessage,setNotiMessage]=useState("");
   const [typenoti, settypenoti] = useState('success');
+
+  const [loadingB, setLoadingB] = useState(false)//Loading button states
 
 
   const [rows, setRows] = useState([]);
@@ -30,19 +33,25 @@ const AOther = () => {
   const [month, setMonth] = useState(null);
   
   const HandleSearch = (date) => {
-    const dateObject = new Date(date);
-    const year = dateObject.getFullYear();
-    const month = dateObject.getMonth() + 1; // Months are zero-based
-    setYear(year);
-    setMonth(month);
+    if (date) {
+      const dateObject = new Date(date);
+      const year = dateObject.getFullYear();
+      const month = dateObject.getMonth() + 1; // Months are zero-based
+      setYear(year);
+      setMonth(month);
+      setLoadingB(true)
+    }
   }
   //for attendance
   useEffect(() => {
-    if (year && month) {
+    
+    if (year!='' && month!='') {
+      console.log(year,month)
       axios.get(baseURL+endPoints.A_Attendance+`${year}-${month}`)
         .then(response => {
           console.log(response.data);
           setRows(response.data);
+          setLoadingB(false)
           // Add a date field to each item
         })
         .catch(error => {
@@ -152,8 +161,16 @@ let graph = {
                 setDate(newValue); // Update the date state
               }} />
             </LocalizationProvider>
-            <Button variant="contained" onClick={() => HandleSearch(date)} sx={{marginLeft:5,paddingLeft:5,paddingRight:5,padding:1}}>Find <PlayArrowIcon sx={{marginLeft:1}}></PlayArrowIcon></Button>
-          
+            {/* <Button variant="contained" onClick={() => HandleSearch(date)} sx={{marginLeft:5,paddingLeft:5,paddingRight:5,padding:1}}>Find <PlayArrowIcon sx={{marginLeft:1}}></PlayArrowIcon></Button> */}
+            <LoadingButton           
+          size="small"
+          endIcon={<PlayArrowIcon />}
+          loading={loadingB}
+          loadingPosition="end"
+          variant="contained" 
+          onClick={() => HandleSearch(date)}
+          sx={{ml:'10px'}}
+        >Find</LoadingButton>
           </Box>
         </Grid>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -185,6 +202,8 @@ let graph = {
           </TableBody>
         </Table>
       </Paper>
+      <Typography sx={{textAlign:'center',fontWeight:'bolder',fontSize:'20px'}}>Lab Report Data</Typography>
+
      <Paper>
      <SearchGraph uniqueModelTypes={uniqueLabReportTypes} selectModelType={selectLabReportType} Value={Value} handleChange={handleChange} ModelData={TestData} graph={graph}></SearchGraph>
      </Paper>
@@ -194,3 +213,8 @@ let graph = {
 }
 
 export default AOther;
+
+
+
+
+
