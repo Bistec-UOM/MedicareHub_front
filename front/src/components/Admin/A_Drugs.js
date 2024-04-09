@@ -75,12 +75,23 @@ const uniqueDrugTypes = drugTypes.reduce((unique, item) =>
     }
     setTimeGap(newDate);
   };
+  //data filter within time gap
   const filteredData = pdata.filter(entry => {
     const entryDate = new Date(entry.datefor);
     return entryDate >= TimeGap && entryDate <= currentDate;
   });
     // Add a new state variable for the most used drug
     const [mostUsedDrug, setMostUsedDrug] = useState(null);
+
+    const TimeGap30 = new Date();
+    TimeGap30.setDate(currentDate.getDate() - 30); // Set TimeGap to 30 days ago
+    
+    const filter30Data = pdata.filter(entry => {
+      const entryDate = new Date(entry.datefor);
+      return entryDate >= TimeGap30 && entryDate <= currentDate;
+    });
+
+
 
 const DrugData = selectedDrug ? 
   filteredData.flatMap(data => 
@@ -91,7 +102,7 @@ const DrugData = selectedDrug ?
         datefor: data.datefor 
       }))
   ) : [];
-  const drugconter = filteredData.flatMap(data => data.drugType);  
+  const drugconter = filter30Data.flatMap(data => data.drugType);  
   useEffect(() => {
     // Create a frequency map
     const frequencyMap = drugconter.reduce((map, drug) => {
