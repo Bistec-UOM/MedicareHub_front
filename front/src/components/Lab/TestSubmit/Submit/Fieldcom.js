@@ -1,8 +1,8 @@
 import { Typography } from '@mui/material'
 import React from 'react'
-import LensIcon from '@mui/icons-material/Lens';
+import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 
-export default function Fieldcom({field,unit,value,status,enterData,indx}) {
+export default function Fieldcom({field,unit,value,status,min,max,enterData,indx}) {
 
   const statColor=()=>{
     if (status==null){
@@ -17,12 +17,16 @@ export default function Fieldcom({field,unit,value,status,enterData,indx}) {
   return (
     <div style={{
       display:'flex',
-      width:'100%'
+      width:'100%',
+      marginT:'2px',
+      marginBottom:'5px',
+      alignItems:'center'
       }}
     >
-        <Typography sx={{fontSize:'15px',flex:6}}>{field}</Typography>
+        <Typography sx={{fontSize:'15px',flex:5}}>{field}</Typography>
+        <Typography sx={{fontSize:'12px',flex:3,color:'grey'}}>{min}-{max}</Typography>
         
-        <input type='number' 
+        <input type='text' 
           style={{
             width:'80px',
             height:'20px',
@@ -34,8 +38,8 @@ export default function Fieldcom({field,unit,value,status,enterData,indx}) {
           value={value}
         ></input>
         
-        <Typography sx={{ml:'10px',fontSize:'14px',flex:1,color:'grey'}}>{unit}</Typography>
-        <LensIcon fontSize='5px' sx={{color:statColor()}} ></LensIcon>
+        <Typography sx={{ml:'5px',fontSize:'14px',flex:1,mr:'10px'}}>{unit}</Typography>
+        <FiberManualRecordIcon fontSize='5px' sx={{color:statColor()}} ></FiberManualRecordIcon>
     </div>
   )
 }
