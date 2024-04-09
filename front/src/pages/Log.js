@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { baseURL,endPoints } from '../Services/Auth';
 import { jwtDecode } from "jwt-decode";
+import LoadingButton from '@mui/lab/LoadingButton';
+import SendIcon from '@mui/icons-material/Send';
 
 export default function Log() {
   const navigate=useNavigate()
@@ -38,6 +40,7 @@ export default function Log() {
       UserId:user,
       Password:password
     }
+    setLoadingB(true)
     axios.post(baseURL+endPoints.LOG,obj)
     .then((res)=>{
       localStorage.setItem('token', res.data)
@@ -45,15 +48,16 @@ export default function Log() {
       //Navigate User
       let tmp=jwtDecode(localStorage.getItem('token')).Role
       switch(tmp){
-        case 'Doctor':navigate('doct')
-        case 'Receptionist':navigate('res')
-        case 'Cashier':navigate('pharm')
-        case 'Lab Assistant':navigate('lab')
+        case 'Doctor':navigate('doct'); break
+        case 'Receptionist':navigate('res'); break
+        case 'Cashier':navigate('pharm'); break
+        case 'Lab Assistant':navigate('lab'); break
       }
     })
     .catch((er)=>{
       if(er.response.data=='Invalid Password'||er.response.data=='Invalid User Id'){
         handleClick(er.response.data,'error')
+        setLoadingB(false)
       }
     })
   }
@@ -68,6 +72,8 @@ export default function Log() {
   useEffect(()=>{
     document.body.style.margin = '0';
    },[])
+
+   const [loadingB, setLoadingB] = useState(false)//Loading button states
 
   return (
     <Box 
@@ -105,8 +111,21 @@ export default function Log() {
         <TextField size="small" sx={{mt:'5px',mb:'10px'}} id="2" label="Password" type="password" autoComplete="current-password" onChange={(e)=>setPassword(e.target.value)} value={password}/>
 
         <div style={{display:'flex',flexDirection:'row-reverse',alignItems:'center'}}>
-          <Button variant="contained" sx={{ml:'5px'}} onClick={setData}>OK</Button>
-          <Button variant="outlined" sx={{ml:'5px'}} onClick={clearData} color='warning'>Clear</Button>
+          <LoadingButton           
+            size="small"
+            endIcon={<SendIcon />}
+            loading={loadingB}
+            loadingPosition="end"
+            variant="contained" onClick={setData} 
+            sx={{ml:'5px'}}
+            >Log</LoadingButton>
+          <Button 
+            variant="outlined" 
+            sx={{ml:'5px'}} 
+            onClick={clearData} 
+            color='warning'
+            size="small"
+            >Clear</Button>
         </div>
         
       </Box>
