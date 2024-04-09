@@ -6,6 +6,7 @@ import { useState } from 'react';
 import TotalPatientCount from './AnalyticsComponents.js/TotalPatientCount';
 import SuccessNotification from '../recepcomponents/SnackBar/SuccessNotification';
 import YoutubeSearchedForIcon from '@mui/icons-material/YoutubeSearchedFor';
+import { baseURL, endPoints } from '../../Services/Admin';
 
 const APatient = () => {
   const [notificationOpen,setNotificationOpen]=useState(false);
@@ -16,7 +17,7 @@ const APatient = () => {
   const [pdata, setPdata] = useState([]);
 
   useEffect(() => {
-    axios.get('https://localhost:7205/api/Analytic/male-female-patients-count')
+    axios.get(baseURL+endPoints.A_patient_count)
       .then(response => {
         console.log('data is ');
         console.log(response.data);

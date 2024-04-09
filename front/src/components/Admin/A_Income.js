@@ -9,6 +9,7 @@ import axios from 'axios';
 import  { useEffect ,useState} from 'react';
 import IncomeOfDay from './AnalyticsComponents.js/IncomeOfDay';
 import SuccessNotification from '../recepcomponents/SnackBar/SuccessNotification';
+import { baseURL, endPoints } from '../../Services/Admin';
 
 
 
@@ -49,7 +50,7 @@ const AIncome = () => {
     change(event.target.value); // Call change function with selected value
   };
 
-  useEffect(() => {axios.get('https://localhost:7205/api/Analytic/total-Income')
+  useEffect(() => {axios.get(baseURL+endPoints.A_income)
   .then(response => {
     console.log(response.data);
     pdata = response.data;
@@ -69,7 +70,7 @@ const AIncome = () => {
      
    }, []); // Empty dependency array means this effect runs once on mount
 
-  const change = (Gap) => {
+      const change = (Gap) => {
     if (Gap === 'day') {
       TimeGap = new Date(currentDate); // Reset TimeGap to current date
       TimeGap.setDate(currentDate.getDate() - 1);
@@ -84,6 +85,11 @@ const AIncome = () => {
       TimeGap.setFullYear(currentDate.getFullYear() - 5);
     }
   };
+
+  useEffect(() => {
+    change(Value);
+  }, [Value]); // Run the effect whenever Value1 changes
+  
 
   const filteredData = pdata.filter(entry => {
     const entryDate = new Date(entry.datefor);
@@ -100,7 +106,9 @@ const AIncome = () => {
   return (
     <div>
       <Grid container spacing={3}>
+        <Grid item xs={4}>
       <IncomeOfDay totalIncome={totalIncome} />
+        </Grid>
         <Grid item xs={8} style={{textAlign:'right'}}>
           <Paper sx={{padding:'10px'}}>
             <FormControl sx={{width:'20%'}}>

@@ -6,9 +6,9 @@ const TotalPatientCount = ({count}) => {
         <div>
             
                        
-              <Paper style={{textAlign:'center', padding:"6%"}} >
+              <Paper style={{textAlign:'center', padding:"6%",height:'30vh'}} >
                 <Typography fontSize={20}>Patient count within today</Typography>
-                <Typography fontSize={90}>{count}</Typography>
+                <Typography fontSize={90}>{count? count.toFixed(2) :'0'}</Typography>
               </Paper>
          
         </div>

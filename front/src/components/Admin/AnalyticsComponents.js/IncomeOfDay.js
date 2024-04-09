@@ -3,8 +3,8 @@ import React from 'react';
 
 const IncomeOfDay = ({ totalIncome }) => {
     return (
-        <Grid item xs={4}>
-        <Paper style={{textAlign:'center',height:'35vh', paddingTop:"6%"}} >
+        <Grid>
+        <Paper style={{textAlign:'center',height:'30vh', paddingTop:"6%"}} >
           <Typography fontSize={30}>Income of day</Typography>
           <br></br>
           <Typography fontSize={50}>{totalIncome ? totalIncome.toFixed(2) : '0.00'}</Typography>
