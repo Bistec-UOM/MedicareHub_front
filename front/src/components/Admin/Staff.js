@@ -10,6 +10,9 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateField } from '@mui/x-date-pickers/DateField';
 import AskDelete from "./DialogComponents/AskDelete";
 import SuccessNotification from "../recepcomponents/SnackBar/SuccessNotification";
+import EditUserDialog from "./DialogComponents/EditUserDialog";
+import { baseURL, endPoints } from "../../Services/Admin";
+import AddUserDialog from "./DialogComponents/AddUserDialog";
 
 
 
@@ -103,7 +106,7 @@ const [formErrors, setFormErrors] = useState({
   });
   const [update,forceUpdate]=useState(0);
   useEffect(() => {
-    axios.get(`https://localhost:7205/api/User`)
+    axios.get(baseURL+endPoints.StaffList)
     .then(res => {
       const apiData = res.data.map((data,index) => createData(
         data.id,
@@ -224,7 +227,7 @@ const [Role, setRole] = useState("");
     temp.id = 0;
     temp.role = Role;
     console.log(temp.role)
-    axios.post(`https://localhost:7205/api/User`,temp)
+    axios.post(baseURL+endPoints.StaffList,temp)
     .then(res => {
       console.log('success')
       settypenoti('success')
@@ -313,8 +316,7 @@ const [Role, setRole] = useState("");
        errors.nic = 'NIC already exists';
        isValid = false;
      }
-   
-    if (!/^[0-9]{9}[vV]$/.test(formData.nic)||!/^[0-9]{12}$/.test(formData.nic)) {
+    if (!(/^[0-9]{9}[vV]$/.test(formData.nic) || /^[0-9]{12}$/.test(formData.nic))) {
       errors.nic = 'invalid NIC';
       isValid = false;
     }
@@ -341,7 +343,7 @@ try {
   console.log(pData,"fid",pData.id);
 
           // Assuming you have an API endpoint for updating a patient
-          axios.put(`https://localhost:7205/api/User/`+`${pData.id}` , pData)
+          axios.put(baseURL+endPoints.StaffList+`/${pData.id}` , pData)
           .then(response => {
             settypenoti('success')
             setNotiMessage("Member Edited successfully");
@@ -389,7 +391,7 @@ console.log(pData.id)
   };
   const handleRemove = () => {
     console.log('removed'+formData.id)
-    axios.delete(`https://localhost:7205/api/User/${pData.id}`)
+    axios.delete(baseURL+endPoints.StaffList+`/${pData.id}`)
       .then(res => {
         settypenoti('success')
         setNotiMessage("Staff Member removed successfully");
@@ -430,152 +432,17 @@ const RoleFields = ["Doctor", "Receptionist", "Lab Assistant", "Cashier"];
 
       {/* data adding */}
 
-      <Dialog open={open} onClose={handleClose} >
-        <DialogTitle
-          sx={{
-            backgroundColor: "rgb(222, 244, 242)",
-            display: "flex",
-            justifyContent: "space-between",
-          }}
-        >
-         <Typography style={{textAlign:"center"}}>{Type}</Typography>
-          <CloseIcon onClick={handleClose} sx={{cursor:'pointer'}}/>
-        </DialogTitle>
-        <DialogContent>
-          {/* Add form fields or other content here */}
-          <TextField required label="Full Name" fullWidth sx={{mb:1}}  onChange={(e) => handleInputChange("fullName", e.target.value)} error={!!formErrors.fullName}helperText={formErrors.fullName}/>
-          <TextField required label="Usual Name"  sx={{ mb: 1 }} onChange={(e) => handleInputChange("name", e.target.value)} error={!!formErrors.name} helperText={formErrors.name}/>
-          <TextField required label="NIC" sx={{ ml: 4, mb: 1 }} onChange={(e) => handleInputChange("nic", e.target.value)} error={!!formErrors.nic} helperText={formErrors.nic}/>
-          <TextField required label="Address" fullWidth sx={{ mb: 1 }} onChange={(e) => handleInputChange("address", e.target.value)} error={!!formErrors.address} helperText={formErrors.address}/>
-          <TextField required label="Contact Number" sx={{ mb: 1 }} onChange={(e) => handleInputChange("contactNumber", e.target.value)} error={!!formErrors.contactNumber} helperText={formErrors.contactNumber}/>
-          <TextField required label="qualifications" sx={{ ml: 4, mb: 1 }} onChange={(e) => handleInputChange("qualifications", e.target.value)} error={!!formErrors.qualifications} helperText={formErrors.qualifications}/>
-          <TextField required label="E-mail"  sx={{ mb: 1 }} onChange={(e) => handleInputChange("email", e.target.value)} error={!!formErrors.email} helperText={formErrors.email}/>
-          <TextField required label="Password"  sx={{ mb: 1 ,ml:4}} onChange={(e) => handleInputChange("password", e.target.value)} error={!!formErrors.password} helperText={formErrors.password}/>
-          <div style={{display:'flex'}}>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <DemoContainer components={['DateField']}>
-        <DateField
-          label="Date Of Birth"
-          style={{width:'200px'}}
-          required
-          onChange={(newValue) => handleInputChange('dob', newValue)}
-          renderInput={(props) => <TextField {...props} />} // You may need to import TextField from '@mui/material/TextField'
-          // format="YYYY/MM/DD"
-          error={!!formErrors.dob} helperText={formErrors.dob}
-        />
-      </DemoContainer>
-    </LocalizationProvider>
-          <Box>
-  <FormControl style={{ width: '200px',margin:'9px',marginLeft:'40px' }}>
-    <InputLabel id="demo-simple-select-label">Gender</InputLabel>
-    <Select
-      labelId="demo-simple-select-label"
-      id="demo-simple-select"
-      required
-      // value={handleInputChange("gender", e.target.value)} // Ensure you're using the correct value here
-      label="Gender"
-      onChange={(e) => handleInputChange("gender", e.target.value)}
-      error={!!formErrors.gender} helperText={formErrors.gender}
-    >
-      <MenuItem value={'Female'}>Female</MenuItem>
-      <MenuItem value={'Male'}>Male</MenuItem>
-    </Select>
-  </FormControl>
-</Box>
-          </div>
-    
-          {/* Add more fields as needed */}
-        </DialogContent>
-        <DialogActions>
-          <Button
-            onClick={handleAddSaveClose}
-            variant="contained"
-            sx={{ backgroundColor: "rgb(121, 204, 190)", m: 2 }}
-          >
-            Add
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <AddUserDialog
+  open={open}
+  handleClose={handleClose}
+  handleInputChange={handleInputChange}
+  formErrors={formErrors}
+  handleAddSaveClose={handleAddSaveClose}
+  Type={Type}
+/>
 
       {/* data editing */}
-      <Dialog open={editOpen} onClose={handleEditClose}>
-  <DialogTitle
-    sx={{
-      backgroundColor: "rgb(222, 244, 242)",
-      display: "flex",
-      justifyContent: "space-between",
-    }}
-  >
-    Edit User
-    <CloseIcon onClick={handleEditClose} sx={{cursor:'pointer'}} />
-  </DialogTitle>
-  <DialogContent>
-    {fields.map((field) => (
-      <TextField
-        label={field.label}
-        sx={field.style}
-        error={!!formErrors[field.key]}
-        helperText={formErrors[field.key]}
-        fullWidth={field.fullWidth || false}
-        margin="normal"
-        value={formData[field.key]}
-        disabled={isDisabled}
-        onChange={(e) => setFormData({...formData, [field.key]: e.target.value})}
-      />
-    ))}
-    <FormControl sx={{m:2,ml:4}}>
-      <InputLabel id="demo-simple-select-label">Gender</InputLabel>
-    </FormControl>
-    <div style={{display:'flex'}}>
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <DemoContainer components={['DateField']}>
-          <DateField
-            label="Date Of Birth"
-            value={formData.dob ? dayjs(formData.dob) : null} // Ensure formData.dob is a valid date or null
-            onChange={(newValue) => handleInputChange('dob', newValue)}
-            renderInput={(props) => <TextField {...props} />}
-            style={{width:'210px',marginTop:'9px'}}
-            disabled= {isDisabled}
-            // format="YYYY/MM/DD" // You can add this line back if it's needed
-          />
-        </DemoContainer>
-      </LocalizationProvider>
-    <Select
-      labelId="gender-label"
-      id="gender"
-      value={formData.gender}
-      onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
-      label="Gender"
-      disabled={isDisabled}
-      style={{width:"200px",height:'6vh'}}
-      sx={{ml:3,mt:2}}
-    >
-      <MenuItem value="Male">Male</MenuItem>
-      <MenuItem value="Female">Female</MenuItem>
-    </Select>
-    </div>
-  </DialogContent>
-  <DialogActions>
-  {!isDisabled && (
-    <Button
-      onClick={deletePopUp}
-      variant="outlined"
-      color="error"
-      sx={{ m: 2 }}
-    >
-      Delete
-    </Button>
-  )}
-    <Button
-      onClick={isDisabled? handleEditClick : handleEditSave}
-      variant="contained"
-      sx={{ backgroundColor: "rgb(121, 204, 190)", m: 2 }}
-    >
-      {isDisabled ? 'Edit' : 'Save'}
-    </Button>
-  </DialogActions>
-</Dialog>
-
+<EditUserDialog  editOpen={editOpen} handleEditClose={handleEditClose} fields={fields} formErrors={formErrors} formData={formData} isDisabled={isDisabled} setFormData={setFormData} handleInputChange={handleInputChange} deletePopUp={deletePopUp} handleEditClick={handleEditClick} handleEditSave={handleEditSave}></EditUserDialog>
  {/*mapping data*/}
  {RoleFields.map((rolefild) => (
      

@@ -1,6 +1,7 @@
 import { Grid, Paper, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';    
 import IncomeOfDay from './AnalyticsComponents.js/IncomeOfDay';
+import TotalPatientCount from './AnalyticsComponents.js/TotalPatientCount';
 
 const View = () => {
     const [time, setTime] = useState('');
@@ -20,15 +21,21 @@ const View = () => {
     }, []);
 
     return (
-        <div>
-            <Paper sx={{paddingLeft:4}}>
-                <h1>Good {time}, Yasiru!</h1>
-            </Paper>
+<div style={{ width: '100%' }}>
+  <Paper sx={{paddingLeft:4}}>
+    <h1>Good {time}, Yasiru!</h1>
+  </Paper>
 
-                <Grid item xs={12} md={6}>
-                    <IncomeOfDay  />
-                </Grid>
-        </div>
+  <Grid container spacing={1}>
+  <Grid item xs={6} >
+    <IncomeOfDay/>
+  </Grid>
+  <Grid item xs={6}>
+    <TotalPatientCount />
+  </Grid>
+  </Grid>
+  <br/>
+</div>
     );
 }
 
