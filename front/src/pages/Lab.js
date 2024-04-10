@@ -76,9 +76,18 @@ export default function Lab() {
 
     useEffect(()=>{
       document.body.style.margin = '0';
-
-     if(!RloadDone){
-      axios.get(baseURL+endPoints.REPORT)
+      let tmp=localStorage.getItem('token')
+      if(tmp==null){tmp=''}
+      if(!RloadDone){
+      axios.get(baseURL+endPoints.REPORT,
+        {headers:
+          {
+          'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+          'Authorization': `Basic MTExNjM4NzU6NjAtZGF5ZnJlZXRyaWFs`,
+          'Content-Type': 'application/json'
+          }
+        }
+      )
       .then((res)=>{
         setRLoad(res.data)
         setRloadDone(true)
@@ -87,7 +96,7 @@ export default function Lab() {
       .catch((er)=>{
         setEr(true)
         setRloadDone(true)
-        console.log(er.massage)
+        console.log(er)
       })
      }
 

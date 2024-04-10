@@ -1,4 +1,4 @@
-const baseURL='http://localhost:7205'
+const baseURL='http://ramosh-001-site1.ltempurl.com'
 
 const endPoints = {
     TEST:'/api/Test',
