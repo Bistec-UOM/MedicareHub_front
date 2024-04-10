@@ -43,7 +43,7 @@ export default function Log() {
     setLoadingB(true)
     axios.post(baseURL+endPoints.LOG,obj,{
       headers:{
-        'Access-Control-Allow-Origin':'http://dmwijesinghe-001-site1.anytempurl.com'
+        'Access-Control-Allow-Origin':'*'
       }
     })
     .then((res)=>{

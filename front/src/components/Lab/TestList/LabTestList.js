@@ -54,7 +54,10 @@ export default function LabTestList({setPage,settId,Tload,setTload}) {
           setTload(res.data)
           setLoading(false)
         })
-        .catch(er=>{})
+        .catch(er=>{
+          console.log(er)
+          setLoading(false)
+        })
     },[Tload,setTload])
 
   return (
