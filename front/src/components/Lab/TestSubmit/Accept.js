@@ -7,7 +7,7 @@ import { baseURL, endPoints } from '../../../Services/Lab';
 import { PersonDetail } from '../../Other';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import LoadingButton from '@mui/lab/LoadingButton';
-import SendIcon from '@mui/icons-material/Send';
+import DoneIcon from '@mui/icons-material/Done';
 
 export default function Accept({req,reqOK,RLoad,setRLoad}) {
 
@@ -103,7 +103,7 @@ export default function Accept({req,reqOK,RLoad,setRLoad}) {
 
                 <LoadingButton           
                   size="small"
-                  endIcon={<SendIcon />}
+                  endIcon={<DoneIcon/>}
                   loading={loadingB}
                   loadingPosition="end"
                   variant="contained" onClick={()=>AccIdSet(i.repId)} 

@@ -7,7 +7,7 @@ import axios from 'axios'
 import { baseURL,endPoints } from '../Services/Auth';
 import { jwtDecode } from "jwt-decode";
 import LoadingButton from '@mui/lab/LoadingButton';
-import SendIcon from '@mui/icons-material/Send';
+import LoginIcon from '@mui/icons-material/Login';
 
 export default function Log() {
   const navigate=useNavigate()
@@ -41,7 +41,11 @@ export default function Log() {
       Password:password
     }
     setLoadingB(true)
-    axios.post(baseURL+endPoints.LOG,obj)
+    axios.post(baseURL+endPoints.LOG,obj,{
+      headers:{
+        'Access-Control-Allow-Origin':'http://dmwijesinghe-001-site1.anytempurl.com'
+      }
+    })
     .then((res)=>{
       localStorage.setItem('token', res.data)
       //console.log(jwtDecode(localStorage.getItem('token')).Role)
@@ -55,9 +59,13 @@ export default function Log() {
       }
     })
     .catch((er)=>{
-      if(er.response.data=='Invalid Password'||er.response.data=='Invalid User Id'){
+      if(er.hasOwnProperty('response')){
         handleClick(er.response.data,'error')
         setLoadingB(false)
+      }else{
+        console.log(er)
+        setLoadingB(false)
+
       }
     })
   }
@@ -113,7 +121,7 @@ export default function Log() {
         <div style={{display:'flex',flexDirection:'row-reverse',alignItems:'center'}}>
           <LoadingButton           
             size="small"
-            endIcon={<SendIcon />}
+            endIcon={<LoginIcon />}
             loading={loadingB}
             loadingPosition="end"
             variant="contained" onClick={setData} 
