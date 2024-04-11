@@ -17,6 +17,7 @@ import MyFullCalendar from "../MyFullCalendar/MyFullCalendar";
 import PageNotFound from "../PageNotFound/PageNotFound";
 import { baseURL,endPoints } from "../../../Services/Appointment";
 import { Load } from "../../Other";
+import { SearchBarSM } from "../../Common";
 
 const drawerWidth = 358.4;
 
@@ -87,13 +88,7 @@ function ResponseAppCalender() {
       <Grid item xs={3} sm={1} md={3} sx={{ backgroundColor: "#DEF4F2" }}>
         <SidebarContainer>
           <SidebarTop>
-            <SearchBar
-              search={search}
-              setSearch={setSearch}
-              mgl="10%"
-              isDisabled={false}
-              placename="Doctor name"
-            ></SearchBar>
+ <SearchBarSM value={search} onChange={setSearch}></SearchBarSM>
           </SidebarTop>
           <SidebarList sx={{ backgroundColor: "#DEF4F2" }}>
           {!RloadDone?<Load></Load>:''}

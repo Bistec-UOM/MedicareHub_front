@@ -1,0 +1,11 @@
+==========  Icons for Buttons ===================
+
+Add : import AddIcon from '@mui/icons-material/Add';
+Cancel : import CloseIcon from '@mui/icons-material/Close';
+Delete : import DeleteIcon from "@mui/icons-material/Delete";
+Save : import DoneIcon from '@mui/icons-material/Done';       ----> rename 'OK'
+Edit : import EditIcon from '@mui/icons-material/Edit';
+Submit : import SendIcon from '@mui/icons-material/Send';   -----> rename 'Send'
+Log : import LoginIcon from '@mui/icons-material/Login';
+Clear :
+
