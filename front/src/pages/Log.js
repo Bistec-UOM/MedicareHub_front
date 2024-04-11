@@ -65,7 +65,6 @@ export default function Log() {
       }else{
         console.log(er)
         setLoadingB(false)
-
       }
     })
   }
