@@ -13,6 +13,7 @@ import Accept from '../components/Lab/TestSubmit/Accept';
 import axios from 'axios';
 import { baseURL, endPoints } from '../Services/Lab';
 import { Load } from '../components/Other';
+import { setHeaders } from '../Services/Auth';
 
 export default function Lab() {
 
@@ -79,15 +80,7 @@ export default function Lab() {
       let tmp=localStorage.getItem('token')
       if(tmp==null){tmp=''}
       if(!RloadDone){
-      axios.get(baseURL+endPoints.REPORT,
-        {headers:
-          {
-          'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-          'Authorization': `Basic MTExNjM4NzU6NjAtZGF5ZnJlZXRyaWFs`,
-          'Content-Type': 'application/json'
-          }
-        }
-      )
+      axios.get(baseURL+endPoints.REPORT,setHeaders)
       .then((res)=>{
         setRLoad(res.data)
         setRloadDone(true)

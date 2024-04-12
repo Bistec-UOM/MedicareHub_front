@@ -88,7 +88,7 @@ function ResponseAppCalender() {
       <Grid item xs={3} sm={1} md={3} sx={{ backgroundColor: "#DEF4F2" }}>
         <SidebarContainer>
           <SidebarTop>
- <SearchBarSM value={search} onChange={setSearch}></SearchBarSM>
+          <SearchBar search={search} setSearch={setSearch} mgl="10%" isDisabled={false} placename="Doctor name or id..."></SearchBar>
           </SidebarTop>
           <SidebarList sx={{ backgroundColor: "#DEF4F2" }}>
           {!RloadDone?<Load></Load>:''}

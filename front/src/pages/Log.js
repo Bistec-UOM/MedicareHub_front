@@ -41,22 +41,18 @@ export default function Log() {
       Password:password
     }
     setLoadingB(true)
-    axios.post(baseURL+endPoints.LOG,obj,{
-      headers:{
-        'Access-Control-Allow-Origin':'*'
-      }
-    })
+    axios.post(baseURL+endPoints.LOG,obj)
     .then((res)=>{
-      localStorage.setItem('token', res.data)
-      //console.log(jwtDecode(localStorage.getItem('token')).Role)
+      localStorage.setItem('medicareHubToken', res.data)
       //Navigate User
-      let tmp=jwtDecode(localStorage.getItem('token')).Role
+      let tmp=jwtDecode(localStorage.getItem('medicareHubToken')).Role
       switch(tmp){
         case 'Doctor':navigate('doct'); break
         case 'Receptionist':navigate('res'); break
         case 'Cashier':navigate('pharm'); break
         case 'Lab Assistant':navigate('lab'); break
       }
+      setLoadingB(false)
     })
     .catch((er)=>{
       if(er.hasOwnProperty('response')){
