@@ -9,6 +9,22 @@ import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import { SearchBarSM } from '../Common';
 
 export default function LabSearch({setPage,setDate,date,query,setQuery}) {
+
+  const [dt,setDt]=useState(new Date())
+  const [fDt,setFDt]=useState(`${dt.getDate().toString().padStart(2, '0')}-${(dt.getMonth() + 1).toString().padStart(2, '0')}-${dt.getFullYear()}`)
+
+  const incrementDate=()=>{
+    dt.setDate(dt.getDate() + 1);
+    setFDt(`${dt.getDate().toString().padStart(2, '0')}-${(dt.getMonth() + 1).toString().padStart(2, '0')}-${dt.getFullYear()}`)
+    setDate(date+1)
+  }
+
+  const decerementDate=()=>{
+    dt.setDate(dt.getDate() - 1);
+    setFDt(`${dt.getDate().toString().padStart(2, '0')}-${(dt.getMonth() + 1).toString().padStart(2, '0')}-${dt.getFullYear()}`)
+    setDate(date-1)
+  }
+
   return (
       <div style={{display:'flex',justifyContent:'space-between'}}>
 
@@ -18,9 +34,9 @@ export default function LabSearch({setPage,setDate,date,query,setQuery}) {
     
       {/* ----------date navigator-------------------------------------- */}
       <div style={{display:'flex',justifyContent:'center'}}>
-          <ArrowBackIosIcon fontSize='small' sx={{mr:'15px',cursor:'pointer'}} onClick={()=>setDate(date-1)}></ArrowBackIosIcon>
-          <Typography sx={{fontSize:'14px',mb:'6px'}}>2{date} Nov 2024</Typography>
-          <ArrowForwardIosIcon fontSize='small' sx={{ml:'15px',cursor:'pointer'}} onClick={()=>setDate(date+1)}></ArrowForwardIosIcon>
+          <ArrowBackIosIcon fontSize='small' sx={{mr:'15px',cursor:'pointer'}} onClick={decerementDate}></ArrowBackIosIcon>
+          <Typography sx={{fontSize:'14px',mb:'6px'}}>{fDt}</Typography>
+          <ArrowForwardIosIcon fontSize='small' sx={{ml:'15px',cursor:'pointer'}} onClick={incrementDate}></ArrowForwardIosIcon>
       </div>
   
     {/*---------------------searchbar---------------------------------------*/}

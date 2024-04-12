@@ -14,7 +14,7 @@ import { jwtDecode } from "jwt-decode";
 import { useNavigate } from 'react-router-dom'
 
 const ResNavBar = ({ isClosing, setMobileOpen, mobileOpen }) => {
-  const [name,SetName]=useState("Profile")
+  const [profile,SetProfile]=useState({Name:"Profile",Role:"Empty"})
   const drawerWidth = 358.4;
   
   //drop down menu
@@ -45,7 +45,10 @@ const ResNavBar = ({ isClosing, setMobileOpen, mobileOpen }) => {
   useEffect(()=>{
     let tmp=localStorage.getItem('medicareHubToken')
     if(tmp!==null){
-      SetName(jwtDecode(localStorage.getItem('medicareHubToken')).Name)
+      SetProfile({
+        Name:jwtDecode(localStorage.getItem('medicareHubToken')).Name,
+        Role:jwtDecode(localStorage.getItem('medicareHubToken')).Role
+      })
     }
   },[])
 
@@ -92,7 +95,10 @@ const ResNavBar = ({ isClosing, setMobileOpen, mobileOpen }) => {
           marginLeft: "2%",
         }}
       >
-          <Typography color="#9F9D9D">{name}</Typography>
+          <div style={{display:'flex',flexDirection:'column'}}>
+            <Typography color="#030303" >{profile.Name}</Typography>
+            <Typography color="#AFADAD" sx={{fontSize:'12px',textAlign:'right'}}>{profile.Role}</Typography>
+          </div>
           <IconButton
             size="large"
             aria-label="account of current user"

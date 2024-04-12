@@ -11,3 +11,4 @@ const endPoints = {
   
 export { baseURL,endPoints};
 
+//https://medicarehub.azurewebsites.net
