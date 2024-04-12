@@ -33,6 +33,28 @@ export default function Pharmacy() {
         console.log(error);
       });
   }
+  const handleConfirmAction = () => {    ///////// 
+    setConfirmDialogOpen(false);
+    setSnackbarOpen(true);
+    
+    // Extract generic names from the selected patient's drugs list
+    const genericNames = selectedPrescription[0].medicine.map(drug => drug.name);
+    
+    // Make a POST request to send the generic names to the backend
+    axios.post('https://localhost:44346/api/Bill/GetMedicineDetails', genericNames)
+      .then(response => {
+        // Handle success
+        console.log('Generic names sent successfully:', response.data);
+        
+        // Optionally, perform any additional actions after successful data submission
+        
+      })
+      .catch(error => {
+        // Handle error
+        console.error('Error sending generic names:', error);
+      });
+  };
+  
   
  
   const [open, setOpen] = useState(false);
@@ -55,11 +77,11 @@ export default function Pharmacy() {
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
   };
-  const handleConfirmAction = () => {
-    setConfirmDialogOpen(false);
-    setSnackbarOpen(true);
+  // const handleConfirmAction = () => {
+  //   setConfirmDialogOpen(false);
+  //   setSnackbarOpen(true);
     
-  };
+  // };
 
   const dividerStyle = {
     backgroundColor: '#0099cc',
