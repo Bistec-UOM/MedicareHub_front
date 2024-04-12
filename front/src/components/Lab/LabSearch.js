@@ -1,29 +1,31 @@
-import React from 'react'
-import {Card, Typography, Paper, IconButton, Divider, InputBase } from '@mui/material'
-import {useEffect, useState } from 'react'
-import SearchIcon from "@mui/icons-material/Search";
+import React, { useEffect } from 'react'
+import {Typography} from '@mui/material'
+import {useState } from 'react'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import { SearchBarSM } from '../Common';
 
-export default function LabSearch({setPage,setDate,date,query,setQuery}) {
+export default function LabSearch({setPage,setDate,query,setQuery}) {
 
   const [dt,setDt]=useState(new Date())
-  const [fDt,setFDt]=useState(`${dt.getDate().toString().padStart(2, '0')}-${(dt.getMonth() + 1).toString().padStart(2, '0')}-${dt.getFullYear()}`)
+  const [fDt,setFDt]=useState(`${dt.getFullYear()}-${(dt.getMonth() + 1).toString().padStart(2, '0')}-${dt.getDate().toString().padStart(2, '0')}`)
 
   const incrementDate=()=>{
     dt.setDate(dt.getDate() + 1);
-    setFDt(`${dt.getDate().toString().padStart(2, '0')}-${(dt.getMonth() + 1).toString().padStart(2, '0')}-${dt.getFullYear()}`)
-    setDate(date+1)
+    let tmp=`${dt.getFullYear()}-${(dt.getMonth() + 1).toString().padStart(2, '0')}-${dt.getDate().toString().padStart(2, '0')}`
+    setFDt(tmp)
+    setDate(tmp)
   }
 
   const decerementDate=()=>{
     dt.setDate(dt.getDate() - 1);
-    setFDt(`${dt.getDate().toString().padStart(2, '0')}-${(dt.getMonth() + 1).toString().padStart(2, '0')}-${dt.getFullYear()}`)
-    setDate(date-1)
+    let tmp=`${dt.getFullYear()}-${(dt.getMonth() + 1).toString().padStart(2, '0')}-${dt.getDate().toString().padStart(2, '0')}`
+    setFDt(tmp)
+    setDate(tmp)
   }
+
 
   return (
       <div style={{display:'flex',justifyContent:'space-between'}}>
