@@ -128,7 +128,7 @@ export default function DoctorAddDrugs(props) {
     
                           <Typography gutterBottom variant="p" sx={{ flex: '2', marginLeft: '100px' }}>{drug.weight} {drug.unit}</Typography>
     
-                          <Typography gutterBottom variant="p" sx={{ flex: '1', marginLeft: '150px' }}>{drug.Period}</Typography>
+                          <Typography gutterBottom variant="p" sx={{ flex: '1', marginLeft: '150px' }}>{drug.period}</Typography>
     
                           </Card>
                         </Grid>

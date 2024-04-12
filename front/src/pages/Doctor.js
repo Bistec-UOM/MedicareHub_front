@@ -98,9 +98,7 @@ const handleClick = () => {
     labs: rep,  // lab test array: from Labrequest component
     description: description
   }
-  console.log(JSON.stringify(obj))
-
-  
+  console.log(JSON.stringify(obj))  
   axios.post('http://localhost:7205/api/Doctor/Prescription', obj)
   .then(response => {
     // Handle success
