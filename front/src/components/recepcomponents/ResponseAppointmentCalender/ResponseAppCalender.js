@@ -114,22 +114,14 @@ function ResponseAppCalender() {
                       <div
                         key={index}
                         onClick={() => setSelectedTab(item.id)}
-                        style={{
-                          backgroundColor:
-                            selectedTab === item.id ? "#79CCBE" : "transparent",
-                          color: selectedTab === item.id ? "white" : "black",
-                          padding: "10px",
-                          margin: "5px",
-                          cursor: "pointer",
-                          borderRadius: "8px",
-                        }}
                       >
                         <Sideunit_Doctor
+                          onClick={() => setSelectedTab(item.id)}
                           selectedTab={selectedTab}
                           name={item.fullName}
                           title={item.qualifications}
                           index={item.id}
-                          key={selectedTab}
+                          key={index}
                         ></Sideunit_Doctor>
                       </div>
                     ))}
