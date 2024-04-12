@@ -78,7 +78,7 @@ export default function MarkAsCompleted({
               sx={{ marginRight: "2%", fontSize: "2rem" }}
             />
             <Typography sx={{ marginTop: "1%", color: "#000000" }}>
-              Are you sure you want mark as completed the appointment?
+              Are you sure you want to mark as completed the appointment?
             </Typography>
           </Box>
           <Box
