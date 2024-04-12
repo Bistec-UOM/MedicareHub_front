@@ -1,7 +1,18 @@
-const baseURL='http://ramosh-001-site1.ltempurl.com'
+const baseURL='https://localhost:7205'
 
 const endPoints = {
     LOG:'/api/Auth/log'
   };
   
-export { baseURL,endPoints};
+const setHeaders=()=>{
+  let tmp={headers:
+    {
+    'Access-Control-Allow-Origin':'*',
+    'Authorization': `Bearer ${localStorage.getItem('medicareHubToken')}`,
+    'Content-Type': 'application/json'
+    }
+  }
+  return tmp
+}
+
+export { baseURL,endPoints,setHeaders};

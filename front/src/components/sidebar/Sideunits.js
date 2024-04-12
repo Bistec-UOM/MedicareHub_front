@@ -5,7 +5,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import Divider from '@mui/material/Divider';
 
-function Sideunit_Doctor({ name, title ,selectedTab,index}) {
+function Sideunit_doctor({ name, title ,selectedTab,index}) {
 
   const [isSelected,setIsselected]=useState(false)
 
@@ -47,11 +47,49 @@ function Sideunit_Doctor({ name, title ,selectedTab,index}) {
           justifyContent:'left',
           fontSize:{xs:6,sm:12}}} 
       variant="body2">{title} </Typography>
-      <Divider variant="middle" sx={{ width: '100%' }} />
     </Box>
   );
 }
 
+
+function Sideunit_Doctor({name, title ,selectedTab,index}) {
+
+  const [isSelected,setIsselected]=useState(false)
+
+  const handleClick = () => {
+    setIsselected(true)
+
+  };
+
+  return (
+  <Paper 
+    onClick={handleClick}
+    sx={{
+      width: '90%',
+      margin: '5px',
+      cursor: 'pointer',
+      padding:'8px',
+      borderRadius: '8px',
+      backgroundColor: selectedTab==index? 'rgb(121, 204, 190)' : '#ffffff',
+      boxShadow: 2,
+      "&:hover": {
+          boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
+          backgroundColor: selectedTab==index? 'rgb(121, 204, 190)' : 'rgb(231, 255, 249)'
+        }
+      }}
+  >
+    <Typography sx={{fontSize:'17px',color:selectedTab==index?'white':'black'}}>Dr.{name}</Typography>
+    <Typography 
+        sx={{
+          color: selectedTab==index?"white":"gray",
+          width:"100%",display:'flex',
+          justifyContent:'left',
+          fontSize:{xs:6,sm:12}}} 
+      variant="body2">{title} </Typography>
+    </Paper>
+
+  )
+}
 
 function Sideunit_Patient({id,name,status,time,selected,setSelect}) {
   return (

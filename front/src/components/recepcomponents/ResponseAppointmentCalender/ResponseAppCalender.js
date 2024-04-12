@@ -17,6 +17,7 @@ import MyFullCalendar from "../MyFullCalendar/MyFullCalendar";
 import PageNotFound from "../PageNotFound/PageNotFound";
 import { baseURL,endPoints } from "../../../Services/Appointment";
 import { Load } from "../../Other";
+import { SearchBarSM } from "../../Common";
 
 const drawerWidth = 358.4;
 
@@ -87,13 +88,7 @@ function ResponseAppCalender() {
       <Grid item xs={3} sm={1} md={3} sx={{ backgroundColor: "#DEF4F2" }}>
         <SidebarContainer>
           <SidebarTop>
-            <SearchBar
-              search={search}
-              setSearch={setSearch}
-              mgl="10%"
-              isDisabled={false}
-              placename="Doctor name"
-            ></SearchBar>
+          <SearchBar search={search} setSearch={setSearch} mgl="10%" isDisabled={false} placename="Doctor name or id..."></SearchBar>
           </SidebarTop>
           <SidebarList sx={{ backgroundColor: "#DEF4F2" }}>
           {!RloadDone?<Load></Load>:''}
@@ -119,22 +114,14 @@ function ResponseAppCalender() {
                       <div
                         key={index}
                         onClick={() => setSelectedTab(item.id)}
-                        style={{
-                          backgroundColor:
-                            selectedTab === item.id ? "#79CCBE" : "transparent",
-                          color: selectedTab === item.id ? "white" : "black",
-                          padding: "10px",
-                          margin: "5px",
-                          cursor: "pointer",
-                          borderRadius: "8px",
-                        }}
                       >
                         <Sideunit_Doctor
+                          onClick={() => setSelectedTab(item.id)}
                           selectedTab={selectedTab}
                           name={item.fullName}
                           title={item.qualifications}
                           index={item.id}
-                          key={selectedTab}
+                          key={index}
                         ></Sideunit_Doctor>
                       </div>
                     ))}
