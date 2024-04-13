@@ -19,7 +19,8 @@ export default function Lab() {
 
   const [page,setPage]=useState(1)//Navigate pages  [1:dashboard  2:testlist  3:createtetmplt  4:edittmplt
                                   //                 5:submit list]
-  const [date,setDate]=useState(2)
+  const dtt=new Date()
+  const [date,setDate]=useState(`${dtt.getFullYear()}-${(dtt.getMonth() + 1).toString().padStart(2, '0')}-${dtt.getDate().toString().padStart(2, '0')}`)
   const [tId,settId]=useState()//selected test <----------- from LabTestList
   const [selectedT,setSelectedT]=useState()//selected req <---------- from Sideunit
   const [query, setQuery] = useState('')//searchbar value
@@ -110,7 +111,7 @@ export default function Lab() {
       if(!found){setReqOk(false)}else{setReqOk(true)}//to not render previous req details
      },[date,tId,page,Tload,selectedT,RLoad,RloadDone])
 
-//Responsive drawer==================================================================================
+//Responsive drawer  ==================================================================================
  const drawerW=320
  const [mobileOpen, setMobileOpen] = useState(false)
  const [isClosing, setIsClosing] = useState(false)
@@ -135,7 +136,7 @@ export default function Lab() {
       {Er?<Alert severity="error" variant='outlined'>Error occured</Alert>:''}
       {
          filteredData.map((elm)=>{
-          if(elm.date===date){
+          if(elm.dateTime.includes(date)){
             return(
               <Sideunit_Test key={elm.id} id={elm.id} name={elm.name} load={elm.load} setSelectedT={setSelectedT} selectedT={selectedT}></Sideunit_Test>
             )

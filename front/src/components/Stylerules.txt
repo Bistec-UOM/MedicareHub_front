@@ -26,3 +26,6 @@ B. List
 
 C. Custom scroll
     some pages are not wrapped with CustomScroll
+
+D. Navbar
+    doctor/pharm hasn't emplemented ResNavBar

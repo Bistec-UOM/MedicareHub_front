@@ -1,5 +1,5 @@
 import { AppBar, Toolbar } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Typography from "@mui/material/Typography";
 import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
 import { Avatar } from "@mui/material";
@@ -14,13 +14,19 @@ import Switch from '@mui/material/Switch';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
-
+import { jwtDecode } from "jwt-decode";
 
 // ... (imports)
 
 const Navbar = () => {
-  const [auth, setAuth] = React.useState(true);
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [auth, setAuth] =useState(true);
+  const [anchorEl, setAnchorEl] =useState(null);
+  const open = Boolean(anchorEl);
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const [Name,setName]=useState(null)
 
   const handleChange = (event) => {
       setAuth(event.target.checked);
@@ -30,73 +36,61 @@ const Navbar = () => {
       setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
-      setAnchorEl(null);
-  };
+  useEffect(()=>{
+    let tmp=localStorage.getItem('medicareHubToken')
+    if(tmp!==null){
+        setName(jwtDecode(localStorage.getItem('medicareHubToken')).Name)
+    }
+  },[])
 
   return (
-      <div>
-          <AppBar sx={{ backgroundColor: '#f7f8f7' }} elevation={0}>
-              <Toolbar style={{ justifyContent: "space-between" }}>
-                  <Typography>
-                      <div style={{ display: "flex", alignItems: "center" }}>
-                          <LocalHospitalIcon
-                              style={{ color: "red", marginRight: "8px" }}
-                              fontSize="large"
-                          />
-                          <span
-                              style={{ color: "#09D636", fontWeight: "bold", fontSize: 25 }}
-                          >
-                              Medicare
-                          </span>
-                          <span
-                              style={{ color: "#AFDCB9", fontWeight: "bold", fontSize: 25 }}
-                          >
-                              Hub
-                          </span>
-                      </div>
-                  </Typography>
+    <AppBar sx={{ backgroundColor: '#f7f8f7' }} elevation={0}>
+    <Toolbar style={{ justifyContent: "space-between" }}>
 
-                  {auth && (
-                      <div style={{ display: "flex", alignItems: "center" }}>
-                          <Typography color="#9F9D9D">Mario</Typography>
-                          <IconButton
-                              size="large"
-                              aria-label="account of current user"
-                              aria-controls="menu-appbar"
-                              aria-haspopup="true"
-                              onClick={handleMenu}
-                              color="black"
-                          >
-                              <AccountCircle />
-                          </IconButton>
-                          <Menu
-                              id="menu-appbar"
-                              anchorEl={anchorEl}
-                              anchorOrigin={{
-                                  vertical: 'bottom', // Align the bottom of the menu with the bottom of the IconButton
-                                  horizontal: 'right',
-                              }}
-                              transformOrigin={{
-                                  vertical: 'top',
-                                  horizontal: 'right',
-                              }}
-                              open={Boolean(anchorEl)}
-                              onClose={handleClose}
-                              
-                                sx= {{backgroundColor:'#ffffff' , // Set the background color of the Menu
-                                  paddingRight:'3%'}}
-                           
-                          >
-                              <MenuItem onClick={handleClose}><HelpOutlineIcon sx={{ paddingRight: '10%' }} />Help</MenuItem>
-                              <MenuItem onClick={handleClose}><SettingsIcon sx={{ paddingRight: '10%' }} /> Settings</MenuItem>
-                              <MenuItem onClick={handleClose}><LogoutIcon sx={{ paddingRight: '10%' }} /> LogOut</MenuItem>
-                          </Menu>
-                      </div>
-                  )}
-              </Toolbar>
-          </AppBar>
-      </div>
+    {/* ==================  Medicare hub Name ===================================*/}
+    <Typography>
+        <div style={{ display: "flex", alignItems: "center" }}>
+            <LocalHospitalIcon
+                style={{ color: "red", marginRight: "8px" }}
+                fontSize="large"
+            />
+            <span style={{ color: "#09D636", fontWeight: "bold", fontSize: 25 }}>
+                Medicare
+            </span>
+            <span style={{ color: "#AFDCB9", fontWeight: "bold", fontSize: 25 }}>
+                Hub
+            </span>
+        </div>
+    </Typography>
+
+ 
+    <div style={{ display: "flex", alignItems: "center" }}>
+    <Typography color="#9F9D9D">{Name}</Typography>
+    <IconButton
+        size="large"
+        aria-label="account of current user"
+        aria-controls="menu-appbar"
+        aria-haspopup="true"
+        onClick={handleMenu}
+        color="black"
+    >
+        <AccountCircle />
+    </IconButton>
+
+    <Menu
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+    >
+        <MenuItem onClick={handleClose}>Help</MenuItem>
+        <MenuItem onClick={handleClose}>Settings</MenuItem>
+        <MenuItem onClick={handleClose}>Logout</MenuItem>
+    </Menu>
+    </div>
+                  
+    </Toolbar>
+    </AppBar>
   );
 };
 

@@ -3,7 +3,6 @@ import Typography from '@mui/material/Typography'
 import { Chip , Box, Paper} from '@mui/material'
 import CheckIcon from '@mui/icons-material/Check';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import Divider from '@mui/material/Divider';
 
 function Sideunit_doctor({ name, title ,selectedTab,index}) {
 
