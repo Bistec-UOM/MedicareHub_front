@@ -166,7 +166,7 @@ const fetchData = async () => {
     
  ]*/
  
-  const selectedAppointment = select ? appointments.filter(appointment => appointment.id === select) : [];//------------filter  the selected patient----------
+const selectedAppointment = select ? appointments.filter(appointment => appointment.id === select) : [];//------------filter  the selected patient----------
 const filteredAppointments = showDonePatients ? appointments.filter(appointment => appointment.status === "pending") : appointments;
  //...............filter pending patiens............................
  return (
