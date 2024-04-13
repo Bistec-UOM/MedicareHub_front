@@ -10,17 +10,17 @@ export default function LabRequest(props) {
   const { openpopBox, setOpenpopBox ,rep, setrep} = props;   
   //const [rep, setrep] = useState([]);
   const [name, setName] = useState('');
-  const [selectedLabTestName, setSelectedLabTestName] = useState('');
+  const [selectedLabTestName, setSelectedLabTestName] = useState(null);
  
-  const labNames = [ 
-  { labTestId: 1, labTestName: 'Full Blood Count' },
+  const Labs = [ 
+  { TestId: 1, labTestName: 'Full Blood Count' },
   { TestId: 2, labTestName: 'Urine Analysis' },
-  { TestId: 4, labTestName: 'Histopathology' },
-  { TestId: 3, labTestName: 'Urinalysis' },
-  {TestId: 5, labTestName: 'Cardiac Enzymes' },
-  { TestId: 6, labTestName: 'Cytology' },
-  {TestId: 7, labTestName: 'Histopathology' },
-  { TestId: 8, labTestName: 'Comprehensive Metabolic Panel (CMP)' }];
+  {  TestId:3,labTestName:'Blood Glucose Test'},
+  { TestId: 4, labTestName: '	Liver Function Test' },
+  {TestId: 5, labTestName: 'Kidney Function Test' },
+  {TestId: 6, labTestName: 'Electrolyte Panel' },
+  {TestId: 7, labTestName: 'Lipid Profile' },
+  { TestId: 8, labTestName: 'Thyroid Function Test' }];
     
   const handleClose = () => {
     setOpenpopBox(false);   
@@ -31,12 +31,12 @@ export default function LabRequest(props) {
     };
  
   const handleAddLabRequest = () => {
-    const selectedLabTest = labNames.find(test => test.labTestName === selectedLabTestName); 
+    const selectedLabTest = Labs.find(test => test.labTestName === selectedLabTestName); 
      const newRep = {
-      DateTime: null, // Placeholder for date and time
-      TestIs: selectedLabTest ? selectedLabTest.TestId : null,
+      DateTime:null, // Placeholder for date and time
+      TestId: selectedLabTest ? selectedLabTest.TestId : null,
       Status: "new",   
-      LabAsId: 1      
+      LbAstID: 1      
   };
     setrep([...rep, newRep]);
     setName('');
@@ -66,7 +66,7 @@ const handleDeleteLabRequest = (index) => {
       <Autocomplete
       sx={{ flex: '1', marginRight: '10px', width: '200px', '& .MuiOutlinedInput-root': { '& fieldset': { borderColor: '#0099cc', borderWidth: '2px' } } }}
         id="free-solo-demo"        
-        options={labNames.map(option => option.labTestName)}
+        options={Labs.map(option => option.labTestName)}
         value={selectedLabTestName}
         onChange={(event, newValue) => {
           setSelectedLabTestName(newValue);
