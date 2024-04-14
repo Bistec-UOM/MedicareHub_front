@@ -185,6 +185,7 @@ const PatientRegpopup = ({
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
+             
             }}
           >
             <Box
@@ -192,6 +193,7 @@ const PatientRegpopup = ({
                 display: "flex",
                 width: "90%",
                 justifyContent: "center",
+               
               }}
             >
               <Typography
