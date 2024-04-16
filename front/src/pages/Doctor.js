@@ -12,15 +12,15 @@ import AudioFileIcon from '@mui/icons-material/AudioFile';
 import UpdateIcon from '@mui/icons-material/Update';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import ThermostatIcon from '@mui/icons-material/Thermostat';
-import PatientsRecords from '../components/DoctorComponents/PatientsRecords';
-import DoctorAddDrugs from '../components/DoctorComponents/DoctorAddDrugs';
-import AnaliticalReports from '../components/DoctorComponents/AnaliticalReports';
+import PatientsRecords from '../components/Doctor/PatientsRecords';
+import DoctorAddDrugs from '../components/Doctor/DoctorAddDrugs';
+import AnaliticalReports from '../components/Doctor/AnaliticalReports';
 import '../components/CustomScroll.css'
-import LabRequest from '../components/DoctorComponents/LabRequest';
+import LabRequest from '../components/Doctor/LabRequest';
 import { Sideunit_Patient } from '../components/sidebar/Sideunits';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
-import TopUnit from '../components/DoctorComponents/TopUnit';
+import TopUnit from '../components/Doctor/TopUnit';
 import { baseURL,endPoints } from '../Services/Doctor';
 import axios from 'axios';
 export default function Doctor() {

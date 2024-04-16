@@ -12,16 +12,16 @@ import AudioFileIcon from '@mui/icons-material/AudioFile';
 import UpdateIcon from '@mui/icons-material/Update';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import ThermostatIcon from '@mui/icons-material/Thermostat';
-import PatientsRecords from '../../../DoctorComponents/PatientsRecords';
-import DoctorAddDrugs from '../../../DoctorComponents/DoctorAddDrugs';
-import AnaliticalReports from '../../../DoctorComponents/AnaliticalReports';
+import PatientsRecords from '../../../Doctor/PatientsRecords';
+import DoctorAddDrugs from '../../../Doctor/DoctorAddDrugs';
+import AnaliticalReports from '../../../Doctor/AnaliticalReports';
 import '../../../../components/CustomScroll.css'
-import LabRequest from '../../../DoctorComponents/LabRequest';
+import LabRequest from '../../../Doctor/LabRequest';
 import { Sideunit_Patient } from '../../../../components/sidebar/Sideunits';
 import DoctorAppCalender from '../DoctorAppCalender/DoctorAppCalender';
 import DoctorAppList from '../DoctorAppList/DoctorAppList';
 import { useLocation } from 'react-router-dom';
-import TopUnit from '../../../DoctorComponents/TopUnit';
+import TopUnit from '../../../Doctor/TopUnit';
 
 export default function DoctorList() {
   const [select,setSelect]=useState(null)
