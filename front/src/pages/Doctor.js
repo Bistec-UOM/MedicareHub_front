@@ -21,6 +21,7 @@ import { Sideunit_Patient } from '../components/sidebar/Sideunits';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import TopUnit from '../components/DoctorComponents/TopUnit';
+import { baseURL,endPoints } from '../Services/Doctor';
 import axios from 'axios';
 export default function Doctor() {
   
@@ -151,18 +152,7 @@ const fetchData = async () => {
        },
        time: "12:00",
        status: "pending"
-   },
-   {
-     date:5,
-     id:55,    
-     patient:{
-         name:"Chalana Mihiran",
-         age:22,
-         gender:"male"
-       },
-       time: "13:05",
-       status: "pending"
-   },     
+   },   
     
  ]*/
  
