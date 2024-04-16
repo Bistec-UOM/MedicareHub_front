@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Typography, Box,  Grid, Card, AppBar, Toolbar, IconButton, Divider } from '@mui/material';
+import { Typography, Box,  Grid, Card, AppBar, Toolbar, IconButton, Divider, Switch } from '@mui/material';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import CloseIcon from '@mui/icons-material/Close';
@@ -21,136 +21,29 @@ export default function TopUnit(props) {
     setOpen(false);
   };
    
-  const data=[
-    {
-      date:1,
-       id:51,  // -----------------------------------> appointment Id-------  
-       patient:{
-           name:"Nirmala sriyani",
-           age:50,
-           gender:"female"
-         },
-         time: "14:15",
-         status: "pending"
-     },
-     {
-       date:2,
-       id:52,    
-       patient:{
-           name:"pupudu kasun",
-           age:67,
-           gender:"male"
-         },
-         time: "12:50",
-         status: "pending"
-     },
-     {
-      date:3,
-      id:53,    
-      patient:{
-          name:"sunil mihiran",
-          age:80,
-          gender:"male",
-        },
-        time: "13:15",
-        status: "pending"
-    },
-    {
-      date:4,
-      id:54,    
-      patient:{
-          name:"kaumadi piris",
-          age:22,
-          gender:"female"
-        },
-        time: "14:00",
-        status: "pending"
-    },
-    {
-      date:5,
-      id:55,    
-      patient:{
-          name:"mithila herath",
-          age:22,
-          gender:"male"
-        },
-        time: "13:05",
-        status: "pending"
-    },
-    {
-      date:6,
-      id:56,    
-      patient:{
-          name:"lakmina chnaditha",
-          age:42,
-          gender:"female"
-        },
-        time: "14:15",
-        status: "pending"
-    },
-    {
-      date:7,
-      id:57,    
-      patient:{
-          name:"udeshika mendis",
-          age:52,
-          gender:"female"
-        },
-        time: "15:00",
-        status: "pending"
-    },
-    {
-      date:8,
-      id:58,    
-      patient:{
-          name:"mohomad Iddamalgoda",
-          age:38,
-          gender:"male"
-        },
-        time: "15:30",
-        status: "pending"
-    },
-    {
-      date:9,
-      id:59,    
-      patient:{
-          name:"Sunilika Perera",
-          age:22,
-          gender:"male"
-        },
-        time: "15:45",
-        status: "pending"
-    },
-    {
-      date:10,
-      id:60,    
-      patient:{
-          name:"Nimalani Senarathna",
-          age:16,
-          gender:"male"
-        },
-        time: "16:00",
-        status: "pending"
-    },
-  ]
 
   const handleCanlenderOpen=()=>
   {
 
   }
 
-
- 
-
   return (
-    <>
-    
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', p: '15px' }}>
-       <Link path to="/dpage"><CalendarTodayIcon sx={{ cursor: 'pointer' }} /></Link> 
+    <div style={{position:'relative',width:'100%',height:'100%'}}>
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
+
+        <Link path to="/dpage"><CalendarTodayIcon sx={{ cursor: 'pointer',ml:'10px' }} /></Link> 
+
         <Typography sx={{ fontWeight: 'Bold', color: 'grey' }}>{formattedDate}</Typography>
-        <FormatListBulletedIcon sx={{ cursor: 'pointer' }} onClick={handleClickOpen} />
-      </Box>
-      
+
+        <FormatListBulletedIcon sx={{ cursor: 'pointer',mr:'10px'}} onClick={handleClickOpen} />
+      </Box> 
+      <Switch defaultChecked size="small" onChange={props.SwitchOnChange} sx={{position:'absolute',top:'60px'}}/>
+    </div>   
+  );
+  
+}
+
+{/*
       {open && (
         <> 
              
@@ -187,26 +80,134 @@ export default function TopUnit(props) {
                        </Grid>   
                          ))}                        
       {/*........................ map damydata set....... just display a list......................................................................... */}
-                          {data.map((appointment) => (
-                        <Grid key={data.id} item  sm={100} sx={{ display: 'flex', justifyContent: 'center', }}>      
-                        <Card style={{width: '950px', display: 'flex', flexDirection: 'row',fontSize: '17px' }}>                          
-                          <Typography gutterBottom variant="p" sx={{ flex: '3', marginLeft: '10px' }}>{appointment.patient.name}</Typography>    
-                          <Typography gutterBottom variant="p" sx={{ flex: '1', marginLeft: '100px' }}>{appointment.patient.age} years</Typography>    
-                          <Typography gutterBottom variant="p" sx={{ flex: '0.5', marginLeft: '150px' }}>{appointment.patient.gender}</Typography>
-                          <Typography gutterBottom variant="p" sx={{ flex: '0.5', marginLeft: '150px' }}>{appointment.time}</Typography> 
-                          <Typography gutterBottom variant="p" sx={{ flex: '1', marginLeft: '140px' }}>Done</Typography>    
-                          </Card>
-                       </Grid>   
-                         ))}
-         
-                      </Grid>
-                       
+      {/*data.map((appointment) => (
+        <Grid key={data.id} item  sm={100} sx={{ display: 'flex', justifyContent: 'center', }}>      
+        <Card style={{width: '950px', display: 'flex', flexDirection: 'row',fontSize: '17px' }}>                          
+          <Typography gutterBottom variant="p" sx={{ flex: '3', marginLeft: '10px' }}>{appointment.patient.name}</Typography>    
+          <Typography gutterBottom variant="p" sx={{ flex: '1', marginLeft: '100px' }}>{appointment.patient.age} years</Typography>    
+          <Typography gutterBottom variant="p" sx={{ flex: '0.5', marginLeft: '150px' }}>{appointment.patient.gender}</Typography>
+          <Typography gutterBottom variant="p" sx={{ flex: '0.5', marginLeft: '150px' }}>{appointment.time}</Typography> 
+          <Typography gutterBottom variant="p" sx={{ flex: '1', marginLeft: '140px' }}>Done</Typography>    
+          </Card>
+       </Grid>   
+         ))}
 
-        </>
-      )}
-     
-    </>
-    
-  );
-  
-}
+      </Grid>
+       
+
+</>
+)}
+*/}
+
+const data=[
+  {
+    date:1,
+     id:51,  // -----------------------------------> appointment Id-------  
+     patient:{
+         name:"Nirmala sriyani",
+         age:50,
+         gender:"female"
+       },
+       time: "14:15",
+       status: "pending"
+   },
+   {
+     date:2,
+     id:52,    
+     patient:{
+         name:"pupudu kasun",
+         age:67,
+         gender:"male"
+       },
+       time: "12:50",
+       status: "pending"
+   },
+   {
+    date:3,
+    id:53,    
+    patient:{
+        name:"sunil mihiran",
+        age:80,
+        gender:"male",
+      },
+      time: "13:15",
+      status: "pending"
+  },
+  {
+    date:4,
+    id:54,    
+    patient:{
+        name:"kaumadi piris",
+        age:22,
+        gender:"female"
+      },
+      time: "14:00",
+      status: "pending"
+  },
+  {
+    date:5,
+    id:55,    
+    patient:{
+        name:"mithila herath",
+        age:22,
+        gender:"male"
+      },
+      time: "13:05",
+      status: "pending"
+  },
+  {
+    date:6,
+    id:56,    
+    patient:{
+        name:"lakmina chnaditha",
+        age:42,
+        gender:"female"
+      },
+      time: "14:15",
+      status: "pending"
+  },
+  {
+    date:7,
+    id:57,    
+    patient:{
+        name:"udeshika mendis",
+        age:52,
+        gender:"female"
+      },
+      time: "15:00",
+      status: "pending"
+  },
+  {
+    date:8,
+    id:58,    
+    patient:{
+        name:"mohomad Iddamalgoda",
+        age:38,
+        gender:"male"
+      },
+      time: "15:30",
+      status: "pending"
+  },
+  {
+    date:9,
+    id:59,    
+    patient:{
+        name:"Sunilika Perera",
+        age:22,
+        gender:"male"
+      },
+      time: "15:45",
+      status: "pending"
+  },
+  {
+    date:10,
+    id:60,    
+    patient:{
+        name:"Nimalani Senarathna",
+        age:16,
+        gender:"male"
+      },
+      time: "16:00",
+      status: "pending"
+  },
+]
