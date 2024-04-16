@@ -25,7 +25,7 @@ export default function Pharmacy() {
   },[])
 
   const getData = () => {
-    axios.get('https://localhost:7205/api/Bill/DrugRequest')
+    axios.get('https://localhost:44346/api/Bill/DrugRequest')
       .then((response) => {
        SetData(response.data)
       })
