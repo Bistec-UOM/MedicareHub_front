@@ -1,13 +1,32 @@
-import React from 'react'
-import {Card, Typography, Paper, IconButton, Divider, InputBase } from '@mui/material'
-import {useEffect, useState } from 'react'
-import SearchIcon from "@mui/icons-material/Search";
+import React, { useEffect } from 'react'
+import {Typography} from '@mui/material'
+import {useState } from 'react'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
+import { SearchBarSM } from '../Common';
 
-export default function LabSearch({setPage,setDate,date,query,setQuery}) {
+export default function LabSearch({setPage,setDate,query,setQuery}) {
+
+  const [dt,setDt]=useState(new Date())
+  const [fDt,setFDt]=useState(`${dt.getFullYear()}-${(dt.getMonth() + 1).toString().padStart(2, '0')}-${dt.getDate().toString().padStart(2, '0')}`)
+
+  const incrementDate=()=>{
+    dt.setDate(dt.getDate() + 1);
+    let tmp=`${dt.getFullYear()}-${(dt.getMonth() + 1).toString().padStart(2, '0')}-${dt.getDate().toString().padStart(2, '0')}`
+    setFDt(tmp)
+    setDate(tmp)
+  }
+
+  const decerementDate=()=>{
+    dt.setDate(dt.getDate() - 1);
+    let tmp=`${dt.getFullYear()}-${(dt.getMonth() + 1).toString().padStart(2, '0')}-${dt.getDate().toString().padStart(2, '0')}`
+    setFDt(tmp)
+    setDate(tmp)
+  }
+
+
   return (
       <div style={{display:'flex',justifyContent:'space-between'}}>
 
@@ -17,22 +36,13 @@ export default function LabSearch({setPage,setDate,date,query,setQuery}) {
     
       {/* ----------date navigator-------------------------------------- */}
       <div style={{display:'flex',justifyContent:'center'}}>
-          <ArrowBackIosIcon fontSize='small' sx={{mr:'15px',cursor:'pointer'}} onClick={()=>setDate(date-1)}></ArrowBackIosIcon>
-          <Typography sx={{fontSize:'14px',mb:'6px'}}>2{date} Nov 2024</Typography>
-          <ArrowForwardIosIcon fontSize='small' sx={{ml:'15px',cursor:'pointer'}} onClick={()=>setDate(date+1)}></ArrowForwardIosIcon>
+          <ArrowBackIosIcon fontSize='small' sx={{mr:'15px',cursor:'pointer'}} onClick={decerementDate}></ArrowBackIosIcon>
+          <Typography sx={{fontSize:'14px',mb:'6px'}}>{fDt}</Typography>
+          <ArrowForwardIosIcon fontSize='small' sx={{ml:'15px',cursor:'pointer'}} onClick={incrementDate}></ArrowForwardIosIcon>
       </div>
   
     {/*---------------------searchbar---------------------------------------*/}
-     <Paper component="form"
-     sx={{p:2.3,display: "flex",alignItems: "center",height:'40px',width: "90%",borderRadius: "13px",
-       boxShadow: 1}}>
-    
-     <InputBase type="text" className="form-control" sx={{ flex: 1 }} placeholder="Search by Patient" value={query}  onChange={(e)=>setQuery(e.target.value)}/>
-     <Divider sx={{ height: 20,position:'relative',left:'10px'}} orientation="vertical" />
-     <IconButton type="button"  aria-label="search">
-       <SearchIcon sx={{position:'relative',left:'10px'}}/>
-     </IconButton>
-     </Paper>  
+     <SearchBarSM value={query}  onChange={(e)=>setQuery(e.target.value)} placeholder="Search patients"></SearchBarSM>
      </div>
 
      <InsertDriveFileIcon sx={{cursor:'pointer',mr:'10px'}} onClick={()=>setPage(2)}></InsertDriveFileIcon>

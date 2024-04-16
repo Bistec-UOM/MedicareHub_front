@@ -90,7 +90,7 @@ const AppointmentCard = ({
           sx={{
             textAlign: "left",
             marginBottom: 2,
-            border: "1px solid #3B877A",
+         //   border: "1px solid #3B877A",
             borderRadius: 5,
           }}
         >

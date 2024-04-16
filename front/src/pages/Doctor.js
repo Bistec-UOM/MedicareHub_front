@@ -21,6 +21,7 @@ import { Sideunit_Patient } from '../components/sidebar/Sideunits';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import TopUnit from '../components/DoctorComponents/TopUnit';
+import { baseURL,endPoints } from '../Services/Doctor';
 import axios from 'axios';
 export default function Doctor() {
   
@@ -90,20 +91,17 @@ export default function Doctor() {
 
 const handleClick = () => {
  
-  handlesnapbarClick(); //show the snapbar component
-
   let obj = { //strore the all data in this object after click the confirm button
     id: select,
     drugs: pres, // drug array: from DoctorAddDrugs component
     labs: rep,  // lab test array: from Labrequest component
     description: description
   }
-  console.log(JSON.stringify(obj))
-
-  
-  axios.post('http://localhost:7205/api/Doctor/Prescription', obj)
+  console.log(JSON.stringify(obj))  
+  axios.post(baseURL+endPoints.PRESCRIPTION, obj)
   .then(response => {
     // Handle success
+    handlesnapbarClick(); //show the snapbar component
     console.log('Response:', response.data);
     setPres([])
     setrep([])
@@ -113,15 +111,19 @@ const handleClick = () => {
       confirmRemoving();
     }, 1500);
   })
-  .catch(error => {
-    console.error('Error:', error);
+  .catch(er => {
+    if(er.hasOwnProperty('response')){
+      console.log(er.response.data)
+    }else{
+      console.log(er)
+    }
   });
 };
 
 
 const fetchData = async () => {
   try {
-    const response = await axios.get('http://localhost:7205/api/Doctor/AppointList'); 
+    const response = await axios.get(baseURL+endPoints.APPOINTMENTLIST); 
     setAppointments(response.data);
   } catch (error) {
     console.error('Error fetching data:', error);
@@ -153,22 +155,11 @@ const fetchData = async () => {
        },
        time: "12:00",
        status: "pending"
-   },
-   {
-     date:5,
-     id:55,    
-     patient:{
-         name:"Chalana Mihiran",
-         age:22,
-         gender:"male"
-       },
-       time: "13:05",
-       status: "pending"
-   },     
+   },   
     
  ]*/
  
-  const selectedAppointment = select ? appointments.filter(appointment => appointment.id === select) : [];//------------filter  the selected patient----------
+const selectedAppointment = select ? appointments.filter(appointment => appointment.id === select) : [];//------------filter  the selected patient----------
 const filteredAppointments = showDonePatients ? appointments.filter(appointment => appointment.status === "pending") : appointments;
  //...............filter pending patiens............................
  return (
@@ -178,12 +169,10 @@ const filteredAppointments = showDonePatients ? appointments.filter(appointment 
       <Grid item xs={3} style={{ height: '100%', backgroundColor:'#E7FFF9'}}>
           <SidebarContainer sx={{ backgroundColor:'#E7FFF9'}}>
               <SidebarTop>
-              <TopUnit appointments={appointments} ></TopUnit>
+              <TopUnit appointments={appointments} SwitchOnChange={() => setShowDonePatients(prev => !prev)}></TopUnit>
               </SidebarTop>
               <SidebarList >
 {/*..........................................................show staus in done patients..................................................*/}
-                <Switch defaultChecked size="small" sx={{position:'fixed',left:'8px',top:'125px'}}
-                onChange={() => setShowDonePatients(prev => !prev)}/>
                 {filteredAppointments.map((elm, ind) => (
                                 <Sideunit_Patient
                                     key={ind}

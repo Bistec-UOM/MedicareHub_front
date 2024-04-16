@@ -21,7 +21,7 @@ export default function AppDeletePopup({appointlist,setAppointList,handleNotific
     handleNotification("Appointment deleted succesfully!","success");
   })
   .catch(error => {
-    handleNotification(error.response.data,"error");
+    handleNotification("Appointment is still progressing!","error");
   });
   }
   const handleClose = () => {

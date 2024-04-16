@@ -68,7 +68,7 @@ const AppointmentCalender = () => {
                   cursor: 'pointer',
                   borderRadius:'8px'
                 }}
-              >
+              > 
                 <Sideunit_Doctor selectedTab={selectedTab} name={item.name} title={item.title} index={index} key={index}></Sideunit_Doctor>
               </div>
                

@@ -10,8 +10,17 @@ export default function LabRequest(props) {
   const { openpopBox, setOpenpopBox ,rep, setrep} = props;   
   //const [rep, setrep] = useState([]);
   const [name, setName] = useState('');
+  const [selectedLabTestName, setSelectedLabTestName] = useState(null);
  
-  const labNames = ['Complete Blood Count (CBC)', 'Basic Metabolic Panel (BMP)', 'Urinalysis', 'Histopathology', 'Cardiac Enzymes', 'Cytology', 'Histopathology', 'Comprehensive Metabolic Panel (CMP)'];
+  const Labs = [ 
+  { TestId: 1, labTestName: 'Full Blood Count' },
+  { TestId: 2, labTestName: 'Urine Analysis' },
+  {  TestId:3,labTestName:'Blood Glucose Test'},
+  { TestId: 4, labTestName: '	Liver Function Test' },
+  {TestId: 5, labTestName: 'Kidney Function Test' },
+  {TestId: 6, labTestName: 'Electrolyte Panel' },
+  {TestId: 7, labTestName: 'Lipid Profile' },
+  { TestId: 8, labTestName: 'Thyroid Function Test' }];
     
   const handleClose = () => {
     setOpenpopBox(false);   
@@ -22,7 +31,13 @@ export default function LabRequest(props) {
     };
  
   const handleAddLabRequest = () => {
-    const newRep = { name };
+    const selectedLabTest = Labs.find(test => test.labTestName === selectedLabTestName); 
+     const newRep = {
+      DateTime:null, // Placeholder for date and time
+      TestId: selectedLabTest ? selectedLabTest.TestId : null,
+      Status: "new",   
+      LbAstID: 1      
+  };
     setrep([...rep, newRep]);
     setName('');
     // setOpen(true)
@@ -51,9 +66,10 @@ const handleDeleteLabRequest = (index) => {
       <Autocomplete
       sx={{ flex: '1', marginRight: '10px', width: '200px', '& .MuiOutlinedInput-root': { '& fieldset': { borderColor: '#0099cc', borderWidth: '2px' } } }}
         id="free-solo-demo"        
-        options={labNames}
+        options={Labs.map(option => option.labTestName)}
+        value={selectedLabTestName}
         onChange={(event, newValue) => {
-          setName(newValue);
+          setSelectedLabTestName(newValue);
         }}
         renderInput={(params) =>(
            <TextField {...params} 
@@ -78,7 +94,7 @@ const handleDeleteLabRequest = (index) => {
       <Grid key={index} container spacing={1} sx={{ marginTop: "5px",}}>
                         <Grid item xs={3}>
                             <Card sx={{ backgroundColor: '#48EC4F', color: 'white', fontSize: '19px',height:'32px',marginleft:'90%',}}>
-                                <Typography gutterBottom variant="p" sx={{ marginLeft: '15px'}}>{drug.name}</Typography>
+                                <Typography gutterBottom variant="p" sx={{ marginLeft: '15px'}}>{selectedLabTestName}</Typography>
                             </Card>
                         </Grid>
                         <Grid item xs={8}>

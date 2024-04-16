@@ -11,6 +11,7 @@ import axios from 'axios'
 import { baseURL,endPoints} from '../../../Services/Lab';
 import { Load } from '../../Other';
 import AddIcon from '@mui/icons-material/Add';
+import { SearchBarLR } from '../../Common';
 
 export default function LabTestList({setPage,settId,Tload,setTload}) {
 
@@ -54,7 +55,10 @@ export default function LabTestList({setPage,settId,Tload,setTload}) {
           setTload(res.data)
           setLoading(false)
         })
-        .catch(er=>{})
+        .catch(er=>{
+          console.log(er)
+          setLoading(false)
+        })
     },[Tload,setTload])
 
   return (
@@ -71,22 +75,7 @@ export default function LabTestList({setPage,settId,Tload,setTload}) {
             <ArrowBackIcon sx={{cursor:'pointer'}} onClick={()=>setPage(1)}></ArrowBackIcon>
 
             {/*-------Search bar--------------- */}
-            <Box component="form" 
-              sx={{
-              p: "2px 4px",
-              display: "flex",
-              alignItems: "center",
-              height:'30px',
-              width:{xs:'40%',sm:'40%'},
-              borderRadius: "20px",
-              boxShadow: 1
-              }}>
-            <InputBase type="text" className="form-control" sx={{ flex: 1 }} placeholder="Search tests" onChange={(e)=>setQuery(e.target.value)}/>
-            <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-            <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
-              <SearchIcon />
-            </IconButton>
-            </Box>  
+            <SearchBarLR placeholder="Search tests" onChange={(e)=>setQuery(e.target.value)} value={query}></SearchBarLR>
 
             {/*-------Add new button--------------- */}
             <Button size='small' 
