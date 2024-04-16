@@ -7,7 +7,7 @@ const endPoints = {
     SET_ACCEPT:'/api/Values/Accept',
     GET_ACCEPT:'/api/Values/Accept',
     RESULT:'/api/Values/Result'
-  };
+};
   
 export { baseURL,endPoints};
 

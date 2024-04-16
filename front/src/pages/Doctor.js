@@ -91,8 +91,6 @@ export default function Doctor() {
 
 const handleClick = () => {
  
-  handlesnapbarClick(); //show the snapbar component
-
   let obj = { //strore the all data in this object after click the confirm button
     id: select,
     drugs: pres, // drug array: from DoctorAddDrugs component
@@ -100,9 +98,10 @@ const handleClick = () => {
     description: description
   }
   console.log(JSON.stringify(obj))  
-  axios.post('http://localhost:7205/api/Doctor/Prescription', obj)
+  axios.post(baseURL+endPoints.PRESCRIPTION, obj)
   .then(response => {
     // Handle success
+    handlesnapbarClick(); //show the snapbar component
     console.log('Response:', response.data);
     setPres([])
     setrep([])
@@ -112,15 +111,19 @@ const handleClick = () => {
       confirmRemoving();
     }, 1500);
   })
-  .catch(error => {
-    console.error('Error:', error);
+  .catch(er => {
+    if(er.hasOwnProperty('response')){
+      console.log(er.response.data)
+    }else{
+      console.log(er)
+    }
   });
 };
 
 
 const fetchData = async () => {
   try {
-    const response = await axios.get('http://localhost:7205/api/Doctor/AppointList'); 
+    const response = await axios.get(baseURL+endPoints.APPOINTMENTLIST); 
     setAppointments(response.data);
   } catch (error) {
     console.error('Error fetching data:', error);
