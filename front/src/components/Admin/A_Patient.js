@@ -37,9 +37,9 @@ const APatient = () => {
 
 
   // const dummyData = [
-  //   { datefor: "2024-03-31", child_male: 10, child_female: 15, adult_male: 20, adult_female: 25, old_male: 5, old_female: 8 },
-  //   { datefor: "2024-03-30", child_male: 8, child_female: 12, adult_male: 18, adult_female: 22, old_male: 4, old_female: 6 },
-  //   { datefor: "2024-03-29", child_male: 12, child_female: 18, adult_male: 22, adult_female: 28, old_male: 6, old_female: 10 },
+  //   { datefor: "2024-04-16T00:00:00", child_male: 10, child_female: 15, adult_male: 20, adult_female: 25, old_male: 5, old_female: 8 },
+  //   { datefor: "2024-03-30T00:00:00", child_male: 8, child_female: 12, adult_male: 18, adult_female: 22, old_male: 4, old_female: 6 },
+  //   { datefor: "2024-03-29T00:00:00", child_male: 12, child_female: 18, adult_male: 22, adult_female: 28, old_male: 6, old_female: 10 },
   //   // Add more dummy data entries as needed
   // ];
   
@@ -48,7 +48,6 @@ const APatient = () => {
   
 
   
-  const [count, setcount] = React.useState();
   //date filter
   const currentDate = new Date(); // Initialize currentDate
   const [TimeGap, setTimeGap] = React.useState(new Date(currentDate)); // Initialize TimeGap with current date
@@ -76,7 +75,6 @@ useEffect(() => {
     setTimeGap(newTimeGap);
   };
   change(Value);
-  // change(Value1);
 }, [Value]); // Run the effect whenever Value changes
 
 
@@ -178,9 +176,8 @@ const handletypeChange = (event) => {
 // Assuming you have a state variable for totalPatientsForCurrentDay
 let todaysData;
 const today = new Date();
-const todaydate = today.getFullYear()+'-'+(today.getMonth()+1).toString().padStart(2, '0')+'-'+today.getDate().toString().padStart(2, '0');
-console.log(todaydate,'today date')
-todaysData = totalperday[todaydate];
+const todaydate = today.getFullYear()+'-'+(today.getMonth()+1).toString().padStart(2, '0')+'-'+today.getDate().toString().padStart(2, '0') + 'T00:00:00';todaysData = totalperday[todaydate];
+console.log(todaydate,'today date',todaysData)
 if (!todaysData) {
   todaysData = 0;
 }
