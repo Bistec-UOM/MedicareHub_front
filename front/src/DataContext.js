@@ -8,9 +8,9 @@ export function DataContext({children}){
     const [varA,setvarA]=useState('')
     
     return (
-        <DataContext.Provider value={{varA,setvarA}}>
+        <Contxt.Provider value={{varA,setvarA}}>
         {children}
-        </DataContext.Provider>
+        </Contxt.Provider>
   )
 }
 
