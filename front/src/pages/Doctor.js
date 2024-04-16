@@ -169,12 +169,10 @@ const filteredAppointments = showDonePatients ? appointments.filter(appointment 
       <Grid item xs={3} style={{ height: '100%', backgroundColor:'#E7FFF9'}}>
           <SidebarContainer sx={{ backgroundColor:'#E7FFF9'}}>
               <SidebarTop>
-              <TopUnit appointments={appointments} ></TopUnit>
+              <TopUnit appointments={appointments} SwitchOnChange={() => setShowDonePatients(prev => !prev)}></TopUnit>
               </SidebarTop>
               <SidebarList >
 {/*..........................................................show staus in done patients..................................................*/}
-                <Switch defaultChecked size="small" sx={{position:'fixed',left:'8px',top:'125px'}}
-                onChange={() => setShowDonePatients(prev => !prev)}/>
                 {filteredAppointments.map((elm, ind) => (
                                 <Sideunit_Patient
                                     key={ind}
