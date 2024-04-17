@@ -26,7 +26,7 @@ export default function Pharmacy() {
   },[])
 
   const getData = () => {
-    axios.get('http://localhost:7205/api/Bill/DrugRequest')
+    axios.get(baseURL+endPoints.DRUGREQUEST)
       .then((response) => {
        SetData(response.data)
       })
@@ -42,7 +42,7 @@ export default function Pharmacy() {
     const genericNames = selectedPrescription[0].medicine.map(drug => drug.name);
     
     // Make a POST request to send the generic names to the backend
-    axios.post('http://localhost:7205/api/Bill/GetMedicineDetails', genericNames)
+    axios.post(baseURL+endPoints.MEDICINEDETAIL, genericNames)
       .then(response => {
         // Handle success
         console.log('Generic names sent successfully:', response.data);
