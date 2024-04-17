@@ -70,7 +70,6 @@ export default function AppEditPopup({
   };
   async function handleUpdate(event) {
     event.preventDefault();
-    console.log("inside handle update");
     var finalTime = getRealTime(appTime);
     var date = finalTime;
     const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1)
@@ -83,17 +82,6 @@ export default function AppEditPopup({
       .toString()
       .padStart(2, "0")}.${date.getMilliseconds().toString().padStart(3, "0")}`;
     try {
-      // var response = await axios.put(
-      //   `https://localhost:7205/api/Appointment/${item.appointment.id}`,
-      //   {
-      //     id: item.appointment.id,
-      //     Datetime: formattedDate,
-      //     status: item.appointment.status,
-      //     patientId: item.appointment.patientId,
-      //     doctorId: item.appointment.doctorId,
-      //     recepId: item.appointment.recepId,
-      //   }
-
         var response = await axios.put(
           baseURL+endPoints.Appoinment+`${item.appointment.id}`,
           {

@@ -206,7 +206,7 @@ function ResponseAppCalender() {
           sm={11}
           md={9}
         >
-          <MyFullCalendar epage={epage} setEpage={setEpage} doctorId={selectedTab} />
+          <MyFullCalendar doctorsList={doctorList} epage={epage} setEpage={setEpage} doctorId={selectedTab} />
         </Grid>
       </Box>
     </Box>
