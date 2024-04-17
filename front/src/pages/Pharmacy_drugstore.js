@@ -17,6 +17,7 @@ import { Snackbar } from '@mui/material';
 import MuiAlert from '@mui/material/Alert';
 import { Sideunit_Bill } from '../components/sidebar/Sideunits';
 import axios from 'axios';
+import { baseURL,endPoints } from '../Services/Pharmacy';
 import AddIcon from '@mui/icons-material/Add';
 import Avatar from '@mui/material/Avatar';
 
@@ -56,7 +57,7 @@ export default function Pharmacy_drugstore() {
 
   ////////////////////////////////////////////////////////////////////////////////////
   const getData = () => { // get
-    axios.get('https://localhost:44346/api/Drugs')
+    axios.get(baseURL+endPoints.DRUGGET)
     .then((result) => {
         const drugs = result.data.map(drug => ({
             ID: drug.id,
@@ -85,7 +86,7 @@ export default function Pharmacy_drugstore() {
       
       
     }
-    axios.post('https://localhost:44346/api/Drugs',data)
+    axios.post(baseURL+endPoints.DRUGPOST,data)
     .then((result)=>{
       getData() 
       setSnackbarMessage('Drug added successfully'); // Set success message
@@ -123,7 +124,7 @@ export default function Pharmacy_drugstore() {
 /////////////////////////////////////////////////////////////////////////////////
 
   const handleDelete = (id) => {              ////// delete
-    axios.delete(`https://localhost:44346/api/Drugs/${id}`)
+    axios.delete(baseURL+endPoints.DRUGDELETE+`/${id}`)
       .then(() => {
         getData(); // Refresh data after delete
         setSnackbarMessage('Drug deleted successfully'); // Set success message
@@ -146,7 +147,7 @@ export default function Pharmacy_drugstore() {
     };
     console.log('check this')
     console.log('check',updatedData)
-    axios.put(`https://localhost:44346/api/Drugs/${selectedCard.ID}`, updatedData)
+    axios.put(baseURL+endPoints.DRUGUPDATE+`/${selectedCard.ID}`, updatedData)
       .then((response) => {
         getData(); // Refresh data after edit
         setSnackbarMessage('Drug edited successfully'); // Set success message

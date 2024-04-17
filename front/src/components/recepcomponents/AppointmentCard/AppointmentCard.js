@@ -95,8 +95,7 @@ const AppointmentCard = ({
           }}
         >
           <Stack direction={"column"}>
-            <CardContent sx={{ display: "flex" }}>
-             
+            <CardContent sx={{ display: "flex" }}> 
               <Grid container>
                 <Grid item xs={12} sm={6}>
                   <Stack

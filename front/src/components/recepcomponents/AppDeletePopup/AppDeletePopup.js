@@ -12,7 +12,6 @@ export default function AppDeletePopup({appointlist,setAppointList,handleNotific
 
   const handleRealDelete=(item)=>
   {
-   
    // axios.delete(`https://localhost:7205/api/Appointment/${item.appointment.id}`)
     axios.delete(baseURL+endPoints.Appoinment+`${item.appointment.id}`)
   .then(response => {
