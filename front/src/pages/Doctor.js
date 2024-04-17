@@ -100,7 +100,7 @@ const handleClick = () => {
     description: description
   }
   console.log(JSON.stringify(obj))  
-  axios.post('http://localhost:7205/api/Doctor/Prescription', obj)
+  axios.post('https://localhost:7205/api/Doctor/Prescription', obj)
   .then(response => {
     // Handle success
     console.log('Response:', response.data);
@@ -120,7 +120,7 @@ const handleClick = () => {
 
 const fetchData = async () => {
   try {
-    const response = await axios.get('http://localhost:7205/api/Doctor/AppointList'); 
+    const response = await axios.get('https://localhost:7205/api/Doctor/AppointList'); 
     setAppointments(response.data);
   } catch (error) {
     console.error('Error fetching data:', error);
