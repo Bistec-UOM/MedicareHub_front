@@ -16,6 +16,7 @@ import PrintIcon from '@mui/icons-material/Print';
 import { Sideunit_Bill } from '../components/sidebar/Sideunits';
 import MuiAlert from '@mui/material/Alert';
 import axios from 'axios';
+import { baseURL,endPoints } from '../Services/Pharmacy';
 
 export default function Pharmacy() {
 
@@ -25,7 +26,7 @@ export default function Pharmacy() {
   },[])
 
   const getData = () => {
-    axios.get('https://localhost:44346/api/Bill/DrugRequest')
+    axios.get('http://localhost:7205/api/Bill/DrugRequest')
       .then((response) => {
        SetData(response.data)
       })
@@ -41,7 +42,7 @@ export default function Pharmacy() {
     const genericNames = selectedPrescription[0].medicine.map(drug => drug.name);
     
     // Make a POST request to send the generic names to the backend
-    axios.post('https://localhost:44346/api/Bill/GetMedicineDetails', genericNames)
+    axios.post('http://localhost:7205/api/Bill/GetMedicineDetails', genericNames)
       .then(response => {
         // Handle success
         console.log('Generic names sent successfully:', response.data);
