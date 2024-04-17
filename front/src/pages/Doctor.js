@@ -12,15 +12,15 @@ import AudioFileIcon from '@mui/icons-material/AudioFile';
 import UpdateIcon from '@mui/icons-material/Update';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import ThermostatIcon from '@mui/icons-material/Thermostat';
-import PatientsRecords from '../components/DoctorComponents/PatientsRecords';
-import DoctorAddDrugs from '../components/DoctorComponents/DoctorAddDrugs';
-import AnaliticalReports from '../components/DoctorComponents/AnaliticalReports';
+import PatientsRecords from '../components/Doctor/PatientsRecords';
+import DoctorAddDrugs from '../components/Doctor/DoctorAddDrugs';
+import AnaliticalReports from '../components/Doctor/AnaliticalReports';
 import '../components/CustomScroll.css'
-import LabRequest from '../components/DoctorComponents/LabRequest';
+import LabRequest from '../components/Doctor/LabRequest';
 import { Sideunit_Patient } from '../components/sidebar/Sideunits';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
-import TopUnit from '../components/DoctorComponents/TopUnit';
+import TopUnit from '../components/Doctor/TopUnit';
 import { baseURL,endPoints } from '../Services/Doctor';
 import axios from 'axios';
 export default function Doctor() {
@@ -91,8 +91,6 @@ export default function Doctor() {
 
 const handleClick = () => {
  
-  handlesnapbarClick(); //show the snapbar component
-
   let obj = { //strore the all data in this object after click the confirm button
     id: select,
     drugs: pres, // drug array: from DoctorAddDrugs component
@@ -100,9 +98,10 @@ const handleClick = () => {
     description: description
   }
   console.log(JSON.stringify(obj))  
-  axios.post('https://localhost:7205/api/Doctor/Prescription', obj)
+  axios.post(baseURL+endPoints.PRESCRIPTION, obj)
   .then(response => {
     // Handle success
+    handlesnapbarClick(); //show the snapbar component
     console.log('Response:', response.data);
     setPres([])
     setrep([])
@@ -112,15 +111,19 @@ const handleClick = () => {
       confirmRemoving();
     }, 1500);
   })
-  .catch(error => {
-    console.error('Error:', error);
+  .catch(er => {
+    if(er.hasOwnProperty('response')){
+      console.log(er.response.data)
+    }else{
+      console.log(er)
+    }
   });
 };
 
 
 const fetchData = async () => {
   try {
-    const response = await axios.get('https://localhost:7205/api/Doctor/AppointList'); 
+    const response = await axios.get(baseURL+endPoints.APPOINTMENTLIST); 
     setAppointments(response.data);
   } catch (error) {
     console.error('Error fetching data:', error);
@@ -166,12 +169,10 @@ const filteredAppointments = showDonePatients ? appointments.filter(appointment 
       <Grid item xs={3} style={{ height: '100%', backgroundColor:'#E7FFF9'}}>
           <SidebarContainer sx={{ backgroundColor:'#E7FFF9'}}>
               <SidebarTop>
-              <TopUnit appointments={appointments} ></TopUnit>
+              <TopUnit appointments={appointments} SwitchOnChange={() => setShowDonePatients(prev => !prev)}></TopUnit>
               </SidebarTop>
               <SidebarList >
 {/*..........................................................show staus in done patients..................................................*/}
-                <Switch defaultChecked size="small" sx={{position:'fixed',left:'8px',top:'125px'}}
-                onChange={() => setShowDonePatients(prev => !prev)}/>
                 {filteredAppointments.map((elm, ind) => (
                                 <Sideunit_Patient
                                     key={ind}

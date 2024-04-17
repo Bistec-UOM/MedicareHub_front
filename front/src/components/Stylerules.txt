@@ -29,3 +29,12 @@ C. Custom scroll
 
 D. Navbar
     doctor/pharm hasn't emplemented ResNavBar
+
+
+======================================================================
+==============                 Migrations        =====================
+======================================================================
+
+1.Price ----> decimal
+2.LabReportField unit ---> nullable
+3.Prescription DateTime --rename--> IssuedDate
