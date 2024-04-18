@@ -155,7 +155,7 @@ const PatientRegpopup = ({
       try {
         await axios.post(
          // "https://localhost:7205/api/Appointment/patients",
-         baseURL+endPoints.PatientList,
+         baseURL+endPoints.PatientList,gi
           obj
         );
         setPatientCount(patientCount + 1);
