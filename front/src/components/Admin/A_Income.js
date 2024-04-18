@@ -92,21 +92,20 @@ const AIncome = () => {
   });
   const tickFormatter = (value) => {
     const date = new Date(value);
-    if (Value === 'week') {
-      return date.toLocaleTimeString(); // Show time only when 'Last Day' is selected
-    } else {
+  
       return date.toLocaleDateString(); // Show date for other options
-    }
+
   };
   return (
     <div>
-      <Grid container spacing={3}>
-        <Grid item xs={4}>
+      <Grid container spacing={3} sx={{ flexDirection: { xs: 'column', sm: 'row' } }}>
+        <Grid item  xs={12} sm={4}>
       <IncomeOfDay totalIncome={totalIncome} />
         </Grid>
-        <Grid item xs={8} style={{textAlign:'right'}}>
+        <Grid item xs={12} sm={8} style={{textAlign:'right'}}>
           <Paper sx={{padding:'10px'}}>
-            <FormControl sx={{width:'20%'}}>
+          <Typography fontSize={30} sx={{textAlign:'center'}}>Income</Typography>
+            <FormControl sx={{width:{xs:'40%',sm:'20%'}}}>
               <InputLabel>Gap</InputLabel>
               <Select
                 style={{textAlign:'left'}}
@@ -121,8 +120,7 @@ const AIncome = () => {
                 <MenuItem value={'5'}>Last 5 Year</MenuItem>
               </Select>
             </FormControl>
-            <Typography fontSize={20} sx={{textAlign:'center'}}>Income</Typography>
-            <ResponsiveContainer aspect={3} >
+            <ResponsiveContainer aspect={2} >
               <AreaChart data={filteredData}>
                 <XAxis 
                   dataKey="datefor" 
