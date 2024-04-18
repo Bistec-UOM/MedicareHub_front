@@ -21,7 +21,7 @@ import ResNavBar from "../components/recepcomponents/ResNavBar/ResNabBar";
 import Staff from "../components/Admin/Staff";
 import View from "../components/Admin/View";
 import SpaceDashboardIcon from '@mui/icons-material/SpaceDashboard';
-
+import AddchartIcon from '@mui/icons-material/Addchart';
 
 const drawerWidth = 210;
 
@@ -40,7 +40,7 @@ export default function Stest() {
     setIsClosing(false);
   };
   const [selectedItem, setSelectedItem] = useState(null);
-  const [selectedNavItem, setSelectedNavItem] = React.useState("Dashboard");
+  const [selectedNavItem, setSelectedNavItem] = React.useState("Analysis");
 
   const handleNavigationItemClick = (text) => {
     setSelectedItem(text);
@@ -53,7 +53,8 @@ export default function Stest() {
       <Divider />
       <Box>
         <List>
-          {["Dashboard","Staff", "Patient", "Analysis"].map((text, index) => (
+          
+          {["Analysis","Staff", "Patient"].map((text, index) => (
             <ListItem key={text} disablePadding>
               <ListItemButton
                 sx={{
@@ -69,10 +70,9 @@ export default function Stest() {
                 onClick={() => handleNavigationItemClick(text)}
               >
                 <ListItemIcon>
-                  {index === 0 ? <SpaceDashboardIcon /> : null}
                   {index === 1 ? <PersonIcon /> : null}
                   {index === 2 ? <AccessibleIcon /> : null}
-                  {index === 3 ? <ShowChartIcon /> : null}
+                  {index === 0 ? <AddchartIcon /> : null}
                 </ListItemIcon>
                 <ListItemText primary={text} />
               </ListItemButton>
@@ -85,8 +85,6 @@ export default function Stest() {
 
   const renderContent = () => {
     switch (selectedNavItem) {
-      case "Dashboard":
-        return <View />;
       case "Staff":
         return <Staff />;
       case "Patient":

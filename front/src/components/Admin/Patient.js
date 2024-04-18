@@ -235,7 +235,7 @@ useEffect(() => {
 
 <Grid sx={{width:{xs:'80.5vw'},paddingLeft:{xs:'0vw',sm:'0px'}}}>
         {/* search bar */}
-        <Paper sx={{padding:2,position:"fixed",width:'80vw',top:70,boxShadow:0}}>
+        <Paper sx={{padding:4,position:"fixed",width:'85vw',top:65,boxShadow:0,marginLeft:-1}}>
         <Grid sx={{ display: "flex", justifyContent: "space-between",mb:2}}>
         <Paper
           component="form"
@@ -271,6 +271,27 @@ useEffect(() => {
           Add
         </Button>
       </Grid>
+
+      <Paper
+    sx={{
+      display: { sm: 'flex', xs: 'none' },
+      justifyContent: "space-around",
+      alignItems: "center",
+      marginBottom: "10px",
+      position: 'relative',
+      left:-30,
+      top:10,
+      padding: 2,
+      paddingLeft: '2vw',
+      boxShadow: 5,
+      borderRadius: '5px'
+    }}
+  >
+    <Typography sx={{ flex: 1 }}>Full Name</Typography>
+    <Typography sx={{ flex: 1 }}>NIC</Typography>
+    <Typography sx={{ flex: 1 }}>E-mail</Typography>
+    <Typography sx={{ flex: 1 }}>Address</Typography>
+  </Paper>
         </Paper>
 
 
@@ -279,24 +300,8 @@ useEffect(() => {
 {/* for popup when adding */}
 <AddPatientDialog open={open} handleAddClose={handleAddClose} handleInputChange={handleInputChange} formErrors={formErrors} rows={rows} formData={formData} setFormErrors={setFormErrors} settype={settype}setNotiMessage={setNotiMessage}setNotificationOpen={setNotificationOpen}setOpen={setOpen} forceUpdate={forceUpdate}></AddPatientDialog>
 </Grid>
-<Grid sx={{marginTop:10}}>
-  <Paper
-    sx={{
-      display: { sm: 'flex', xs: 'none' },
-      justifyContent: "space-around",
-      alignItems: "center",
-      marginBottom: "10px",
-      padding: 2,
-      paddingLeft: '2vw',
-      boxShadow: 5,
-      borderRadius: '12px'
-    }}
-  >
-    <Typography sx={{ flex: 1 }}>Full Name</Typography>
-    <Typography sx={{ flex: 1 }}>NIC</Typography>
-    <Typography sx={{ flex: 1 }}>E-mail</Typography>
-    <Typography sx={{ flex: 1 }}>Address</Typography>
-  </Paper>
+<Grid sx={{marginTop:22}}>
+
   {records.sort((a, b) => a.fullName.localeCompare(b.fullName)).length > 0 ? (
     records.sort((a, b) => a.fullName.localeCompare(b.fullName)).map((row) => (
       <Paper
