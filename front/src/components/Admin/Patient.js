@@ -14,6 +14,7 @@ import EditPatientDialog from "./DialogComponents/EditPatientDialog";
 import AskDelete from "./DialogComponents/AskDelete";
 import { baseURL,endPoints } from "../../Services/Admin";
 import AddPatientDialog from "./DialogComponents/AddPatientDialog";
+import { SearchBarLR, SearchBarSM } from "../Common";
 
 
 function createData(id, name, nic, address,dob, email,gender,fullName,contactNumber) {
@@ -235,25 +236,9 @@ useEffect(() => {
 
 <Grid sx={{width:{xs:'80.5vw'},paddingLeft:{xs:'0vw',sm:'0px'}}}>
         {/* search bar */}
-        <Paper sx={{padding:4,position:"fixed",width:'85vw',top:65,boxShadow:0,marginLeft:-1}}>
+        <Paper sx={{padding:4,position:"fixed",width:'85vw',top:65,boxShadow:0,marginLeft:-1,paddingBottom:0}}>
         <Grid sx={{ display: "flex", justifyContent: "space-between",mb:2}}>
-        <Paper
-          component="form"
-          sx={{
-            p: "2px 4px",
-            display: "flex",
-            alignItems: "center",
-            width: "40vh",
-            borderRadius: "20px",
-            boxShadow: 3,
-          }}
-        >
-          <InputBase type="text" className="form-control" onChange={Filter} sx={{ ml: 3, flex: 1 }} placeholder="Search Patient" />
-          <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-          <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
-            <SearchIcon />
-          </IconButton>
-        </Paper>
+        <SearchBarLR onChange={Filter} placeholder={"Search Patient"}></SearchBarLR>
 
         {/* adding patient */}
         <Button
