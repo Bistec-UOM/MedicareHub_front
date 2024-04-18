@@ -4,6 +4,8 @@ import axios from 'axios';
 import SuccessNotification from '../recepcomponents/SnackBar/SuccessNotification';
 import { baseURL, endPoints } from '../../Services/Admin';
 import SearchGraph from './AnalyticsComponents.js/SearchGraph';
+import ExportDefaultToolbar from './AnalyticsComponents.js/DrugTable';
+import ToolbarGrid from './AnalyticsComponents.js/DrugTable';
 
 
 const ADrugs = () => {
@@ -172,28 +174,7 @@ let graph = {
       </Grid>
       <Grid>
       <Paper sx={{margin:'20px'}}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell align='center' sx={{ fontWeight: 'bold' }}>Name</TableCell>
-          <TableCell align='center' sx={{ fontWeight: 'bold' }}>Available count</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <TableRow
-              key={row.name}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-              <TableCell align='center' component="th" scope="row">
-                {row.name}
-              </TableCell>
-              <TableCell align="center">{row.available}</TableCell>
-
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+      <ToolbarGrid data={rows}/>
       </Paper>
       </Grid>
 
