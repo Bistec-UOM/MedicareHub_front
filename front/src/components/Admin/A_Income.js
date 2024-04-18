@@ -15,11 +15,6 @@ import { baseURL, endPoints } from '../../Services/Admin';
 
 let pdata = [];
 
-
- 
-
-  
-
 const currentDate = new Date();
 let TimeGap = new Date(currentDate);
 TimeGap.setDate(currentDate.getDate() - 1);
@@ -44,7 +39,7 @@ const AIncome = () => {
   const [typenoti, settypenoti] = useState('success');
 
 
-  const [Value, setValue] = React.useState('day'); // Initialize Value state with 'day'
+  const [Value, setValue] = React.useState('week'); // Initialize Value state with 'day'
   const handleChange = (event) => {
     setValue(event.target.value);
     change(event.target.value); // Call change function with selected value
@@ -71,9 +66,9 @@ const AIncome = () => {
    }, []); // Empty dependency array means this effect runs once on mount
 
       const change = (Gap) => {
-    if (Gap === 'day') {
+    if (Gap === 'week') {
       TimeGap = new Date(currentDate); // Reset TimeGap to current date
-      TimeGap.setDate(currentDate.getDate() - 1);
+      TimeGap.setDate(currentDate.getDate() - 7);
     } else if (Gap === 'month') {
       TimeGap = new Date(currentDate);
       TimeGap.setMonth(currentDate.getMonth() - 1);
@@ -97,7 +92,7 @@ const AIncome = () => {
   });
   const tickFormatter = (value) => {
     const date = new Date(value);
-    if (Value === 'day') {
+    if (Value === 'week') {
       return date.toLocaleTimeString(); // Show time only when 'Last Day' is selected
     } else {
       return date.toLocaleDateString(); // Show date for other options
@@ -120,7 +115,7 @@ const AIncome = () => {
                 label="Gap"
                 onChange={handleChange}
               >
-                <MenuItem value={'day'}>Last Day</MenuItem>
+                <MenuItem value={'week'}>Last week</MenuItem>
                 <MenuItem value={'month'}>Last Month</MenuItem>
                 <MenuItem value={'year'}>Last Year</MenuItem>
                 <MenuItem value={'5'}>Last 5 Year</MenuItem>
