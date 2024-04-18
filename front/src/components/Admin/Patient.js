@@ -5,7 +5,7 @@ import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import { useState } from "react";
-import {Grid,Typography,} from "@mui/material";
+import {Grid,Skeleton,Typography,} from "@mui/material";
 import { Button } from "@mui/material";
 import axios from 'axios';
 import { useEffect } from "react";
@@ -235,7 +235,8 @@ useEffect(() => {
 
 <Grid sx={{width:{xs:'80.5vw'},paddingLeft:{xs:'0vw',sm:'0px'}}}>
         {/* search bar */}
-        <Grid sx={{ display: "flex", justifyContent: "space-between",mb:4 }}>
+        <Paper sx={{padding:2,position:"fixed",width:'80vw',top:70,boxShadow:0}}>
+        <Grid sx={{ display: "flex", justifyContent: "space-between",mb:2}}>
         <Paper
           component="form"
           sx={{
@@ -270,6 +271,7 @@ useEffect(() => {
           Add
         </Button>
       </Grid>
+        </Paper>
 
 
      
@@ -277,47 +279,53 @@ useEffect(() => {
 {/* for popup when adding */}
 <AddPatientDialog open={open} handleAddClose={handleAddClose} handleInputChange={handleInputChange} formErrors={formErrors} rows={rows} formData={formData} setFormErrors={setFormErrors} settype={settype}setNotiMessage={setNotiMessage}setNotificationOpen={setNotificationOpen}setOpen={setOpen} forceUpdate={forceUpdate}></AddPatientDialog>
 </Grid>
-      <Grid>
-      <Paper
-      sx={{
-        display: {sm:'flex',xs:'none'},
-        justifyContent: "space-around",
-        alignItems: "center",
-        marginBottom: "10px",
-        padding: 2,
-        paddingLeft:'2vw',
-        boxShadow: 5,
-        borderRadius:'12px'
-      }}
-      >
-      <Typography sx={{ flex: 1 }}>Full Name</Typography>
-      <Typography sx={{ flex: 1 }}>NIC</Typography>
-      <Typography sx={{ flex: 1 }}>E-mail</Typography>
-      <Typography sx={{ flex: 1 }}>Address</Typography>
-      </Paper>
-      {records.sort((a, b) => a.fullName.localeCompare(b.fullName)).map((row) => (
+<Grid sx={{marginTop:10}}>
   <Paper
-    key={row.Id}
     sx={{
-      cursor:'pointer',
-      display: {sm:'flex',xs:'gird'},
-      justifyContent: "space-between",
+      display: { sm: 'flex', xs: 'none' },
+      justifyContent: "space-around",
       alignItems: "center",
       marginBottom: "10px",
       padding: 2,
-      boxShadow: 2,
-      borderRadius:'12px',
-      pl:{sm:'2',xs:'30px'}
+      paddingLeft: '2vw',
+      boxShadow: 5,
+      borderRadius: '12px'
     }}
-    onClick={() => handleEditOpen(row)} // Pass the row to handleEditClickOpen
   >
-    <Typography sx={{ flex: 1 }}>{row.fullName}</Typography>
-    <Typography sx={{ flex: 1 }}>{row.nic}</Typography>
-    <Typography sx={{ flex: 1 }}>{row.email}</Typography>
-    <Typography sx={{ flex: 1 }}>{row.address}</Typography>
+    <Typography sx={{ flex: 1 }}>Full Name</Typography>
+    <Typography sx={{ flex: 1 }}>NIC</Typography>
+    <Typography sx={{ flex: 1 }}>E-mail</Typography>
+    <Typography sx={{ flex: 1 }}>Address</Typography>
   </Paper>
-))}
-      </Grid>
+  {records.sort((a, b) => a.fullName.localeCompare(b.fullName)).length > 0 ? (
+    records.sort((a, b) => a.fullName.localeCompare(b.fullName)).map((row) => (
+      <Paper
+        key={row.Id}
+        sx={{
+          cursor: 'pointer',
+          display: { sm: 'flex', xs: 'gird' },
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "10px",
+          padding: 2,
+          boxShadow: 2,
+          borderRadius: '12px',
+          pl: { sm: '2', xs: '30px' }
+        }}
+        onClick={() => handleEditOpen(row)} // Pass the row to handleEditClickOpen
+      >
+        <Typography sx={{ flex: 1 }}>{row.fullName}</Typography>
+        <Typography sx={{ flex: 1 }}>{row.nic}</Typography>
+        <Typography sx={{ flex: 1 }}>{row.email}</Typography>
+        <Typography sx={{ flex: 1 }}>{row.address}</Typography>
+      </Paper>
+    ))
+  ) : (
+    [...Array(18)].map((_, i) => (
+      <Skeleton key={i} variant="rectangular" height={50} sx={{margin:1,borderRadius:2}} />
+    ))  )}
+</Grid>
+
 
       {/* pop up data editing */}
   <EditPatientDialog editOpen={editOpen} handleEditClose={handleEditClose} formFields={formFields} formErrors={formErrors} isDisabled={isDisabled} formData={formData} setFormData={setFormData} handleInputChange={handleInputChange} deletePopUp={deletePopUp} handleEditClick={handleEditClick} setFormErrors={setFormErrors} rows={rows} pData={pData} settype={settype} setNotiMessage={setNotiMessage} setNotificationOpen={setNotificationOpen} setShowPatient={setShowPatient} forceUpdate={forceUpdate} setEditOpen={setEditOpen} setIsDisabled={setIsDisabled}></EditPatientDialog>
