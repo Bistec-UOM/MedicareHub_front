@@ -17,7 +17,7 @@ import DoctorAddDrugs from '../../../Doctor/DoctorAddDrugs';
 import AnaliticalReports from '../../../Doctor/AnaliticalReports';
 import '../../../../components/CustomScroll.css'
 import LabRequest from '../../../Doctor/LabRequest';
-import { Sideunit_Patient } from '../../../../components/sidebar/Sideunits';
+import { Sideunit_Patient } from '../../../sidebar/Sideunits';
 import DoctorAppCalender from '../DoctorAppCalender/DoctorAppCalender';
 import TopUnit from '../../../Doctor/TopUnit';
 

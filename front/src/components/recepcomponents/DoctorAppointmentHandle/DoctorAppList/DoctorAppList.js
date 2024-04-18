@@ -48,7 +48,6 @@ const DoctorAppList = (props) => {
 
   const handleBlockDay = () => {
     setDocDayBlockPopup(true);
-    console.log("inside block");
   };
 
   var location = useLocation();

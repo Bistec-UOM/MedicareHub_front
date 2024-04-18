@@ -36,10 +36,6 @@ const DoctorAppCalender = ({ doctorId }) => {
     currentDate.getMonth() + 1,
     1
   );
-
- 
-
-
   const [validRange, setValidRange] = useState({
     start: firstDayOfMonth,
     end: lastDayOfMonth,
@@ -53,11 +49,9 @@ const DoctorAppCalender = ({ doctorId }) => {
   useEffect(() =>
     //for fetching the appoinments of the month for a doctor
     {
-      console.log("pasmonth",pasMonth);
       axios
         .get(
          baseURL+endPoints.AppDay+`${doctorId}`+"/month/"+`${pasMonth}`
-
         )
         .then((response) => {
           setDayAppCount(response.data);
@@ -71,7 +65,8 @@ const DoctorAppCalender = ({ doctorId }) => {
     //for fetching the disable dates
     {
       axios
-        .get(`https://localhost:7205/api/Appointment/BlockedDates/${doctorId}`)
+       // .get(`https://localhost:7205/api/Appointment/BlockedDates/${doctorId}`)
+        .get(baseURL+endPoints.BlockedDates+`${doctorId}`)
         .then((response) => {
           setDisabledDates(response.data);
         })

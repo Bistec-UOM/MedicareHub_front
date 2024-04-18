@@ -9,7 +9,7 @@ import Lab_template from "./pages/Lab_template";
 import Pharmacy_drugstore from "./pages/Pharmacy_drugstore";
 import ResponseAppCalender from "./components/recepcomponents/ResponseAppointmentCalender/ResponseAppCalender";
 import ResDay from "./components/recepcomponents/ResDay/ResDay";
-import DoctorPage from "./components/recepcomponents/DoctorAppointmentHandle/DoctorPage.js/DoctorPage";
+import DoctorPage from "./components/recepcomponents/DoctorAppointmentHandle/DoctorPage/DoctorPage";
 import DoctorList from "./components/recepcomponents/DoctorAppointmentHandle/DoctorList/DoctorList";
 import Doctor_analytics from "./components/Doctor_analytics";
 

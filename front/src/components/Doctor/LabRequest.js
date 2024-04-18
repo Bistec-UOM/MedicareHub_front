@@ -94,7 +94,7 @@ const handleDeleteLabRequest = (index) => {
       <Grid key={index} container spacing={1} sx={{ marginTop: "5px",}}>
                         <Grid item xs={3}>
                             <Card sx={{ backgroundColor: '#48EC4F', color: 'white', fontSize: '19px',height:'32px',marginleft:'90%',}}>
-                                <Typography gutterBottom variant="p" sx={{ marginLeft: '15px'}}>{selectedLabTestName}</Typography>
+                            <Typography gutterBottom variant="p" sx={{ marginLeft: '15px'}}>{Labs.find(test => test.TestId === drug.TestId)?.labTestName}</Typography>
                             </Card>
                         </Grid>
                         <Grid item xs={8}>
