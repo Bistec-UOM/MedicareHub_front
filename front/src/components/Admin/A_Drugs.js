@@ -24,8 +24,8 @@ const ADrugs = () => {
       })
       .catch(err => {
         if (err.message === 'Network Error') { 
-          console.error('You are not connected to internet');
-          setNotiMessage("You are not connected to internet");
+          console.error('You are not connected');
+          setNotiMessage("You are not connected");
           settypenoti('error')
           setNotificationOpen(true);
       } else {
