@@ -19,7 +19,6 @@ import Analysis from "../components/Admin/Analytics";
 import Patient from "../components/Admin/Patient";
 import ResNavBar from "../components/recepcomponents/ResNavBar/ResNabBar";
 import Staff from "../components/Admin/Staff";
-import View from "../components/Admin/View";
 import SpaceDashboardIcon from '@mui/icons-material/SpaceDashboard';
 import AddchartIcon from '@mui/icons-material/Addchart';
 
