@@ -8,6 +8,8 @@ import CloseIcon from "@mui/icons-material/Close";
 import ErrorIcon from "@mui/icons-material/Error";
 import { baseURL, endPoints } from "../../../../Services/Appointment";
 
+//day block popup
+
 export default function DayBlockPopup({
   selectedDay,
   doctorId,
@@ -81,7 +83,7 @@ export default function DayBlockPopup({
             <ErrorIcon
               sx={{ color: "red", marginRight: "2%", fontSize: "2rem" }}
             />
-            <Typography sx={{ marginTop: "1%", color: "#000000" }}>
+            <Typography sx={{ marginTop: "1%", color: "#000000" }}> 
               Are you sure you want to Block the Date?
             </Typography>
           </Box>

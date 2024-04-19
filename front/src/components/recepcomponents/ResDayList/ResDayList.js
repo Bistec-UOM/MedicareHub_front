@@ -11,6 +11,7 @@ import axios from "axios";
 import PageNotFound from "../PageNotFound/PageNotFound";
 import { Load } from "../../Other";
 import { baseURL, endPoints } from "../../../Services/Appointment";
+import AddIcon from '@mui/icons-material/Add';
 //day app list page for a day
 
 const ResDayList = (props) => {
@@ -117,6 +118,7 @@ const ResDayList = (props) => {
           direction="row"
         >
           <Button
+            endIcon={<AddIcon/>}
             onClick={handleAppAd}
             disabled={addDisabled}
             sx={{
