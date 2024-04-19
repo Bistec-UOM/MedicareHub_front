@@ -61,13 +61,6 @@ const AppointmentCalender = () => {
                 <div
                 key={index}
                 onClick={() => setSelectedTab(index)}
-                style={{
-                  backgroundColor: selectedTab === index ? '#79CCBE' : 'transparent',
-                   padding: '10px',
-                   margin: '5px',
-                  cursor: 'pointer',
-                  borderRadius:'8px'
-                }}
               > 
                 <Sideunit_Doctor selectedTab={selectedTab} name={item.name} title={item.title} index={index} key={index}></Sideunit_Doctor>
               </div>

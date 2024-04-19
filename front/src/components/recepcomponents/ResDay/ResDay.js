@@ -76,13 +76,6 @@ function ResDay() {
                 <div
                 key={index}
                 onClick={() => setSelectedTab(item.id)}
-                style={{
-                  backgroundColor: docid === item.id ? '#79CCBE' : 'transparent',
-                   padding: '10px',
-                   margin: '5px',
-                  cursor: 'pointer',
-                  borderRadius:'8px'
-                }}
               >
                 <Sideunit_Doctor selectedTab={docid} name={item.fullName} title={item.qualifications} index={item.id} key={index}></Sideunit_Doctor>
               </div> 

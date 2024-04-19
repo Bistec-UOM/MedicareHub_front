@@ -35,6 +35,6 @@ D. Navbar
 ==============                 Migrations        =====================
 ======================================================================
 
-1.Price ----> decimal
-2.LabReportField unit ---> nullable
+
 3.Prescription DateTime --rename--> IssuedDate
+

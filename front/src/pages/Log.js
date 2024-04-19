@@ -4,7 +4,7 @@ import { Button,TextField, Typography,Snackbar,Alert } from '@mui/material'
 import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
-import { baseURL,endPoints } from '../Services/Auth';
+import { baseURL,deleteLog,endPoints } from '../Services/Auth';
 import { jwtDecode } from "jwt-decode";
 import LoadingButton from '@mui/lab/LoadingButton';
 import LoginIcon from '@mui/icons-material/Login';
@@ -40,6 +40,7 @@ export default function Log() {
       UserId:user,
       Password:password
     }
+    deleteLog()
     setLoadingB(true)
     axios.post(baseURL+endPoints.LOG,obj)
     .then((res)=>{
@@ -74,6 +75,7 @@ export default function Log() {
 
   useEffect(()=>{
     document.body.style.margin = '0';
+    deleteLog()
    },[])
 
    const [loadingB, setLoadingB] = useState(false)//Loading button states
