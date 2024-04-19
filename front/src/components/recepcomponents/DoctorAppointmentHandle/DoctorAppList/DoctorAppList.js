@@ -9,7 +9,7 @@ import {
   Hidden,
 } from "@mui/material";
 import SearchBar from "../../Searchbar/Searchbar";
-import Steper from "../../Setper/Steper";
+import Steper from "../SetperDoctor/SteperDoctor";
 import "../../../../recep.css";
 import SuccessNotification from "../../SnackBar/SuccessNotification";
 import axios from "axios";
