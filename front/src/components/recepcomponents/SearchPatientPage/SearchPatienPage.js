@@ -53,8 +53,15 @@ const SearchPatientPage = (props) => {
         setPatientList(responseData);
         setRloadDone(true);
       } catch (err) {
-        handleNotification(err.response.data,"error");
-        setRloadDone(true);   
+        if(err.hasOwnProperty('response'))
+        {
+          handleNotification(err.response.data,"error");
+          setRloadDone(true); 
+        }
+        else{
+          console.log(err);
+        }
+         
       }
     };
   

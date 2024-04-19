@@ -155,7 +155,7 @@ const PatientRegpopup = ({
       try {
         await axios.post(
          // "https://localhost:7205/api/Appointment/patients",
-         baseURL+endPoints.PatientList,gi
+         baseURL+endPoints.PatientList,
           obj
         );
         setPatientCount(patientCount + 1);
@@ -188,6 +188,7 @@ const PatientRegpopup = ({
               justifyContent: "space-between",
               alignItems: "center",
              
+             
             }}
           >
             <Box
@@ -195,6 +196,7 @@ const PatientRegpopup = ({
                 display: "flex",
                 width: "90%",
                 justifyContent: "center",
+                
                
               }}
             >

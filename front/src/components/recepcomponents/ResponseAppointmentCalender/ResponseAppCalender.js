@@ -54,9 +54,18 @@ function ResponseAppCalender() {
         setSelectedTab(responseData.result[0].id);
        
       } catch (error) {
+
+        if(error.hasOwnProperty('response'))
+        {
+          setRloadDone(true);
+          handleNotification(error.response.data,"error");
+
+        }
+        else{
+          console.log(error);
+        }
         
-        setRloadDone(true);
-        handleNotification(error.response.data,"error");
+        
       }
     };
   
