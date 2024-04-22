@@ -35,7 +35,7 @@ export default function Log() {
   const [count,setCount]=useState(0)
 
   const setData=()=>{
-    if(password=="" || user==""){
+    if(password==="" || user===""){
       handleClick("Fill the empty fields",'warning')
       return
     }

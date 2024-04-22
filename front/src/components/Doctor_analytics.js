@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip,ResponsiveContainer } from 'recharts';
 import { Box,FormGroup,FormControlLabel,Checkbox, Typography, Paper, Divider} from '@mui/material'
 
 
@@ -263,7 +263,7 @@ done?<Box>
         <Divider></Divider>
         <FormGroup >
         {medList.map((el,ind) => (
-              ind==2?<FormControlLabel
+              ind===2?<FormControlLabel
                 key={el}
                 control={<Checkbox size='small' sx={{height:'20px'}} style={{ color: col[el] }} checked={selectedMed.includes(el)} onChange={() => handleMedToggle(el)} />}
                 label={<Typography sx={{fontSize:'14px'}}>{el}</Typography>}

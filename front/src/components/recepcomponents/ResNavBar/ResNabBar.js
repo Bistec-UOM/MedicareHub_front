@@ -102,7 +102,7 @@ const ResNavBar = ({ isClosing, setMobileOpen, mobileOpen }) => {
             <Typography color="#AFADAD" sx={{fontSize:'12px',textAlign:'right'}}>{profile.Role}</Typography>
           </div>
           {
-            profile.Name=="Profile"?
+            profile.Name==="Profile"?
           <Avatar
             aria-label="account of current user"
             aria-controls="menu-appbar"
