@@ -181,6 +181,7 @@ const PatientRegpopup = ({
     <React.Fragment>
       <Dialog open={regopen} onClose={handleClose}>
         <form autoComplete="false" onSubmit={handleSubmit}>
+          <Box>
           <DialogTitle
             sx={{
               backgroundColor: "rgb(222, 244, 242)",
@@ -213,6 +214,9 @@ const PatientRegpopup = ({
               <CloseIcon onClick={handleAddClose} />
             </IconButton>
           </DialogTitle>
+
+          </Box>
+          
           <DialogContent>
             <TextField
               //error={nameHelper && nameHelper.length ?true:false}

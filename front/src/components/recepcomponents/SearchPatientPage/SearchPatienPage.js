@@ -44,7 +44,6 @@ const SearchPatientPage = (props) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-       // const response = await fetch(`https://localhost:7205/api/Appointment/patients`);
         const response = await fetch(baseURL+endPoints.PatientList);
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -64,7 +63,6 @@ const SearchPatientPage = (props) => {
          
       }
     };
-  
     fetchData();
   }, [patientCount]);
   
