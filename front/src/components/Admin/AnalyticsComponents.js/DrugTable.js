@@ -11,17 +11,17 @@ export default function ExportDefaultToolbar({ data }) {
   })) : [];
 
   const columns = [
-    { field: 'id', headerName: 'Number', width: 500 },
+    { field: 'id', headerName: 'Number', flex: 1 },
     {
       field: 'name',
       headerName: 'Name',
-      width: 500,
+      flex: 1,
       editable: true,
     },
     {
       field: 'available',
       headerName: 'Available Count',
-      width: 500,
+      flex: 1,
       editable: true,
     },
   ];
@@ -37,8 +37,9 @@ export default function ExportDefaultToolbar({ data }) {
   }, []);
 
   return (
-    <div style={{ height: 600,textAlign:'center' }}>
+    <div >
       <DataGrid
+        sx={{ height: 600,width:'80vw',textAlign:'center' }}
         rows={rows}
         columns={columns}
         loading={loading}

@@ -156,31 +156,25 @@ let graph = {
   y: 'quantity',
   var:'select a drug'
 };
-  return (
-    <div>
-      <Grid container spacing={3}>
-        <Grid item xs={4}>
-          <Paper style={{ textAlign: 'center', height: '35vh', paddingTop: "6%" }} >
-            <Typography fontSize={25}>Most Used Drug(last 30 days)</Typography>
-            <Typography fontSize={30}sx={{marginTop:4}}>{loading ? 'Loading...' : mostUsedDrug}</Typography>
-          </Paper>
-        </Grid>
-        <Grid item xs={8} style={{textAlign:'right'}}>
-        
-<SearchGraph uniqueModelTypes={uniqueDrugTypes} selectModelType={selectDrugType} Value={Value} graph={graph} handleChange={handleChange} ModelData={DrugData}></SearchGraph>
-
-
-        </Grid>
+return (
+  <div>
+    <Grid container spacing={3}>
+      <Grid item xs={12} sm={6} md={4}>
+        <Paper style={{ textAlign: 'center', height: '35vh', paddingTop: "6%" }} >
+          <Typography fontSize={25}>Most Used Drug(last 30 days)</Typography>
+          <Typography fontSize={30} sx={{marginTop:4}}>{loading ? 'Loading...' : mostUsedDrug}</Typography>
+        </Paper>
       </Grid>
-      <Grid>
-      <Paper sx={{margin:'20px'}}>
-      <ToolbarGrid data={rows}/>
-      </Paper>
+      <Grid item xs={12} sm={6} md={8} style={{textAlign:'right'}}>
+        <SearchGraph uniqueModelTypes={uniqueDrugTypes} selectModelType={selectDrugType} Value={Value} graph={graph} handleChange={handleChange} ModelData={DrugData}></SearchGraph>
       </Grid>
-
-      <SuccessNotification setNotificationOpen={setNotificationOpen} notiMessage={notiMessage} notificationOpen={notificationOpen} type={typenoti}></SuccessNotification>
-    </div>
-  );
+    </Grid>
+    <Grid>
+        <ToolbarGrid data={rows}/>
+    </Grid>
+    <SuccessNotification setNotificationOpen={setNotificationOpen} notiMessage={notiMessage} notificationOpen={notificationOpen} type={typenoti}></SuccessNotification>
+  </div>
+);
 }
 
 export default ADrugs;

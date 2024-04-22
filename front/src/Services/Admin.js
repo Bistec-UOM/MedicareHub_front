@@ -1,4 +1,4 @@
-const baseURL='https://medicarehub.azurewebsites.net/api'
+const baseURL='https://mediicarehub.azurewebsites.net/api'
 
 const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/dung7ryl3/image/upload';
 
