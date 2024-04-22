@@ -11,6 +11,7 @@ import Button from "@mui/material/Button";
 import { Box } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { Grid, Stack } from "@mui/material";
+import { Load } from "../../Other";
 import { baseURL,endPoints } from "../../../Services/Appointment";
 
 export default function AppAddPopup({
@@ -30,6 +31,7 @@ export default function AppAddPopup({
   dayAppTotal,
   setDayAppTotal,
 }) {
+  const [RloadDone,setRloadDone]=useState(true)  //state for app add loading 
   const [selectedTime, setSelectedTime] = useState(dayjs("2022-04-17T08:30")); //default selected date and time of the date picker
   const [confirmDisabled, setConfirmDisabled] = useState(false); //var for confirm disabled for app limiting func
   const [appTime, setAppTime] = useState({
@@ -63,10 +65,6 @@ export default function AppAddPopup({
     date.setHours(hours, timeObject.minutes, 0, 0);
     return date;
   }
-  const scheduledTimes = filteredAppointments.map((appointment) => {
-    return dayjs(appointment.appointment.dateTime).format("HH:mm");
-  });
-
   useEffect(() => {
     console.log("filt", filteredAppointments);
     if (dayAppTotal >= 10) {
@@ -81,6 +79,7 @@ export default function AppAddPopup({
   };
 
   async function handleSubmit(event) {
+    setRloadDone(false);
     event.preventDefault();
     var finalTime = getRealTime(appTime);
     var date = finalTime;
@@ -108,13 +107,16 @@ export default function AppAddPopup({
         obj
       );
       if (response.data == 0) { //check already appointments
+        setRloadDone(true);
         setApopen(false);
         setDayAppTotal(dayAppTotal + 1);
         handleNotification("Appointment Added succesfully!", "success");
       } else if(response.data==1) {
+        setRloadDone(true);
         handleNotification("You have already an appointment on that time !. Select another time slot","error");
       }
       else{
+        setRloadDone(true);
         handleNotification("Time slot has been already booked!. Select another time slot","error");
 
       }
@@ -178,6 +180,7 @@ export default function AppAddPopup({
                         },
                       }}
                     >
+                      
                       <Stack
                         direction={"column"}
                         sx={{ height: { xs: "100px", md: "100%" } }}

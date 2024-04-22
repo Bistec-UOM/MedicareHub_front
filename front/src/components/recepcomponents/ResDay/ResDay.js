@@ -47,7 +47,7 @@ function ResDay() {
   };
  const [renderVal,setRenderVal]=useState(false);  //variable for conditional rendering of daylist app and patientSearchPage
  const [dayAppTotal,setDayAppTotal]=useState(0);  //total app count of the selected day
- const [docid,setDocid]=useState(doctorid)
+ const [docid,setDocid]=useState(doctorid);
  const [filteredAppointments, setFilteredAppointments] = useState([]);  //list for storing appointment 
  const [search,setSearch]=useState("")  //for storing search text of doctors
   const drawer = (

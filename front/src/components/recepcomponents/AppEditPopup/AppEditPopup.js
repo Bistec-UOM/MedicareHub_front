@@ -65,7 +65,6 @@ export default function AppEditPopup({
     return date;
   }
   const handleClose = () => {
-    console.log("se", selectedTime);
     setAppEditOpen(false);
   };
   async function handleUpdate(event) {

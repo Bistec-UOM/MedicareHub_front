@@ -7,12 +7,9 @@ import { useEffect } from "react";
 import moment from "moment";
 import CustomizedProgressBars from "../CustomProgressBar/CustomProgressBar";
 import interactionPlugin from "@fullcalendar/interaction";
-import LinearProgress from "@mui/material/LinearProgress";
 import { useState } from "react";
 import "../../../recep.css";
 import SuccessNotification from "../SnackBar/SuccessNotification";
-import PageNotFound from "../PageNotFound/PageNotFound";
-import { Load } from "../../Other";
 import { baseURL, endPoints } from "../../../Services/Appointment";
 
 //full calender for receptionist
@@ -49,7 +46,6 @@ function MyFullCalendar({
 
   //fetching blocked dates of a doctor
   useEffect(() => {
-    // axios.get(`https://localhost:7205/api/Appointment/BlockedDates/${doctorId}`)
     axios
       .get(baseURL + endPoints.BlockedDates + `${doctorId}`)
       .then((response) => {
@@ -62,7 +58,6 @@ function MyFullCalendar({
 
   //  use effect for getting the app day count for the current displayed month
   useEffect(() => {
-    // axios.get(`https://localhost:7205/api/Appointment/doctor/${doctorId}/month/${pasMonth}`)
     axios
       .get(
         baseURL + endPoints.AppDay + `${doctorId}` + "/month/" + `${pasMonth}`
@@ -74,7 +69,7 @@ function MyFullCalendar({
         console.error("Error fetching appointments:", error);
       });
   }, [doctorId, pasMonth]);
-  const [notificationOpen, setNotificationOpen] = useState(false); //var for open day block notificatio
+  const [notificationOpen, setNotificationOpen] = useState(false); //var for open day block notification
   const [notiMessage, setNotiMessage] = useState(""); //var for storig noti message
   const [notiType, setNotiType] = useState("success");
   const handleNotification = (msg, type) => {
