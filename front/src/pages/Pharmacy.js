@@ -19,11 +19,23 @@ import axios from 'axios';
 import { baseURL,endPoints } from '../Services/Pharmacy';
 
 export default function Pharmacy() {
-
+  const [select,setSelect]=useState(null)
   const [Data,SetData]=useState([])
+  const selectedPrescription = select ? Data.filter(data => data.id === select) : [];
   useEffect(()=>{
+    if(select!==null){
+      const genericNames = selectedPrescription[0].medicine.map(drug => drug.name);
+    console.log(genericNames)
+    axios.post(baseURL+endPoints.MEDICINEDETAIL, genericNames)
+      .then(response => {      
+        console.log('Generic names sent successfully:', response.data); 
+      })
+      .catch(error => {
+        console.error('Error sending generic names:', error);
+      });
+    }
     getData();
-  },[])
+  },[select])
 
   const getData = () => {
     axios.get(baseURL+endPoints.DRUGREQUEST)
@@ -39,21 +51,7 @@ export default function Pharmacy() {
     setSnackbarOpen(true);
     
     // Extract generic names from the selected patient's drugs list
-    const genericNames = selectedPrescription[0].medicine.map(drug => drug.name);
     
-    // Make a POST request to send the generic names to the backend
-    axios.post(baseURL+endPoints.MEDICINEDETAIL, genericNames)
-      .then(response => {
-        // Handle success
-        console.log('Generic names sent successfully:', response.data);
-        
-        // Optionally, perform any additional actions after successful data submission
-        
-      })
-      .catch(error => {
-        // Handle error
-        console.error('Error sending generic names:', error);
-      });
   };
   
   
@@ -114,7 +112,7 @@ const handleChange = (event,no) => {
     document.body.style.margin = '0';
    },[]) 
 
-   const [select,setSelect]=useState(null)
+   
 
    
    //   data for when click storing
@@ -272,7 +270,7 @@ const handleChange = (event,no) => {
    ] 
    
    const [x,setX]=useState(data)
-   const selectedPrescription = select ? Data.filter(data => data.id === select) : [];//------------filter  the selected patient----------
+   
   return (
     <div>
     <Navbar></Navbar>
