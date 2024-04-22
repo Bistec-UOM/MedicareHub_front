@@ -1,25 +1,6 @@
-import {
-  Grid,
-  Paper,
-  MenuItem,
-  FormControl,
-  InputLabel,
-  Select,
-  Typography,
-} from "@mui/material";
+import {Grid,Paper,MenuItem,FormControl,InputLabel,Select,Typography,} from "@mui/material";
 import React, { useEffect } from "react";
-import {
-  LineChart,
-  BarChart,
-  Bar,
-  ResponsiveContainer,
-  Legend,
-  Tooltip,
-  Line,
-  XAxis,
-  YAxis,
-  Label,
-} from "recharts";
+import {LineChart,BarChart,Bar,ResponsiveContainer,Legend,Tooltip,Line,XAxis,YAxis,Label} from "recharts";
 import axios from "axios";
 import { useState } from "react";
 import TotalPatientCount from "./AnalyticsComponents.js/TotalPatientCount";
@@ -211,17 +192,17 @@ const APatient = () => {
 
   return (
     <div>
-      <Grid container spacing={2}>
-        <Grid item xs={4}>
+      <Grid container spacing={3}>
+        <Grid item sm={4} xs={12}>
           <TotalPatientCount count={todaysData}></TotalPatientCount>
         </Grid>
-        <Grid item xs={8}>
-          <Paper sx={{ padding: "10px" }}>
+        <Grid item sm={8} xs={12}>
+          <Paper sx={{ padding: "10px",height:{xs:'40vh',sm:'70vh'} }}>
             <Typography fontSize={20} sx={{ textAlign: "center" }}>
               Patient count within a time period
             </Typography>
-            <ResponsiveContainer aspect={3} style={{ textAlign: "right" }}>
-              <FormControl sx={{ width: "20%", marginRight: "2vw" }}>
+            <ResponsiveContainer aspect={2} style={{ textAlign: "right" }}>
+              <FormControl sx={{ width:{xs:'40%',sm:'20%'}, marginRight: "2vw" }}>
                 <InputLabel>Gap</InputLabel>
                 <Select
                   style={{ textAlign: "left" }}
@@ -282,7 +263,7 @@ const APatient = () => {
             Patient count within today
           </Typography>
           <ResponsiveContainer width="90%" height={400}>
-            <FormControl sx={{ width: "20%", marginRight: "2vw" }}>
+            <FormControl sx={{ width:{xs:'40%',sm:'20%'}, marginRight: "2vw" }}>
               <InputLabel>Gap</InputLabel>
               <Select
                 style={{ textAlign: "left" }}
@@ -297,7 +278,7 @@ const APatient = () => {
                 <MenuItem value={"5"}>Last 5 Year</MenuItem>
               </Select>
             </FormControl>
-            <FormControl sx={{ width: "20%" }}>
+            <FormControl sx={{ width:{xs:'45%',sm:'20%'} }}>
               <InputLabel>Age</InputLabel>
               <Select
                 style={{ textAlign: "left" }}

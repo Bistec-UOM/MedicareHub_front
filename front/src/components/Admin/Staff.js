@@ -7,6 +7,7 @@ import SuccessNotification from "../recepcomponents/SnackBar/SuccessNotification
 import EditUserDialog from "./DialogComponents/EditUserDialog";
 import { baseURL, endPoints } from "../../Services/Admin";
 import AddUserDialog from "./DialogComponents/AddUserDialog";
+import Skeleton from '@mui/material/Skeleton';
 
 
 
@@ -293,7 +294,8 @@ const RoleFields = ["Doctor", "Receptionist", "Lab Assistant", "Cashier"];
   </Button>
 </Paper>
 {/* recep Paper */}
-{row2.filter(row2=>row2.role === rolefild).map((row2)=>
+{row2.filter(row2 => row2.role === rolefild).length > 0 ? (
+  row2.filter(row2 => row2.role === rolefild).map((row2) =>
 
 //role data in here
 <Paper
@@ -344,7 +346,13 @@ key={row2.Id}
   
  </Box>
 {/* </Box> */}
-</Paper>)}
+</Paper>
+
+)):(
+  <>
+    <Skeleton variant="rectangular" height={70} sx={{margin:1,borderRadius:2}} />
+    <Skeleton variant="rectangular" height={70} sx={{margin:1,borderRadius:2}} />
+  </>)}
 </div>
 
  ))}  

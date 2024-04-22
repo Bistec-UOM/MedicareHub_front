@@ -5,7 +5,7 @@ import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import { useState } from "react";
-import {Grid,Typography,} from "@mui/material";
+import {Grid,Skeleton,Typography,} from "@mui/material";
 import { Button } from "@mui/material";
 import axios from 'axios';
 import { useEffect } from "react";
@@ -14,6 +14,7 @@ import EditPatientDialog from "./DialogComponents/EditPatientDialog";
 import AskDelete from "./DialogComponents/AskDelete";
 import { baseURL,endPoints } from "../../Services/Admin";
 import AddPatientDialog from "./DialogComponents/AddPatientDialog";
+import { SearchBarLR, SearchBarSM } from "../Common";
 
 
 function createData(id, name, nic, address,dob, email,gender,fullName,contactNumber) {
@@ -235,24 +236,9 @@ useEffect(() => {
 
 <Grid sx={{width:{xs:'80.5vw'},paddingLeft:{xs:'0vw',sm:'0px'}}}>
         {/* search bar */}
-        <Grid sx={{ display: "flex", justifyContent: "space-between",mb:4 }}>
-        <Paper
-          component="form"
-          sx={{
-            p: "2px 4px",
-            display: "flex",
-            alignItems: "center",
-            width: "40vh",
-            borderRadius: "20px",
-            boxShadow: 3,
-          }}
-        >
-          <InputBase type="text" className="form-control" onChange={Filter} sx={{ ml: 3, flex: 1 }} placeholder="Search Patient" />
-          <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-          <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
-            <SearchIcon />
-          </IconButton>
-        </Paper>
+        <Paper sx={{padding:4,position:"fixed",width:'85vw',top:65,boxShadow:0,marginLeft:-1,paddingBottom:0}}>
+        <Grid sx={{ display: "flex", justifyContent: "space-between",mb:2}}>
+        <SearchBarLR onChange={Filter} placeholder={"Search Patient"}></SearchBarLR>
 
         {/* adding patient */}
         <Button
@@ -271,53 +257,65 @@ useEffect(() => {
         </Button>
       </Grid>
 
+      <Paper
+    sx={{
+      display: { sm: 'flex', xs: 'none' },
+      justifyContent: "space-around",
+      alignItems: "center",
+      marginBottom: "10px",
+      position: 'relative',
+      left:-30,
+      top:10,
+      padding: 2,
+      paddingLeft: '2vw',
+      boxShadow: 5,
+      borderRadius: '5px'
+    }}
+  >
+    <Typography sx={{ flex: 1 }}>Full Name</Typography>
+    <Typography sx={{ flex: 1 }}>NIC</Typography>
+    <Typography sx={{ flex: 1 }}>E-mail</Typography>
+    <Typography sx={{ flex: 1 }}>Address</Typography>
+  </Paper>
+        </Paper>
+
 
      
 <Grid>
 {/* for popup when adding */}
 <AddPatientDialog open={open} handleAddClose={handleAddClose} handleInputChange={handleInputChange} formErrors={formErrors} rows={rows} formData={formData} setFormErrors={setFormErrors} settype={settype}setNotiMessage={setNotiMessage}setNotificationOpen={setNotificationOpen}setOpen={setOpen} forceUpdate={forceUpdate}></AddPatientDialog>
 </Grid>
-      <Grid>
+<Grid sx={{marginTop:22}}>
+
+  {records.sort((a, b) => a.fullName.localeCompare(b.fullName)).length > 0 ? (
+    records.sort((a, b) => a.fullName.localeCompare(b.fullName)).map((row) => (
       <Paper
-      sx={{
-        display: {sm:'flex',xs:'none'},
-        justifyContent: "space-around",
-        alignItems: "center",
-        marginBottom: "10px",
-        padding: 2,
-        paddingLeft:'2vw',
-        boxShadow: 5,
-        borderRadius:'12px'
-      }}
+        key={row.Id}
+        sx={{
+          cursor: 'pointer',
+          display: { sm: 'flex', xs: 'gird' },
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "10px",
+          padding: 2,
+          boxShadow: 2,
+          borderRadius: '12px',
+          pl: { sm: '2', xs: '30px' }
+        }}
+        onClick={() => handleEditOpen(row)} // Pass the row to handleEditClickOpen
       >
-      <Typography sx={{ flex: 1 }}>Full Name</Typography>
-      <Typography sx={{ flex: 1 }}>NIC</Typography>
-      <Typography sx={{ flex: 1 }}>E-mail</Typography>
-      <Typography sx={{ flex: 1 }}>Address</Typography>
+        <Typography sx={{ flex: 1 }}>{row.fullName}</Typography>
+        <Typography sx={{ flex: 1 }}>{row.nic}</Typography>
+        <Typography sx={{ flex: 1 }}>{row.email}</Typography>
+        <Typography sx={{ flex: 1 }}>{row.address}</Typography>
       </Paper>
-      {records.sort((a, b) => a.fullName.localeCompare(b.fullName)).map((row) => (
-  <Paper
-    key={row.Id}
-    sx={{
-      cursor:'pointer',
-      display: {sm:'flex',xs:'gird'},
-      justifyContent: "space-between",
-      alignItems: "center",
-      marginBottom: "10px",
-      padding: 2,
-      boxShadow: 2,
-      borderRadius:'12px',
-      pl:{sm:'2',xs:'30px'}
-    }}
-    onClick={() => handleEditOpen(row)} // Pass the row to handleEditClickOpen
-  >
-    <Typography sx={{ flex: 1 }}>{row.fullName}</Typography>
-    <Typography sx={{ flex: 1 }}>{row.nic}</Typography>
-    <Typography sx={{ flex: 1 }}>{row.email}</Typography>
-    <Typography sx={{ flex: 1 }}>{row.address}</Typography>
-  </Paper>
-))}
-      </Grid>
+    ))
+  ) : (
+    [...Array(18)].map((_, i) => (
+      <Skeleton key={i} variant="rectangular" height={50} sx={{margin:1,borderRadius:2}} />
+    ))  )}
+</Grid>
+
 
       {/* pop up data editing */}
   <EditPatientDialog editOpen={editOpen} handleEditClose={handleEditClose} formFields={formFields} formErrors={formErrors} isDisabled={isDisabled} formData={formData} setFormData={setFormData} handleInputChange={handleInputChange} deletePopUp={deletePopUp} handleEditClick={handleEditClick} setFormErrors={setFormErrors} rows={rows} pData={pData} settype={settype} setNotiMessage={setNotiMessage} setNotificationOpen={setNotificationOpen} setShowPatient={setShowPatient} forceUpdate={forceUpdate} setEditOpen={setEditOpen} setIsDisabled={setIsDisabled}></EditPatientDialog>

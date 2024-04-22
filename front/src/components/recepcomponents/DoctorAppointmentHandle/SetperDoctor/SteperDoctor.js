@@ -5,7 +5,7 @@ import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import "./steperDoctor.css";
 
-export default function Steper(props) {
+export default function StepDoctor(props) {
   function getStartTime(dateTimeString) {
     const dateTime = new Date(dateTimeString);
 
