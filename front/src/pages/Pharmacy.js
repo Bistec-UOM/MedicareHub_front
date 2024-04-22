@@ -19,23 +19,38 @@ import axios from 'axios';
 import { baseURL,endPoints } from '../Services/Pharmacy';
 
 export default function Pharmacy() {
-  const [select,setSelect]=useState(null)
-  const [Data,SetData]=useState([])
+  const [select,setSelect]=useState(null)//current selected prescription id(patient)
+  const [Data,SetData]=useState([])//Store incoming prescription details
   const selectedPrescription = select ? Data.filter(data => data.id === select) : [];
+  const [drugDetail,setDrugDetail]=useState(null)//final drug data to be rendered
+  const [billDrug,setBillDrug]=useState([])//final drug bill details
+
   useEffect(()=>{
     if(select!==null){
       const genericNames = selectedPrescription[0].medicine.map(drug => drug.name);
-    console.log(genericNames)
-    axios.post(baseURL+endPoints.MEDICINEDETAIL, genericNames)
-      .then(response => {      
-        console.log('Generic names sent successfully:', response.data); 
+      axios.post(baseURL+endPoints.MEDICINEDETAIL, genericNames)
+      .then(response => {     
+          //attach each the drug details requested from back to the corresponding drug in prescription
+          let res=response.data
+          let obj={...selectedPrescription}
+          obj[0].medicine.forEach((elm,ind)=>{
+            elm.detail=res[elm.name]
+          })
+          setDrugDetail(obj[0])
+          console.log(selectedPrescription[0])
       })
       .catch(error => {
+        setDrugDetail(null)//stop rendering in case of loading failure
         console.error('Error sending generic names:', error);
       });
     }
-    getData();
   },[select])
+
+  
+  useEffect(()=>{//initial data loading------------------------------------------
+    document.body.style.margin = '0';
+    getData();
+   },[]) 
 
   const getData = () => {
     axios.get(baseURL+endPoints.DRUGREQUEST)
@@ -46,16 +61,14 @@ export default function Pharmacy() {
         console.log(error);
       });
   }
-  const handleConfirmAction = () => {    ///////// 
+
+
+  const handleConfirmAction = () => { 
     setConfirmDialogOpen(false);
     setSnackbarOpen(true);
-    
-    // Extract generic names from the selected patient's drugs list
-    
   };
   
-  
- 
+
   const [open, setOpen] = useState(false);
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -76,11 +89,6 @@ export default function Pharmacy() {
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
   };
-  // const handleConfirmAction = () => {
-  //   setConfirmDialogOpen(false);
-  //   setSnackbarOpen(true);
-    
-  // };
 
   const dividerStyle = {
     backgroundColor: '#0099cc',
@@ -89,33 +97,13 @@ export default function Pharmacy() {
     marginLeft: '550px', // Remove default margin
   };
 
-  
-//   const data =[{name:"Dhammika Mahendra Wijesingha",age:"36",gender:"male"},
-// ];
-const [selectedQuantities, setSelectedQuantities] = React.useState('');
-const [quantity, setQuantity] = React.useState('');
 
+const [selectedWeight, setSelectedWeight] = React.useState('');
+const [amount, setAmount] = React.useState('');
 
-const handleChange = (event,no) => {
-  const newQuantities = [...selectedQuantities];
-    newQuantities[no] = event.target.value;
-    setSelectedQuantities(newQuantities);
+const handleWeight = (event,no) => {
 };
 
-// const medicine =[{name:"Acetaminophe",quantity:"10",hour:"BID",value:"10",unit_price:"15.00",fullprice:"150.00"},
-//              {name:"Sumatripan",quantity:"20",hour:"BID",value:"10",unit_price:"04.50",fullprice:"45.00"},
-//              {name:"Rizatripan",quantity:"0.5",hour:"4H",value:"",unit_price:"",fullprice:""},
-// ];
-
-
-  useEffect(()=>{
-    document.body.style.margin = '0';
-   },[]) 
-
-   
-
-   
-   //   data for when click storing
    const data=[
     {
        id:51,  // -----------------------------------> prescription Id-------  
@@ -268,8 +256,7 @@ const handleChange = (event,no) => {
     },
      
    ] 
-   
-   const [x,setX]=useState(data)
+
    
   return (
     <div>
@@ -314,42 +301,37 @@ const handleChange = (event,no) => {
     ) }
       {select ? (
       <div>
-        {selectedPrescription.map((prescription, index) => ( //   drug detail rendering
-          <div key={index}>
-      {prescription.medicine.map((drug, no) => (           
+{/* =====================      Rendering the drug list =============================================*/}
+
+    <div >
+      {drugDetail!=null?drugDetail.medicine.map((drug, no) => (           
         <Grid key={no} container spacing={1} sx={{marginTop:"10px",}}>
         <Grid item xs={12}>
+        {/*-----------------    Blue lable (prescript drug)  ----------------------------------------*/}
         <Card sx={{ backgroundColor: '#0099cc',display:'flex',flexDirection:'row', color: 'white', fontSize: '20px',width:"500px",marginLeft:"10px"}}>
                 <Typography gutterBottom variant="p" sx={{ flex:'3',marginLeft: '10px', }}>{drug.name}</Typography>
                 <Typography gutterBottom variant="p" sx={{flex:'2', marginLeft: '110px ',  }}>{drug.quantity} mg</Typography>
                 <Typography gutterBottom variant="p" sx={{ flex:'1',marginLeft: '150px', }}>{drug.hour}</Typography>
-                </Card>   
-                <Grid key={no} container spacing={1} sx={{marginTop:"10px"}}>
+        </Card>   
+        <Grid key={no} container spacing={1} sx={{marginTop:"10px"}}>
       <Grid item xs={12}>
         
-          <FormControl sx={{ m: 0, minWidth: 120 ,marginLeft: '200px',}} size="large" marginTop="20px">
-      <InputLabel id="demo-select-small-label">Quantity</InputLabel>
+    {/*Drop down list for drug weights ---------------------------------------------------------------*/}
+    <FormControl sx={{ m: 0, minWidth: 120 ,marginLeft: '200px',}} size="large" marginTop="20px">
+      <InputLabel id="demo-select-small-label">weight</InputLabel>
       <Select
-       sx={{ borderColor:"0099cc", }}
-        labelId="`quantity-label-${no}`"
-        id="demo-select-small"
-        value={selectedQuantities[no]}
-        label="Quantity"
-        onChange={(event) => handleChange(event, no)}
-       
+        sx={{ borderColor:"0099cc", }}
+        value={''}
+        label="weight"
       >      
-        <MenuItem value="">       
-          <em>None</em>
-        </MenuItem>
-        <MenuItem value={10}>10 mg</MenuItem>
-        <MenuItem value={20}>20 mg</MenuItem>      
-        <MenuItem value={30}>30 mg</MenuItem>
+     
       </Select>
     </FormControl>
     
+    {/* Input field for entering the amount of phills---------------------------------------------*/}
       <TextField  sx={{
         '& > :not(style)': { m: 0, width: '10ch' ,marginLeft: '100px '},
-      }} id="outlined-basic" label="Enter" variant="outlined" defaultValue={drug.value}  />
+      }} id="outlined-basic" label="Amount" variant="outlined" defaultValue={drug.value}  />
       
       <Typography gutterBottom variant="p" sx={{ marginLeft: '45px '}}>{drug.unit_price}</Typography>
       <Typography gutterBottom variant="p" sx={{ marginLeft: '90px ', }}><b>{drug.fullprice}</b></Typography>
@@ -359,19 +341,19 @@ const handleChange = (event,no) => {
         
         </Grid>
         </Grid> 
-      ))}
+      )):''}
       </div>
-      ))}
+
       </div>
        ) : (
         <Typography gutterBottom variant="p"></Typography>
       )}
       {select && (         // used for not visible this in page untill click
-  <div>
-      <div style={{ textAlign: 'right' }}>
-      <Divider style={dividerStyle} />
-      <Typography sx={{marginRight:'237px',}}><b>195.00</b></Typography>
-    </div>
+          <div>
+            <div style={{ textAlign: 'right' }}>
+            <Divider style={dividerStyle} />
+            <Typography sx={{marginRight:'237px',}}><b>195.00</b></Typography>
+          </div>
       
       
        <Card sx={{marginTop:'2px',marginLeft:'6px',}}>

@@ -1,4 +1,4 @@
-const baseURL='http://localhost:7205'
+const baseURL='https://localhost:7205'
 
 const endPoints = { 
     DRUGREQUEST:'/api/Bill/DrugRequest',
