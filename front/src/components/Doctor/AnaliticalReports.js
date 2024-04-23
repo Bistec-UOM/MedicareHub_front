@@ -8,14 +8,6 @@ import Doctor_analytics from '../Doctor_analytics';
 export default function AnaliticalReports(props) {
   
     const {openAreports,setOpenAreports,pId} = props;
-
-    const [load,setLoad]=useState(false)
-
-    useEffect(()=>{
-      setTimeout(() => {
-        setLoad(true)
-      }, 4000);
-    })
     
   const handleClose = () => {
     setOpenAreports(false);
@@ -27,7 +19,7 @@ export default function AnaliticalReports(props) {
         <CloseIcon onClick={handleClose} style={{cursor: 'pointer' }} />
         </DialogTitle>
         <DialogContent dividers>
-          {load?<Doctor_analytics pId={pId}></Doctor_analytics>:''}
+          <Doctor_analytics pId={pId}></Doctor_analytics>
          </DialogContent>
       </Dialog>
 
