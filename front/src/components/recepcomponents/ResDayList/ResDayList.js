@@ -52,7 +52,6 @@ const ResDayList = (props) => {
           "/day/" +
           `${selectedDay}`
       )
-      // axios.get()
       .then((response) => {
         const responseData = response.data;
         setIsDisabled(responseData.length === 0); // Update isDisabled based on the fetched appointments
