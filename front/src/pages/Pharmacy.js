@@ -108,7 +108,6 @@ const handleWeight = (index,data,priceData) => {//update the weight
   let unitPrice=0
   priceData.forEach((el)=>{
     if(el.weight===data){
-      console.log(el)
       unitPrice=parseInt(el.price)
     }
   })
@@ -119,12 +118,23 @@ const handleWeight = (index,data,priceData) => {//update the weight
   )
 }
 const handleAmount = (index,data)=>{//update the drug amount
+  let tmp=parseInt(data)
+  tmp=isNaN(tmp)||tmp<0?0:tmp
   setDrugBill(prev =>
     prev.map((item, i) =>
-      i === index ? { ...item, Amount:data } : item
+      i === index ? { ...item, Amount:tmp } : item
     )
   )
 }
+
+useEffect(()=>{//To calculate total ----------------------------
+  let t=0
+  drugBill.forEach((el,ind)=>{
+    t=t+parseInt(el.Amount)*parseInt(el.price)
+  })
+  setTotal(t)
+},[drugBill])
+
 
    const data=[
     {
@@ -295,7 +305,7 @@ const handleAmount = (index,data)=>{//update the drug amount
          Data.map((elm,ind)=>{
             return(
              <>
-              <Sideunit_Bill key={ind} id={elm.id} name={elm.name} time={elm["time"]}  setSelect={setSelect} selected={elm.id==select?true:''}></Sideunit_Bill>
+              <Sideunit_Bill key={ind} id={elm.id} name={elm.name} time={elm["time"]}  setSelect={setSelect} selected={elm.id===select?true:''}></Sideunit_Bill>
              </>
             )
          })
@@ -353,6 +363,7 @@ const handleAmount = (index,data)=>{//update the drug amount
         size='small'
         sx={{'& > :not(style)': { m: 0, width: '10ch',ml:'120px'}}} 
         label="Amount" 
+        type='number'
         value={drugBill[no].Amount}
         variant="outlined"   
         onChange={(e)=>handleAmount(no,e.target.value)}
@@ -372,7 +383,7 @@ const handleAmount = (index,data)=>{//update the drug amount
       {/* ---- Total value without service charge  ------------------------------------*/}
         <Box style={{ textAlign: 'right',width:'800px'}}>
           <Divider sx={{mt:'10px',width:'100%',ml:'20px',mb:'10px'}} />
-          <Typography sx={{fontWeight:'bold'}}>195.00</Typography>
+          <Typography sx={{fontWeight:'bold'}}>{total}</Typography>
         </Box>
       
       
@@ -387,7 +398,7 @@ const handleAmount = (index,data)=>{//update the drug amount
        </Box>
        <Box sx={{width:'800px',display:'flex',alignItems:'center'}}>
         <Typography sx={{fontSize:'20px',pl:'15px'}}>Total</Typography>
-        <Typography sx={{textAlign:'right',fontWeight:'bold',flex:2}}>495.00</Typography>
+        <Typography sx={{textAlign:'right',fontWeight:'bold',flex:2}}>{total+serviceCharge}</Typography>
        </Box>
 
       {/* ------------------- Confirmation         ------------------------------------*/}  
