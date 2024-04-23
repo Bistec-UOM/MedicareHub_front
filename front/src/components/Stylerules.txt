@@ -33,7 +33,8 @@ D. Navbar
 E. Error handle
     when a huge description recieves as an eror
 
-D . Doctor has to get also the patientId with the appointment (for analytics)
+F . Pharmacy has to check the prescription status before GET ()
+    After payment prescription status ---> paid
 
 ======================================================================
 ==============                 Migrations        =====================

@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip,ResponsiveContainer } from 'recharts';
 import { Box,FormGroup,FormControlLabel,Checkbox, Typography, Paper, Divider} from '@mui/material'
-
+import axios from 'axios';
+import { baseURL ,endPoints} from '../Services/Lab';
+import {Load} from '../components/Common'
 
 const Doctor_analytics = ({pId}) => {
 
@@ -167,8 +169,14 @@ const Doctor_analytics = ({pId}) => {
   }
 
   useEffect(()=>{
-    listDrugs(sample)
-    console.log(pId)
+    axios.get(`${baseURL+endPoints.ANALYTIC}?Id=${pId}`)
+    .then((res)=>{
+      console.log(res.data)
+      listDrugs(res.data)
+    })
+    .catch((er)=>{
+      console.log(er)
+    })
   },[])
 
   //scaling the date
@@ -282,7 +290,7 @@ done?<Box>
         ))}      
         </LineChart>
     </ResponsiveContainer>
-</Box>:''
+</Box>:<Load></Load>
 )
 }
 
