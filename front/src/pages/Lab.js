@@ -134,7 +134,6 @@ export default function Lab() {
       </SidebarTop>
       <SidebarList>
       {!RloadDone?<Load></Load>:''}
-      {Er?<Alert severity="error" variant='outlined'>Error occured</Alert>:''}
       {
          filteredData.map((elm)=>{
           if(elm.dateTime.includes(date)){

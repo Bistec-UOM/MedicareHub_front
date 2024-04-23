@@ -106,12 +106,12 @@ export default function CreateLabTemplate({setPage,setTload}) {
           reportFields:ar
         }
         console.log(T)
-/*         axios.post(baseURL+endPoints.TEMPLATE,T)
+        axios.post(baseURL+endPoints.TEMPLATE,T)
         .then(res=>{
           setTload([])//make test list empty to reload again
           setPage(2)
         })
-        .catch(er=>{console.log(er)}) */
+        .catch(er=>{console.log(er)})
       }
     
     

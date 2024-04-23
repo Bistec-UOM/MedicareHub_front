@@ -3,7 +3,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip,ResponsiveContain
 import { Box,FormGroup,FormControlLabel,Checkbox, Typography, Paper, Divider} from '@mui/material'
 
 
-const Doctor_analytics = () => {
+const Doctor_analytics = ({pId}) => {
 
   const [medList,setMedList]=useState([]);
   const [selectedMed, setSelectedMed] = useState([]);
@@ -168,7 +168,7 @@ const Doctor_analytics = () => {
 
   useEffect(()=>{
     listDrugs(sample)
-    console.log(data)
+    console.log(pId)
   },[])
 
   //scaling the date
@@ -258,19 +258,6 @@ done?<Box>
         </FormGroup>
       </Paper>
 
-      <Paper sx={{p:'5px',borderRadius:'0'}}>
-        <Typography sx={{fontSize:'16px',color:'grey',fontWeight:'bold'}}>Lab tests</Typography>
-        <Divider></Divider>
-        <FormGroup >
-        {medList.map((el,ind) => (
-              ind===2?<FormControlLabel
-                key={el}
-                control={<Checkbox size='small' sx={{height:'20px'}} style={{ color: col[el] }} checked={selectedMed.includes(el)} onChange={() => handleMedToggle(el)} />}
-                label={<Typography sx={{fontSize:'14px'}}>{el}</Typography>}
-              />:''
-            ))}
-        </FormGroup>
-      </Paper>
     </Box>
 
 
