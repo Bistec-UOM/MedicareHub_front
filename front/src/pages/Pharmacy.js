@@ -25,6 +25,8 @@ export default function Pharmacy() {
   const selectedPrescription = select ? Data.filter(data => data.id === select) : [];
   const [drugDetail,setDrugDetail]=useState(null)//final drug data to be rendered
   const [drugBill,setDrugBill]=useState([])//final drug bill details
+  const [serviceCharge,setServiceCharge]=useState(300)
+  const [total,setTotal]=useState(0)//store the calculated total
 
   useEffect(()=>{
     if(select!==null){
@@ -37,7 +39,6 @@ export default function Pharmacy() {
           obj[0].medicine.forEach((elm,ind)=>{
             elm.detail=res[elm.name]
           })
-          console.log(selectedPrescription[0])
           //getting ready the drugBill array, format to be sent to backend
           let arr=[]
           let unit={}
@@ -62,12 +63,12 @@ export default function Pharmacy() {
   },[select])
 
   
-  useEffect(()=>{//initial data loading------------------------------------------
+  useEffect(()=>{//initial data loading------------------------------------------------------
     document.body.style.margin = '0';
     getData();
    },[]) 
 
-  const getData = () => {
+  const getData = () => {//get the prescriptions list to the side bar--------------------------
     axios.get(baseURL+endPoints.DRUGREQUEST)
       .then((response) => {
        SetData(response.data)
@@ -103,14 +104,6 @@ export default function Pharmacy() {
     setSnackbarOpen(true);
   };
   
-  const dividerStyle = {
-    backgroundColor: '#0099cc',
-    height: '2px',
-    width:'230px', // Adjust height as needed
-    marginLeft: '550px', // Remove default margin
-  };
-
-
 const handleWeight = (index,data,priceData) => {//update the weight
   let unitPrice=0
   priceData.forEach((el)=>{
@@ -330,19 +323,19 @@ const handleAmount = (index,data)=>{//update the drug amount
 
 {drugDetail!=null?drugDetail.medicine.map((drug, no) => (           
   <Box key={no} sx={{mt:"10px"}}>
-        {/*-----------------    Blue lable (prescript drug)  ----------------------------------------*/}
-        <Card sx={{ backgroundColor: '#0099cc',display:'flex',flexDirection:'row', color: 'white', fontSize: '20px',width:"500px",marginLeft:"10px"}}>
+    {/*-----------------    Blue lable (prescript drug)  ----------------------------------------*/}
+    <Card sx={{ backgroundColor: '#0099cc',display:'flex',flexDirection:'row', color: 'white', fontSize: '20px',width:"500px",marginLeft:"10px"}}>
                 <Typography gutterBottom variant="p" sx={{ flex:'3',marginLeft: '10px', }}>{drug.name}</Typography>
-                <Typography gutterBottom variant="p" sx={{flex:'2', marginLeft: '110px ',  }}>{drug.quantity} mg</Typography>
+                <Typography gutterBottom variant="p" sx={{flex:'2', marginLeft: '100px ',  }}>{drug.quantity} mg</Typography>
                 <Typography gutterBottom variant="p" sx={{ flex:'1',marginLeft: '150px', }}>{drug.hour}</Typography>
-        </Card>   
+    </Card>   
         
-    {/*Drop down list for drug weights ---------------------------------------------------------------*/}
-    <Box key={no} sx={{marginTop:"10px"}}>
-    <FormControl sx={{ m: 0, minWidth: 120 ,marginLeft: '200px',}} size="large" marginTop="20px">
+    {/*-----------------    Drop down list for drug weights    ------------------------------------*/}
+    <Box key={no} sx={{marginTop:"10px",width:'800px',display:'flex',alignItems:'center'}}>
+    <FormControl sx={{ m: 0, minWidth: 120 ,ml: '200px'}} size="small" marginTop="20px">
       <InputLabel id="demo-select-small-label">weight</InputLabel>
       <Select
-        sx={{ borderColor:"0099cc", }}
+        sx={{ borderColor:"0099cc"}}
         value={drugBill[no].weight}
         label="weight"
         onChange={(e)=>handleWeight(no,e.target.value,drug.detail)}
@@ -357,15 +350,16 @@ const handleAmount = (index,data)=>{//update the drug amount
     
     {/* Input field for entering the amount of phills---------------------------------------------*/}
       <TextField  
-        sx={{'& > :not(style)': { m: 0, width: '10ch' ,marginLeft: '100px '},}} 
+        size='small'
+        sx={{'& > :not(style)': { m: 0, width: '10ch',ml:'120px'}}} 
         label="Amount" 
         value={drugBill[no].Amount}
         variant="outlined"   
         onChange={(e)=>handleAmount(no,e.target.value)}
       />
       
-      <Typography gutterBottom  sx={{ marginLeft: '45px ',display:'inline',color:'grey',textAlign:'right'}}>{drugBill[no].price}</Typography>
-      <Typography gutterBottom  sx={{ marginLeft: '90px ', display:'inline',fontWeight:'bold',verticalAlign:'right'}}>{parseInt(drugBill[no].price)*parseInt(drugBill[no].Amount)}</Typography>
+      <Typography gutterBottom  sx={{ marginLeft: '45px ',display:'inline',color:'grey',textAlign:'right',flex:2}}>{drugBill[no].price}</Typography>
+      <Typography gutterBottom  sx={{ marginLeft: '90px ', display:'inline',fontWeight:'bold',textAlign:'right',flex:2}}>{parseInt(drugBill[no].price)*parseInt(drugBill[no].Amount)}</Typography>
       
     </Box> 
   </Box>)):''}
@@ -374,29 +368,35 @@ const handleAmount = (index,data)=>{//update the drug amount
         <Typography gutterBottom variant="p"></Typography>
       )}
       {select && (         // used for not visible this in page untill click
-          <div>
-            <div style={{ textAlign: 'right' }}>
-            <Divider style={dividerStyle} />
-            <Typography sx={{marginRight:'237px',}}><b>195.00</b></Typography>
-          </div>
+        <div >
+      {/* ---- Total value without service charge  ------------------------------------*/}
+        <Box style={{ textAlign: 'right',width:'800px'}}>
+          <Divider sx={{mt:'10px',width:'100%',ml:'20px',mb:'10px'}} />
+          <Typography sx={{fontWeight:'bold'}}>195.00</Typography>
+        </Box>
       
       
-       <Card sx={{marginTop:'2px',marginLeft:'6px',}}>
-       <Grid container spacing={2}>
-       <Grid item xs={8}>
-        <Typography>Service charge
-        <IconButton aria-label="edit" color='secondary'
-        sx={{color:'#CFDB1A'}}onClick={handleOpen}>
-      <EditIcon />
-    </IconButton >
+      {/* ---- Service charge and Total          ------------------------------------*/}
+       <Box sx={{marginTop:'2px',display:'flex',width:'800px',alignItems:'center'}}>
+        <Typography sx={{pl:'15px'}}>Service charge
+              <IconButton sx={{cursor:'pointer'}} onClick={handleOpen}>
+              <EditIcon size='small'/>
+              </IconButton >
         </Typography>
-      </Grid>
-      <Grid item xs={4}>
-        <Typography sx={{ marginLeft: '23px ', }}><b>300.00</b></Typography>
-      </Grid>
-       
-    </Grid>
-       </Card>
+        <Typography sx={{ marginLeft: '23px ',flex:2,textAlign:'right',color:'grey'}}>+{serviceCharge}</Typography>
+       </Box>
+       <Box sx={{width:'800px',display:'flex',alignItems:'center'}}>
+        <Typography sx={{fontSize:'20px',pl:'15px'}}>Total</Typography>
+        <Typography sx={{textAlign:'right',fontWeight:'bold',flex:2}}>495.00</Typography>
+       </Box>
+
+      {/* ------------------- Confirmation         ------------------------------------*/}  
+      <Box style={{ textAlign: 'right', marginTop: '20px', marginBottom: '20px' }}>
+          <PrintIcon sx={{mr:'30px'}} size="small" />
+          <Button variant="contained" sx={{ backgroundColor: '#00cca3',marginRight: '220px' }}onClick={handleConfirmDialogOpen}>Confirm
+          </Button>
+      </Box>
+
        <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Edit Service Charge</DialogTitle>
         <DialogContent>
@@ -409,16 +409,8 @@ const handleAmount = (index,data)=>{//update the drug amount
           <Button onClick={handleClose} color="primary">Save</Button>
         </DialogActions>
       </Dialog>
-       <div style={{ textAlign: 'right' }}>
-      <Typography sx={{marginRight:'237px',}}><b>495.00</b></Typography>
-    </div>
     
-    <div style={{ textAlign: 'right', marginTop: '20px', marginBottom: '20px' }}>
-    <PrintIcon sx={{ width: '60px', height: '50px', marginRight: '30px' }} />
-    <Button variant="contained" sx={{ backgroundColor: '#00cca3',marginRight: '220px' }}onClick={handleConfirmDialogOpen}>
-      Confirm
-    </Button>
-  </div>
+
   <Dialog open={confirmDialogOpen} onClose={handleConfirmDialogClose}>
         <DialogTitle>Confirm Action</DialogTitle>
         <DialogContent>
