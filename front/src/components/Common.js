@@ -75,7 +75,8 @@ const SearchBarSM=({onChange,value,placeholder})=> {
             zIndex:'10',
             display:'flex',
             alignItems:'baseline',
-            borderBottom:'1px solid grey'
+            borderBottom:'1px solid grey',
+            backgroundColor:'white'
           }} square
         >
             <PersonIcon sx={{alignSelf:'end',pb:'2px'}}></PersonIcon>

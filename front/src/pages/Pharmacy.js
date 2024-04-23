@@ -17,13 +17,14 @@ import { Sideunit_Bill } from '../components/sidebar/Sideunits';
 import MuiAlert from '@mui/material/Alert';
 import axios from 'axios';
 import { baseURL,endPoints } from '../Services/Pharmacy';
+import { PersonDetail } from '../components/Common';
 
 export default function Pharmacy() {
   const [select,setSelect]=useState(null)//current selected prescription id(patient)
   const [Data,SetData]=useState([])//Store incoming prescription details
   const selectedPrescription = select ? Data.filter(data => data.id === select) : [];
   const [drugDetail,setDrugDetail]=useState(null)//final drug data to be rendered
-  const [billDrug,setBillDrug]=useState([])//final drug bill details
+  const [drugBill,setDrugBill]=useState([])//final drug bill details
 
   useEffect(()=>{
     if(select!==null){
@@ -36,8 +37,22 @@ export default function Pharmacy() {
           obj[0].medicine.forEach((elm,ind)=>{
             elm.detail=res[elm.name]
           })
-          setDrugDetail(obj[0])
           console.log(selectedPrescription[0])
+          //getting ready the drugBill array, format to be sent to backend
+          let arr=[]
+          let unit={}
+          obj[0].medicine.forEach(()=>{
+            unit.PrescriptionId=obj[0].id
+            unit.DrugId=''
+            unit.Amount=0
+            unit.weight=''
+            unit.price=0
+            arr.push(unit)
+            unit={}
+          })
+          setDrugBill(arr)
+          setDrugDetail(obj[0])
+          arr=[]
       })
       .catch(error => {
         setDrugDetail(null)//stop rendering in case of loading failure
@@ -62,13 +77,6 @@ export default function Pharmacy() {
       });
   }
 
-
-  const handleConfirmAction = () => { 
-    setConfirmDialogOpen(false);
-    setSnackbarOpen(true);
-  };
-  
-
   const [open, setOpen] = useState(false);
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -89,7 +97,12 @@ export default function Pharmacy() {
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
   };
-
+  
+  const handleConfirmAction = () => { 
+    setConfirmDialogOpen(false);
+    setSnackbarOpen(true);
+  };
+  
   const dividerStyle = {
     backgroundColor: '#0099cc',
     height: '2px',
@@ -98,11 +111,27 @@ export default function Pharmacy() {
   };
 
 
-const [selectedWeight, setSelectedWeight] = React.useState('');
-const [amount, setAmount] = React.useState('');
-
-const handleWeight = (event,no) => {
-};
+const handleWeight = (index,data,priceData) => {//update the weight
+  let unitPrice=0
+  priceData.forEach((el)=>{
+    if(el.weight===data){
+      console.log(el)
+      unitPrice=parseInt(el.price)
+    }
+  })
+  setDrugBill(prev =>
+    prev.map((item, i) =>
+      i === index ? { ...item, weight:data ,price:unitPrice} : item
+    )
+  )
+}
+const handleAmount = (index,data)=>{//update the drug amount
+  setDrugBill(prev =>
+    prev.map((item, i) =>
+      i === index ? { ...item, Amount:data } : item
+    )
+  )
+}
 
    const data=[
     {
@@ -283,16 +312,12 @@ const handleWeight = (event,no) => {
       </Grid>
 
       <Grid item xs={9} style={{height:'100%',overflowY:'scroll'}}>
+
+{/* =====================      Person details          ===========================================*/}        
       {select ? (
       <div style={{ position: 'sticky', top: 0, zIndex: 1000 }}>
-          {selectedPrescription.map((patientdata, id) => (       // name card dispaly in patient detail
-      <Card  key={id} sx={{ minWidth: 275 }}>
-        <CardContent>
-         <div> <Typography gutterBottom variant='h6'>{patientdata.name}</Typography></div>
-          <div><Typography gutterBottom variant='20px' sx={{color:"#8E8B8B"}}>{patientdata.age} years</Typography></div>
-          <div><Typography gutterBottom variant='20px'sx={{color:"#8E8B8B"}}>{patientdata.gender}</Typography></div>
-        </CardContent>
-      </Card>
+          {selectedPrescription.map((patientdata, id) => (       
+            <PersonDetail name={patientdata.name} age={patientdata.age} gender={patientdata.gender}></PersonDetail>
           ))}
       </div>
       ): 
@@ -300,51 +325,51 @@ const handleWeight = (event,no) => {
         <Typography gutterBottom variant="p"></Typography>
     ) }
       {select ? (
-      <div>
+      <div style={{marginTop:"80px"}}>
 {/* =====================      Rendering the drug list =============================================*/}
 
-    <div >
-      {drugDetail!=null?drugDetail.medicine.map((drug, no) => (           
-        <Grid key={no} container spacing={1} sx={{marginTop:"10px",}}>
-        <Grid item xs={12}>
+{drugDetail!=null?drugDetail.medicine.map((drug, no) => (           
+  <Box key={no} sx={{mt:"10px"}}>
         {/*-----------------    Blue lable (prescript drug)  ----------------------------------------*/}
         <Card sx={{ backgroundColor: '#0099cc',display:'flex',flexDirection:'row', color: 'white', fontSize: '20px',width:"500px",marginLeft:"10px"}}>
                 <Typography gutterBottom variant="p" sx={{ flex:'3',marginLeft: '10px', }}>{drug.name}</Typography>
                 <Typography gutterBottom variant="p" sx={{flex:'2', marginLeft: '110px ',  }}>{drug.quantity} mg</Typography>
                 <Typography gutterBottom variant="p" sx={{ flex:'1',marginLeft: '150px', }}>{drug.hour}</Typography>
         </Card>   
-        <Grid key={no} container spacing={1} sx={{marginTop:"10px"}}>
-      <Grid item xs={12}>
         
     {/*Drop down list for drug weights ---------------------------------------------------------------*/}
+    <Box key={no} sx={{marginTop:"10px"}}>
     <FormControl sx={{ m: 0, minWidth: 120 ,marginLeft: '200px',}} size="large" marginTop="20px">
       <InputLabel id="demo-select-small-label">weight</InputLabel>
       <Select
         sx={{ borderColor:"0099cc", }}
-        value={''}
+        value={drugBill[no].weight}
         label="weight"
-      >      
-     
+        onChange={(e)=>handleWeight(no,e.target.value,drug.detail)}
+      >           
+       {
+        drug.detail.map((elm,ind)=>{
+          return <MenuItem value={elm.weight}>{elm.weight} mg</MenuItem>
+        })
+      }
       </Select>
     </FormControl>
     
     {/* Input field for entering the amount of phills---------------------------------------------*/}
-      <TextField  sx={{
-        '& > :not(style)': { m: 0, width: '10ch' ,marginLeft: '100px '},
-      }} id="outlined-basic" label="Amount" variant="outlined" defaultValue={drug.value}  />
+      <TextField  
+        sx={{'& > :not(style)': { m: 0, width: '10ch' ,marginLeft: '100px '},}} 
+        label="Amount" 
+        value={drugBill[no].Amount}
+        variant="outlined"   
+        onChange={(e)=>handleAmount(no,e.target.value)}
+      />
       
-      <Typography gutterBottom variant="p" sx={{ marginLeft: '45px '}}>{drug.unit_price}</Typography>
-      <Typography gutterBottom variant="p" sx={{ marginLeft: '90px ', }}><b>{drug.fullprice}</b></Typography>
+      <Typography gutterBottom  sx={{ marginLeft: '45px ',display:'inline',color:'grey',textAlign:'right'}}>{drugBill[no].price}</Typography>
+      <Typography gutterBottom  sx={{ marginLeft: '90px ', display:'inline',fontWeight:'bold',verticalAlign:'right'}}>{parseInt(drugBill[no].price)*parseInt(drugBill[no].Amount)}</Typography>
       
-    </Grid>
-    </Grid> 
-        
-        </Grid>
-        </Grid> 
-      )):''}
-      </div>
-
-      </div>
+    </Box> 
+  </Box>)):''}
+</div>
        ) : (
         <Typography gutterBottom variant="p"></Typography>
       )}
