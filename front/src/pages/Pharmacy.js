@@ -31,6 +31,7 @@ export default function Pharmacy() {
   useEffect(()=>{
     if(select!==null){
       const genericNames = selectedPrescription[0].medicine.map(drug => drug.name);
+      console.log(genericNames)
       axios.post(baseURL+endPoints.MEDICINEDETAIL, genericNames)
       .then(response => {     
           //attach each the drug details requested from back to the corresponding drug in prescription
@@ -106,14 +107,16 @@ export default function Pharmacy() {
   
 const handleWeight = (index,data,priceData) => {//update the weight
   let unitPrice=0
+  let drugId=''
   priceData.forEach((el)=>{
     if(el.weight===data){
       unitPrice=parseInt(el.price)
+      drugId=el.id
     }
   })
   setDrugBill(prev =>
     prev.map((item, i) =>
-      i === index ? { ...item, weight:data ,price:unitPrice} : item
+      i === index ? { ...item, weight:data ,price:unitPrice,DrugId:drugId} : item
     )
   )
 }
