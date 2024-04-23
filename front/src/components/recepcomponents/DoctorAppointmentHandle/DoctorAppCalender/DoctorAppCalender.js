@@ -193,6 +193,7 @@ const DoctorAppCalender = ({ doctorId }) => {
       .getSeconds()
       .toString()
       .padStart(2, "0")}${millisecondsPart}`;
+      console.log("Hello world");
     if (!getDayStatus(formattedDate)) {
       if (selectedMonth === currentMonth) {
         navigate("/dappList", {

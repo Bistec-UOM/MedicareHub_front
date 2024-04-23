@@ -100,7 +100,7 @@ body > div.MuiDrawer-root.MuiDrawer-modal.MuiModal-root.css-hjb2rp-MuiModal-root
 
 .blocked-date {
   pointer-events: none;
-  opacity: 0.3; /* Apply visual indication for blocked dates */
+  opacity: 0.3; 
   background-color: rgb(165, 225, 202);
   
 }
