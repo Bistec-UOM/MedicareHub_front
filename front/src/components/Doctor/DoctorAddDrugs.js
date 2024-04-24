@@ -75,7 +75,7 @@ export default function DoctorAddDrugs(props) {
             {...params}
             label="Search"
             variant="outlined"
-            size="small" // Decrease the size of TextField
+            size="small" 
             sx={{ width: '100%', fontSize: '14px' }}            
             InputProps={{
                 ...params.InputProps,
@@ -132,6 +132,7 @@ export default function DoctorAddDrugs(props) {
     
                           </Card>
                         </Grid>
+       {/*........................................delete buttun for delete entered dugs................................................... */}
                         <Grid item xs={4}>
                             <DoNotDisturbOnIcon sx={{ color: 'red', marginLeft: '5px', fontSize: '30px', float: 'Left',cursor: 'pointer' }} onClick={() => handleDeleteDrug(index)} />
                         </Grid>
