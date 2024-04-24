@@ -44,7 +44,6 @@ const SearchPatientPage = (props) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-       // const response = await fetch(`https://localhost:7205/api/Appointment/patients`);
         const response = await fetch(baseURL+endPoints.PatientList);
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -53,11 +52,17 @@ const SearchPatientPage = (props) => {
         setPatientList(responseData);
         setRloadDone(true);
       } catch (err) {
-        handleNotification(err.response.data,"error");
-        setRloadDone(true);   
+        if(err.hasOwnProperty('response'))
+        {
+          handleNotification(err.response.data,"error");
+          setRloadDone(true); 
+        }
+        else{
+          console.log(err);
+        }
+         
       }
     };
-  
     fetchData();
   }, [patientCount]);
   

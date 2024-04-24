@@ -20,6 +20,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateField } from "@mui/x-date-pickers/DateField";
 import axios from "axios";
+import { baseURL,endPoints } from "../../../Services/Appointment";
 const PatientRegpopup = ({
   handleNotification,
   regopen,
@@ -153,7 +154,8 @@ const PatientRegpopup = ({
 
       try {
         await axios.post(
-          "https://localhost:7205/api/Appointment/patients",
+         // "https://localhost:7205/api/Appointment/patients",
+         baseURL+endPoints.PatientList,
           obj
         );
         setPatientCount(patientCount + 1);
@@ -179,12 +181,14 @@ const PatientRegpopup = ({
     <React.Fragment>
       <Dialog open={regopen} onClose={handleClose}>
         <form autoComplete="false" onSubmit={handleSubmit}>
+          <Box>
           <DialogTitle
             sx={{
               backgroundColor: "rgb(222, 244, 242)",
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
+             
              
             }}
           >
@@ -193,6 +197,7 @@ const PatientRegpopup = ({
                 display: "flex",
                 width: "90%",
                 justifyContent: "center",
+                
                
               }}
             >
@@ -209,6 +214,9 @@ const PatientRegpopup = ({
               <CloseIcon onClick={handleAddClose} />
             </IconButton>
           </DialogTitle>
+
+          </Box>
+          
           <DialogContent>
             <TextField
               //error={nameHelper && nameHelper.length ?true:false}

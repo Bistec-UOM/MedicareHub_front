@@ -4,7 +4,7 @@
     border-color: #080707 !important;
     border-left-style: solid;
     border-left-width: 5px;
-    height: 55px !important;
+    height: 80px !important;
 }
 .css-1u4zpwo-MuiSvgIcon-root-MuiStepIcon-root.Mui-active,
 .css-1u4zpwo-MuiSvgIcon-root-MuiStepIcon-root
@@ -12,3 +12,4 @@
     color:#3B877A!important
 }
 
+/* height 55 for steper.css and height 80 for stepDoctor.css */

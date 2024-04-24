@@ -15,4 +15,12 @@ const setHeaders=()=>{
   return tmp
 }
 
-export { baseURL,endPoints,setHeaders};
+const deleteLog=()=>{ //delete existing token
+  if(localStorage.getItem('medicareHubToken'))
+  {
+    localStorage.removeItem('medicareHubToken')
+  }
+}
+
+
+export { baseURL,endPoints,setHeaders,deleteLog};

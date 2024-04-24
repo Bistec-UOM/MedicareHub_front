@@ -15,12 +15,12 @@ export default function LabRequest(props) {
   const Labs = [ 
   { TestId: 1, labTestName: 'Full Blood Count' },
   { TestId: 2, labTestName: 'Urine Analysis' },
-  {  TestId:3,labTestName:'Blood Glucose Test'},
+  { TestId:3,labTestName:'Blood Glucose Test'},
   { TestId: 4, labTestName: '	Liver Function Test' },
   {TestId: 5, labTestName: 'Kidney Function Test' },
   {TestId: 6, labTestName: 'Electrolyte Panel' },
   {TestId: 7, labTestName: 'Lipid Profile' },
-  { TestId: 8, labTestName: 'Thyroid Function Test' }];
+  { TestId: 24, labTestName: 'Thyroid Function Test' }];
     
   const handleClose = () => {
     setOpenpopBox(false);   

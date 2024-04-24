@@ -3,9 +3,9 @@ import Box from "@mui/material/Box";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
-import "./steper.css";
+import "./steperDoctor.css";
 
-export default function Steper(props) {
+export default function StepDoctor(props) {
   function getStartTime(dateTimeString) {
     const dateTime = new Date(dateTimeString);
 
@@ -52,7 +52,7 @@ export default function Steper(props) {
   };
 
   return (
-    <Box>
+    <Box >
       <Stepper orientation="vertical" activeStep={0}>
         {props.items &&
           props.items
@@ -64,13 +64,13 @@ export default function Steper(props) {
                     .includes(props.search.toLowerCase());
             })
             .map((label) => (
-              <Step key={label.appointment.id}>
+              <Step  key={label.appointment.id}>
                 <StepLabel
                   sx={{
                     opacity: findOpacityStatus(label.appointment?.status)
                       ? 0.5
                       : 1,
-                      height:'55px'
+                     
                   }}
                 >
                   {getStartTime(label.appointment?.dateTime)}-{" "}

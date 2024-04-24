@@ -4,6 +4,8 @@ import axios from 'axios';
 import SuccessNotification from '../recepcomponents/SnackBar/SuccessNotification';
 import { baseURL, endPoints } from '../../Services/Admin';
 import SearchGraph from './AnalyticsComponents.js/SearchGraph';
+import ExportDefaultToolbar from './AnalyticsComponents.js/DrugTable';
+import ToolbarGrid from './AnalyticsComponents.js/DrugTable';
 
 
 const ADrugs = () => {
@@ -24,8 +26,8 @@ const ADrugs = () => {
       })
       .catch(err => {
         if (err.message === 'Network Error') { 
-          console.error('You are not connected to internet');
-          setNotiMessage("You are not connected to internet");
+          console.error('You are not connected');
+          setNotiMessage("You are not connected");
           settypenoti('error')
           setNotificationOpen(true);
       } else {
@@ -154,52 +156,25 @@ let graph = {
   y: 'quantity',
   var:'select a drug'
 };
-  return (
-    <div>
-      <Grid container spacing={3}>
-        <Grid item xs={4}>
-          <Paper style={{ textAlign: 'center', height: '35vh', paddingTop: "6%" }} >
-            <Typography fontSize={25}>Most Used Drug(last 30 days)</Typography>
-            <Typography fontSize={30}sx={{marginTop:4}}>{loading ? 'Loading...' : mostUsedDrug}</Typography>
-          </Paper>
-        </Grid>
-        <Grid item xs={8} style={{textAlign:'right'}}>
-        
-<SearchGraph uniqueModelTypes={uniqueDrugTypes} selectModelType={selectDrugType} Value={Value} graph={graph} handleChange={handleChange} ModelData={DrugData}></SearchGraph>
-
-
-        </Grid>
+return (
+  <div>
+    <Grid container spacing={3}>
+      <Grid item xs={12} sm={6} md={4}>
+        <Paper style={{ textAlign: 'center', height: '35vh', paddingTop: "6%" }} >
+          <Typography fontSize={25}>Most Used Drug(last 30 days)</Typography>
+          <Typography fontSize={30} sx={{marginTop:4}}>{loading ? 'Loading...' : mostUsedDrug}</Typography>
+        </Paper>
       </Grid>
-      <Grid>
-      <Paper sx={{margin:'20px'}}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell align='center' sx={{ fontWeight: 'bold' }}>Name</TableCell>
-          <TableCell align='center' sx={{ fontWeight: 'bold' }}>Available count</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <TableRow
-              key={row.name}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-              <TableCell align='center' component="th" scope="row">
-                {row.name}
-              </TableCell>
-              <TableCell align="center">{row.available}</TableCell>
-
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-      </Paper>
+      <Grid item xs={12} sm={6} md={8} style={{textAlign:'right'}}>
+        <SearchGraph uniqueModelTypes={uniqueDrugTypes} selectModelType={selectDrugType} Value={Value} graph={graph} handleChange={handleChange} ModelData={DrugData}></SearchGraph>
       </Grid>
-
-      <SuccessNotification setNotificationOpen={setNotificationOpen} notiMessage={notiMessage} notificationOpen={notificationOpen} type={typenoti}></SuccessNotification>
-    </div>
-  );
+    </Grid>
+    <Grid>
+        <ToolbarGrid data={rows}/>
+    </Grid>
+    <SuccessNotification setNotificationOpen={setNotificationOpen} notiMessage={notiMessage} notificationOpen={notificationOpen} type={typenoti}></SuccessNotification>
+  </div>
+);
 }
 
 export default ADrugs;

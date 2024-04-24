@@ -6,6 +6,7 @@ import Button from "@mui/material/Button";
 import { Box } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import ErrorIcon from "@mui/icons-material/Error";
+import { baseURL,endPoints } from "../../../Services/Appointment";
 
 export default function AllAppDeletePopup({
   selectedDay,
@@ -23,7 +24,8 @@ export default function AllAppDeletePopup({
   const handleRealAllDelete = () => {
     axios
       .delete(
-        `https://localhost:7205/api/Appointment/doctor/${docid}/day/${selectedDay}`
+        baseURL+endPoints.AppDay+`${docid}`+"/day/"+`${selectedDay}`
+
       )
       .then((response) => {
         setDelcount(delcount + 1);

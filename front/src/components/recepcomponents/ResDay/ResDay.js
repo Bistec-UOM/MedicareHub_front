@@ -47,7 +47,7 @@ function ResDay() {
   };
  const [renderVal,setRenderVal]=useState(false);  //variable for conditional rendering of daylist app and patientSearchPage
  const [dayAppTotal,setDayAppTotal]=useState(0);  //total app count of the selected day
- const [docid,setDocid]=useState(doctorid)
+ const [docid,setDocid]=useState(doctorid);
  const [filteredAppointments, setFilteredAppointments] = useState([]);  //list for storing appointment 
  const [search,setSearch]=useState("")  //for storing search text of doctors
   const drawer = (
@@ -76,13 +76,6 @@ function ResDay() {
                 <div
                 key={index}
                 onClick={() => setSelectedTab(item.id)}
-                style={{
-                  backgroundColor: docid === item.id ? '#79CCBE' : 'transparent',
-                   padding: '10px',
-                   margin: '5px',
-                  cursor: 'pointer',
-                  borderRadius:'8px'
-                }}
               >
                 <Sideunit_Doctor selectedTab={docid} name={item.fullName} title={item.qualifications} index={item.id} key={index}></Sideunit_Doctor>
               </div> 

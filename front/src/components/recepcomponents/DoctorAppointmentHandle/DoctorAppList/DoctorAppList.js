@@ -9,7 +9,7 @@ import {
   Hidden,
 } from "@mui/material";
 import SearchBar from "../../Searchbar/Searchbar";
-import Steper from "../../Setper/Steper";
+import StepDoctor from "../SetperDoctor/SteperDoctor";
 import "../../../../recep.css";
 import SuccessNotification from "../../SnackBar/SuccessNotification";
 import axios from "axios";
@@ -48,7 +48,6 @@ const DoctorAppList = (props) => {
 
   const handleBlockDay = () => {
     setDocDayBlockPopup(true);
-    console.log("inside block");
   };
 
   var location = useLocation();
@@ -166,7 +165,7 @@ const DoctorAppList = (props) => {
             marginTop: { xs: "50%", sm: "20%", md: "7%" },
           }}
         >
-          <Steper search={search} items={filteredAppointments}></Steper>
+          <StepDoctor search={search} items={filteredAppointments}></StepDoctor>
         </Box>
 
         {

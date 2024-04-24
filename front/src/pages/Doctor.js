@@ -203,7 +203,7 @@ const filteredAppointments = showDonePatients ? appointments.filter(appointment 
                            <CardContent>
                              <AudioFileIcon sx={{ color: 'rgb(0, 153, 255)', float: 'right', marginRight: '10px', fontSize: '30px', cursor: 'pointer', }} onClick={handleAddIconClick} />
                              <UpdateIcon sx={{ color: 'rgb(255, 153, 0)', float: 'right', marginRight: '10px', fontSize: '30px', cursor: 'pointer', }} onClick={handleViewReporsClick} />
-                             <AnaliticalReports openAreports={openAreports} setOpenAreports={setOpenAreports} />
+                             <AnaliticalReports openAreports={openAreports} setOpenAreports={setOpenAreports} pId={selectedAppointment[0].patient.id}/>
                              <>
                              <Typography gutterBottom variant="h6">{selectedAppointment[0].patient.name}</Typography>
                              <Typography gutterBottom variant="p" sx={{ color: '#808080' }}>{selectedAppointment[0].patient.age} years</Typography><br />

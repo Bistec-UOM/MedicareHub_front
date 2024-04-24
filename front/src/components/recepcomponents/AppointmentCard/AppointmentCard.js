@@ -12,6 +12,7 @@ import AppDeletePopup from "../AppDeletePopup/AppDeletePopup";
 import AppEditPopup from "../AppEditPopup/AppEditPopup";
 import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
 import BlockRoundedIcon from "@mui/icons-material/BlockRounded";
+import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 
 const AppointmentCard = ({
   selectedDay,
@@ -53,7 +54,7 @@ const AppointmentCard = ({
         <CheckCircleRoundedIcon color="success" sx={{ fontSize: "38px" }} />
       );
     } else if (item.appointment.status == "cancelled") {
-      return <BlockRoundedIcon color="warning" sx={{ fontSize: "38px" }} />;
+      return <CancelOutlinedIcon color="warning" sx={{ fontSize: "38px" }} />;
     }
   };
 
@@ -95,8 +96,7 @@ const AppointmentCard = ({
           }}
         >
           <Stack direction={"column"}>
-            <CardContent sx={{ display: "flex" }}>
-             
+            <CardContent sx={{ display: "flex" }}> 
               <Grid container>
                 <Grid item xs={12} sm={6}>
                   <Stack

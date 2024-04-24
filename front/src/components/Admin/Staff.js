@@ -1,4 +1,4 @@
-import {Paper,Typography,Button} from "@mui/material";
+import {Paper,Typography,Button, Avatar, Box, Grid} from "@mui/material";
 import * as React from "react";
 import { useState,useEffect } from "react";
 import axios from "axios";
@@ -7,6 +7,7 @@ import SuccessNotification from "../recepcomponents/SnackBar/SuccessNotification
 import EditUserDialog from "./DialogComponents/EditUserDialog";
 import { baseURL, endPoints } from "../../Services/Admin";
 import AddUserDialog from "./DialogComponents/AddUserDialog";
+import Skeleton from '@mui/material/Skeleton';
 
 
 
@@ -45,7 +46,8 @@ useEffect(() => {
       gender: "",
       role:"",
       qualifications:"",
-      password:""
+      password:"",
+      imageUrl:""
     });
   }
 }, [open,editOpen]);
@@ -62,7 +64,9 @@ useEffect(() => {
       gender: "",
       role:"",
       qualifications:"",
-      password:""
+      password:"",
+      imageUrl:""
+
     });
   }
 }, [open]);
@@ -79,7 +83,9 @@ const [formErrors, setFormErrors] = useState({
   gender: "",
   role:"",
   qualifications:"",
-  password:""
+  password:"",
+  imageUrl:""
+
 });
   const [formData, setFormData] = useState({
     id:0,
@@ -93,7 +99,9 @@ const [formErrors, setFormErrors] = useState({
     gender: "",
     role:"",
     qualifications:"",
-    password:""
+    password:"",
+    imageUrl:""
+
   });
   const [update,forceUpdate]=useState(0);
   useEffect(() => {
@@ -130,6 +138,7 @@ const [formErrors, setFormErrors] = useState({
     qualifications:formData.qualifications,
     password:formData.password,
     role:formData.role,
+    imageUrl:formData.imageUrl
   };
 
 const [Role, setRole] = useState("");
@@ -160,7 +169,7 @@ const [Role, setRole] = useState("");
 
   const handleEditClickOpen = (row2) => {
     // setType(`Edit ${buttonNumber}`);
-    setFormData({...formData,id: row2.id, name: row2.name,role:row2.role, fullName: row2.fullName, nic: row2.nic,address: row2.address,contactNumber:row2.contactNumber,email:row2.email,dob:row2.dob,gender:row2.gender,qualifications:row2.qualifications,password:row2.password});
+    setFormData({...formData,id: row2.id, name: row2.name,role:row2.role, fullName: row2.fullName, nic: row2.nic,address: row2.address,contactNumber:row2.contactNumber,email:row2.email,dob:row2.dob,gender:row2.gender,qualifications:row2.qualifications,password:row2.password,imageUrl:row2.imageUrl});
 console.log(pData)
     // setSelectedPaper(row2);
     setEditOpen(true);
@@ -285,7 +294,8 @@ const RoleFields = ["Doctor", "Receptionist", "Lab Assistant", "Cashier"];
   </Button>
 </Paper>
 {/* recep Paper */}
-{row2.filter(row2=>row2.role === rolefild).map((row2)=>
+{row2.filter(row2 => row2.role === rolefild).length > 0 ? (
+  row2.filter(row2 => row2.role === rolefild).map((row2) =>
 
 //role data in here
 <Paper
@@ -301,6 +311,18 @@ key={row2.Id}
   }}
   onClick={() => handleEditClickOpen(row2)} // Open the edit window when clicking on the paper
 >
+ <Box sx={{display:'flex'}}>
+      
+<Box sx={{ display: 'flex', alignItems: 'center' }}>
+  <Avatar
+    alt="Remy Sharp"
+    src={row2.imageUrl}
+    sx={{ width:50, height:50 }}
+  />
+  {/* <Box sx={{ marginLeft: 3 }}> Add some left margin to the text */}
+    
+  </Box>
+  <Grid sx={{ display: 'flex', flexDirection: 'column',marginLeft:3 }}>
   <Typography variant="h6" sx={{ paddingTop: 0.75 }}>
     {row2.fullName}
   </Typography>
@@ -320,7 +342,17 @@ key={row2.Id}
   >
     {row2.role}
   </Typography>
-</Paper>)}
+</Grid>
+  
+ </Box>
+{/* </Box> */}
+</Paper>
+
+)):(
+  <>
+    <Skeleton variant="rectangular" height={70} sx={{margin:1,borderRadius:2}} />
+    <Skeleton variant="rectangular" height={70} sx={{margin:1,borderRadius:2}} />
+  </>)}
 </div>
 
  ))}  

@@ -1,4 +1,4 @@
-import { AppBar, Toolbar } from "@mui/material";
+import { AppBar, Avatar, Toolbar } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Typography from "@mui/material/Typography";
 import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
@@ -12,9 +12,10 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from 'react-router-dom'
+import { deleteLog } from "../../../Services/Auth";
 
 const ResNavBar = ({ isClosing, setMobileOpen, mobileOpen }) => {
-  const [profile,SetProfile]=useState({Name:"Profile",Role:"Empty"})
+  const [profile,SetProfile]=useState({Name:"Profile",Role:"Empty",Image:""})
   const drawerWidth = 358.4;
   
   //drop down menu
@@ -37,7 +38,7 @@ const ResNavBar = ({ isClosing, setMobileOpen, mobileOpen }) => {
 
   const navigate=useNavigate()
   const handleDelete=()=>{
-    localStorage.removeItem('medicareHubToken');
+    deleteLog()
     handleClose()
     navigate('/')
   }
@@ -47,7 +48,8 @@ const ResNavBar = ({ isClosing, setMobileOpen, mobileOpen }) => {
     if(tmp!==null){
       SetProfile({
         Name:jwtDecode(localStorage.getItem('medicareHubToken')).Name,
-        Role:jwtDecode(localStorage.getItem('medicareHubToken')).Role
+        Role:jwtDecode(localStorage.getItem('medicareHubToken')).Role,
+        Image:jwtDecode(localStorage.getItem('medicareHubToken')).Profile
       })
     }
   },[])
@@ -99,16 +101,28 @@ const ResNavBar = ({ isClosing, setMobileOpen, mobileOpen }) => {
             <Typography color="#030303" >{profile.Name}</Typography>
             <Typography color="#AFADAD" sx={{fontSize:'12px',textAlign:'right'}}>{profile.Role}</Typography>
           </div>
-          <IconButton
-            size="large"
+          {
+            profile.Name==="Profile"?
+          <Avatar
             aria-label="account of current user"
             aria-controls="menu-appbar"
             aria-haspopup="true"
             onClick={handleMenu}
-            color="black"
+            sx={{ml:'5px',cursor:'pointer'}}
           >
             <AccountCircle />
-          </IconButton>
+          </Avatar>:
+          <Avatar
+            aria-label="account of current user"
+            aria-controls="menu-appbar"
+            aria-haspopup="true"
+            onClick={handleMenu}
+            sx={{ml:'5px',cursor:'pointer'}}
+            src={profile.Image}
+            >
+          </Avatar>
+          }
+
 
 
           <Menu

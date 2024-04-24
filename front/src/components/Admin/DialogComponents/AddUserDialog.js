@@ -1,4 +1,4 @@
-import {Typography,Button,Dialog,DialogTitle,DialogContent,DialogActions,TextField,FormControl,InputLabel,Select,MenuItem, Box} from "@mui/material";
+import {Typography,Button,Dialog,DialogTitle,DialogContent,DialogActions,TextField,FormControl,InputLabel,Select,MenuItem, Box, DialogContentText, Paper} from "@mui/material";
 import * as React from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
@@ -7,6 +7,11 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateField } from '@mui/x-date-pickers/DateField';
 import axios from "axios";
 import { baseURL,endPoints } from "../../../Services/Admin";
+import Avatar from '@mui/material/Avatar';
+import { useState } from "react";
+import DropBox from "./DropBox";
+import { useEffect } from "react";
+
 
 const AddUserDialog = ({ open, handleClose, handleInputChange, formErrors, Type,formData,row2,pData,setFormErrors,Role,settypenoti,setNotiMessage,setNotificationOpen,forceUpdate,setOpen }) => {
   const handleAddSaveClose = () =>{
@@ -99,8 +104,21 @@ const AddUserDialog = ({ open, handleClose, handleInputChange, formErrors, Type,
       }
     });
   };  
-  
+  const [dataUrl, setDataUrl] = useState(null);
+  useEffect(() => {
+    handleInputChange("imageUrl", dataUrl);
+  }, [dataUrl]);
+
+const [dropOpen, setdropOpen] = useState(false);
+const handleDropBoxOpen = () => { 
+  console.log('dropbox');
+  setdropOpen(true);
+}
+const handleDropBoxClose = () => { 
+  setdropOpen(false);
+}
   return (
+       <>
         <Dialog open={open} onClose={handleClose} >
         <DialogTitle
           sx={{
@@ -113,6 +131,12 @@ const AddUserDialog = ({ open, handleClose, handleInputChange, formErrors, Type,
           <CloseIcon onClick={handleClose} sx={{cursor:'pointer'}}/>
         </DialogTitle>
         <DialogContent>
+    <Avatar
+      onClick={handleDropBoxOpen}
+      alt="Remy Sharp"
+      src={dataUrl}
+      sx={{ width:130, height:130 ,margin:'auto'}}
+    />
           {/* Add form fields or other content here */}
           <TextField required label="Full Name" fullWidth sx={{mb:1}}  onChange={(e) => handleInputChange("fullName", e.target.value)} error={!!formErrors.fullName}helperText={formErrors.fullName}/>
           <TextField required label="Usual Name"  sx={{ mb: 1 }} onChange={(e) => handleInputChange("name", e.target.value)} error={!!formErrors.name} helperText={formErrors.name}/>
@@ -166,7 +190,15 @@ const AddUserDialog = ({ open, handleClose, handleInputChange, formErrors, Type,
             Add
           </Button>
         </DialogActions>
+
       </Dialog>
+      <Dialog open={dropOpen} onClose={handleDropBoxClose}>
+        <DialogContent>
+        <DropBox handleDropBoxClose={handleDropBoxClose} setDataUrl={setDataUrl} />
+          
+        </DialogContent>
+      </Dialog>
+      </>
     );
 }
 

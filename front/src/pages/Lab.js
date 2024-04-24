@@ -111,6 +111,7 @@ export default function Lab() {
       if(!found){setReqOk(false)}else{setReqOk(true)}//to not render previous req details
      },[date,tId,page,Tload,selectedT,RLoad,RloadDone])
 
+ 
 //Responsive drawer  ==================================================================================
  const drawerW=320
  const [mobileOpen, setMobileOpen] = useState(false)
@@ -133,7 +134,6 @@ export default function Lab() {
       </SidebarTop>
       <SidebarList>
       {!RloadDone?<Load></Load>:''}
-      {Er?<Alert severity="error" variant='outlined'>Error occured</Alert>:''}
       {
          filteredData.map((elm)=>{
           if(elm.dateTime.includes(date)){

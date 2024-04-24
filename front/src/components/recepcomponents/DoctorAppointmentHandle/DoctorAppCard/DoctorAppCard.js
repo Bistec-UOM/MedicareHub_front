@@ -14,6 +14,7 @@ import MarkAsCompleted from "../MarkAsCompletedPopup/MarkAsCompleted";
 import AppCancelPopup from "../AppCancelPoplup/AppCancelPopup";
 import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
 import BlockRoundedIcon from "@mui/icons-material/BlockRounded";
+import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 
 const DoctorAppCard = ({
   selectedDay,
@@ -39,7 +40,7 @@ const DoctorAppCard = ({
         <CheckCircleRoundedIcon color="success" sx={{ fontSize: "38px" }} />
       );
     } else if (item.appointment.status == "cancelled") {
-      return <BlockRoundedIcon color="warning" sx={{ fontSize: "38px" }} />;
+      return <CancelOutlinedIcon color="warning" sx={{ fontSize: "38px" }} />;
     }
   };
 
