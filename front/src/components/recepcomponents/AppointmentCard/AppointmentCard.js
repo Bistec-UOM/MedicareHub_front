@@ -84,6 +84,7 @@ const AppointmentCard = ({
           marginRight: "auto", // Disable pointer events
           opacity: isCompletedOrCancelled ? 0.5 : 1,
           pointerEvents: isCompletedOrCancelled ? "none" : "auto",
+          height:'140px'
         }}
       >
         <Card

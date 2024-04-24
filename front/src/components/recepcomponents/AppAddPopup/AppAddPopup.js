@@ -66,7 +66,6 @@ export default function AppAddPopup({
     return date;
   }
   useEffect(() => {
-    console.log("filt", filteredAppointments);
     if (dayAppTotal >= 10) {
       //disabling confirm button from adding more than 10 appointments for a day
       setConfirmDisabled(true);
