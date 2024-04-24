@@ -24,7 +24,6 @@ export default function AllAppDeletePopup({
   const handleRealAllDelete = () => {
     axios
       .delete(
-       // `https://localhost:7205/api/Appointment/doctor/${docid}/day/${selectedDay}`
         baseURL+endPoints.AppDay+`${docid}`+"/day/"+`${selectedDay}`
 
       )

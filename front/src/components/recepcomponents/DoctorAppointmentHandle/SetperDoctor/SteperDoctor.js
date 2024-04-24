@@ -52,7 +52,7 @@ export default function StepDoctor(props) {
   };
 
   return (
-    <Box>
+    <Box >
       <Stepper orientation="vertical" activeStep={0}>
         {props.items &&
           props.items
@@ -64,12 +64,13 @@ export default function StepDoctor(props) {
                     .includes(props.search.toLowerCase());
             })
             .map((label) => (
-              <Step key={label.appointment.id}>
+              <Step  key={label.appointment.id}>
                 <StepLabel
                   sx={{
                     opacity: findOpacityStatus(label.appointment?.status)
                       ? 0.5
                       : 1,
+                     
                   }}
                 >
                   {getStartTime(label.appointment?.dateTime)}-{" "}
