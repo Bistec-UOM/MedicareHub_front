@@ -10,7 +10,7 @@ export default function LabRequest(props) {
   const { openpopBox, setOpenpopBox ,rep, setrep} = props;   
   //const [rep, setrep] = useState([]);
   const [name, setName] = useState('');
-  const [selectedLabTestName, setSelectedLabTestName] = useState(null);
+  const [selectedLabTestName, setSelectedLabTestName] = useState(null);//hold the selected labtest name
  
   const Labs = [ 
   { TestId: 1, labTestName: 'Full Blood Count' },
@@ -97,6 +97,7 @@ const handleDeleteLabRequest = (index) => {
                             <Typography gutterBottom variant="p" sx={{ marginLeft: '15px'}}>{Labs.find(test => test.TestId === drug.TestId)?.labTestName}</Typography>
                             </Card>
                         </Grid>
+     {/*........................................delete buttun for delete entered Lab request................................................... */}
                         <Grid item xs={8}>
                             <DoNotDisturbOnIcon sx={{ color: 'red', fontSize: '30px', float: 'Left',cursor: 'pointer' }}  onClick={() => handleDeleteLabRequest(index)}/>
                         </Grid>
