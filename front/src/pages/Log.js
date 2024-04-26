@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Box} from '@mui/system'
-import { Button,TextField, Typography,Snackbar,Alert } from '@mui/material'
+import { Button,TextField, Typography,Snackbar,Alert, Link } from '@mui/material'
 import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
@@ -31,8 +31,11 @@ export default function Log() {
   }
 
   //======================================================================================================
+
+  const [count,setCount]=useState(0)
+
   const setData=()=>{
-    if(password=="" || user==""){
+    if(password==="" || user===""){
       handleClick("Fill the empty fields",'warning')
       return
     }
@@ -48,6 +51,7 @@ export default function Log() {
       //Navigate User
       let tmp=jwtDecode(localStorage.getItem('medicareHubToken')).Role
       switch(tmp){
+        case 'Admin':navigate('admin');break
         case 'Doctor':navigate('doct'); break
         case 'Receptionist':navigate('res'); break
         case 'Cashier':navigate('pharm'); break
@@ -57,7 +61,13 @@ export default function Log() {
     })
     .catch((er)=>{
       if(er.hasOwnProperty('response')){
-        handleClick(er.response.data,'error')
+        if(count<=2){//allow only three errors
+          setCount((prev)=>prev+1)
+          handleClick(er.response.data,'error')
+        }else{
+          handleClick('Forgot Password? Try Reset','warning')
+          setCount(0)
+        }
         setLoadingB(false)
       }else{
         console.log(er)
@@ -131,6 +141,7 @@ export default function Log() {
             color='warning'
             size="small"
             >Clear</Button>
+          <Link href="#" variant="body2" sx={{mr:'20%',color:'grey',textDecorationColor:'grey'}}>Reset</Link>
         </div>
         
       </Box>

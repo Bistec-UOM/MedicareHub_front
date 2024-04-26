@@ -11,7 +11,7 @@ Clear :
 
 
 =========================================================================
-========               Common styling problems          =================
+========               Common         problems          =================
 =========================================================================
 
 A. Pop up box
@@ -30,6 +30,11 @@ C. Custom scroll
 D. Navbar
     doctor/pharm hasn't emplemented ResNavBar
 
+E. Error handle
+    when a huge description recieves as an eror
+
+F . Pharmacy has to check the prescription status before GET ()
+    After payment prescription status ---> paid
 
 ======================================================================
 ==============                 Migrations        =====================

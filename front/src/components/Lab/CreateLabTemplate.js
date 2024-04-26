@@ -8,6 +8,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import axios from 'axios'
 import { baseURL,endPoints } from '../../Services/Lab';
+import Tooltip from '@mui/material/Tooltip';
 
 export default function CreateLabTemplate({setPage,setTload}) {
 
@@ -78,19 +79,33 @@ export default function CreateLabTemplate({setPage,setTload}) {
         }
       }
 
+      //Extracting abbereviation------------------------------------------------
+      const getAbb=(str)=>{
+        const regex = /\(([^)]+)\)$/;
+        const match = regex.exec(str);
+        if (match) {
+          return match[1];
+        }
+        return "";
+      }
+
       //Finalizing---------------------------------------------------------------
       const createTemplate=()=>{
         let ar=testField
         ar.map((el,ind)=>{
           el.index=ind
         })
+
+        let abbr=getAbb(testData.name)
+        let nm = testData.name.substring(0, testData.name.length - abbr.length-2)
         let T={
-          testName:testData.name,
-          abb:'ABC',
+          testName:nm,
+          abb:abbr,
           price:testData.price,
           provider:testData.provider,
           reportFields:ar
         }
+        console.log(T)
         axios.post(baseURL+endPoints.TEMPLATE,T)
         .then(res=>{
           setTload([])//make test list empty to reload again

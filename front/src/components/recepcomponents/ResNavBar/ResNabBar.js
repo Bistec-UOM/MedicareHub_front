@@ -12,6 +12,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from 'react-router-dom'
+import { deleteLog } from "../../../Services/Auth";
 
 const ResNavBar = ({ isClosing, setMobileOpen, mobileOpen }) => {
   const [profile,SetProfile]=useState({Name:"Profile",Role:"Empty",Image:""})
@@ -37,7 +38,7 @@ const ResNavBar = ({ isClosing, setMobileOpen, mobileOpen }) => {
 
   const navigate=useNavigate()
   const handleDelete=()=>{
-    localStorage.removeItem('medicareHubToken');
+    deleteLog()
     handleClose()
     navigate('/')
   }
@@ -101,7 +102,7 @@ const ResNavBar = ({ isClosing, setMobileOpen, mobileOpen }) => {
             <Typography color="#AFADAD" sx={{fontSize:'12px',textAlign:'right'}}>{profile.Role}</Typography>
           </div>
           {
-            profile.Name=="Profile"?
+            profile.Name==="Profile"?
           <Avatar
             aria-label="account of current user"
             aria-controls="menu-appbar"

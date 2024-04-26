@@ -104,7 +104,7 @@ export default function SubmitPage({setpage}) {
                           onClick={()=>handleClickOpen(i.id)}
                         >
                     <Typography sx={{fontSize:'12px',flex:'1',color:'grey'}}>{ind+1}</Typography>
-                    <Typography sx={{fontSize:'15px',flex:'1'}}>{i.id}</Typography>
+                    <Typography sx={{fontSize:'15px',flex:'1',color:'#568a91',fontWeight:'bold'}}>{i.id}</Typography>
                     <Typography sx={{fontSize:'15px',flex:'1'}}>{i.abb}</Typography>
                     <Typography sx={{fontSize:'15px',flex:'2'}}>{i.testName}</Typography>
             </Paper>
@@ -115,7 +115,7 @@ export default function SubmitPage({setpage}) {
       {/*------------------ Enter values pop up box ---------------------------------------------- */}
 
       <Dialog open={open} onClose={handleClose}>
-          <DialogTitle sx={{backgroundColor: "rgb(222, 244, 242)",display: "flex",justifyContent: "space-between", backgroundColor:'#438ad1',color:'white'}}>
+          <DialogTitle sx={{display: "flex",justifyContent: "space-between", backgroundColor:'#438ad1',color:'white'}}>
             <div style={{display:'flex',justifyContent:'start'}}>
               <ScienceIcon></ScienceIcon>
               <Typography sx={{fontSize:'18px',fontWeight:'medium'}}>Enter test results</Typography>

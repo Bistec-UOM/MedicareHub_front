@@ -10,17 +10,17 @@ export default function LabRequest(props) {
   const { openpopBox, setOpenpopBox ,rep, setrep} = props;   
   //const [rep, setrep] = useState([]);
   const [name, setName] = useState('');
-  const [selectedLabTestName, setSelectedLabTestName] = useState(null);
+  const [selectedLabTestName, setSelectedLabTestName] = useState(null);//hold the selected labtest name
  
   const Labs = [ 
   { TestId: 1, labTestName: 'Full Blood Count' },
   { TestId: 2, labTestName: 'Urine Analysis' },
-  {  TestId:3,labTestName:'Blood Glucose Test'},
+  { TestId:3,labTestName:'Blood Glucose Test'},
   { TestId: 4, labTestName: '	Liver Function Test' },
   {TestId: 5, labTestName: 'Kidney Function Test' },
   {TestId: 6, labTestName: 'Electrolyte Panel' },
   {TestId: 7, labTestName: 'Lipid Profile' },
-  { TestId: 8, labTestName: 'Thyroid Function Test' }];
+  { TestId: 24, labTestName: 'Thyroid Function Test' }];
     
   const handleClose = () => {
     setOpenpopBox(false);   
@@ -97,6 +97,7 @@ const handleDeleteLabRequest = (index) => {
                             <Typography gutterBottom variant="p" sx={{ marginLeft: '15px'}}>{Labs.find(test => test.TestId === drug.TestId)?.labTestName}</Typography>
                             </Card>
                         </Grid>
+     {/*........................................delete buttun for delete entered Lab request................................................... */}
                         <Grid item xs={8}>
                             <DoNotDisturbOnIcon sx={{ color: 'red', fontSize: '30px', float: 'Left',cursor: 'pointer' }}  onClick={() => handleDeleteLabRequest(index)}/>
                         </Grid>
