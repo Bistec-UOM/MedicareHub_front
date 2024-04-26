@@ -102,6 +102,7 @@ const DoctorAppList = (props) => {
           isDisabled={isDisabledCancel}
           placename="Patient name or id..."
         />
+          <Typography variant="h5" sx={{ color: "#d0d1cb" }}>{selectedDay}</Typography>
         <Stack
           sx={{
             justifyContent: "flex-end",
