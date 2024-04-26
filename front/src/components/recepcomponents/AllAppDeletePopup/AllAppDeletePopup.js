@@ -25,7 +25,6 @@ export default function AllAppDeletePopup({
     axios
       .delete(
         baseURL+endPoints.AppDay+`${docid}`+"/day/"+`${selectedDay}`
-
       )
       .then((response) => {
         setDelcount(delcount + 1);
