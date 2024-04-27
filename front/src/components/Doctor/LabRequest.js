@@ -1,10 +1,12 @@
 import React , { useState } from 'react';
 import { TextField, Button, IconButton, Dialog } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import DoNotDisturbOnIcon from '@mui/icons-material/DoNotDisturbOn';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { Grid, Typography,Card } from '@mui/material';
 import DialogContent from '@mui/material/DialogContent';
 import Autocomplete from '@mui/material/Autocomplete';
+import { Box } from '@mui/system';
+import AddIcon from '@mui/icons-material/Add';
 
 export default function LabRequest(props) {
   const { openpopBox, setOpenpopBox ,rep, setrep} = props;   
@@ -52,16 +54,16 @@ const handleDeleteLabRequest = (index) => {
 
   return (
     <div>
-       <Dialog open={openpopBox}>
+      <Dialog open={openpopBox}>
       <DialogContent dividers 
-              sx={{ '&::before': { content: "''", position: 'absolute', top: 0, right: 0, width: '35px', height: '100%', background: 'hsl(0, 0%, 90%)', }, }}>
-    
-    <IconButton
-              sx={{ position: 'absolute', left:'87%',}}
+              sx={{ '&::before': { content: "''", position: 'absolute', top: 0, right: 0, width: '35px', height: '100%', background: 'hsl(0, 0%, 90%)', }}}>
+   
+        <IconButton
+              sx={{ position: 'absolute', left:'88%'}}
               onClick={handleClose}
-            >
+        >
             <CloseIcon />
-            </IconButton>
+        </IconButton>
       <form style={{ display: 'flex', alignItems: 'center' }} onClick={handleSubmit}> 
       <Autocomplete
       sx={{ flex: '1', marginRight: '10px', width: '200px', '& .MuiOutlinedInput-root': { '& fieldset': { borderColor: '#0099cc', borderWidth: '2px' } } }}
@@ -84,24 +86,23 @@ const handleDeleteLabRequest = (index) => {
         />
           )}
           /> 
-        <Button variant="outlined" sx={{ top: '0.1px', color: 'Green', borderColor: 'Green', borderWidth:'3px',marginRight: '30px'}} 
-         onClick={() => {handleAddLabRequest(); handleClose()}}> OK </Button>        
+        <Button variant="contained" sx={{ top: '0.1px',marginRight: '30px'}} 
+         onClick={() => {handleAddLabRequest(); handleClose()}} endIcon={<AddIcon></AddIcon>}> Add </Button>        
       </form>      
      </DialogContent>      
       </Dialog> 
      <div >
+      {/*---- rendered lab request list-------------------------*/}
       {rep.map((drug, index) => (
-      <Grid key={index} container spacing={1} sx={{ marginTop: "5px",}}>
-                        <Grid item xs={3}>
-                            <Card sx={{ backgroundColor: '#48EC4F', color: 'white', fontSize: '19px',height:'32px',marginleft:'90%',}}>
-                            <Typography gutterBottom variant="p" sx={{ marginLeft: '15px'}}>{Labs.find(test => test.TestId === drug.TestId)?.labTestName}</Typography>
-                            </Card>
-                        </Grid>
-     {/*........................................delete buttun for delete entered Lab request................................................... */}
-                        <Grid item xs={8}>
-                            <DoNotDisturbOnIcon sx={{ color: 'red', fontSize: '30px', float: 'Left',cursor: 'pointer' }}  onClick={() => handleDeleteLabRequest(index)}/>
-                        </Grid>
-                    </Grid>
+      <Box key={index} sx={{marginTop: "5px",width:'80%',display:'flex',ml:'5%',alignItems:'center'}}>
+            <Box sx={{backgroundColor: '#48EC4F', width:'500px', display: 'flex', flexDirection: 'row',color: 'white',fontSize: '18px',borderRadius:'4px',alignItems:'center'}}>
+                <Typography gutterBottom sx={{ marginLeft: '15px'}}>{Labs.find(test => test.TestId === drug.TestId)?.labTestName}</Typography>
+            </Box>
+     {/*.....delete buttun ..................................... */}
+            <Box item xs={8}>
+            <HighlightOffIcon sx={{marginLeft: '5px',cursor: 'pointer' }} color='error'fontSize='small'  onClick={() => handleDeleteLabRequest(index)}/>
+            </Box>
+        </Box>
       ))}
       </div>        
       </div>   

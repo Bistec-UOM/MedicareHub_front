@@ -23,6 +23,7 @@ import Alert from '@mui/material/Alert';
 import TopUnit from '../components/Doctor/TopUnit';
 import { baseURL,endPoints } from '../Services/Doctor';
 import axios from 'axios';
+import { PersonDetail } from '../components/Other';
 export default function Doctor() {
   
   const [select,setSelect]=useState(null);//hold the selected appoinment patient
@@ -196,54 +197,43 @@ const filteredAppointments = showDonePatients ? appointments.filter(appointment 
         
           {select ? (
               <>
-                  <div sx={{ display: 'flex' ,}}>
-{/*.............................................................patient profile Top field................................................................ */}
+{/*.............patient profile Top field.......................................... */}
                      {selectedAppointment.map((index) => (
-                          <Card key={index} sx={{ maxWidth: '100%', height: '100px',}}>
-                           <CardContent>
-                             <AudioFileIcon sx={{ color: 'rgb(0, 153, 255)', float: 'right', marginRight: '10px', fontSize: '30px', cursor: 'pointer', }} onClick={handleAddIconClick} />
-                             <UpdateIcon sx={{ color: 'rgb(255, 153, 0)', float: 'right', marginRight: '10px', fontSize: '30px', cursor: 'pointer', }} onClick={handleViewReporsClick} />
-                             <AnaliticalReports openAreports={openAreports} setOpenAreports={setOpenAreports} pId={selectedAppointment[0].patient.id}/>
-                             <>
-                             <Typography gutterBottom variant="h6">{selectedAppointment[0].patient.name}</Typography>
-                             <Typography gutterBottom variant="p" sx={{ color: '#808080' }}>{selectedAppointment[0].patient.age} years</Typography><br />
-                             <Typography gutterBottom variant="p" sx={{ color: '#808080' }}>{selectedAppointment[0].patient.gender}</Typography>
-                               </>
-                              </CardContent>
-  {/*..................................*/}                           
-                              <PatientsRecords openPopup={openPopup} setOpenPopup={setOpenPopup}   selectedPatientId={selectedAppointment[0].patient.id}/>
-                          </Card>
+                          <PersonDetail style={{backgroundColor:'white'}}
+                            name={selectedAppointment[0].patient.name}
+                            age={selectedAppointment[0].patient.age}
+                            gender={selectedAppointment[0].patient.gender}
+                            >
+                          </PersonDetail>
                       ))}
-                      </div>
-                  <div>
-{/*.................................................................Add Drugs..........................................................................*/}
+{/*.........................Add Drugs...............................................*/}
+ <div style={{paddingTop:'60px'}}>
+                   <div style={{marginBottom:'80px'}}>
+                   <DoctorAddDrugs pres={pres} setPres={setPres} openBox={openBox} setOpenBox={setOpenBox} />
+                   <AddCircleIcon sx={{ color: '#00cc66', marginLeft: '5%', fontSize: '30px', float: 'left', marginTop: '10px', cursor: 'pointer' }} onClick={handleAddDrugsClick} />
+                   </div>
+  {/*........................Lab Request..............................................*/}
                   
-                  <DoctorAddDrugs pres={pres} setPres={setPres} openBox={openBox} setOpenBox={setOpenBox} />
-                  <AddCircleIcon sx={{ color: '#00cc66', marginLeft: '10%', fontSize: '30px', float: 'left', marginTop: '27px', cursor: 'pointer' }} onClick={handleAddDrugsClick} />
-                  </div>
- {/*................................................................Lab Request.......................................................................................*/}
-                 
-                  <ThermostatIcon sx={{ color: '#33cc33', marginLeft: '74%', fontSize: '45px', marginTop: '48px', cursor: 'pointer' }} onClick={() =>handleAddButtonClick(selectedAppointment)} />
-                  <LabRequest openpopBox={openpopBox} setOpenpopBox={setOpenpopBox} rep={rep} setrep={setrep}/>
-
-{/*..........................................................add patient extra details field..................................................*/}
-                  <div sx={{ display: 'flex' }}>
-                      <Box
-                          component="form"
-                          sx={{
-                              '& .MuiTextField-root': { m: 1, width: '95%' }, marginLeft: '1%',
-                          }}
-                          noValidate
-                          autoComplete="off">
-                          <TextField id="outlined-multiline-flexible" placeholder="Patient extra details" multiline rows={7} onChange={(event) => setDescription(event.target.value)}
-                          InputProps={{ style: { backgroundColor: 'rgb(209, 224, 250)', borderRadius: '15px', fontSize: '22px', color: 'blue', textAlign: 'center', }, }} />
-                      </Box>
-                      <div>
-{/*...............................................................confirm button..............................................................*/}
-                      <br></br>
-                      <Button variant="contained" sx={{ backgroundColor: '#00cca3', left: '80%',color:'white' }} onClick={handleClick}>Confirm</Button>
+                   <LabRequest openpopBox={openpopBox} setOpenpopBox={setOpenpopBox} rep={rep} setrep={setrep}/>
+                   <ThermostatIcon sx={{ color: '#33cc33', marginLeft: '80%', fontSize: '45px', cursor: 'pointer' }} onClick={() =>handleAddButtonClick(selectedAppointment)} />
+  
+  {/*.................patient extra details ............................................*/}
+                       <Box
+                           component="form"
+                           sx={{
+                               '& .MuiTextField-root': { m: 1, width: '90%' }, marginLeft: '4%',
+                           }}
+                           noValidate
+                           autoComplete="off">
+                           <TextField id="outlined-multiline-flexible" placeholder="Patient extra details" multiline rows={7} onChange={(event) => setDescription(event.target.value)}
+                           InputProps={{ style: { backgroundColor: '#fffed9', borderRadius: '4px', fontSize: '16px'}}} />
+                       </Box>
+  {/*..............confirm button.........................................*/}
+                       <br></br>
+                       <Button variant="contained" sx={{ left: '80%' }} onClick={handleClick}>Confirm</Button>
+ </div>
                      
- {/*............................................................snack bar component........................................................ */}
+ {/*...........snack bar component....................................... */}
                    <Snackbar open={open} autoHideDuration={6000}  anchorOrigin={{ vertical: 'bottom', horizontal: 'left'}} >
                    <Alert             
                    severity="success"
@@ -254,8 +244,6 @@ const filteredAppointments = showDonePatients ? appointments.filter(appointment 
                  </Alert>
                 </Snackbar>
  {/*.................... */}
-                 </div>
-                  </div>
               </>
           ) : (
               <Typography gutterBottom variant="p"></Typography>

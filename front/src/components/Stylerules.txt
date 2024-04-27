@@ -36,6 +36,10 @@ E. Error handle
 F . Pharmacy has to check the prescription status before GET ()
     After payment prescription status ---> paid
 
+G. Doctor has to get completed lab reports when getting appointment list
+
+H. when navigating on calendar doctor changes
+
 ======================================================================
 ==============                 Migrations        =====================
 ======================================================================
