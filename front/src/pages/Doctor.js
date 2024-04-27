@@ -50,17 +50,13 @@ export default function Doctor() {
 
   }));
 
-   const handleAddIconClick = () => {
+   const handleAddIconClick = () => {//for patient history record popu up
     setOpenPopup(true);
   }; 
 
   const handleAddDrugsClick = () => {
     setOpenBox(true);
   }; 
-  
-  const handleViewReporsClick = () => {
-    setOpenAreports(true);
-  };  
 
   const handleAddButtonClick = () => {
     setOpenpopBox(true);
@@ -206,6 +202,8 @@ const filteredAppointments = showDonePatients ? appointments.filter(appointment 
                             >
                           </PersonDetail>
                       ))}
+                    <UpdateIcon sx={{position:'fixed',top:'75px',right:'20px',zIndex:'40',color:'rgb(255, 153, 0)',cursor:'pointer'}} onClick={handleAddIconClick}></UpdateIcon >
+                    <PatientsRecords openPopup={openPopup} setOpenPopup={setOpenPopup}   selectedPatientId={selectedAppointment[0].patient.id}/>
 {/*.........................Add Drugs...............................................*/}
  <div style={{paddingTop:'60px'}}>
                    <div style={{marginBottom:'80px'}}>
