@@ -53,18 +53,27 @@ export default function Analysis() {
         >
           {selectedNavItem.toUpperCase()}
         </Typography>
-       
-          <List
+
+        <List
+          sx={{
+            display: "flex",
+            flexDirection: { xs: "column", sm: "row" },
+            justifyContent: "flex-end",
+            position: { xs: "fixed", sm: "relative" },
+            right: { xs: "0px", sm: "auto" },
+            top: { xs: "100px", sm: "-9px" },
+          }}
+        >
+          <Paper
             sx={{
+              width: { xs: "20vw" },
               display: "flex",
               flexDirection: { xs: "column", sm: "row" },
-              justifyContent: "flex-end",
-              position: { xs: "fixed", sm: "relative" },
-              right: { xs: "0px", sm: "auto" },
-              top: { xs: "100px", sm: "-9px" },
+              position: "relative",
+              right: { sm: "14vw" },
+              boxShadow: "none",
             }}
           >
-             <Paper sx={{width:{xs:'20vw'},display: "flex",flexDirection: { xs: "column", sm: "row" },position:'relative',right:{sm:'8vw'},boxShadow:'none'}}>
             {["income", "patient", "drug", "other"].map((text, index) => (
               <ListItem
                 key={text}
@@ -78,6 +87,10 @@ export default function Analysis() {
                       selectedNavItem === text ? "rgb(121, 204, 190)" : "white",
                     boxShadow: 3,
                     borderRadius: "10px",
+                    ":hover": {
+                      backgroundColor:
+                        selectedNavItem === text? "rgb(121, 204, 190)": "rgb(235, 235, 235)", // Change this to the color you want on hover
+                    },
                   }}
                   onClick={() => handleNavigationItemClick(text)}
                 >
@@ -92,8 +105,8 @@ export default function Analysis() {
                 </ListItemButton>
               </ListItem>
             ))}
-            </Paper>
-          </List>
+          </Paper>
+        </List>
         {/* </List> */}
       </Box>
       <Box mt={1}>{renderContent()}</Box>

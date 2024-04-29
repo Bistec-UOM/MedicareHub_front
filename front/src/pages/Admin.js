@@ -19,8 +19,8 @@ import Analysis from "../components/Admin/Analytics";
 import Patient from "../components/Admin/Patient";
 import ResNavBar from "../components/recepcomponents/ResNavBar/ResNabBar";
 import Staff from "../components/Admin/Staff";
-import SpaceDashboardIcon from '@mui/icons-material/SpaceDashboard';
-import AddchartIcon from '@mui/icons-material/Addchart';
+import SpaceDashboardIcon from "@mui/icons-material/SpaceDashboard";
+import AddchartIcon from "@mui/icons-material/Addchart";
 
 const drawerWidth = 210;
 
@@ -52,8 +52,7 @@ export default function Stest() {
       <Divider />
       <Box>
         <List>
-          
-          {["Analysis","Staff", "Patient"].map((text, index) => (
+          {["Analysis", "Staff", "Patient"].map((text, index) => (
             <ListItem key={text} disablePadding>
               <ListItemButton
                 sx={{
@@ -63,7 +62,11 @@ export default function Stest() {
                   borderRadius: 2,
                   boxShadow: 2,
                   "&:hover": {
-                    boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
+                    // boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
+                    backgroundColor:
+                      selectedNavItem === text
+                        ? "rgb(121, 204, 190)"
+                        : "rgb(235, 235, 235)", // Change this to the color you want on hover
                   },
                 }}
                 onClick={() => handleNavigationItemClick(text)}

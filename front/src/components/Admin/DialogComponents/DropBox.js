@@ -3,8 +3,12 @@ import React, { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { CLOUDINARY_URL } from "../../../Services/Admin";
 import axios from "axios";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 const DropBox = ({ className, handleDropBoxClose, DataUrl, setDataUrl }) => {
+    //for loading
+  const [loadingB, setLoadingB] = useState(false)
+  
   const [files, setFiles] = useState([]);
   const preset_key = "q3oby5yd";
   const onDrop = useCallback((acceptedFiles) => {
@@ -22,7 +26,10 @@ const DropBox = ({ className, handleDropBoxClose, DataUrl, setDataUrl }) => {
     accept: { "image/*": [] },
     multiple: false,
   });
+
+
   const handleSubmit = async (e) => {
+    setLoadingB(true)
     e.preventDefault(); // prevent form submission
     if (!files.length) return; // if no files, return
     const file = files[0]; // get the first file
@@ -30,15 +37,21 @@ const DropBox = ({ className, handleDropBoxClose, DataUrl, setDataUrl }) => {
     formData.append("file", file);
     formData.append("upload_preset", preset_key);
     axios
-      .post(CLOUDINARY_URL, formData)
-      .then((response) => {
+    .post(CLOUDINARY_URL, formData)
+    .then((response) => {
+        setLoadingB(false)
         console.log(response.data.url);
         setDataUrl(response.data.url); // Update the data in the parent component
+        handleDropBoxClose(); // Close the dropbox
       })
       .catch((error) => {
+        setLoadingB(false)
         console.log(error);
       });
   };
+
+
+
   return (
     <div>
       <form>
@@ -85,26 +98,26 @@ const DropBox = ({ className, handleDropBoxClose, DataUrl, setDataUrl }) => {
           ))}
         </ul>
         <Grid sx={{ float: "right" }}>
-          <Button
-            onClick={handleDropBoxClose}
-            color="error"
-            sx={{ border: "1px solid" }}
-          >
-            Close
-          </Button>
-          <Button
-            onClick={handleSubmit}
-            sx={{
-              backgroundColor: "rgb(121, 204, 190)",
-              color: "white",
-              marginLeft: 2,
-              "&:hover": {
-                backgroundColor: "rgb(21, 101, 192)", // darker shade for hover
-              },
-            }}
-          >
-            Submit
-          </Button>{" "}
+        <LoadingButton           
+          size="small"
+          // endIcon={<PlayArrowIcon />}
+          loading={loadingB}
+          loadingPosition="end"
+          variant="contained" 
+          onClick={handleDropBoxClose}
+          sx={{ml:'10px',p:'9px'}}
+          color="error"
+        >Close</LoadingButton>
+          <LoadingButton           
+          size="small"
+          // endIcon={<PlayArrowIcon />}
+          loading={loadingB}
+          loadingPosition="end"
+          variant="contained" 
+          onClick={handleSubmit}
+          sx={{ml:'10px',p:'9px'}}
+        >Add</LoadingButton>
+        
         </Grid>
       </form>
     </div>

@@ -19,13 +19,13 @@ const APatient = () => {
     axios
       .get(baseURL + endPoints.A_patient_count)
       .then((response) => {
-        console.log("data is ");
-        console.log(response.data);
+        // console.log("data is ");
+        // console.log(response.data);
         setPdata(response.data);
       })
       .catch((error) => {
         if (error.message === "Network Error") {
-          console.error("You are not connected to internet");
+          // console.error("You are not connected to internet");
           setNotiMessage("You are not connected to internet");
           settypenoti("error");
           setNotificationOpen(true);
@@ -35,21 +35,11 @@ const APatient = () => {
       });
   }, []); // Empty dependency array means this effect runs once on mount
 
-  // const dummyData = [
-  //   { datefor: "2024-04-16T00:00:00", child_male: 10, child_female: 15, adult_male: 20, adult_female: 25, old_male: 5, old_female: 8 },
-  //   { datefor: "2024-03-30T00:00:00", child_male: 8, child_female: 12, adult_male: 18, adult_female: 22, old_male: 4, old_female: 6 },
-  //   { datefor: "2024-03-29T00:00:00", child_male: 12, child_female: 18, adult_male: 22, adult_female: 28, old_male: 6, old_female: 10 },
-  //   // Add more dummy data entries as needed
-  // ];
-
-  // Assuming you have a state variable 'pdata' to store the data
-  // const [pdata, setPdata] = useState(dummyData);
-
   //date filter
   const currentDate = new Date(); // Initialize currentDate
   const [TimeGap, setTimeGap] = React.useState(new Date(currentDate)); // Initialize TimeGap with current date
-  const [Value, setValue] = React.useState("day"); // Initialize Value state with 'day'
-  const [Value1, setValue1] = React.useState("day"); // Initialize Value state with 'day'
+  const [Value, setValue] = React.useState("week"); // Initialize Value state with 'week'
+  const [Value1, setValue1] = React.useState("week"); // Initialize Value state with 'week'
 
   const handleChange = (event) => {
     setValue(event.target.value);
@@ -59,8 +49,8 @@ const APatient = () => {
   useEffect(() => {
     const change = (Gap) => {
       const newTimeGap = new Date(currentDate);
-      if (Gap === "day") {
-        newTimeGap.setDate(currentDate.getDate() - 1);
+      if (Gap === "week") {
+        newTimeGap.setDate(currentDate.getDate() - 7);
       } else if (Gap === "month") {
         newTimeGap.setMonth(currentDate.getMonth() - 1);
       } else if (Gap === "year") {
@@ -80,11 +70,7 @@ const APatient = () => {
 
   const tickFormatter = (value) => {
     const date = new Date(value);
-    if (Value === "day") {
-      return date.toLocaleTimeString(); // Show time only when 'Last Day' is selected
-    } else {
       return date.toLocaleDateString(); // Show date for other options
-    }
   };
   //end of date filter
 
@@ -122,8 +108,8 @@ const APatient = () => {
 
   const change1 = (Gap) => {
     const newTimeGap = new Date(currentDate);
-    if (Gap === "day") {
-      newTimeGap.setDate(currentDate.getDate() - 1);
+    if (Gap === "week") {
+      newTimeGap.setDate(currentDate.getDate() - 7);
     } else if (Gap === "month") {
       newTimeGap.setMonth(currentDate.getMonth() - 1);
     } else if (Gap === "year") {
@@ -150,7 +136,6 @@ const APatient = () => {
   //end of type filter
 
   const totalperday = [];
-  // let currentDate1 = new Date().toISOString().slice(0,10).replace(/-/g, '.');
   pdata.forEach((data) => {
     const date = data.datefor;
     const total =
@@ -169,19 +154,14 @@ const APatient = () => {
   // Assuming you have a state variable for totalPatientsForCurrentDay
   let todaysData;
   const today = new Date();
-  const todaydate =
-    today.getFullYear() +
-    "-" +
-    (today.getMonth() + 1).toString().padStart(2, "0") +
-    "-" +
-    today.getDate().toString().padStart(2, "0") +
-    "T00:00:00";
+  //pad used for enter another data to the array
+  const todaydate = today.getFullYear() +"-" +(today.getMonth() + 1).toString().padStart(2, "0") +"-" +today.getDate().toString().padStart(2, "0") +"T00:00:00";
   todaysData = totalperday[todaydate];
-  console.log(todaydate, "today date", todaysData);
+  // console.log(todaydate, "today date", todaysData);
   if (!todaysData) {
     todaysData = 0;
   }
-  console.log("all data for today", todaysData);
+  // console.log("all data for today", todaysData);
 
   // console.log(totalperday,'current date',currentDate1,'data','total')
 
@@ -211,7 +191,7 @@ const APatient = () => {
                   label="Gap"
                   onChange={handleChange1}
                 >
-                  <MenuItem value={"day"}>Last Day</MenuItem>
+                  <MenuItem value={"week"}>Last Week</MenuItem>
                   <MenuItem value={"month"}>Last Month</MenuItem>
                   <MenuItem value={"year"}>Last Year</MenuItem>
                   <MenuItem value={"5"}>Last 5 Year</MenuItem>
@@ -272,7 +252,7 @@ const APatient = () => {
                 label="Gap"
                 onChange={handleChange}
               >
-                <MenuItem value={"day"}>Last Day</MenuItem>
+                <MenuItem value={"week"}>Last week</MenuItem>
                 <MenuItem value={"month"}>Last Month</MenuItem>
                 <MenuItem value={"year"}>Last Year</MenuItem>
                 <MenuItem value={"5"}>Last 5 Year</MenuItem>
