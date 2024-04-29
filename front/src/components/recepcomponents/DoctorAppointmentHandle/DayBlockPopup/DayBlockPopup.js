@@ -17,6 +17,8 @@ export default function DayBlockPopup({
   item,
   delcount,
   setDelcount,
+  blockSelectionPopup,
+  setBlockSelectionPopup,
   docDayBlockPopup,
   setDocDayBlockPopup,
   filteredAppointments,
@@ -40,13 +42,41 @@ export default function DayBlockPopup({
       .getSeconds()
       .toString()
       .padStart(2, "0")}.${date.getMilliseconds().toString().padStart(3, "0")}`;
+        const startTime=new Date(selectedDay);  //set start time as 12AM
+        startTime.setHours(0,0,0,0);
+        const endTime=new Date(selectedDay);
+        endTime.setHours(23,59,0,0);
+        console.log("start",startTime); //set end time as 11.59pm
+
+        const formattedStartedDate = `${startTime.getFullYear()}-${(startTime.getMonth() + 1)  //convert start time to the correct time zone
+          .toString()
+          .padStart(2, "0")}-${startTime.getDate().toString().padStart(2, "0")}T${startTime
+          .getHours()
+          .toString()
+          .padStart(2, "0")}:${startTime.getMinutes().toString().padStart(2, "0")}:${startTime
+          .getSeconds()
+          .toString()
+          .padStart(2, "0")}.${startTime.getMilliseconds().toString().padStart(3, "0")}`;
+
+          const formattedendDate = `${endTime.getFullYear()}-${(endTime.getMonth() + 1) //convert end time to the correct time zone
+            .toString()
+            .padStart(2, "0")}-${endTime.getDate().toString().padStart(2, "0")}T${endTime
+            .getHours()
+            .toString()
+            .padStart(2, "0")}:${endTime.getMinutes().toString().padStart(2, "0")}:${endTime
+            .getSeconds()
+            .toString()
+            .padStart(2, "0")}.${endTime.getMilliseconds().toString().padStart(3, "0")}`;
     let obj = {
       doctorId: doctorId,
       Date: formattedDate,
+      startTime:formattedStartedDate,
+      endTime:formattedendDate
     };
     try {
       await axios.post(baseURL + endPoints.UnableDates, obj);
       setDocDayBlockPopup(false);
+      setBlockSelectionPopup(false);
       handleNotification("Day Blocked succesfully!", "success");
     } catch (err) {
       handleNotification(err.response.data, "error");

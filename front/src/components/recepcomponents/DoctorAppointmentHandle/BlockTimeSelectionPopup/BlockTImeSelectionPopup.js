@@ -1,14 +1,18 @@
 import * as React from "react";
 import Dialog from "@mui/material/Dialog";
 import axios from "axios";
-import { IconButton, Typography } from "@mui/material";
+import { IconButton, Typography, Stack } from "@mui/material";
 import Button from "@mui/material/Button";
 import { Box } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import ErrorIcon from "@mui/icons-material/Error";
+import BasicTimePicker from "../../TimePicker/TimePicker";
+import MoreTimeIcon from "@mui/icons-material/MoreTime";
+import { useState } from "react";
+import dayjs from "dayjs";
 import { baseURL, endPoints } from "../../../../Services/Appointment";
 
-//day block popup
+//dayTime block popup
 
 export default function BlockTimeSelectionPopup({
   selectedDay,
@@ -18,6 +22,8 @@ export default function BlockTimeSelectionPopup({
   delcount,
   setDelcount,
   docDayBlockPopup,
+  timeSelection,
+  setTimeSelection,
   setDocDayBlockPopup,
   filteredAppointments,
   setFilteredAppointments,
@@ -25,12 +31,18 @@ export default function BlockTimeSelectionPopup({
   setIsDisabled,
 }) {
   const handleClose = () => {
-    setDocDayBlockPopup(false);
+    setTimeSelection(false);
   };
+
+  const [startTime, setStartTime] = useState(new dayjs(selectedDay));  //starttime of blocked time period
+  const [endTime, setEndTime] = useState(new dayjs(selectedDay));  //endtime of blocked time period
+
   //addig blocked date and doctor id to the table
   async function handleSubmit(event) {
     event.preventDefault();
     const date = new Date(selectedDay);
+    const startTimeDate=new Date(startTime);
+    const endTImeDate=new Date(endTime);
     const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1)
       .toString()
       .padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}T${date
@@ -40,14 +52,34 @@ export default function BlockTimeSelectionPopup({
       .getSeconds()
       .toString()
       .padStart(2, "0")}.${date.getMilliseconds().toString().padStart(3, "0")}`;
+      const formattedStartTime = `${startTimeDate.getFullYear()}-${(startTimeDate.getMonth() + 1)
+        .toString()
+        .padStart(2, "0")}-${startTimeDate.getDate().toString().padStart(2, "0")}T${startTimeDate
+        .getHours()
+        .toString()
+        .padStart(2, "0")}:${startTimeDate.getMinutes().toString().padStart(2, "0")}:${startTimeDate
+        .getSeconds()
+        .toString()
+        .padStart(2, "0")}.${startTimeDate.getMilliseconds().toString().padStart(3, "0")}`;
+        const formattedEndTIme = `${endTImeDate.getFullYear()}-${(endTImeDate.getMonth() + 1)
+          .toString()
+          .padStart(2, "0")}-${endTImeDate.getDate().toString().padStart(2, "0")}T${endTImeDate
+          .getHours()
+          .toString()
+          .padStart(2, "0")}:${endTImeDate.getMinutes().toString().padStart(2, "0")}:${endTImeDate
+          .getSeconds()
+          .toString()
+          .padStart(2, "0")}.${endTImeDate.getMilliseconds().toString().padStart(3, "0")}`;
     let obj = {
       doctorId: doctorId,
-      Date: formattedDate,
+      Date: formattedDate, 
+      startTime:formattedStartTime,
+      endTime:formattedEndTIme
     };
     try {
       await axios.post(baseURL + endPoints.UnableDates, obj);
-      setDocDayBlockPopup(false);
-      handleNotification("Day Blocked succesfully!", "success");
+      handleNotification("Time Blocked succesfully!", "success");
+      setTimeSelection(false);
     } catch (err) {
       handleNotification(err.response.data, "error");
     }
@@ -55,8 +87,8 @@ export default function BlockTimeSelectionPopup({
 
   return (
     <React.Fragment>
-      <Dialog open={docDayBlockPopup} onClose={handleClose}>
-        <Box sx={{ width: { xs: "100%", sm: "500px" }, height: "150px" }}>
+      <Dialog open={timeSelection} onClose={handleClose}>
+        <Box sx={{ width: { xs: "100%", sm: "450px" }, height: "280px" }}>
           <Box>
             <Box
               sx={{
@@ -80,28 +112,41 @@ export default function BlockTimeSelectionPopup({
               margin: "3%",
             }}
           >
-            <ErrorIcon
-              sx={{ color: "red", marginRight: "2%", fontSize: "2rem" }}
+            <MoreTimeIcon
+              sx={{ color: "orange", marginRight: "2%", fontSize: "2rem" }}
             />
-            <Typography sx={{ marginTop: "1%", color: "#000000" }}> 
-             Select the Time Period?
+            <Typography sx={{ marginTop: "1%", color: "#000000" }}>
+              Select the Time Period?
             </Typography>
           </Box>
           <Box
             sx={{
               display: "flex",
-              justifyContent: "flex-end",
+              flexDirection: "column",
               paddingRight: "5%",
+              margin: "2%",
             }}
           >
+            <BasicTimePicker
+              sx={{ overflow: { xs: "hidden" } }}
+              selectedTime={startTime}
+              setSelectedTime={setStartTime}
+              label="StartTime"
+            ></BasicTimePicker>
+            <BasicTimePicker 
+             selectedTime={endTime}
+             setSelectedTime={setEndTime}
+            label="EndTIme"></BasicTimePicker>
             <Button
-              onClick={handleSubmit}
+               onClick={handleSubmit}
               sx={{
-                backgroundColor: "#F44336",
+                backgroundColor: "#79CCBE",
                 "&:hover": {
-                  backgroundColor: "#F44336",
+                  backgroundColor: "#79CCBE",
                 },
-                marginLeft: "20px",
+                marginLeft: "80%",
+                marginTop:"2%",
+                width: "90px",
               }}
               variant="contained"
               type="submit"

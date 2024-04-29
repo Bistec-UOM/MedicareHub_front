@@ -6,6 +6,7 @@ import Button from "@mui/material/Button";
 import { Box } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import ErrorIcon from "@mui/icons-material/Error";
+import BlockTimeSelectionPopup from "../BlockTimeSelectionPopup/BlockTImeSelectionPopup";
 import { baseURL, endPoints } from "../../../../Services/Appointment";
 
 //day block popup
@@ -19,6 +20,10 @@ export default function BlockSelectionPopup({
   setDelcount,
   blockSelectionPopup,
   setBlockSelectionPopup,
+  docDayBlockPopup,
+  setDocDayBlockPopup,
+  setTimeSelection,
+  timeSelection,
   filteredAppointments,
   setFilteredAppointments,
   isDisabled,
@@ -27,34 +32,20 @@ export default function BlockSelectionPopup({
   const handleClose = () => {
     setBlockSelectionPopup(false);
   };
+
+ 
+
+
+
   //addig blocked date and doctor id to the table
-  async function handleWholeDayBlock(event) {
-    event.preventDefault();
-    const date = new Date(selectedDay);
-    const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1)
-      .toString()
-      .padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}T${date
-      .getHours()
-      .toString()
-      .padStart(2, "0")}:${date.getMinutes().toString().padStart(2, "0")}:${date
-      .getSeconds()
-      .toString()
-      .padStart(2, "0")}.${date.getMilliseconds().toString().padStart(3, "0")}`;
-    let obj = {
-      doctorId: doctorId,
-      Date: formattedDate,
-    };
-    try {
-      await axios.post(baseURL + endPoints.UnableDates, obj);
-      setBlockSelectionPopup(false);
-      handleNotification("Day Blocked succesfully!", "success");
-    } catch (err) {
-      handleNotification(err.response.data, "error");
-    }
-  }
+ const  handleWholeDayBlock=()=>
+ {
+  setDocDayBlockPopup(true);
+ }
 
   const handleSelectTime = () => {
     setBlockSelectionPopup(false);
+    setTimeSelection(true);
     
   };
 
@@ -132,6 +123,7 @@ export default function BlockSelectionPopup({
           </Box>
         </Box>
       </Dialog>
+      <BlockTimeSelectionPopup/>
     </React.Fragment>
   );
 }
