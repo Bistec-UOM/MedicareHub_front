@@ -114,6 +114,12 @@ export default function AppAddPopup({
         setRloadDone(true);
         handleNotification("You have already an appointment on that time !. Select another time slot","error");
       }
+      else if(response.data==3)
+      {
+        setRloadDone(true);
+        handleNotification("Time slot has been blocked!. Select another time slot","error");
+
+      }
       else{
         setRloadDone(true);
         handleNotification("Time slot has been already booked!. Select another time slot","error");
@@ -297,6 +303,7 @@ export default function AppAddPopup({
                   sx={{ overflow: { xs: "hidden" } }}
                   selectedTime={selectedTime}
                   setSelectedTime={setSelectedTime}
+                  label="Select your time"
                 />
                 <Button
                   disabled={confirmDisabled}
