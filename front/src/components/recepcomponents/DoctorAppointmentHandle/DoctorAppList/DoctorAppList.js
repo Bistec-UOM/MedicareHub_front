@@ -18,12 +18,14 @@ import DoctorAllAppDeletePopup from "../DoctotAllAppDelelePopup/DoctorAllAppDele
 import DayBlockPopup from "../DayBlockPopup/DayBlockPopup";
 import { Load } from "../../../Other";
 import { baseURL,endPoints } from "../../../../Services/Appointment";
+import BlockSelectionPopup from "../BlockSelectionPopup/BlockSelectionPopup";
 
 const DoctorAppList = (props) => {
   const [notificationOpen, setNotificationOpen] = useState(false);
   const [notiMessage, setNotiMessage] = useState("");
   const [notiType, setNotiType] = useState("success");
-  const [docDayBlockPopup, setDocDayBlockPopup] = useState(false); //var for doc day block popup
+  const [blockSelectionPopup, setBlockSelectionPopup] = useState(false); //var for doc blockSelection  block popup
+  const [docDayBlockPopup, setDocDayBlockPopup] = useState(false); //var for doc day  block popup
   const [RloadDone,setRloadDone]=useState(false)  //state for doctorapplist loading 
 
   const handleNotification = (msg, type) => {
@@ -47,7 +49,7 @@ const DoctorAppList = (props) => {
   };
 
   const handleBlockDay = () => {
-    setDocDayBlockPopup(true);
+    setBlockSelectionPopup(true);
   };
 
   var location = useLocation();
@@ -210,6 +212,13 @@ const DoctorAppList = (props) => {
         doctorId={props.docid}
         docDayBlockPopup={docDayBlockPopup}
         setDocDayBlockPopup={setDocDayBlockPopup}
+        handleNotification={handleNotification}
+      />
+       <BlockSelectionPopup
+        selectedDay={selectedDay}
+        doctorId={props.docid}
+        blockSelectionPopup={blockSelectionPopup}
+        setBlockSelectionPopup={setBlockSelectionPopup}
         handleNotification={handleNotification}
       />
       <DoctorAllAppDeletePopup
