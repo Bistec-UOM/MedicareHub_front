@@ -90,6 +90,7 @@ export default function Pharmacy() {
     setOpen(false);
   };
 
+  //Send generated bil drugs list 
   const handleConfirmDialogOpen = () => {
     setConfirmDialogOpen(true);
   };
@@ -100,9 +101,29 @@ export default function Pharmacy() {
     setSnackbarOpen(false);
   };
   
-  const handleConfirmAction = () => { 
-    setConfirmDialogOpen(false);
-    setSnackbarOpen(true);
+  const handleConfirmAction = () => {
+    //bill drug data set processing------------------------------ 
+    let objunit={}
+    let obj=[]
+    drugBill.forEach((el)=>{
+      objunit.DrugID=el.DrugId
+      objunit.PrescriptionID=el.PrescriptionId
+      objunit.Amount=el.Amount
+      obj.push(objunit)
+      objunit={}
+    })
+    console.log(JSON.stringify(obj))
+
+    setConfirmDialogOpen(false);//popup window closed-----
+
+    axios.post(baseURL+endPoints.ADDBILLDRUG,obj)
+    .then(()=>{
+      setSnackbarOpen(true);
+    })
+    .catch((er)=>{
+      console.log(er)
+    })
+
   };
   
 const handleWeight = (index,data,priceData) => {//update the weight
