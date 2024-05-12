@@ -122,7 +122,7 @@ function MyFullCalendar({
         });
       }
     } else {
-      handleNotification("This date has been blocked!", "error");
+      handleNotification("This date has been blocked!", "error");  //notification for blocked dates
     }
   };
   //handle datesset for setting the valid date range
