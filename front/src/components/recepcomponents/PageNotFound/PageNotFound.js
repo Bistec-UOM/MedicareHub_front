@@ -1,7 +1,7 @@
 const PageNotFound=()=>
 {
     return <div>
-        <h1>An unknown network error has occured!</h1>
+        <h1>An unknown network error has occured!Please wait</h1>
     </div>
 }
 
