@@ -45,7 +45,7 @@ export default function Edittemplate({setPage,tId,Tdata,setTload}) {
 
       //Edit fields---------------------------------------------------------------
       const[editMode,setEditMode]=useState(false)
-      const[editData,setEditData]=useState({fieldname:'',index:'',minRef:'',maxRef:'',unit:''})
+      const[editData,setEditData]=useState({id:'',fieldname:'',index:'',minRef:'',maxRef:'',unit:'',stat:''})
 
       const setEditModeData=(indx,id)=>{
         setEditMode(true)
@@ -55,7 +55,8 @@ export default function Edittemplate({setPage,tId,Tdata,setTload}) {
           index:indx,
           minRef:testField[indx].minRef,
           maxRef:testField[indx].maxRef,
-          unit:testField[indx].unit
+          unit:testField[indx].unit,
+          stat:testField[indx].stat
         })
       }
 
@@ -67,7 +68,8 @@ export default function Edittemplate({setPage,tId,Tdata,setTload}) {
           index:editData.index,
           minRef:editData.minRef,
           maxRef:editData.maxRef,
-          unit:editData.unit
+          unit:editData.unit,
+          stat:editData.stat
         }
         arr[editData.index]=e_data;
         setTestField(arr)
