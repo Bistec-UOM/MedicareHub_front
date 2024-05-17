@@ -28,9 +28,19 @@ export default function Edittemplate({setPage,tId,Tdata,setTload}) {
         setMaxRef('')
         setUnit('')
       }
+
+      const [dlt,setDlt]=useState([])//keep the deleted fields tracked
     
-      const deleteTestField=(f)=>{
-        setTestField(testField.filter((x)=>{return x.fieldname!=f}))
+      const deleteTestField=(ind)=>{
+        let tmp=[...testField]
+        if(tmp[ind].id!=0){
+          tmp[ind].stat='deleted'
+          setDlt([...dlt,tmp[ind]])
+          tmp.splice(ind,1);
+        }else{
+          tmp.splice(ind,1);
+        }
+        setTestField(tmp)
       }
 
       //Edit fields---------------------------------------------------------------
@@ -86,8 +96,7 @@ export default function Edittemplate({setPage,tId,Tdata,setTload}) {
         ld.map((el,ind)=>{
           el.index=ind
         })
-        
-        ld.map((el,ind)=>{el.index=ind})
+        ld=[...ld,...dlt]//combine existing and deleted fields
         let obj={
           TestId:tId,
           Fields:ld
@@ -135,7 +144,7 @@ export default function Edittemplate({setPage,tId,Tdata,setTload}) {
                {!loading ?
                    testField.map((elm,indx)=>{
                         elm.index=indx
-                       return(
+                        return(elm.stat!='deleted'?
                        <Box sx={{display:'flex',justifyContent:'space-between',alignItems:'center',width:{xs:'90%',sm:'80%'},height:'30px',borderBottom:'1px solid #0488b0',mt:'5px'}}>
                            <Box sx={{width:{xs:'40%',sm:'45%'},height:'100%'}}>
                              <Typography sx={{fontSize:'16px',cursor:'pointer'}} onDoubleClick={()=>setEditModeData(elm.index,elm.id)}>{elm.fieldname}</Typography>
@@ -157,10 +166,9 @@ export default function Edittemplate({setPage,tId,Tdata,setTload}) {
                            </Box>
      
                            <Box style={{width:'5%',height:'100%'}}>
-                              <HighlightOffIcon color='error'fontSize='small' sx={{cursor:'pointer'}} onClick={()=>deleteTestField(elm.fieldname)} ></HighlightOffIcon>
+                              <HighlightOffIcon color='error'fontSize='small' sx={{cursor:'pointer'}} onClick={()=>deleteTestField(indx)} ></HighlightOffIcon>
                            </Box>
-                           
-                       </Box>
+                       </Box>:''
                        )
                }) : ''
            }
