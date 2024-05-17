@@ -20,7 +20,7 @@ export default function Edittemplate({setPage,tId,Tdata,setTload}) {
 
       const addTestField=()=>{
         let data_set={
-          fieldname:Fieldname,index:'',minRef:MinRef,maxRef:MaxRef,unit:Unit
+          id:0,fieldname:Fieldname,index:testField.length,minRef:MinRef,maxRef:MaxRef,unit:Unit,stat:'new'
         }
         setTestField([...testField,data_set])
         setFieldName('')
@@ -40,6 +40,7 @@ export default function Edittemplate({setPage,tId,Tdata,setTload}) {
       const setEditModeData=(indx,id)=>{
         setEditMode(true)
         setEditData({...editData,
+          id:id,
           fieldname:testField[indx].fieldname,
           index:indx,
           minRef:testField[indx].minRef,
@@ -51,6 +52,7 @@ export default function Edittemplate({setPage,tId,Tdata,setTload}) {
       const addEditData=()=>{
         let arr=[...testField]
         let e_data={
+          id:editData.id,
           fieldname:editData.fieldname,
           index:editData.index,
           minRef:editData.minRef,
@@ -81,17 +83,22 @@ export default function Edittemplate({setPage,tId,Tdata,setTload}) {
       //Finalizing--------------------------------------------------
       const saveTemplate=()=>{
         let ld=testField
+        ld.map((el,ind)=>{
+          el.index=ind
+        })
+        
         ld.map((el,ind)=>{el.index=ind})
         let obj={
           TestId:tId,
           Fields:ld
         }
-        axios.put(baseURL+endPoints.TEMPLATE,obj)
+        console.log(JSON.stringify(obj))
+/*         axios.put(baseURL+endPoints.TEMPLATE,obj)
         .then(res=>{
           setTload([])//make test list empty to reload again
           setPage(2)
         })
-        .catch(er=>{})
+        .catch(er=>{}) */
       }
     
 
@@ -99,7 +106,13 @@ export default function Edittemplate({setPage,tId,Tdata,setTload}) {
       useEffect(()=>{
         document.body.style.margin = '0';
           axios.get(baseURL+endPoints.TEMPLATE+`${tId}`)
-          .then(res=>{setTestField(res.data); setLoading(false)})
+          .then(res=>{
+            let obj=res.data
+            obj.map((el,ind)=>{el.stat="exist"})
+            obj.sort((a, b) => a.index - b.index)//sort the fields according to index
+            setTestField(obj); 
+            setLoading(false)
+          })
           .catch(er=>{})
        },[])
 
@@ -120,11 +133,12 @@ export default function Edittemplate({setPage,tId,Tdata,setTload}) {
            {/*--------------------------------------------------------------------------------------*/}
          
                {!loading ?
-                   testField.map((elm,indx)=>{elm.index=indx
+                   testField.map((elm,indx)=>{
+                        elm.index=indx
                        return(
                        <Box sx={{display:'flex',justifyContent:'space-between',alignItems:'center',width:{xs:'90%',sm:'80%'},height:'30px',borderBottom:'1px solid #0488b0',mt:'5px'}}>
                            <Box sx={{width:{xs:'40%',sm:'45%'},height:'100%'}}>
-                             <Typography sx={{fontSize:'16px',cursor:'pointer'}} onDoubleClick={()=>setEditModeData(indx,elm.id)}>{elm.fieldname}</Typography>
+                             <Typography sx={{fontSize:'16px',cursor:'pointer'}} onDoubleClick={()=>setEditModeData(elm.index,elm.id)}>{elm.fieldname}</Typography>
                            </Box>
                            <Box sx={{width:{xs:'10%',sm:'15%'},height:'100%'}}>
                              <Typography sx={{fontSize:'16px',textAlign:'right'}}>{elm.minRef}</Typography>
