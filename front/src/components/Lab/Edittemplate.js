@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {Button, Paper,Toolbar, Typography,Box} from "@mui/material"
+import {Paper,Toolbar, Typography,Box} from "@mui/material"
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
@@ -8,6 +8,8 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import axios from 'axios'
 import { baseURL,endPoints } from '../../Services/Lab';
+import LoadingButton from '@mui/lab/LoadingButton';
+import DoneIcon from '@mui/icons-material/Done'
 
 export default function Edittemplate({setPage,tId,Tdata,setTload}) {
       
@@ -94,6 +96,7 @@ export default function Edittemplate({setPage,tId,Tdata,setTload}) {
 
       //Finalizing--------------------------------------------------
       const saveTemplate=()=>{
+        setLoadingB(true)
         let ld=testField
         ld.map((el,ind)=>{
           el.index=ind
@@ -109,7 +112,7 @@ export default function Edittemplate({setPage,tId,Tdata,setTload}) {
           setTload([])//make test list empty to reload again
           setPage(2)
         })
-        .catch(er=>{}) */
+        .catch(er=>{console.log(er);setLoadingB(false)}) */
       }
     
 
@@ -127,6 +130,8 @@ export default function Edittemplate({setPage,tId,Tdata,setTload}) {
           .catch(er=>{})
        },[])
 
+       const [loadingB, setLoadingB] = useState(false)//Loading button
+
   return (
     <div>
         <Toolbar sx={{position:'fixed',width:{xs:'100%',sm:'70%'},justifyContent:'space-between',alignItems:'center',p:'0',pt:{xs:'10px'},backgroundColor:'white'}}>
@@ -134,7 +139,15 @@ export default function Edittemplate({setPage,tId,Tdata,setTload}) {
 
             <Typography sx={{fontSize:{xs:'17px'}}}>{Tdata.testName}</Typography>
         
-            <Button variant='contained' size='small' onClick={()=>saveTemplate()} sx={{mr:{xs:'5px',sm:'15px'}}}>Save</Button>
+            <LoadingButton 
+              variant='contained' 
+              size='small' 
+              endIcon={<DoneIcon />}          
+              loading={loadingB}
+              loadingPosition="end"
+              onClick={()=>saveTemplate()} 
+              sx={{mr:{xs:'5px',sm:'15px'}}}
+            >Save</LoadingButton>
         </Toolbar>
 
         <Box sx={{display:'flex',flexDirection:'column',alignItems:'center',paddingTop:{xs:'80px',sm:'80px'}}}>
