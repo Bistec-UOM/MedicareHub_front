@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {Paper, TextField, Toolbar, Typography,Box} from "@mui/material"
+import {Button ,Paper, TextField, Toolbar, Typography,Box, Dialog} from "@mui/material"
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
@@ -8,9 +8,11 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import axios from 'axios'
 import { baseURL,endPoints } from '../../Services/Lab';
-import { Load } from '../../../Other';
 import LoadingButton from '@mui/lab/LoadingButton';
 import SendIcon from '@mui/icons-material/Send'
+import CloseIcon from '@mui/icons-material/Close'
+import DoneIcon from '@mui/icons-material/Done'
+import WarningIcon from '@mui/icons-material/Warning';
 
 export default function CreateLabTemplate({setPage,setTload}) {
 
@@ -100,7 +102,8 @@ export default function CreateLabTemplate({setPage,setTload}) {
         })
 
         let abbr=getAbb(testData.name)
-        let nm = testData.name.substring(0, testData.name.length - abbr.length-2)
+        let nm = testData.name
+        // let nm = testData.name.substring(0, testData.name.length - abbr.length-2)
         let T={
           testName:nm,
           abb:abbr,
@@ -122,6 +125,12 @@ export default function CreateLabTemplate({setPage,setTload}) {
     
       const [loadingB, setLoadingB] = useState(false)//Loading button
  
+    //Pop up dialog box===========================================================================
+    const [open, setOpen] = useState(false)
+    const handleClickOpen = (x) => {
+        setOpen(true)
+    }
+    const handleClose = () => {setOpen(false)}  
 
   return (
     <div>
@@ -141,16 +150,13 @@ export default function CreateLabTemplate({setPage,setTload}) {
               <TextField size='small' sx={{m:'0px',ml:{xs:'0',sm:'5px'},padding:'2px',width:{xs:'80px',sm:'120px'}}} onChange={(e)=>setTestData({...testData,'price':e.target.value})}></TextField>
             </Box>
         
-            <LoadingButton 
+            <Button 
               variant='contained'
-              endIcon={<SendIcon/>} 
               size='small' 
-              loading={loadingB}
-              loadingPosition="end"
-              onClick={()=>createTemplate()} 
+              onClick={handleClickOpen} 
               sx={{mr:{xs:'5px',sm:'15px'}}}
             >Submit
-            </LoadingButton>
+            </Button>
         </Toolbar>
 
         <Box sx={{display:'flex',flexDirection:'column',alignItems:'center', paddingTop:{xs:'80px',sm:'80px'}}}>
@@ -256,6 +262,26 @@ export default function CreateLabTemplate({setPage,setTload}) {
  
         </Paper>:''
         }
+  {/*------------------ Confirm pop up box ---------------------------------------------- */}
+
+      <Dialog open={open} onClose={handleClose} >
+        <div style={{display:'flex',alignItems:'start',margin:'8px',paddingBottom:'5px',borderBottom:'1px solid lightgrey'}}>
+          <WarningIcon color='warning' sx={{mr:'10px'}}></WarningIcon>
+          <Typography>Are you sure template is ready?</Typography>
+        </div>
+        <div style={{width:'250px',height:'60px',display:'flex',justifyContent:'space-around',alignItems:'center',paddingLeft:'20px'}}>
+          <Button variant='outlined' size='small' endIcon={<CloseIcon></CloseIcon>} onClick={handleClose}>No</Button>
+          <LoadingButton 
+            variant='contained' 
+            size='small' 
+            endIcon={<DoneIcon></DoneIcon>}           
+            loading={loadingB}
+            loadingPosition="end"
+            onClick={createTemplate}
+          >Yes</LoadingButton>
+        </div>
+      </Dialog>
+
     </div>
   )
 }
