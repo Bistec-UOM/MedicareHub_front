@@ -20,7 +20,7 @@ export default function Edittemplate({setPage,tId,Tdata,setTload}) {
 
       const addTestField=()=>{
         let data_set={
-          fieldname:Fieldname,index:'',minRef:MinRef,maxRef:MaxRef,unit:Unit
+          id:0,fieldname:Fieldname,index:testField.length,minRef:MinRef,maxRef:MaxRef,unit:Unit,stat:'new'
         }
         setTestField([...testField,data_set])
         setFieldName('')
@@ -28,34 +28,48 @@ export default function Edittemplate({setPage,tId,Tdata,setTload}) {
         setMaxRef('')
         setUnit('')
       }
+
+      const [dlt,setDlt]=useState([])//keep the deleted fields tracked
     
-      const deleteTestField=(f)=>{
-        setTestField(testField.filter((x)=>{return x.fieldname!=f}))
+      const deleteTestField=(ind)=>{
+        let tmp=[...testField]
+        if(tmp[ind].id!=0){
+          tmp[ind].stat='deleted'
+          setDlt([...dlt,tmp[ind]])
+          tmp.splice(ind,1);
+        }else{
+          tmp.splice(ind,1);
+        }
+        setTestField(tmp)
       }
 
       //Edit fields---------------------------------------------------------------
       const[editMode,setEditMode]=useState(false)
-      const[editData,setEditData]=useState({fieldname:'',index:'',minRef:'',maxRef:'',unit:''})
+      const[editData,setEditData]=useState({id:'',fieldname:'',index:'',minRef:'',maxRef:'',unit:'',stat:''})
 
       const setEditModeData=(indx,id)=>{
         setEditMode(true)
         setEditData({...editData,
+          id:id,
           fieldname:testField[indx].fieldname,
           index:indx,
           minRef:testField[indx].minRef,
           maxRef:testField[indx].maxRef,
-          unit:testField[indx].unit
+          unit:testField[indx].unit,
+          stat:testField[indx].stat
         })
       }
 
       const addEditData=()=>{
         let arr=[...testField]
         let e_data={
+          id:editData.id,
           fieldname:editData.fieldname,
           index:editData.index,
           minRef:editData.minRef,
           maxRef:editData.maxRef,
-          unit:editData.unit
+          unit:editData.unit,
+          stat:editData.stat
         }
         arr[editData.index]=e_data;
         setTestField(arr)
@@ -81,17 +95,21 @@ export default function Edittemplate({setPage,tId,Tdata,setTload}) {
       //Finalizing--------------------------------------------------
       const saveTemplate=()=>{
         let ld=testField
-        ld.map((el,ind)=>{el.index=ind})
+        ld.map((el,ind)=>{
+          el.index=ind
+        })
+        ld=[...ld,...dlt]//combine existing and deleted fields
         let obj={
           TestId:tId,
           Fields:ld
         }
-        axios.put(baseURL+endPoints.TEMPLATE,obj)
+        console.log(JSON.stringify(obj))
+/*         axios.put(baseURL+endPoints.TEMPLATE,obj)
         .then(res=>{
           setTload([])//make test list empty to reload again
           setPage(2)
         })
-        .catch(er=>{})
+        .catch(er=>{}) */
       }
     
 
@@ -99,7 +117,13 @@ export default function Edittemplate({setPage,tId,Tdata,setTload}) {
       useEffect(()=>{
         document.body.style.margin = '0';
           axios.get(baseURL+endPoints.TEMPLATE+`${tId}`)
-          .then(res=>{setTestField(res.data); setLoading(false)})
+          .then(res=>{
+            let obj=res.data
+            obj.map((el,ind)=>{el.stat="exist"})
+            obj.sort((a, b) => a.index - b.index)//sort the fields according to index
+            setTestField(obj); 
+            setLoading(false)
+          })
           .catch(er=>{})
        },[])
 
@@ -120,11 +144,12 @@ export default function Edittemplate({setPage,tId,Tdata,setTload}) {
            {/*--------------------------------------------------------------------------------------*/}
          
                {!loading ?
-                   testField.map((elm,indx)=>{elm.index=indx
-                       return(
+                   testField.map((elm,indx)=>{
+                        elm.index=indx
+                        return(elm.stat!='deleted'?
                        <Box sx={{display:'flex',justifyContent:'space-between',alignItems:'center',width:{xs:'90%',sm:'80%'},height:'30px',borderBottom:'1px solid #0488b0',mt:'5px'}}>
                            <Box sx={{width:{xs:'40%',sm:'45%'},height:'100%'}}>
-                             <Typography sx={{fontSize:'16px',cursor:'pointer'}} onDoubleClick={()=>setEditModeData(indx,elm.id)}>{elm.fieldname}</Typography>
+                             <Typography sx={{fontSize:'16px',cursor:'pointer'}} onDoubleClick={()=>setEditModeData(elm.index,elm.id)}>{elm.fieldname}</Typography>
                            </Box>
                            <Box sx={{width:{xs:'10%',sm:'15%'},height:'100%'}}>
                              <Typography sx={{fontSize:'16px',textAlign:'right'}}>{elm.minRef}</Typography>
@@ -143,10 +168,9 @@ export default function Edittemplate({setPage,tId,Tdata,setTload}) {
                            </Box>
      
                            <Box style={{width:'5%',height:'100%'}}>
-                              <HighlightOffIcon color='error'fontSize='small' sx={{cursor:'pointer'}} onClick={()=>deleteTestField(elm.fieldname)} ></HighlightOffIcon>
+                              <HighlightOffIcon color='error'fontSize='small' sx={{cursor:'pointer'}} onClick={()=>deleteTestField(indx)} ></HighlightOffIcon>
                            </Box>
-                           
-                       </Box>
+                       </Box>:''
                        )
                }) : ''
            }
