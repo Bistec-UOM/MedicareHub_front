@@ -24,6 +24,9 @@ import TopUnit from '../components/Doctor/TopUnit';
 import { baseURL,endPoints } from '../Services/Doctor';
 import axios from 'axios';
 import { PersonDetail } from '../components/Other';
+import LoadingButton from '@mui/lab/LoadingButton';
+import DoneIcon from '@mui/icons-material/Done'
+
 export default function Doctor() {
   
   const [select,setSelect]=useState(null);//hold the selected appoinment patient
@@ -88,7 +91,7 @@ export default function Doctor() {
 
 
 const handleClick = () => {
- 
+  setLoadingB(true)
   let obj = { //strore the all data in this object after click the confirm button
     id: select,
     drugs: pres, // drug array: from DoctorAddDrugs component
@@ -113,6 +116,7 @@ const handleClick = () => {
     if(er.hasOwnProperty('response')){
       console.log(er.response.data)
     }else{
+      setLoadingB(false)
       console.log(er)
     }
   });
@@ -161,6 +165,8 @@ const selectedAppointment = select ? appointments.filter(appointment => appointm
 //------------filter  the selected patient---------------------------
 const filteredAppointments = showDonePatients ? appointments.filter(appointment => appointment.status === "pending") : appointments;
  //...............filter pending patients............................
+
+ const [loadingB, setLoadingB] = useState(false)//Loading button
 
  return (
   <div>
@@ -228,7 +234,7 @@ const filteredAppointments = showDonePatients ? appointments.filter(appointment 
                        </Box>
   {/*..............confirm button.........................................*/}
                        <br></br>
-                       <Button variant="contained" sx={{ left: '80%' }} onClick={handleClick}>Confirm</Button>
+                       <Button endIcon={<DoneIcon></DoneIcon>} variant="contained" sx={{ left: '80%' }} onClick={handleClick}>Confirm</Button>
  </div>
                      
  {/*...........snack bar component....................................... */}
