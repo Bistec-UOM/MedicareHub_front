@@ -102,7 +102,7 @@ const [update,forceUpdate]=useState(0);
     return () => {
       connection.stop();
     };
-  }, [update]);
+  }, []);
   
   const handleEditClose = () => {
     setOpen(false);
@@ -301,7 +301,7 @@ useEffect(() => {
       <Typography sx={{ flex: 1 }}>E-mail</Typography>
       <Typography sx={{ flex: 1 }}>Address</Typography>
       </Paper>
-      {records.sort((a, b) => a.fullName.localeCompare(b.fullName)).map((row) => (
+      {records.map((row) => (
   <Paper
     key={row.Id}
     sx={{
