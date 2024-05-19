@@ -7,9 +7,12 @@ import {Load} from '../components/Common'
 
 const Doctor_analytics = ({pId}) => {
 
-  const [medList,setMedList]=useState([]);
+  const [medList,setMedList]=useState([]);//all unique drugs (list) extracted from records
+  const [labList,setlabList]=useState([]);//all unique lab parameters (list) extracted from records
   const [selectedMed, setSelectedMed] = useState([]);
-  const [col,setCol]=useState({})
+  const [selectedLab, setSelectedLab] = useState([]);
+  const [col,setCol]=useState({})//color aray for drugs
+  const [col2,setCol2]=useState({})//color array for lab parameters
   const [done,setDone]=useState(false)
 
   const handleMedToggle = (x) => {
@@ -22,6 +25,213 @@ const Doctor_analytics = ({pId}) => {
     });
   };
   
+  const handleLabToggle = (x) => {
+    setSelectedLab(prev => {
+      if (prev.includes(x)) {
+        return prev.filter(el => el !== x);
+      } else {
+        return [...prev, x];
+      }
+    });
+  };
+
+  const temp=[
+    {
+      "reportId": 42,
+      "testName": "Thyroid Function Test",
+      "dateTime": "2024-04-08T13:47:11.3306861",
+      "results": [
+        {
+          "fieldname": "Thyroid-Stimulating Hormone (TSH)",
+          "value": 0.2,
+          "minRef": 0.4,
+          "maxRef": 4,
+          "unit": "mU/L",
+          "status": "low"
+        },
+        {
+          "fieldname": "Thyroxine (T4)",
+          "value": 12,
+          "minRef": 9,
+          "maxRef": 24,
+          "unit": "pMol/L",
+          "status": "normal"
+        }
+      ]
+    },
+    {
+      "reportId": 43,
+      "testName": "Thyroid Function Test",
+      "dateTime": "2024-04-16T13:47:45.5301758",
+      "results": [
+        {
+          "fieldname": "Thyroid-Stimulating Hormone (TSH)",
+          "value": 0.5,
+          "minRef": 0.4,
+          "maxRef": 4,
+          "unit": "mU/L",
+          "status": "normal"
+        },
+        {
+          "fieldname": "Thyroxine (T4)",
+          "value": 16,
+          "minRef": 9,
+          "maxRef": 24,
+          "unit": "pMol/L",
+          "status": "normal"
+        }
+      ]
+    },
+    {
+      "reportId": 44,
+      "testName": "Thyroid Function Test",
+      "dateTime": "2024-04-24T13:47:29.8703541",
+      "results": [
+        {
+          "fieldname": "Thyroid-Stimulating Hormone (TSH)",
+          "value": 0.3,
+          "minRef": 0.4,
+          "maxRef": 4,
+          "unit": "mU/L",
+          "status": "low"
+        },
+        {
+          "fieldname": "Thyroxine (T4)",
+          "value": 14,
+          "minRef": 9,
+          "maxRef": 24,
+          "unit": "pMol/L",
+          "status": "normal"
+        }
+      ]
+    },
+    {
+      "reportId": 45,
+      "testName": "Full Blood Count",
+      "dateTime": "2024-04-16T14:22:34.2687332",
+      "results": [
+        {
+          "fieldname": "Hemoglobin",
+          "value": 12,
+          "minRef": 11.5,
+          "maxRef": 13.5,
+          "unit": "g/DL",
+          "status": "normal"
+        },
+        {
+          "fieldname": "Mean Corpuscular Volume",
+          "value": 85,
+          "minRef": 80,
+          "maxRef": 100,
+          "unit": "fL",
+          "status": "normal"
+        },
+        {
+          "fieldname": "Platelet Count",
+          "value": 155,
+          "minRef": 150,
+          "maxRef": 450,
+          "unit": "K/uL",
+          "status": "normal"
+        },
+        {
+          "fieldname": "Mean Corpuscular Hemoglobin",
+          "value": 30,
+          "minRef": 27,
+          "maxRef": 33,
+          "unit": "pg",
+          "status": "normal"
+        },
+        {
+          "fieldname": "Mean Corpuscular Hemoglobin Concentration",
+          "value": 32,
+          "minRef": 32,
+          "maxRef": 36,
+          "unit": "g/dL",
+          "status": "normal"
+        },
+        {
+          "fieldname": "Red Cell Distribution",
+          "value": 12,
+          "minRef": 11.5,
+          "maxRef": 14.5,
+          "unit": "%",
+          "status": "normal"
+        },
+        {
+          "fieldname": "Platelet Distribution width",
+          "value": 9.5,
+          "minRef": 9.2,
+          "maxRef": 14.8,
+          "unit": "fL",
+          "status": "normal"
+        }
+      ]
+    },
+    {
+      "reportId": 46,
+      "testName": "Full Blood Count",
+      "dateTime": "2024-04-24T14:23:09.4178641",
+      "results": [
+        {
+          "fieldname": "Hemoglobin",
+          "value": 12,
+          "minRef": 11.5,
+          "maxRef": 13.5,
+          "unit": "g/DL",
+          "status": "normal"
+        },
+        {
+          "fieldname": "Mean Corpuscular Volume",
+          "value": 86,
+          "minRef": 80,
+          "maxRef": 100,
+          "unit": "fL",
+          "status": "normal"
+        },
+        {
+          "fieldname": "Platelet Count",
+          "value": 155,
+          "minRef": 150,
+          "maxRef": 450,
+          "unit": "K/uL",
+          "status": "normal"
+        },
+        {
+          "fieldname": "Mean Corpuscular Hemoglobin",
+          "value": 31,
+          "minRef": 27,
+          "maxRef": 33,
+          "unit": "pg",
+          "status": "normal"
+        },
+        {
+          "fieldname": "Mean Corpuscular Hemoglobin Concentration",
+          "value": 32,
+          "minRef": 32,
+          "maxRef": 36,
+          "unit": "g/dL",
+          "status": "normal"
+        },
+        {
+          "fieldname": "Red Cell Distribution",
+          "value": 11.8,
+          "minRef": 11.5,
+          "maxRef": 14.5,
+          "unit": "%",
+          "status": "normal"
+        },
+        {
+          "fieldname": "Platelet Distribution width",
+          "value": 9.5,
+          "minRef": 9.2,
+          "maxRef": 14.8,
+          "unit": "fL",
+          "status": "normal"
+        }
+      ]
+    }
+  ]
 
   const [sample,setSample]=useState([
     {
@@ -157,7 +367,8 @@ const Doctor_analytics = ({pId}) => {
     }
   ])
 
-  const [data,setData] = useState([]);
+  const [data,setData] = useState([]);//Data to be plotted on drug graph
+  const [data2,setData2] = useState([]);//Data to be plotted on lab report graph
 
   const getRandomColor=()=>{
     const letters = '0123456789ABCDEF';
@@ -169,14 +380,16 @@ const Doctor_analytics = ({pId}) => {
   }
 
   useEffect(()=>{
+    listLabs(temp)
     axios.get(`${baseURL+endPoints.ANALYTIC}?Id=${pId}`)
     .then((res)=>{
-      console.log(res.data)
       listDrugs(res.data)
+      //start requesting lab reports
     })
     .catch((er)=>{
       console.log(er)
     })
+    listLabs(temp)
   },[])
 
   //scaling the date
@@ -196,7 +409,7 @@ const Doctor_analytics = ({pId}) => {
     let drugArr=[]
     let obj=[]
     let objUnit={}
-    //extracting drugs list
+    //extracting drugs list (unique drug names)
     dt.forEach((el,ind)=>{
       el.drugs.forEach((elm)=>{
         drugArr.push(elm.genericN)
@@ -221,7 +434,7 @@ const Doctor_analytics = ({pId}) => {
     obj.forEach((elm)=>{
       elm.rank-=min
     })
-    setMedList(drugArr)
+    setMedList(drugArr)//
     setSelectedMed(drugArr)
     setData(obj)
     //setcolors array
@@ -231,6 +444,59 @@ const Doctor_analytics = ({pId}) => {
     })
     setCol(colobj)
     setDone(true)
+  }
+
+  const listLabs=(dt)=>{
+    //extracting the dates list
+    let dateList = dt.map(item => item.dateTime.substring(0, 10));
+    dateList = [...new Set(dateList)];
+    dateList.sort();
+
+    let fieldNamesByTestName = dt.reduce((acc, item) => {
+      if (!acc[item.testName]) {
+        acc[item.testName] = [...new Set(item.results.map(result => result.fieldname))];
+      }
+      return acc;
+    }, {});
+
+    fieldNamesByTestName = Object.entries(fieldNamesByTestName).map(([testName, fieldNames]) => ({ [testName]: fieldNames }));
+
+    let props=[]//extract all props(test parameters) list
+    fieldNamesByTestName.forEach((el)=>{
+      Object.values(el)[0].forEach((elm)=>{
+        props.push(elm)
+      })
+    })
+    setlabList(props)
+    setSelectedLab(props)
+
+    let finalArray = [];
+    // Navigate through every date
+    dateList.forEach(date => {
+      let sameDateObjects = dt.filter(item => item.dateTime.substring(0,10) === date);
+    
+      let fieldnameValuePairs = {};
+    
+      sameDateObjects.forEach(obj => {
+        obj.results.forEach(result => {
+          fieldnameValuePairs[result.fieldname] = result.value;
+        });
+      });
+    
+      fieldnameValuePairs.date=date
+      fieldnameValuePairs.rank=formatDateValue(date)
+      finalArray.push(fieldnameValuePairs);
+    });
+
+    setData2(finalArray);
+    //set the color array
+    let colobj={}
+    props.map((el)=>{
+      colobj[el]=getRandomColor()
+    })
+    setCol2(colobj)
+
+    console.log(finalArray)
   }
 
   //convert rank values into nominal values in legend
@@ -247,28 +513,27 @@ const Doctor_analytics = ({pId}) => {
         </Paper>
       )}
     return null;
-  };  
+  }
+ 
 
 return(
 done?<Box>
-    <Box sx={{display:'flex',justifyContent:'space-around'}}>
+    {/*------------ drugs graph -------------------------------------------------------*/}
+    <Box sx={{display:'flex',justifyContent:'space-between',alignItems:'start'}}>
       <Paper sx={{p:'5px',borderRadius:'0'}}>
-        <Typography sx={{fontSize:'16px',color:'grey',fontWeight:'bold'}}>Drugs</Typography>
+        <Typography sx={{fontSize:'14px',color:'grey',fontWeight:'bold'}}>Drugs</Typography>
         <Divider></Divider>
         <FormGroup >
         {medList.map((el,ind) => (
             <FormControlLabel
                 key={el}
                 control={<Checkbox size='small' sx={{height:'22px'}} style={{ color: col[el] }} checked={selectedMed.includes(el)} onChange={() => handleMedToggle(el)} />}
-                label={<Typography sx={{fontSize:'15px'}}>{el}</Typography>}
+                label={<Typography sx={{fontSize:'12px'}}>{el}</Typography>}
               />
             ))}
         </FormGroup>
       </Paper>
-
-    </Box>
-
-
+      
     <ResponsiveContainer width={750} height={350}>
       <LineChart
         data={data}
@@ -290,6 +555,46 @@ done?<Box>
         ))}      
         </LineChart>
     </ResponsiveContainer>
+    </Box>
+
+    {/*------------ Lab reports graph -------------------------------------------------------*/}
+    <Box sx={{display:'flex',justifyContent:'space-between',alignItems:'start'}}>
+    <Paper sx={{p:'5px',borderRadius:'0'}}>
+        <Typography sx={{fontSize:'14px',color:'grey',fontWeight:'bold'}}>Lab Reports</Typography>
+        <Divider></Divider>
+        <FormGroup >
+        {labList.map((el,ind) => (
+            <FormControlLabel
+                key={el}
+                control={<Checkbox size='small' sx={{height:'22px'}} style={{ color: col2[el] }} checked={selectedLab.includes(el)} onChange={() => handleLabToggle(el)}/>}
+                label={<Typography sx={{fontSize:'12px'}}>{el}</Typography>}
+              />
+            ))}
+        </FormGroup>
+      </Paper>
+      
+    <ResponsiveContainer width={750} height={350}>
+      <LineChart
+        data={data2}
+        margin={{
+          top: 20,
+          right: 30,
+          left: 20,
+          bottom: 10,
+        }}
+      >
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis 
+          dataKey="date"
+        />
+        <YAxis />
+        {selectedLab.map((el) => (
+          <Line key={el} type="stepAfter" dataKey={el} stroke={col2[el]} activeDot={{ r: 8 }} />
+        ))}      
+        </LineChart>
+    </ResponsiveContainer>
+    </Box>
+
 </Box>:<Load></Load>
 )
 }
