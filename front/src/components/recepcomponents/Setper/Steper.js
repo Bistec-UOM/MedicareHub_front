@@ -70,6 +70,7 @@ export default function Steper(props) {
                     opacity: findOpacityStatus(label.appointment?.status)
                       ? 0.5
                       : 1,
+                      height:'55px'
                   }}
                 >
                   {getStartTime(label.appointment?.dateTime)}-{" "}

@@ -6,7 +6,8 @@ const endPoints = {
     REPORT:'/api/Values/ReportRequest',
     SET_ACCEPT:'/api/Values/Accept',
     GET_ACCEPT:'/api/Values/Accept',
-    RESULT:'/api/Values/Result'
+    RESULT:'/api/Values/Result',
+    ANALYTIC:'/api/DoctorAnalytic',
 };
   
 export { baseURL,endPoints};

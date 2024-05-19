@@ -96,12 +96,22 @@ export default function AppEditPopup({
         setDelcount(delcount + 1);
         setAppEditOpen(false);
         handleNotification("Appointment Edited succesfully!", "success");
-      } else if (response.data == 1) {
+      }
+      else if (response.data == 2) {
+        handleNotification(
+          "Time slot has been blocked. Select another time slot",
+          "error"
+        );
+      }
+       
+      else if (response.data == 1) {
         handleNotification(
           "Time slot has been already booked!. Select another time slot",
           "error"
         );
+       
       }
+      
     } catch (err) {
       handleNotification(err.response.data,"error");
     }

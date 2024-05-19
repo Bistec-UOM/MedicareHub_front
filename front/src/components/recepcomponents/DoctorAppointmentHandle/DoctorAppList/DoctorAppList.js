@@ -18,12 +18,15 @@ import DoctorAllAppDeletePopup from "../DoctotAllAppDelelePopup/DoctorAllAppDele
 import DayBlockPopup from "../DayBlockPopup/DayBlockPopup";
 import { Load } from "../../../Other";
 import { baseURL,endPoints } from "../../../../Services/Appointment";
+import BlockSelectionPopup from "../BlockSelectionPopup/BlockSelectionPopup";
+import BlockTimeSelectionPopup from "../BlockTimeSelectionPopup/BlockTImeSelectionPopup";
 
 const DoctorAppList = (props) => {
   const [notificationOpen, setNotificationOpen] = useState(false);
   const [notiMessage, setNotiMessage] = useState("");
   const [notiType, setNotiType] = useState("success");
-  const [docDayBlockPopup, setDocDayBlockPopup] = useState(false); //var for doc day block popup
+  const [blockSelectionPopup, setBlockSelectionPopup] = useState(false); //var for doc blockSelection  block popup
+  const [docDayBlockPopup, setDocDayBlockPopup] = useState(false); //var for doc day  block popup
   const [RloadDone,setRloadDone]=useState(false)  //state for doctorapplist loading 
 
   const handleNotification = (msg, type) => {
@@ -37,17 +40,20 @@ const DoctorAppList = (props) => {
   const [delcount, setDelcount] = useState(0);
   const [isDisabledCancel, setIsDisabledCancel] = useState(true); //variable for disabling the cancel button
   const [isDisabledBlock, setIsDisabledBlock] = useState(true); //variable for disabling block button
+  const [timeSelection,setTimeSelection]=useState(false);  //variable for time selection popup
   const [selectedDay, setSelectedDay] = useState(props.selectedDay);
   const [cancelAll, setCancelAll] = useState(false); //var for all app cancel popup
   const today = new Date();
   const compSelectedDay = new Date(selectedDay); //day object of selected day for comparison of blocking functionality
+
+
 
   const handleCancelAll = () => {
     setCancelAll(true);
   };
 
   const handleBlockDay = () => {
-    setDocDayBlockPopup(true);
+    setBlockSelectionPopup(true);
   };
 
   var location = useLocation();
@@ -102,6 +108,7 @@ const DoctorAppList = (props) => {
           isDisabled={isDisabledCancel}
           placename="Patient name or id..."
         />
+          <Typography variant="h5" sx={{ color: "#d0d1cb" }}>{selectedDay}</Typography>
         <Stack
           sx={{
             justifyContent: "flex-end",
@@ -209,6 +216,28 @@ const DoctorAppList = (props) => {
         doctorId={props.docid}
         docDayBlockPopup={docDayBlockPopup}
         setDocDayBlockPopup={setDocDayBlockPopup}
+        handleNotification={handleNotification}
+        blockSelectionPopup={blockSelectionPopup}
+        setBlockSelectionPopup={setBlockSelectionPopup}
+      />
+       <BlockSelectionPopup
+        timeSelection={timeSelection}
+        setTimeSelection={setTimeSelection}
+        selectedDay={selectedDay}
+        doctorId={props.docid}
+        docDayBlockPopup={docDayBlockPopup}
+        setDocDayBlockPopup={setDocDayBlockPopup}
+        blockSelectionPopup={blockSelectionPopup}
+        setBlockSelectionPopup={setBlockSelectionPopup}
+        handleNotification={handleNotification}
+      />
+      <BlockTimeSelectionPopup
+        timeSelection={timeSelection}
+        setTimeSelection={setTimeSelection}
+        selectedDay={selectedDay}
+        doctorId={props.docid}
+        blockSelectionPopup={blockSelectionPopup}
+        setBlockSelectionPopup={setBlockSelectionPopup}
         handleNotification={handleNotification}
       />
       <DoctorAllAppDeletePopup

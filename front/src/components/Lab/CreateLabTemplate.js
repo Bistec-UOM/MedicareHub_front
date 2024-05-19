@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {Button, Paper, TextField, Toolbar, Typography,Box} from "@mui/material"
+import {Button ,Paper, TextField, Toolbar, Typography,Box, Dialog} from "@mui/material"
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
@@ -8,6 +8,11 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import axios from 'axios'
 import { baseURL,endPoints } from '../../Services/Lab';
+import LoadingButton from '@mui/lab/LoadingButton';
+import SendIcon from '@mui/icons-material/Send'
+import CloseIcon from '@mui/icons-material/Close'
+import DoneIcon from '@mui/icons-material/Done'
+import WarningIcon from '@mui/icons-material/Warning';
 
 export default function CreateLabTemplate({setPage,setTload}) {
 
@@ -78,28 +83,54 @@ export default function CreateLabTemplate({setPage,setTload}) {
         }
       }
 
+      //Extracting abbereviation------------------------------------------------
+      const getAbb=(str)=>{
+        const regex = /\(([^)]+)\)$/;
+        const match = regex.exec(str);
+        if (match) {
+          return match[1];
+        }
+        return "";
+      }
+
       //Finalizing---------------------------------------------------------------
       const createTemplate=()=>{
+        setLoadingB(true)
         let ar=testField
         ar.map((el,ind)=>{
           el.index=ind
         })
+
+        let abbr=getAbb(testData.name)
+        let nm = testData.name
+        // let nm = testData.name.substring(0, testData.name.length - abbr.length-2)
         let T={
-          testName:testData.name,
-          abb:'ABC',
+          testName:nm,
+          abb:abbr,
           price:testData.price,
           provider:testData.provider,
           reportFields:ar
         }
+        console.log(JSON.stringify(T))
         axios.post(baseURL+endPoints.TEMPLATE,T)
         .then(res=>{
           setTload([])//make test list empty to reload again
           setPage(2)
         })
-        .catch(er=>{console.log(er)})
+        .catch(er=>{
+          console.log(er)
+          setLoadingB(false)
+        })
       }
     
-    
+      const [loadingB, setLoadingB] = useState(false)//Loading button
+ 
+    //Pop up dialog box===========================================================================
+    const [open, setOpen] = useState(false)
+    const handleClickOpen = (x) => {
+        setOpen(true)
+    }
+    const handleClose = () => {setOpen(false)}  
 
   return (
     <div>
@@ -119,7 +150,13 @@ export default function CreateLabTemplate({setPage,setTload}) {
               <TextField size='small' sx={{m:'0px',ml:{xs:'0',sm:'5px'},padding:'2px',width:{xs:'80px',sm:'120px'}}} onChange={(e)=>setTestData({...testData,'price':e.target.value})}></TextField>
             </Box>
         
-            <Button variant='contained' size='small' onClick={()=>createTemplate()} sx={{mr:{xs:'5px',sm:'15px'}}}>Create</Button>
+            <Button 
+              variant='contained'
+              size='small' 
+              onClick={handleClickOpen} 
+              sx={{mr:{xs:'5px',sm:'15px'}}}
+            >Submit
+            </Button>
         </Toolbar>
 
         <Box sx={{display:'flex',flexDirection:'column',alignItems:'center', paddingTop:{xs:'80px',sm:'80px'}}}>
@@ -225,6 +262,26 @@ export default function CreateLabTemplate({setPage,setTload}) {
  
         </Paper>:''
         }
+  {/*------------------ Confirm pop up box ---------------------------------------------- */}
+
+      <Dialog open={open} onClose={handleClose} >
+        <div style={{display:'flex',alignItems:'start',margin:'8px',paddingBottom:'5px',borderBottom:'1px solid lightgrey'}}>
+          <WarningIcon color='warning' sx={{mr:'10px'}}></WarningIcon>
+          <Typography>Are you sure template is ready?</Typography>
+        </div>
+        <div style={{width:'250px',height:'60px',display:'flex',justifyContent:'space-around',alignItems:'center',paddingLeft:'20px'}}>
+          <Button variant='outlined' size='small' endIcon={<CloseIcon></CloseIcon>} onClick={handleClose}>No</Button>
+          <LoadingButton 
+            variant='contained' 
+            size='small' 
+            endIcon={<DoneIcon></DoneIcon>}           
+            loading={loadingB}
+            loadingPosition="end"
+            onClick={createTemplate}
+          >Yes</LoadingButton>
+        </div>
+      </Dialog>
+
     </div>
   )
 }

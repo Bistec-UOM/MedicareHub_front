@@ -1,4 +1,4 @@
-const baseURL='http://localhost:7205'
+const baseURL='https://localhost:7205'
 
 const endPoints = { 
     DRUGREQUEST:'/api/Bill/DrugRequest',
@@ -7,6 +7,7 @@ const endPoints = {
     DRUGGET:'/api/Drugs',
     DRUGDELETE:'/api/Drugs',
     DRUGGETID:'/api/Drugs',
-    DRUGUPDATE:'/api/Drugs',   
+    DRUGUPDATE:'/api/Drugs',
+    ADDBILLDRUG:'/api/Bill/AddBillDrugs'   
   };
   export { baseURL,endPoints};

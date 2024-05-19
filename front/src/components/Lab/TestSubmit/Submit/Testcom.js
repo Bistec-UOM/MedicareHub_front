@@ -48,7 +48,7 @@ export default function Testcom({handleClick1,handleClose,test}) {
       "dateTime":getUTCDateTimeString(),
       "results":ob
     }
-
+    
     axios.post(baseURL+endPoints.RESULT,obj)
     .then((res)=>{
       console.log(res.data)
