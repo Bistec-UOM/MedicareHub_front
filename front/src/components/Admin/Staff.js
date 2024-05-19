@@ -42,6 +42,7 @@ export default function Staff() {
         qualifications: "",
         password: "",
         imageUrl: "",
+        isDeleted:false,
       });
     }
   }, [open, editOpen]);
@@ -60,6 +61,7 @@ export default function Staff() {
         qualifications: "",
         password: "",
         imageUrl: "",
+        isDeleted:false,
       });
     }
   }, [open]);
@@ -77,6 +79,7 @@ export default function Staff() {
     qualifications: "",
     password: "",
     imageUrl: "",
+    isDeleted:false,
   });
   const [formData, setFormData] = useState({
     id: 0,
@@ -92,6 +95,7 @@ export default function Staff() {
     qualifications: "",
     password: "",
     imageUrl: "",
+    isDeleted:false,
   });
   const [update, forceUpdate] = useState(0);
   useEffect(() => {
@@ -127,6 +131,7 @@ export default function Staff() {
     password: formData.password,
     role: formData.role,
     imageUrl: formData.imageUrl,
+    isDeleted:false,
   };
 
   const [Role, setRole] = useState("");
@@ -165,6 +170,7 @@ export default function Staff() {
       qualifications: row2.qualifications,
       password: row2.password,
       imageUrl: row2.imageUrl,
+      isDeleted:row2.isDeleted,
     });
     console.log(pData);
     // setSelectedPaper(row2);
@@ -186,28 +192,62 @@ export default function Staff() {
       [field]: value,
     });
   };
+
   const handleRemove = () => {
-    console.log("removed" + formData.id);
+
+
     axios
-      .delete(baseURL + endPoints.StaffList + `/${pData.id}`)
-      .then((res) => {
-        settypenoti("success");
-        setNotiMessage("Staff Member removed successfully");
-        setNotificationOpen(true);
-        forceUpdate((prevCount) => prevCount + 1); // Trigger a re-render
-        console.log("success", formData);
-      })
-      .catch((error) => {
-        setNotiMessage(
-          "Staff Member has Assigned for Appointment So we cant remove this member"
-        );
-        settypenoti("error");
-        setNotificationOpen(true);
-      });
+    .delete(baseURL + endPoints.StaffList + `/${formData.id}`)
+    .then((res) => {
+      settypenoti("success");
+      setNotiMessage("Staff Member removed successfully");
+      setNotificationOpen(true);
+      forceUpdate((prevCount) => prevCount + 1); // Trigger a re-render
+      console.log("success", formData);
+    
+      // Make the post request here
+
+    })
+    .catch((error) => {    
+    console.log("removed " + formData.fullName);
+    formData.isDeleted = true;
+    console.log(formData);
+    console.log(formData.isDeleted);
+
+    axios
+    .put(baseURL + endPoints.StaffList + `/${formData.id}`, formData)
+    .then((res) => {
+      console.log(res.data);
+      forceUpdate((prevCount) => prevCount + 1); // Trigger a re-render
+
+      console.log("post success");
+    })
+    .catch((error) => {
+      console.error("post error", error);
+    });
+    });
 
     setEditOpen(false);
     setDeleteOpen(false);
   };
+
+      // axios
+      //   .then((res) => {
+      //     console.log("Successfully reverted deletion");
+      //     console.log(res.data);
+      //     settypenoti("success");
+      //     setNotiMessage("Successfully reverted deletion");
+      //     setNotificationOpen(true);
+      //     forceUpdate((prevCount) => prevCount + 1); // Trigger a re-render
+      //     setOpen(false);
+      //   })
+      //   .catch((error) => {
+      //     console.error("Failed to add member after deletion failed");
+      //     console.error(error);
+      //   });
+  
+  
+  
 
   // const [Gender, setGender] = React.useState('');
   const deletePopUp = () => {
@@ -312,7 +352,7 @@ export default function Staff() {
             </Button>
           </Paper>
           {/* recep Paper */}
-          {row2.filter((row2) => row2.role === rolefild).length > 0 ? (
+          {row2.filter((row2) => row2.role === rolefild ).length > 0 ? (
             row2
               .filter((row2) => row2.role === rolefild)
               .map((row2) => (

@@ -156,7 +156,7 @@ const handleDropBoxClose = () => {
 }
   return (
    <>
-    <Dialog open={editOpen} onClose={handleEditClose}>
+    <Dialog open={editOpen}  onClose={handleEditClose}>
       <DialogTitle
         sx={{
           backgroundColor: "rgb(222, 244, 242)",
@@ -167,7 +167,7 @@ const handleDropBoxClose = () => {
         Edit User
         <CloseIcon onClick={handleEditClose} sx={{ cursor: "pointer" }} />
       </DialogTitle>
-      <DialogContent>
+      <DialogContent >
       <Avatar
         onClick={isDisabled ? null : handleDropBoxOpen}
         src={formData.imageUrl}

@@ -15,6 +15,7 @@ import AskDelete from "./DialogComponents/AskDelete";
 import { baseURL, endPoints } from "../../Services/Admin";
 import AddPatientDialog from "./DialogComponents/AddPatientDialog";
 import { SearchBarLR, SearchBarSM } from "../Common";
+import { setHeaders } from "../../Services/Auth";
 
 function createData(
   id,

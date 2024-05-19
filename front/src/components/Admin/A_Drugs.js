@@ -1,14 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Grid,
-  Paper,
-  Typography,
-  TableCell,
-  TableRow,
-  TableHead,
-  TableBody,
-  Table,
-} from "@mui/material";
+import {Grid,Paper,Typography,TableCell,TableRow,TableHead,TableBody,Table} from "@mui/material";
 import axios from "axios";
 import SuccessNotification from "../recepcomponents/SnackBar/SuccessNotification";
 import { baseURL, endPoints } from "../../Services/Admin";

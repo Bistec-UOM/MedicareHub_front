@@ -6,30 +6,8 @@ import { DateField } from "@mui/x-date-pickers/DateField";
 import SuccessNotification from "../recepcomponents/SnackBar/SuccessNotification";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import { useState, useEffect } from "react";
-import {
-  Grid,
-  Paper,
-  MenuItem,
-  InputLabel,
-  Select,
-  FormControl,
-  Typography,
-  TableCell,
-  TableRow,
-  TableHead,
-  TableBody,
-  Table,
-  Box,
-} from "@mui/material";
-import {
-  AreaChart,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-  Label,
-  Area,
-} from "recharts";
+import {Grid,Paper,MenuItem,InputLabel,Select,FormControl,Typography,TableCell,TableRow,TableHead,TableBody,Table,Box,} from "@mui/material";
+import {AreaChart,ResponsiveContainer,Tooltip,XAxis,YAxis,Label,Area,} from "recharts";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import parse from "autosuggest-highlight/parse";
@@ -159,12 +137,9 @@ const AOther = () => {
           }))
       )
     : [];
-  // const labReportCounter = filteredData.flatMap((data) => data.reports);
-  useEffect(() => {
-    // const freqMap = labReportCounter.reduce((map, report) => {
-    //   map[report.name] = (map[report.name] || 0) + report.count;
-    //   return map;
-    // }, {});
+
+    useEffect(() => {
+
   });
   let graph = {
     x: "date",
@@ -196,7 +171,7 @@ const AOther = () => {
                 size="small"
                 value={date}
                 onChange={(newValue) => {
-                  setDate(newValue); // Update the date state
+                  setDate(newValue); 
                 }}
               />
             </LocalizationProvider>
@@ -208,17 +183,17 @@ const AOther = () => {
               loadingPosition="end"
               variant="contained"
               onClick={() => HandleSearch(date)}
-              sx={{ ml: "10px",p:'9px' }}
+              sx={{ ml: "10px",p:'6px' }}
             >
               Find
             </LoadingButton>
           </Box>
         </Grid>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+        <Table aria-label="simple table">
           <TableHead>
             <TableRow>
               <TableCell align="center" sx={{ fontWeight: "bold" }}>
-                Name{" "}
+                Name
               </TableCell>
               <TableCell align="center" sx={{ fontWeight: "bold" }}>
                 Attendance
@@ -268,7 +243,7 @@ const AOther = () => {
         Lab Report Data
       </Typography>
 
-      <Paper>
+      <Paper sx={{textAlign:'center'}}>
         <SearchGraph
           uniqueModelTypes={uniqueLabReportTypes}
           selectModelType={selectLabReportType}
