@@ -21,6 +21,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateField } from "@mui/x-date-pickers/DateField";
 import axios from "axios";
 import { baseURL,endPoints } from "../../../Services/Appointment";
+import { setHeaders } from "../../../Services/Auth";
 const PatientRegpopup = ({
   handleNotification,
   regopen,
@@ -155,7 +156,7 @@ const PatientRegpopup = ({
       try {
         await axios.post(
          baseURL+endPoints.PatientList,
-          obj
+          obj,setHeaders()
         );
         setPatientCount(patientCount + 1);
         setRegopen(false);

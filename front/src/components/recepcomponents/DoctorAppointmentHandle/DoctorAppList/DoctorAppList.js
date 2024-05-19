@@ -20,6 +20,7 @@ import { Load } from "../../../Other";
 import { baseURL,endPoints } from "../../../../Services/Appointment";
 import BlockSelectionPopup from "../BlockSelectionPopup/BlockSelectionPopup";
 import BlockTimeSelectionPopup from "../BlockTimeSelectionPopup/BlockTImeSelectionPopup";
+import { setHeaders } from "../../../../Services/Auth";
 
 const DoctorAppList = (props) => {
   const [notificationOpen, setNotificationOpen] = useState(false);
@@ -65,7 +66,7 @@ const DoctorAppList = (props) => {
 
     axios
       .get(
-        baseURL+endPoints.AppDay+`${props.docid}`+"/day/"+`${selectedDay}`
+        baseURL+endPoints.AppDay+`${props.docid}`+"/day/"+`${selectedDay}`,setHeaders()
       )
       .then((response) => {
         const responseData = response.data;

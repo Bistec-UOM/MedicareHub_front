@@ -8,6 +8,7 @@ import { Box } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import ErrorIcon from "@mui/icons-material/Error";
 import { baseURL, endPoints } from "../../../../Services/Appointment";
+import { setHeaders } from "../../../../Services/Auth";
 
 export default function DoctorAllAppDeletePopup({
   cancelAll,
@@ -35,7 +36,7 @@ export default function DoctorAllAppDeletePopup({
   async function handleAllAppDelete() {
     try {
       await axios.put(
-        baseURL + endPoints.AppDay + `${docid}` + "/day/" + `${selectedDay}`
+        baseURL + endPoints.AppDay + `${docid}` + "/day/" + `${selectedDay}`,setHeaders()
       );
       setDelcount(delcount + 1);
       setCancelAll(false);

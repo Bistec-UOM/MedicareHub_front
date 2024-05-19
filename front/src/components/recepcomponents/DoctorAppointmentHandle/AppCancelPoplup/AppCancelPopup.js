@@ -8,6 +8,7 @@ import { Box } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import ErrorIcon from "@mui/icons-material/Error";
 import { baseURL, endPoints } from "../../../../Services/Appointment";
+import { setHeaders } from "../../../../Services/Auth";
 
 export default function AppCancelPopup({
   appointlist,
@@ -35,7 +36,7 @@ export default function AppCancelPopup({
           patientId: item.appointment.patientId,
           doctorId: item.appointment.doctorId,
           recepId: item.appointment.recepId,
-        }
+        },setHeaders()
       );
       setDelcount(delcount + 1); //for fetching newly status updated appointments
       setCancelOpen(false);
