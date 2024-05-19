@@ -8,6 +8,7 @@ import axios from 'axios';
 import { baseURL, endPoints } from '../../../../Services/Lab';
 import { Load } from '../../../Other';
 import ScienceIcon from '@mui/icons-material/Science';
+import { setHeaders } from '../../../../Services/Auth';
 
 export default function SubmitPage({setpage}) {
 
@@ -45,7 +46,7 @@ export default function SubmitPage({setpage}) {
 
     useEffect(()=>{
       if(loadOK){
-        axios.get(baseURL+endPoints.GET_ACCEPT)
+        axios.get(baseURL+endPoints.GET_ACCEPT,setHeaders())
       .then((res)=>{
         setLoad(res.data)
         setLoadOk(false)

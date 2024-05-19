@@ -7,6 +7,7 @@ import { baseURL,endPoints } from '../../../../Services/Lab';
 import { Load } from '../../../Other';
 import LoadingButton from '@mui/lab/LoadingButton';
 import SendIcon from '@mui/icons-material/Send';
+import { setHeaders } from '../../../../Services/Auth';
 
 export default function Testcom({handleClick1,handleClose,test}) {
 
@@ -49,7 +50,7 @@ export default function Testcom({handleClick1,handleClose,test}) {
       "results":ob
     }
     
-    axios.post(baseURL+endPoints.RESULT,obj)
+    axios.post(baseURL+endPoints.RESULT,obj,setHeaders())
     .then((res)=>{
       console.log(res.data)
       handleClick1(test[0].id)
@@ -84,7 +85,7 @@ export default function Testcom({handleClick1,handleClose,test}) {
   }
 
   useEffect(()=>{
-    axios.get(baseURL+endPoints.TEMPLATE+`${test[0].testId}`)
+    axios.get(baseURL+endPoints.TEMPLATE+`${test[0].testId}`,setHeaders())
     .then(res=>{
       setFload(res.data)
 

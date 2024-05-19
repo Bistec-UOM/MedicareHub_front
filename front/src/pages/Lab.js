@@ -81,7 +81,7 @@ export default function Lab() {
       let tmp=localStorage.getItem('token')
       if(tmp==null){tmp=''}
       if(!RloadDone){
-      axios.get(baseURL+endPoints.REPORT,setHeaders)
+      axios.get(baseURL+endPoints.REPORT,setHeaders())
       .then((res)=>{
         setRLoad(res.data)
         setRloadDone(true)
