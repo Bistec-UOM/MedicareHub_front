@@ -8,11 +8,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import axios from 'axios'
 import { baseURL,endPoints } from '../../Services/Lab';
-import LoadingButton from '@mui/lab/LoadingButton';
-import SendIcon from '@mui/icons-material/Send'
-import CloseIcon from '@mui/icons-material/Close'
-import DoneIcon from '@mui/icons-material/Done'
-import WarningIcon from '@mui/icons-material/Warning';
+import { ConfirmPropmt } from '../Common';
 
 export default function CreateLabTemplate({setPage,setTload}) {
 
@@ -95,7 +91,7 @@ export default function CreateLabTemplate({setPage,setTload}) {
 
       //Finalizing---------------------------------------------------------------
       const createTemplate=()=>{
-        setLoadingB(true)
+        setLoadingBConfirm(true)
         let ar=testField
         ar.map((el,ind)=>{
           el.index=ind
@@ -111,7 +107,6 @@ export default function CreateLabTemplate({setPage,setTload}) {
           provider:testData.provider,
           reportFields:ar
         }
-        console.log(JSON.stringify(T))
         axios.post(baseURL+endPoints.TEMPLATE,T)
         .then(res=>{
           setTload([])//make test list empty to reload again
@@ -119,18 +114,19 @@ export default function CreateLabTemplate({setPage,setTload}) {
         })
         .catch(er=>{
           console.log(er)
-          setLoadingB(false)
+          setOpenConfirm(false)
+          setLoadingBConfirm(false)
         })
       }
     
-      const [loadingB, setLoadingB] = useState(false)//Loading button
- 
+      
     //Pop up dialog box===========================================================================
-    const [open, setOpen] = useState(false)
-    const handleClickOpen = (x) => {
-        setOpen(true)
+    const [loadingBConfirm, setLoadingBConfirm] = useState(false)//Loading button
+    const [openConfirm, setOpenConfirm] = useState(false)
+    const handleClickOpenConfirm = (x) => {
+        setOpenConfirm(true)
     }
-    const handleClose = () => {setOpen(false)}  
+    const handleCloseConfirm = () => {setOpenConfirm(false)}  
 
   return (
     <div>
@@ -153,7 +149,7 @@ export default function CreateLabTemplate({setPage,setTload}) {
             <Button 
               variant='contained'
               size='small' 
-              onClick={handleClickOpen} 
+              onClick={handleClickOpenConfirm} 
               sx={{mr:{xs:'5px',sm:'15px'}}}
             >Submit
             </Button>
@@ -264,24 +260,8 @@ export default function CreateLabTemplate({setPage,setTload}) {
         }
   {/*------------------ Confirm pop up box ---------------------------------------------- */}
 
-      <Dialog open={open} onClose={handleClose} >
-        <div style={{display:'flex',alignItems:'start',margin:'8px',paddingBottom:'5px',borderBottom:'1px solid lightgrey'}}>
-          <WarningIcon color='warning' sx={{mr:'10px'}}></WarningIcon>
-          <Typography>Are you sure template is ready?</Typography>
-        </div>
-        <div style={{width:'250px',height:'60px',display:'flex',justifyContent:'space-around',alignItems:'center',paddingLeft:'20px'}}>
-          <Button variant='outlined' size='small' endIcon={<CloseIcon></CloseIcon>} onClick={handleClose}>No</Button>
-          <LoadingButton 
-            variant='contained' 
-            size='small' 
-            endIcon={<DoneIcon></DoneIcon>}           
-            loading={loadingB}
-            loadingPosition="end"
-            onClick={createTemplate}
-          >Yes</LoadingButton>
-        </div>
-      </Dialog>
-
+       <ConfirmPropmt action={createTemplate} message="Are you sure that your template is ready?"
+       handleClose={handleCloseConfirm} loadingB={loadingBConfirm} open={openConfirm}></ConfirmPropmt>
     </div>
   )
 }
