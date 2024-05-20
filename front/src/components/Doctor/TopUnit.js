@@ -28,7 +28,7 @@ export default function TopUnit(props) {
   }
 
   return (
-    <div style={{position:'relative',width:'100%',height:'100%'}}>
+    <div style={{position:'relative',width:'100%'}}>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
 
         <Link path to="/dpage"><CalendarTodayIcon sx={{ cursor: 'pointer',ml:'10px' }} /></Link> 
@@ -37,7 +37,7 @@ export default function TopUnit(props) {
 
         <FormatListBulletedIcon sx={{ cursor: 'pointer',mr:'10px'}} onClick={handleClickOpen} />
       </Box> 
-      <Switch defaultChecked size="small" onChange={props.SwitchOnChange} sx={{position:'absolute',top:'60px'}}/>
+      <Switch defaultChecked size="small" onChange={props.SwitchOnChange} sx={{position:'relative',top:'10px'}}/>
     </div>   
   );
   

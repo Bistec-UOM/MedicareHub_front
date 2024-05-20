@@ -24,8 +24,8 @@ import TopUnit from '../components/Doctor/TopUnit';
 import { baseURL,endPoints } from '../Services/Doctor';
 import axios from 'axios';
 import { PersonDetail } from '../components/Other';
-import LoadingButton from '@mui/lab/LoadingButton';
 import DoneIcon from '@mui/icons-material/Done'
+import { ConfirmPropmt } from '../components/Common';
 
 export default function Doctor() {
   
@@ -91,7 +91,7 @@ export default function Doctor() {
 
 
 const handleClick = () => {
-  setLoadingB(true)
+  setLoadingBConfirm(true)
   let obj = { //strore the all data in this object after click the confirm button
     id: select,
     drugs: pres, // drug array: from DoctorAddDrugs component
@@ -101,6 +101,7 @@ const handleClick = () => {
   console.log(JSON.stringify(obj))  
   axios.post(baseURL+endPoints.PRESCRIPTION, obj)
   .then(response => {
+    setLoadingBConfirm(false)
     // Handle success
     handlesnapbarClick(); //show the snapbar component
     console.log('Response:', response.data);
@@ -113,10 +114,10 @@ const handleClick = () => {
     }, 1500);
   })
   .catch(er => {
+    setLoadingBConfirm(false)
     if(er.hasOwnProperty('response')){
       console.log(er.response.data)
     }else{
-      setLoadingB(false)
       console.log(er)
     }
   });
@@ -164,16 +165,20 @@ const fetchData = async () => {
 const selectedAppointment = select ? appointments.filter(appointment => appointment.id === select) : [];
 //------------filter  the selected patient---------------------------
 const filteredAppointments = showDonePatients ? appointments.filter(appointment => appointment.status === "pending") : appointments;
- //...............filter pending patients............................
 
- const [loadingB, setLoadingB] = useState(false)//Loading button
+//for confirmation popup box
+const [loadingBConfirm, setLoadingBConfirm] = useState(false)//Loading button
+   const [openConfirm, setOpenConfirm] = useState(false)
+   const handleClickOpenConfirm = (x) => {
+        setOpenConfirm(true)
+  }
+const handleCloseConfirm = () => {setOpenConfirm(false)}  
 
  return (
   <div>
   <Navbar></Navbar>
-  <Grid container spacing={0} sx={{ paddingTop: '64px', height: '100vh' }}>
-      <Grid item xs={3} style={{ height: '100%', backgroundColor:'#E7FFF9'}}>
-          <SidebarContainer sx={{ backgroundColor:'#E7FFF9'}}>
+  <Grid container spacing={0} sx={{ height: '100vh',pt:'64px'}}>
+      <Grid item xs={3} sx={{ height: '100%', backgroundColor:'#e7fff9'}}>
               <SidebarTop>
  {/*..................switch.......................... */}
               <TopUnit appointments={appointments} SwitchOnChange={() => setShowDonePatients(prev => !prev)}></TopUnit>
@@ -192,7 +197,6 @@ const filteredAppointments = showDonePatients ? appointments.filter(appointment 
                                 />                                
                             ))}
               </SidebarList>
-          </SidebarContainer>
       </Grid>
 
       <Grid item xs={9} style={{ height: '100%', overflowY: 'scroll' }}>
@@ -208,7 +212,7 @@ const filteredAppointments = showDonePatients ? appointments.filter(appointment 
                             >
                           </PersonDetail>
                       ))}
-                    <UpdateIcon sx={{position:'fixed',top:'75px',right:'20px',zIndex:'40',color:'rgb(255, 153, 0)',cursor:'pointer'}} onClick={handleAddIconClick}></UpdateIcon >
+                    <UpdateIcon sx={{position:'fixed',top:'10px',right:'20px',zIndex:'40',color:'rgb(255, 153, 0)',cursor:'pointer'}} onClick={handleAddIconClick}></UpdateIcon >
                     <PatientsRecords openPopup={openPopup} setOpenPopup={setOpenPopup}   selectedPatientId={selectedAppointment[0].patient.id}/>
 {/*.........................Add Drugs...............................................*/}
  <div style={{paddingTop:'60px'}}>
@@ -234,7 +238,7 @@ const filteredAppointments = showDonePatients ? appointments.filter(appointment 
                        </Box>
   {/*..............confirm button.........................................*/}
                        <br></br>
-                       <Button endIcon={<DoneIcon></DoneIcon>} variant="contained" sx={{ left: '80%' }} onClick={handleClick}>Confirm</Button>
+                       <Button size='small' endIcon={<DoneIcon></DoneIcon>} variant="contained" sx={{ left: '80%' }} onClick={handleClickOpenConfirm}>Confirm</Button>
  </div>
                      
  {/*...........snack bar component....................................... */}
@@ -252,6 +256,8 @@ const filteredAppointments = showDonePatients ? appointments.filter(appointment 
           ) : (
               <Typography gutterBottom variant="p"></Typography>
           )}
+      <ConfirmPropmt action={handleClick} message="Are you sure that prescription is ready?"
+       handleClose={handleCloseConfirm} loadingB={loadingBConfirm} open={openConfirm}></ConfirmPropmt>
       </Grid>
   </Grid>
 </div>    
