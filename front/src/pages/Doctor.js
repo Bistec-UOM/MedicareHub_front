@@ -102,6 +102,7 @@ const handleClick = () => {
   axios.post(baseURL+endPoints.PRESCRIPTION, obj)
   .then(response => {
     setLoadingBConfirm(false)
+    handleCloseConfirm()
     // Handle success
     handlesnapbarClick(); //show the snapbar component
     console.log('Response:', response.data);
