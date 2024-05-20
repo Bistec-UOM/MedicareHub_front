@@ -4,11 +4,13 @@ import { Box,FormGroup,FormControlLabel,Checkbox, Typography, Paper, Divider} fr
 import axios from 'axios';
 import { baseURL ,endPoints} from '../Services/Lab';
 import {Load} from '../components/Common'
+import { json } from 'react-router-dom';
 
 const Doctor_analytics = ({pId}) => {
 
   const [medList,setMedList]=useState([]);//all unique drugs (list) extracted from records
   const [labList,setlabList]=useState([]);//all unique lab parameters (list) extracted from records
+  const [fieldNames,setFieldNames]=useState([]);//
   const [selectedMed, setSelectedMed] = useState([]);
   const [selectedLab, setSelectedLab] = useState([]);
   const [col,setCol]=useState({})//color aray for drugs
@@ -460,6 +462,7 @@ const Doctor_analytics = ({pId}) => {
     }, {});
 
     fieldNamesByTestName = Object.entries(fieldNamesByTestName).map(([testName, fieldNames]) => ({ [testName]: fieldNames }));
+    setFieldNames(fieldNamesByTestName)
 
     let props=[]//extract all props(test parameters) list
     fieldNamesByTestName.forEach((el)=>{
@@ -496,7 +499,11 @@ const Doctor_analytics = ({pId}) => {
     })
     setCol2(colobj)
 
-    console.log(finalArray)
+    fieldNamesByTestName.forEach((el)=>{
+      Object.values(el)[0].forEach((elm)=>{
+        console.log(elm)
+      })
+      })
   }
 
   //convert rank values into nominal values in legend
@@ -563,13 +570,21 @@ done?<Box>
         <Typography sx={{fontSize:'14px',color:'grey',fontWeight:'bold'}}>Lab Reports</Typography>
         <Divider></Divider>
         <FormGroup >
-        {labList.map((el,ind) => (
-            <FormControlLabel
-                key={el}
-                control={<Checkbox size='small' sx={{height:'22px'}} style={{ color: col2[el] }} checked={selectedLab.includes(el)} onChange={() => handleLabToggle(el)}/>}
-                label={<Typography sx={{fontSize:'12px'}}>{el}</Typography>}
-              />
-            ))}
+        {fieldNames.map((el)=>{
+        return(
+        Object.values(el)[0].map((elm,inx)=>{
+        return(
+          <div>
+          {inx==0?<Typography sx={{fontSize:'15px',mt:'8px'}}>{Object.keys(el)[0]}</Typography>:''}
+          <FormControlLabel
+          key={elm}
+          control={<Checkbox size='small' sx={{ml:'10px',height:'22px'}} style={{ color: col2[elm]}} checked={selectedLab.includes(elm)} onChange={() => handleLabToggle(elm)}/>}
+          label={<Typography sx={{fontSize:'12px'}}>{elm}</Typography>}
+        />
+        </div>
+        )
+      }))
+    })}
         </FormGroup>
       </Paper>
       
@@ -594,6 +609,7 @@ done?<Box>
         </LineChart>
     </ResponsiveContainer>
     </Box>
+
 
 </Box>:<Load></Load>
 )
