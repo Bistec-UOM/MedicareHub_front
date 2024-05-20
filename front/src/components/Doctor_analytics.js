@@ -4,15 +4,14 @@ import { Box,FormGroup,FormControlLabel,Checkbox, Typography, Paper, Divider} fr
 import axios from 'axios';
 import { baseURL ,endPoints} from '../Services/Lab';
 import {Load} from '../components/Common'
-import { json } from 'react-router-dom';
 
 const Doctor_analytics = ({pId}) => {
 
   const [medList,setMedList]=useState([]);//all unique drugs (list) extracted from records
   const [labList,setlabList]=useState([]);//all unique lab parameters (list) extracted from records
-  const [fieldNames,setFieldNames]=useState([]);//
-  const [selectedMed, setSelectedMed] = useState([]);
-  const [selectedLab, setSelectedLab] = useState([]);
+  const [fieldNames,setFieldNames]=useState([]);//test names with their paraemters
+  const [selectedMed, setSelectedMed] = useState([]);//active drugs
+  const [selectedLab, setSelectedLab] = useState([]);//active test parameters
   const [col,setCol]=useState({})//color aray for drugs
   const [col2,setCol2]=useState({})//color array for lab parameters
   const [done,setDone]=useState(false)
@@ -411,6 +410,7 @@ const Doctor_analytics = ({pId}) => {
     let drugArr=[]
     let obj=[]
     let objUnit={}
+    
     //extracting drugs list (unique drug names)
     dt.forEach((el,ind)=>{
       el.drugs.forEach((elm)=>{
@@ -454,6 +454,7 @@ const Doctor_analytics = ({pId}) => {
     dateList = [...new Set(dateList)];
     dateList.sort();
 
+    //test names with their paraemters
     let fieldNamesByTestName = dt.reduce((acc, item) => {
       if (!acc[item.testName]) {
         acc[item.testName] = [...new Set(item.results.map(result => result.fieldname))];
@@ -464,7 +465,8 @@ const Doctor_analytics = ({pId}) => {
     fieldNamesByTestName = Object.entries(fieldNamesByTestName).map(([testName, fieldNames]) => ({ [testName]: fieldNames }));
     setFieldNames(fieldNamesByTestName)
 
-    let props=[]//extract all props(test parameters) list
+    //extract all props(test parameters) list
+    let props=[]
     fieldNamesByTestName.forEach((el)=>{
       Object.values(el)[0].forEach((elm)=>{
         props.push(elm)
@@ -472,14 +474,13 @@ const Doctor_analytics = ({pId}) => {
     })
     setlabList(props)
     setSelectedLab(props)
-
+    
+    // Navigate through every date and gather every possible test parameter
     let finalArray = [];
-    // Navigate through every date
+
     dateList.forEach(date => {
       let sameDateObjects = dt.filter(item => item.dateTime.substring(0,10) === date);
-    
       let fieldnameValuePairs = {};
-    
       sameDateObjects.forEach(obj => {
         obj.results.forEach(result => {
           fieldnameValuePairs[result.fieldname] = result.value;
@@ -492,6 +493,7 @@ const Doctor_analytics = ({pId}) => {
     });
 
     setData2(finalArray);
+
     //set the color array
     let colobj={}
     props.map((el)=>{
@@ -499,11 +501,6 @@ const Doctor_analytics = ({pId}) => {
     })
     setCol2(colobj)
 
-    fieldNamesByTestName.forEach((el)=>{
-      Object.values(el)[0].forEach((elm)=>{
-        console.log(elm)
-      })
-      })
   }
 
   //convert rank values into nominal values in legend
