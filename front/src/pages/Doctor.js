@@ -1,20 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { SidebarContainer, SidebarTop, SidebarList } from '../components/sidebar/Sidebar'
 import Navbar from '../components/navbar/Navbar'
-import { Grid, Card, Typography, Switch} from '@mui/material'
-import CardContent from '@mui/material/CardContent';
+import { Grid,Typography} from '@mui/material'
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
-import AudioFileIcon from '@mui/icons-material/AudioFile';
 import UpdateIcon from '@mui/icons-material/Update';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-import ThermostatIcon from '@mui/icons-material/Thermostat';
+import ScienceIcon from '@mui/icons-material/Science';
 import PatientsRecords from '../components/Doctor/PatientsRecords';
 import DoctorAddDrugs from '../components/Doctor/DoctorAddDrugs';
-import AnaliticalReports from '../components/Doctor/AnaliticalReports';
 import '../components/CustomScroll.css'
 import LabRequest from '../components/Doctor/LabRequest';
 import { Sideunit_Patient } from '../components/sidebar/Sideunits';
@@ -40,7 +37,10 @@ export default function Doctor() {
   const [pres,setPres]=useState([]) ;// hold the pres details from doctoradd drug component
   const [rep,setrep]=useState([]); // hold the  lab request from component
   const [appointments, setAppointments] = useState([]);// hold the appoinment list
-  
+  const [labReport,setLabReport]=useState([]);//hold the available lab reports
+  const [Records,setRecords]=useState([]);//hold the drug and lab records
+  const [available,setAvailable]=useState({lab:false,rec:true});//is available
+
   useEffect(() => {
     document.body.style.margin = '0';
     fetchData();
@@ -135,33 +135,6 @@ const fetchData = async () => {
   }
 };
 
- //-------------------------->patients appointments Array<--------------------------------------------------------// 
- /*const data=[
-  {
-    date:1,
-     id:51,  // -----------------------------------> appointment Id-------  
-     patient:{
-         name:"Nethmi Eranga",
-         age:23,
-         gender:"female"
-       },
-       time: "9:15",
-       status: "pending"
-   },
-   
-   {
-     date:4,
-     id:54,    
-     patient:{
-         name:"Chathumini Pamodya",
-         age:32,
-         gender:"female"
-       },
-       time: "12:00",
-       status: "pending"
-   },   
-    
- ]*/
  
 const selectedAppointment = select ? appointments.filter(appointment => appointment.id === select) : [];
 //------------filter  the selected patient---------------------------
@@ -174,6 +147,19 @@ const [loadingBConfirm, setLoadingBConfirm] = useState(false)//Loading button
         setOpenConfirm(true)
   }
 const handleCloseConfirm = () => {setOpenConfirm(false)}  
+
+//check whether patient history details is availale
+  const loadPatientDetails=()=>{
+    axios.get(baseURL+endPoints.PATIENTHISTORY+select)
+    .then(res => {
+    })
+    .catch(er => {
+      console.log(er)
+    })
+  }
+  useEffect(() => {//load patient history details as the patient selected
+    loadPatientDetails()
+  },[selectedAppointment])
 
  return (
   <div>
@@ -213,18 +199,18 @@ const handleCloseConfirm = () => {setOpenConfirm(false)}
                             >
                           </PersonDetail>
                       ))}
-                    <UpdateIcon sx={{position:'fixed',top:'10px',right:'20px',zIndex:'40',color:'rgb(255, 153, 0)',cursor:'pointer'}} onClick={handleAddIconClick}></UpdateIcon >
-                    <PatientsRecords openPopup={openPopup} setOpenPopup={setOpenPopup}   selectedPatientId={selectedAppointment[0].patient.id}/>
+                    {available.rec? <UpdateIcon sx={{position:'fixed',top:'75px',right:'20px',zIndex:'40',color:'rgb(255, 153, 0)',cursor:'pointer'}} onClick={handleAddIconClick}></UpdateIcon> :''}
+                    <PatientsRecords openPopup={openPopup} setOpenPopup={setOpenPopup}   selectedPatientId={selectedAppointment[0].patient.id} rec={Records}/>
 {/*.........................Add Drugs...............................................*/}
  <div style={{paddingTop:'60px'}}>
                    <div style={{marginBottom:'80px'}}>
                    <DoctorAddDrugs pres={pres} setPres={setPres} openBox={openBox} setOpenBox={setOpenBox} />
-                   <AddCircleIcon sx={{ color: '#00cc66', marginLeft: '5%', fontSize: '30px', float: 'left', marginTop: '10px', cursor: 'pointer' }} onClick={handleAddDrugsClick} />
+                   <AddCircleIcon sx={{ color: '#00cc66', marginLeft: '5%', fontSize: '24px', float: 'left', marginTop: '10px', cursor: 'pointer' }} onClick={handleAddDrugsClick} />
                    </div>
   {/*........................Lab Request..............................................*/}
                   
                    <LabRequest openpopBox={openpopBox} setOpenpopBox={setOpenpopBox} rep={rep} setrep={setrep}/>
-                   <ThermostatIcon sx={{ color: '#33cc33', marginLeft: '80%', fontSize: '45px', cursor: 'pointer' }} onClick={() =>handleAddButtonClick(selectedAppointment)} />
+                   <ScienceIcon sx={{ color: '#33cc33', marginLeft: '87%', fontSize: '30px', cursor: 'pointer' }} onClick={() =>handleAddButtonClick(selectedAppointment)} />
   
   {/*.................patient extra details ............................................*/}
                        <Box

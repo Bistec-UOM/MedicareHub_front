@@ -5,11 +5,16 @@ import DialogContent from '@mui/material/DialogContent';
 import CloseIcon from '@mui/icons-material/Close';
 import { Grid, Card, Typography } from '@mui/material';
 import axios from 'axios';
+import TimelineIcon from '@mui/icons-material/Timeline';
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import { Box } from '@mui/system';
 
 export default function PatientsRecords(props) {
     const { openPopup, setOpenPopup, selectedPatientId } = props;
     const [patientRecords, setPatientRecords] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [records, setRecords] = useState(props.rec);
+    const [mode,setMode] =useState(true);//records-true , analytics-false
 
     useEffect(() => {
         if (selectedPatientId) {
@@ -58,9 +63,15 @@ export default function PatientsRecords(props) {
 
     return (
         <div>
-            <Dialog open={openPopup}  maxWidth="md"  fullWidth={true}>
-                <CloseIcon onClick={handleClose} style={{ position: 'absolute', right: '8px', top: '8px', cursor: 'pointer' }} />
+            <Dialog open={openPopup} onClose={handleClose} maxWidth="md"  fullWidth={true}>
                 <DialogContent dividers sx={{ maxHeight: '500px', overflowY: 'auto' }}>
+    {/* --------------------- Switch between analytics and records ------------------------------------ */}
+                    <Box sx={{height:'30px',width:'100%',display:'flex',justifyContent:'end',borderBottom:'1px solid lightgrey'}}>
+                        <FormatListBulletedIcon sx={{cursor:'pointer',mr:'30px'}} onClick={()=>setRecords(true)} color={records?'inherit':'disabled'}></FormatListBulletedIcon>
+                        <TimelineIcon sx={{cursor:'pointer'}} onClick={()=>setRecords(false)} color={records?'disabled':'inherit'}></TimelineIcon>
+                    </Box>
+
+    {/* --------------------- patient records list----------------------------------------------------- */}
                     {loading ? (
                         <Typography>Loading...</Typography>
                     ) : patientRecords.length === 0 ? (

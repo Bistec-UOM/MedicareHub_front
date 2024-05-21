@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {Paper,Toolbar, Typography,Box} from "@mui/material"
+import {Paper,Toolbar, Typography,Box, Button} from "@mui/material"
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
@@ -10,6 +10,7 @@ import axios from 'axios'
 import { baseURL,endPoints } from '../../Services/Lab';
 import LoadingButton from '@mui/lab/LoadingButton';
 import DoneIcon from '@mui/icons-material/Done'
+import { ConfirmPropmt } from '../Common';
 
 export default function Edittemplate({setPage,tId,Tdata,setTload}) {
       
@@ -96,7 +97,7 @@ export default function Edittemplate({setPage,tId,Tdata,setTload}) {
 
       //Finalizing--------------------------------------------------
       const saveTemplate=()=>{
-        setLoadingB(true)
+        setLoadingBConfirm(true)
         let ld=testField
         ld.map((el,ind)=>{
           el.index=ind
@@ -109,10 +110,16 @@ export default function Edittemplate({setPage,tId,Tdata,setTload}) {
         console.log(JSON.stringify(obj))
 /*         axios.put(baseURL+endPoints.TEMPLATE,obj)
         .then(res=>{
+          setLoadingBConfirm(false)
+          handleCloseConfirm()
           setTload([])//make test list empty to reload again
           setPage(2)
         })
-        .catch(er=>{console.log(er);setLoadingB(false)}) */
+        .catch(er=>{
+          console.log(er)
+          setLoadingBConfirm(false)
+          handleCloseConfirm()
+        }) */
       }
     
 
@@ -130,7 +137,14 @@ export default function Edittemplate({setPage,tId,Tdata,setTload}) {
           .catch(er=>{})
        },[])
 
-       const [loadingB, setLoadingB] = useState(false)//Loading button
+
+  //Confirmation popup box-----------------------------------------------------------
+  const [loadingBConfirm, setLoadingBConfirm] = useState(false)//Loading button
+  const [openConfirm, setOpenConfirm] = useState(false)
+  const handleClickOpenConfirm = (x) => {
+        setOpenConfirm(true)
+  }
+  const handleCloseConfirm = () => {setOpenConfirm(false)}  
 
   return (
     <div>
@@ -138,16 +152,13 @@ export default function Edittemplate({setPage,tId,Tdata,setTload}) {
             <ArrowBackIcon sx={{cursor:'pointer'}} onClick={()=>setPage(2)}></ArrowBackIcon>
 
             <Typography sx={{fontSize:{xs:'17px'}}}>{Tdata.testName}</Typography>
-        
-            <LoadingButton 
+            <Button 
               variant='contained' 
               size='small' 
               endIcon={<DoneIcon />}          
-              loading={loadingB}
-              loadingPosition="end"
-              onClick={()=>saveTemplate()} 
+              onClick={handleClickOpenConfirm} 
               sx={{mr:{xs:'5px',sm:'15px'}}}
-            >Save</LoadingButton>
+            >Save</Button>
         </Toolbar>
 
         <Box sx={{display:'flex',flexDirection:'column',alignItems:'center',paddingTop:{xs:'80px',sm:'80px'}}}>
@@ -253,6 +264,10 @@ export default function Edittemplate({setPage,tId,Tdata,setTload}) {
  
         </Paper>:''
         }
+
+        {/*--------------- confirmation popup box------------------------------------------*/}
+        <ConfirmPropmt action={saveTemplate} message="Are you sure that template is ready?"
+       handleClose={handleCloseConfirm} loadingB={loadingBConfirm} open={openConfirm}></ConfirmPropmt>
     </div>
   )
 }
