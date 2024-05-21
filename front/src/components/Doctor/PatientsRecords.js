@@ -65,10 +65,13 @@ export default function PatientsRecords(props) {
         <div>
             <Dialog open={openPopup} onClose={handleClose} maxWidth="md"  fullWidth={true}>
                 <DialogContent dividers sx={{ maxHeight: '500px', overflowY: 'auto' }}>
-                    <Box sx={{height:'30px',width:'100%',display:'flex',justifyContent:'end'}}>
-                        <FormatListBulletedIcon sx={{cursor:'pointer'}} onClick={()=>setRecords(true)} color={records?'inherit':'disabled'}></FormatListBulletedIcon>
+    {/* --------------------- Switch between analytics and records ------------------------------------ */}
+                    <Box sx={{height:'30px',width:'100%',display:'flex',justifyContent:'end',borderBottom:'1px solid lightgrey'}}>
+                        <FormatListBulletedIcon sx={{cursor:'pointer',mr:'30px'}} onClick={()=>setRecords(true)} color={records?'inherit':'disabled'}></FormatListBulletedIcon>
                         <TimelineIcon sx={{cursor:'pointer'}} onClick={()=>setRecords(false)} color={records?'disabled':'inherit'}></TimelineIcon>
                     </Box>
+
+    {/* --------------------- patient records list----------------------------------------------------- */}
                     {loading ? (
                         <Typography>Loading...</Typography>
                     ) : patientRecords.length === 0 ? (
