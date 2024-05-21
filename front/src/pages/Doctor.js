@@ -11,7 +11,7 @@ import { styled } from '@mui/material/styles';
 import AudioFileIcon from '@mui/icons-material/AudioFile';
 import UpdateIcon from '@mui/icons-material/Update';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-import ThermostatIcon from '@mui/icons-material/Thermostat';
+import ScienceIcon from '@mui/icons-material/Science';
 import PatientsRecords from '../components/Doctor/PatientsRecords';
 import DoctorAddDrugs from '../components/Doctor/DoctorAddDrugs';
 import AnaliticalReports from '../components/Doctor/AnaliticalReports';
@@ -40,11 +40,25 @@ export default function Doctor() {
   const [pres,setPres]=useState([]) ;// hold the pres details from doctoradd drug component
   const [rep,setrep]=useState([]); // hold the  lab request from component
   const [appointments, setAppointments] = useState([]);// hold the appoinment list
-  
+  const [Records,setRecords]=useState([]);//hold the drug and lab records
+  const [history,setHistory]=useState(false);//is available
+
   useEffect(() => {
     document.body.style.margin = '0';
     fetchData();
   }, [])
+
+  useEffect(() => {//check whether patient history is availale
+    axios.get(baseURL+endPoints.PATIENTHISTORY+select)
+    .then(res => {
+      setRecords(res.data)
+      setHistory(true)
+    })
+    .catch(er => {
+      console.log(er)
+    })
+    
+  },[selectedAppointment])
 
   const Item = styled(Paper)(({ theme }) => ({
 
@@ -135,33 +149,6 @@ const fetchData = async () => {
   }
 };
 
- //-------------------------->patients appointments Array<--------------------------------------------------------// 
- /*const data=[
-  {
-    date:1,
-     id:51,  // -----------------------------------> appointment Id-------  
-     patient:{
-         name:"Nethmi Eranga",
-         age:23,
-         gender:"female"
-       },
-       time: "9:15",
-       status: "pending"
-   },
-   
-   {
-     date:4,
-     id:54,    
-     patient:{
-         name:"Chathumini Pamodya",
-         age:32,
-         gender:"female"
-       },
-       time: "12:00",
-       status: "pending"
-   },   
-    
- ]*/
  
 const selectedAppointment = select ? appointments.filter(appointment => appointment.id === select) : [];
 //------------filter  the selected patient---------------------------
@@ -213,8 +200,8 @@ const handleCloseConfirm = () => {setOpenConfirm(false)}
                             >
                           </PersonDetail>
                       ))}
-                    <UpdateIcon sx={{position:'fixed',top:'10px',right:'20px',zIndex:'40',color:'rgb(255, 153, 0)',cursor:'pointer'}} onClick={handleAddIconClick}></UpdateIcon >
-                    <PatientsRecords openPopup={openPopup} setOpenPopup={setOpenPopup}   selectedPatientId={selectedAppointment[0].patient.id}/>
+                    {history? <UpdateIcon sx={{position:'fixed',top:'10px',right:'20px',zIndex:'40',color:'rgb(255, 153, 0)',cursor:'pointer'}} onClick={handleAddIconClick}></UpdateIcon> :''}
+                    <PatientsRecords openPopup={openPopup} setOpenPopup={setOpenPopup}   selectedPatientId={selectedAppointment[0].patient.id} rec={Records}/>
 {/*.........................Add Drugs...............................................*/}
  <div style={{paddingTop:'60px'}}>
                    <div style={{marginBottom:'80px'}}>
@@ -224,7 +211,7 @@ const handleCloseConfirm = () => {setOpenConfirm(false)}
   {/*........................Lab Request..............................................*/}
                   
                    <LabRequest openpopBox={openpopBox} setOpenpopBox={setOpenpopBox} rep={rep} setrep={setrep}/>
-                   <ThermostatIcon sx={{ color: '#33cc33', marginLeft: '80%', fontSize: '45px', cursor: 'pointer' }} onClick={() =>handleAddButtonClick(selectedAppointment)} />
+                   <ScienceIcon sx={{ color: '#33cc33', marginLeft: '80%', fontSize: '45px', cursor: 'pointer' }} onClick={() =>handleAddButtonClick(selectedAppointment)} />
   
   {/*.................patient extra details ............................................*/}
                        <Box
