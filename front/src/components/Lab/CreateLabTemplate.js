@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {Button, Paper, TextField, Toolbar, Typography,Box} from "@mui/material"
+import {Button ,Paper, TextField, Toolbar, Typography,Box, Dialog} from "@mui/material"
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
@@ -8,7 +8,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import axios from 'axios'
 import { baseURL,endPoints } from '../../Services/Lab';
-import Tooltip from '@mui/material/Tooltip';
+import { ConfirmPropmt } from '../Common';
 
 export default function CreateLabTemplate({setPage,setTload}) {
 
@@ -91,13 +91,15 @@ export default function CreateLabTemplate({setPage,setTload}) {
 
       //Finalizing---------------------------------------------------------------
       const createTemplate=()=>{
+        setLoadingBConfirm(true)
         let ar=testField
         ar.map((el,ind)=>{
           el.index=ind
         })
 
         let abbr=getAbb(testData.name)
-        let nm = testData.name.substring(0, testData.name.length - abbr.length-2)
+        let nm = testData.name
+        // let nm = testData.name.substring(0, testData.name.length - abbr.length-2)
         let T={
           testName:nm,
           abb:abbr,
@@ -105,16 +107,26 @@ export default function CreateLabTemplate({setPage,setTload}) {
           provider:testData.provider,
           reportFields:ar
         }
-        console.log(T)
         axios.post(baseURL+endPoints.TEMPLATE,T)
         .then(res=>{
           setTload([])//make test list empty to reload again
           setPage(2)
         })
-        .catch(er=>{console.log(er)})
+        .catch(er=>{
+          console.log(er)
+          setOpenConfirm(false)
+          setLoadingBConfirm(false)
+        })
       }
     
-    
+      
+    //Pop up dialog box===========================================================================
+    const [loadingBConfirm, setLoadingBConfirm] = useState(false)//Loading button
+    const [openConfirm, setOpenConfirm] = useState(false)
+    const handleClickOpenConfirm = (x) => {
+        setOpenConfirm(true)
+    }
+    const handleCloseConfirm = () => {setOpenConfirm(false)}  
 
   return (
     <div>
@@ -134,7 +146,13 @@ export default function CreateLabTemplate({setPage,setTload}) {
               <TextField size='small' sx={{m:'0px',ml:{xs:'0',sm:'5px'},padding:'2px',width:{xs:'80px',sm:'120px'}}} onChange={(e)=>setTestData({...testData,'price':e.target.value})}></TextField>
             </Box>
         
-            <Button variant='contained' size='small' onClick={()=>createTemplate()} sx={{mr:{xs:'5px',sm:'15px'}}}>Create</Button>
+            <Button 
+              variant='contained'
+              size='small' 
+              onClick={handleClickOpenConfirm} 
+              sx={{mr:{xs:'5px',sm:'15px'}}}
+            >Submit
+            </Button>
         </Toolbar>
 
         <Box sx={{display:'flex',flexDirection:'column',alignItems:'center', paddingTop:{xs:'80px',sm:'80px'}}}>
@@ -240,6 +258,10 @@ export default function CreateLabTemplate({setPage,setTload}) {
  
         </Paper>:''
         }
+  {/*------------------ Confirm pop up box ---------------------------------------------- */}
+
+       <ConfirmPropmt action={createTemplate} message="Are you sure that your template is ready?"
+       handleClose={handleCloseConfirm} loadingB={loadingBConfirm} open={openConfirm}></ConfirmPropmt>
     </div>
   )
 }

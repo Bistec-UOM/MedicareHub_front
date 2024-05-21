@@ -9,6 +9,9 @@ import SearchIcon from '@mui/icons-material/Search';
 import DoNotDisturbOnIcon from '@mui/icons-material/DoNotDisturbOn';
 import { Grid, Card, Typography,Button } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
+import { Box } from '@mui/system';
+import AddIcon from '@mui/icons-material/Add';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 export default function DoctorAddDrugs(props) {
     const { openBox, setOpenBox ,pres , setPres} = props;
@@ -54,9 +57,9 @@ export default function DoctorAddDrugs(props) {
 
     return (
         <div>
-      <Dialog open={openBox}>
+<Dialog open={openBox}>
       <DialogContent dividers>
-        <CloseIcon onClick={handleClose} style={{ position: 'absolute', right: '3px', top: '4px', cursor: 'pointer',}} />
+        <CloseIcon onClick={handleClose} style={{ position: 'absolute', right: '3px', top: '5px', cursor: 'pointer',}} />
         <SearchIcon sx={{ position: 'absolute', left: '30%', top: '35px', cursor: 'pointer', }} />
 
         <form onSubmit={handleSubmit} style={{ display: 'flex', alignItems: 'center', }}>
@@ -88,55 +91,48 @@ export default function DoctorAddDrugs(props) {
         )}
           <div>
           </div>
-          <TextField variant="outlined" size="small"  label="Amount"
+          <TextField size="small"  label="Amount"
                     sx={{ flex: '1',fontSize: '13px', marginRight: '11px', '& .MuiOutlinedInput-root': { '& fieldset': { borderColor: '#0099cc', borderWidth: '2px' } } }} 
             value={weight}
             onChange={(e) => setWeight(e.target.value)}            
           />
-          <Select 
-                    sx={{ m: 1, top: '1px', border: '2px solid #0099cc', width: '70px', height: '40px', }}
+            <Select 
+                    sx={{ border: '1px solid #0099cc', width: '60px', height: '40px', borderRadius:'4px'}}
                      variant="standard" value={unit} onChange={(e) => setUnit(e.target.value)}>
                         {quantityOptions.map((option, index) => (
                             <MenuItem key={index} value={option}>{option}</MenuItem>
                         ))}
-                    </Select>
-                    <Select
-                     sx={{ m: 1, top: '1px', border: '2px solid #0099cc', width: '70px', height: '40px', }}
+            </Select>
+            <Select
+                     sx={{ m: 1, top: '1px', border: '1px solid #0099cc', width: '60px', height: '40px',borderRadius:'4px' }}
                       variant="standard" value={period} onChange={(e) => setPeriod(e.target.value)}>
                         {hourOptions.map((option, index) => (
                             <MenuItem key={index} value={option}>{option}</MenuItem>
                         ))}
-                    </Select>
+            </Select>
                     
-          <Button type="submit" variant="outlined"  sx={{ top: '0.5px', color: 'Green', borderColor: 'Green', borderWidth:'3px'}}  onClick={() => {
-             handleAddDrug();
-              handleClose()}}>OK</Button>
+          <Button type="submit" variant="contained"  sx={{ top: '0.5px'}}  
+            onClick={() => {handleAddDrug();handleClose()}}
+            endIcon={<AddIcon/>}
+          >Add</Button>
           </form>
-         
           </DialogContent>
           
-          </Dialog>
+</Dialog>
           
+{/*-----------------------Rendered Drug list----------------------------------------------------*/}
             <div>
                 {pres.map((drug, index) => (
-                    <Grid key={index} container spacing={1} sx={{ marginTop: "5px",}}>
-                        <Grid item xs={12} sm={7} sx={{ marginLeft: '50px', width: 'auto', }}>
-
-                        <Card style={{ display: 'flex', flexDirection: 'row',backgroundColor: '#0099cc', color: 'white',fontSize: '18px' }}>
-                          
-                          <Typography gutterBottom variant="p" sx={{ flex: '3', marginLeft: '10px' }}>{drug.genericN}</Typography>
+                    <Box key={index} sx={{ marginTop: "5px",width:'80%',display:'flex',ml:'5%',alignItems:'center'}}>
+                        <Box xs={12} sm={7} sx={{width:'500px', display: 'flex', flexDirection: 'row',backgroundColor: '#0099cc', color: 'white',fontSize: '18px',borderRadius:'4px',alignItems:'center'}}>
+                          <Typography gutterBottom sx={{ flex: '3', marginLeft: '10px' }}>{drug.genericN}</Typography>
+                          <Typography gutterBottom sx={{ flex: '2'}}>{drug.weight} {drug.unit}</Typography>
+                          <Typography gutterBottom  sx={{ flex: '1'}}>{drug.period}</Typography>
     
-                          <Typography gutterBottom variant="p" sx={{ flex: '2', marginLeft: '100px' }}>{drug.weight} {drug.unit}</Typography>
-    
-                          <Typography gutterBottom variant="p" sx={{ flex: '1', marginLeft: '150px' }}>{drug.period}</Typography>
-    
-                          </Card>
-                        </Grid>
-       {/*........................................delete buttun for delete entered dugs................................................... */}
-                        <Grid item xs={4}>
-                            <DoNotDisturbOnIcon sx={{ color: 'red', marginLeft: '5px', fontSize: '30px', float: 'Left',cursor: 'pointer' }} onClick={() => handleDeleteDrug(index)} />
-                        </Grid>
-                    </Grid>
+                        </Box>
+       {/*............delete button ................................... */}
+                        <HighlightOffIcon sx={{marginLeft: '5px',cursor: 'pointer' }} color='error'fontSize='small'onClick={() => handleDeleteDrug(index)} />
+                    </Box>
                 ))}
             </div>
             

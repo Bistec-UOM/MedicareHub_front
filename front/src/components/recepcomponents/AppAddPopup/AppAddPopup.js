@@ -66,7 +66,6 @@ export default function AppAddPopup({
     return date;
   }
   useEffect(() => {
-    console.log("filt", filteredAppointments);
     if (dayAppTotal >= 10) {
       //disabling confirm button from adding more than 10 appointments for a day
       setConfirmDisabled(true);
@@ -114,6 +113,12 @@ export default function AppAddPopup({
       } else if(response.data==1) {
         setRloadDone(true);
         handleNotification("You have already an appointment on that time !. Select another time slot","error");
+      }
+      else if(response.data==3)
+      {
+        setRloadDone(true);
+        handleNotification("Time slot has been blocked!. Select another time slot","error");
+
       }
       else{
         setRloadDone(true);
@@ -298,6 +303,7 @@ export default function AppAddPopup({
                   sx={{ overflow: { xs: "hidden" } }}
                   selectedTime={selectedTime}
                   setSelectedTime={setSelectedTime}
+                  label="Select your time"
                 />
                 <Button
                   disabled={confirmDisabled}

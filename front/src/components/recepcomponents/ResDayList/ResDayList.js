@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { Stack, Button, Box } from "@mui/material";
+import { Stack, Button, Box, Typography } from "@mui/material";
 import AppointmentCard from "../AppointmentCard/AppointmentCard";
 import SearchBar from "../Searchbar/Searchbar";
 import Steper from "../Setper/Steper";
@@ -11,7 +11,7 @@ import axios from "axios";
 import PageNotFound from "../PageNotFound/PageNotFound";
 import { Load } from "../../Other";
 import { baseURL, endPoints } from "../../../Services/Appointment";
-import AddIcon from '@mui/icons-material/Add';
+import AddIcon from "@mui/icons-material/Add";
 //day app list page for a day
 
 const ResDayList = (props) => {
@@ -101,7 +101,9 @@ const ResDayList = (props) => {
           isDisabled={isDisabled}
           placename="Patient name or id..."
         />
-
+        <Typography variant="h5" sx={{ color: "#d0d1cb" }}>
+          {selectedDay}
+        </Typography>
         <Stack
           sx={{
             justifyContent: "flex-end",
@@ -117,7 +119,7 @@ const ResDayList = (props) => {
           direction="row"
         >
           <Button
-            endIcon={<AddIcon/>}
+            endIcon={<AddIcon />}
             onClick={handleAppAd}
             disabled={addDisabled}
             sx={{

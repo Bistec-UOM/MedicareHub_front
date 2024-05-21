@@ -7,7 +7,7 @@ const endPoints = {
     SET_ACCEPT:'/api/Values/Accept',
     GET_ACCEPT:'/api/Values/Accept',
     RESULT:'/api/Values/Result',
-    ANALYTIC:'/api/DoctorAnalytic'
+    ANALYTIC:'/api/DoctorAnalytic',
 };
   
 export { baseURL,endPoints};

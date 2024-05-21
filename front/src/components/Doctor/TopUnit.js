@@ -6,8 +6,17 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Link } from 'react-router-dom';
 
 export default function TopUnit(props) {
-  const currentDate = new Date();
-  const formattedDate = currentDate.toDateString();
+  const generatedate=()=>{
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed in JavaScript
+    const day = String(date.getDate()).padStart(2, '0');
+    const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'];
+    const dayOfWeek = daysOfWeek[date.getDay()]; // Days of week are also 0-indexed
+
+    return `${year}-${month}-${day} ${dayOfWeek}`;
+  }
+  const formattedDate = generatedate();
   const [open, setOpen] = useState(false);
   const [filteredAppointmentsdone, setFilteredAppointmentsdone] = useState([]);
 
@@ -28,16 +37,16 @@ export default function TopUnit(props) {
   }
 
   return (
-    <div style={{position:'relative',width:'100%',height:'100%'}}>
+    <div style={{position:'relative',width:'100%'}}>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
 
         <Link path to="/dpage"><CalendarTodayIcon sx={{ cursor: 'pointer',ml:'10px' }} /></Link> 
 
-        <Typography sx={{ fontWeight: 'Bold', color: 'grey' }}>{formattedDate}</Typography>
+        <Typography sx={{ fontSize:'14px'}}>{formattedDate}</Typography>
 
         <FormatListBulletedIcon sx={{ cursor: 'pointer',mr:'10px'}} onClick={handleClickOpen} />
       </Box> 
-      <Switch defaultChecked size="small" onChange={props.SwitchOnChange} sx={{position:'absolute',top:'60px'}}/>
+      <Switch defaultChecked size="small" onChange={props.SwitchOnChange} sx={{position:'relative',top:'10px'}}/>
     </div>   
   );
   

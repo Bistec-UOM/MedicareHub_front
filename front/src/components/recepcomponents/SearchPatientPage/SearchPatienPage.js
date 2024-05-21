@@ -9,6 +9,7 @@ import PatientRegpopup from "../PatRegPopup/PatientRegPopup";
 import { Load } from "../../Other";
 import "../../../recep.css";
 import { baseURL, endPoints } from "../../../Services/Appointment";
+import { setHeaders } from "../../../Services/Auth";
 
 const SearchPatientPage = (props) => {
   const [notificationOpen, setNotificationOpen] = useState(false);
@@ -44,7 +45,7 @@ const SearchPatientPage = (props) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(baseURL+endPoints.PatientList);
+        const response = await fetch(baseURL+endPoints.PatientList,setHeaders());
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
