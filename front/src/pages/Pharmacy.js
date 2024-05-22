@@ -39,7 +39,7 @@ export default function Pharmacy() {
   useEffect(()=>{
     if(select!==null){
       const genericNames = selectedPrescription[0].medicine.map(drug => drug.name);
-      console.log(genericNames)
+      //console.log(genericNames)
       axios.post(baseURL+endPoints.MEDICINEDETAIL, genericNames)
       .then(response => {     
           //attach each the drug details requested from back to the corresponding drug in prescription
@@ -110,7 +110,10 @@ export default function Pharmacy() {
     })
 
     setLoadingBConfirm(true);
-    axios.post(baseURL+endPoints.ADDBILLDRUG,obj)
+    let load={data:obj,total:total+serviceCharge}
+    setLoadingBConfirm(true);
+    console.log(load)
+    /*axios.post(baseURL+endPoints.ADDBILLDRUG,obj)
     .then(()=>{
       setLoadingBConfirm(false)
       handleCloseConfirm()
@@ -120,7 +123,7 @@ export default function Pharmacy() {
       setLoadingBConfirm(false)
       handleCloseConfirm()
       console.log(er)
-    })
+    })*/
 
   };
   
