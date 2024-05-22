@@ -52,6 +52,7 @@ export default function Accept({req,reqOK,RLoad,setRLoad}) {
     .then((res)=>{
       handleClick()
       remTest(id)
+      setLoadingB(false)
     })
     .catch((er)=>{
       console.log(er)
