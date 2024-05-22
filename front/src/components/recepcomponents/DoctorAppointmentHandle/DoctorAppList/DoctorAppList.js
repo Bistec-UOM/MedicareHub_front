@@ -63,6 +63,7 @@ const DoctorAppList = (props) => {
   useEffect(() => {
     //for fethcing the app of a day
     document.body.style.margin = "0";
+    console.log("props",props.docid)
 
     axios
       .get(

@@ -47,6 +47,7 @@ const DoctorAppCalender = ({ doctorId }) => {
   useEffect(() =>
     //for fetching the appoinments of the month for a doctor
     {
+      console.log("doc",doctorId)
       axios
         .get(
          baseURL+endPoints.AppDay+`${doctorId}`+"/month/"+`${pasMonth}`,setHeaders()

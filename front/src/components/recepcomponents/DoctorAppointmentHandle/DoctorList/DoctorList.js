@@ -23,7 +23,7 @@ import DoctorAppList from '../DoctorAppList/DoctorAppList';
 import { useLocation } from 'react-router-dom';
 import TopUnit from '../../../Doctor/TopUnit';
 
-export default function DoctorList() {
+export default function DoctorList(props) {
   const [select,setSelect]=useState(null)
   useEffect(() => {
     document.body.style.margin = '0';
@@ -170,7 +170,7 @@ export default function DoctorList() {
         </Grid>
         
         <Grid item xs={9} style={{ height: '100%', overflowY: 'scroll' }}>
-        <DoctorAppList selectedDay={selectedDay} docid={1}/>
+        <DoctorAppList selectedDay={selectedDay} docid={doctorid}/>
           
          
         </Grid>
