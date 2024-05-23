@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import * as signalR from '@microsoft/signalr';
+import { jwtDecode } from "jwt-decode";
 
 const NotificationComponentlk = () => {
     const [connection, setConnection] = useState(null);
     const [notifications, setNotifications] = useState([]);
+    const [profile,setProfile]=useState({Name:'',Role:''});
 
     useEffect(() => {
         const newConnection = new signalR.HubConnectionBuilder()
             .withUrl("https://localhost:7205/notificationHub", {
                 accessTokenFactory: () => localStorage.getItem('medicareHubToken')
+                
             })
             .withAutomaticReconnect()
             .build();
@@ -30,30 +33,20 @@ const NotificationComponentlk = () => {
         }
     }, [connection]);
 
-    const sendNotification = () => {
-        fetch('https://localhost:7205/api/notifications', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('medicareHubToken')}`
-            },
-            body: JSON.stringify({ UserId: 66, Message: 'Test notification to user 66' })
-        }).then(response => {
-            if (response.ok) {
-                console.log('Notification sent successfully');
-            } else {
-                console.error('Failed to send notification');
-            }
-        }).catch(error => console.error('Error:', error));
-    };
-
-    useEffect(() => {
-        sendNotification();
-    }, []);
+useEffect(() => {
+    let tmp = localStorage.getItem('medicareHubToken');
+    if(tmp !== null){
+        setProfile({
+            Name:jwtDecode(localStorage.getItem('medicareHubToken')).Name,
+            Role:jwtDecode(localStorage.getItem('medicareHubToken')).Role
+        })
+    }
+}, []);
 
     return (
         <div>
             <h2>Notifications</h2>
+            <h3>{profile.Name}</h3>
             <ul>
                 {notifications.map((notification, index) => (
                     <li key={index}>{notification}</li>
