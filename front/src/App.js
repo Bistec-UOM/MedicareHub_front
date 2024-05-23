@@ -13,6 +13,9 @@ import DoctorPage from "./components/recepcomponents/DoctorAppointmentHandle/Doc
 import DoctorList from "./components/recepcomponents/DoctorAppointmentHandle/DoctorList/DoctorList";
 import Doctor_analytics from "./components/Doctor_analytics";
 import ViewResult from "./components/Lab/ViewResult";
+import NotificationComponent from "./components/Admin/PageComponents/notisender";
+import NotificationComponent1 from "./components/Admin/PageComponents/notify";
+import NotificationComponentlk from "./components/Admin/PageComponents/notify";
 
 
 function App() {
@@ -34,6 +37,9 @@ function App() {
       <Route path="/dappList" element={<DoctorList/>}></Route>
       <Route path="doct/analytics" element={<Doctor_analytics/>}></Route>
       <Route path="lab/view" element={<ViewResult id={4}></ViewResult>}></Route>
+      <Route path="admin/notisender" element={<NotificationComponent/>}></Route>
+      <Route path="admin/noticheck" element={<NotificationComponent1/>}></Route>
+      <Route path="admin/final" element={<NotificationComponentlk/>}></Route>
       </Routes>
       </BrowserRouter>
     </div>
