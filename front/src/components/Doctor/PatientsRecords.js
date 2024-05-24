@@ -80,8 +80,14 @@ export default function PatientsRecords(props) {
                         <Grid container spacing={1} sx={{ marginTop: "5px" }}>
                             {patientRecords.map((item, index) => (
                                 <Grid item xs={12} key={index}>
+                                   <hr/>
                                     <DialogTitle sx={{ m: 0, p: 2 }}>{calculateDaysDifference(item.prescription.dateTime)}</DialogTitle>
-                                    {item.drugs.map((drug, i) => (
+                                   
+                                   
+                                {item.drugs.length === 0 ? (
+                                    <Typography variant="body1" sx={{ marginLeft: '20px', marginTop: '10px',color:'#717D7E' }}>No prescriptions</Typography>
+                                ) : (
+                                    item.drugs.map((drug, i) => (
                                         <div key={i}>
                                             <Card sx={{ m: 1,display:'flex', backgroundColor: '#0099cc', color: 'white', fontSize: '19px', height: '30px' }}>
                                                 <Typography gutterBottom variant="p" sx={{ marginLeft: '10px',flex: '4' }}>{drug.genericN}</Typography>
@@ -89,10 +95,19 @@ export default function PatientsRecords(props) {
                                                 <Typography gutterBottom variant="p" sx={{ marginLeft: '10px' ,flex: '4'}}> {drug.period}</Typography>
                                             </Card>
                                         </div>
-                                    ))}
+                                    ))
+                                )}
                                     {item.prescription.description && (
-                                        <Card sx={{ m: 2, backgroundColor: 'rgb(209, 224, 250)', color: 'blue', fontSize: '20px', width: '600px', height: calculateDescriptionCardHeight(item.prescription.description) }}>
-                                            <Typography variant="p" sx={{ padding: '10px' }}>{item.prescription.description}</Typography>
+                                        <Card sx={{ m: 2, backgroundColor: 'rgb(209, 224, 250)', color: 'blue', fontSize: '20px', width: '830px', height: calculateDescriptionCardHeight(item.prescription.description) }}>
+                                        <Typography variant="p" sx={{ padding: '10px' }}>{item.prescription.description}</Typography>
+                                    </Card>
+                                    
+                                    )}
+                                   {item.testNames && item.testNames.length > 0 && (
+                                        <Card sx={{ m: 2, backgroundColor: '#18A816 ', color: 'white', fontSize: '20px', width: '830px',height:'30px' }}>
+                                            <Typography variant="p" sx={{ padding: '10px' }}>
+                                                {item.testNames.join(', ')}   Lab  Report 
+                                            </Typography>
                                         </Card>
                                     )}
                                 </Grid>
