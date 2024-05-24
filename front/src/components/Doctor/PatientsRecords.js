@@ -98,10 +98,17 @@ export default function PatientsRecords(props) {
                                     ))
                                 )}
                                     {item.prescription.description && (
-                                        <Card sx={{ m: 2, backgroundColor: 'rgb(209, 224, 250)', color: 'blue', fontSize: '20px', width: '800px', height: calculateDescriptionCardHeight(item.prescription.description) }}>
+                                        <Card sx={{ m: 2, backgroundColor: 'rgb(209, 224, 250)', color: 'blue', fontSize: '20px', width: '830px', height: calculateDescriptionCardHeight(item.prescription.description) }}>
                                         <Typography variant="p" sx={{ padding: '10px' }}>{item.prescription.description}</Typography>
                                     </Card>
                                     
+                                    )}
+                                   {item.testNames && item.testNames.length > 0 && (
+                                        <Card sx={{ m: 2, backgroundColor: '#18A816 ', color: 'white', fontSize: '20px', width: '830px',height:'30px' }}>
+                                            <Typography variant="p" sx={{ padding: '10px' }}>
+                                                {item.testNames.join(', ')}   Lab  Report 
+                                            </Typography>
+                                        </Card>
                                     )}
                                 </Grid>
                             ))}
