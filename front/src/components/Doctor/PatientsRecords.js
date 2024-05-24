@@ -64,12 +64,16 @@ export default function PatientsRecords(props) {
     return (
         <div>
             <Dialog open={openPopup} onClose={handleClose} maxWidth="md"  fullWidth={true}>
-                <DialogContent dividers sx={{ maxHeight: '500px', overflowY: 'auto' }}>
+                <DialogContent dividers sx={{ maxHeight: '500px', overflowY: 'scroll',p:'0'}}>
     {/* --------------------- Switch between analytics and records ------------------------------------ */}
-                    <Box sx={{height:'30px',width:'100%',display:'flex',justifyContent:'end',borderBottom:'1px solid lightgrey'}}>
-                        <FormatListBulletedIcon sx={{cursor:'pointer',mr:'30px'}} onClick={()=>setRecords(true)} color={records?'inherit':'disabled'}></FormatListBulletedIcon>
-                        <TimelineIcon sx={{cursor:'pointer'}} onClick={()=>setRecords(false)} color={records?'disabled':'inherit'}></TimelineIcon>
+                    <Box sx={{height:'30px',width:'100%',display:'flex',justifyContent:'space-between',borderBottom:'1px solid lightgrey',position:'absolute',backgroundColor:'white',pt:'10px'}}>
+                        <Typography sx={{pl:'10px'}}>{mode?'Patient History Records':'History Analytics'}</Typography>
+                        <div>
+                            <FormatListBulletedIcon sx={{cursor:'pointer',mr:'30px'}} onClick={()=>setMode(true)} color={mode?'inherit':'disabled'}></FormatListBulletedIcon>
+                            <TimelineIcon sx={{cursor:'pointer',mr:'20px'}} onClick={()=>setMode(false)} color={mode?'disabled':'inherit'}></TimelineIcon>
+                        </div>
                     </Box>
+                    <div style={{width:'100%',height:'30px'}}></div>
 
     {/* --------------------- patient records list----------------------------------------------------- */}
                     {loading ? (
