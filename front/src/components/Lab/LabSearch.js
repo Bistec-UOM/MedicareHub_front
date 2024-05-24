@@ -4,7 +4,7 @@ import {useState } from 'react'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ViewListIcon from '@mui/icons-material/ViewList';
-import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
+import ScienceIcon from '@mui/icons-material/Science';
 import { SearchBarSM } from '../Common';
 
 export default function LabSearch({setPage,setDate,query,setQuery}) {
@@ -45,7 +45,7 @@ export default function LabSearch({setPage,setDate,query,setQuery}) {
      <SearchBarSM value={query}  onChange={(e)=>setQuery(e.target.value)} placeholder="Search patients"></SearchBarSM>
      </div>
 
-     <InsertDriveFileIcon sx={{cursor:'pointer',mr:'10px'}} onClick={()=>setPage(2)}></InsertDriveFileIcon>
+     <ScienceIcon sx={{cursor:'pointer',mr:'10px'}} onClick={()=>setPage(2)}></ScienceIcon>
 
     </div>
   )

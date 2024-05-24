@@ -13,7 +13,6 @@ import Accept from '../components/Lab/TestSubmit/Accept';
 import axios from 'axios';
 import { baseURL, endPoints } from '../Services/Lab';
 import { Load } from '../components/Other';
-import { setHeaders } from '../Services/Auth';
 
 export default function Lab() {
 

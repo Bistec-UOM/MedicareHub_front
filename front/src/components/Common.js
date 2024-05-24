@@ -16,7 +16,7 @@ const SearchBarSM=({onChange,value,placeholder})=> {
             sx={{
                 p:2.3,display: "flex",
                 alignItems: "center",
-                height:'40px',
+                height:'20px',
                 width: "210px",
                 borderRadius: "8px",
                 boxShadow: 1

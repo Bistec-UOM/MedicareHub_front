@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {Button ,Paper, TextField, Toolbar, Typography,Box, Dialog} from "@mui/material"
+import {Button ,Paper, TextField, Toolbar, Typography,Box, Dialog, Snackbar, Alert} from "@mui/material"
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
@@ -109,8 +109,7 @@ export default function CreateLabTemplate({setPage,setTload}) {
         }
         axios.post(baseURL+endPoints.TEMPLATE,T)
         .then(res=>{
-          setTload([])//make test list empty to reload again
-          setPage(2)
+          handleClick1 ()
         })
         .catch(er=>{
           console.log(er)
@@ -119,6 +118,34 @@ export default function CreateLabTemplate({setPage,setTload}) {
         })
       }
     
+      // SnackBar component===========================================================================
+        const [open1, setOpen1] = React.useState(false);
+        const [sent,setSent]=useState(false)//to integrate setTimeout with a useEffect
+
+        const handleClick1 = () => {
+          setLoadingBConfirm(false)
+          setOpenConfirm(false)
+          setOpen1(true);
+          setTload([])//make test list empty to reload again
+          setSent(true)
+        };
+      
+        const handleClose1 = (event, reason) => {
+          if (reason === 'clickaway') {
+            return;
+          }
+          setOpen1(false);
+        }
+
+        useEffect(()=>{//navigate to page 2 after snackbar is displayed
+          if(sent){
+            const tmr= setTimeout(() => {
+              handleClose1()
+              setPage(2)
+            }, 2000)
+            return () => clearTimeout(tmr);
+          }
+        },[sent])
       
     //Pop up dialog box===========================================================================
     const [loadingBConfirm, setLoadingBConfirm] = useState(false)//Loading button
@@ -262,6 +289,19 @@ export default function CreateLabTemplate({setPage,setTload}) {
 
        <ConfirmPropmt action={createTemplate} message="Are you sure that your template is ready?"
        handleClose={handleCloseConfirm} loadingB={loadingBConfirm} open={openConfirm}></ConfirmPropmt>
+
+  {/*------------------ Snackbar alert ---------------------------------------------- */}
+
+    <Snackbar open={open1} autoHideDuration={2000} onClose={handleClose1}>
+        <Alert
+          onClose={handleClose1}
+          severity="success"
+          variant="filled"
+          sx={{ width: '100%' }}
+        >
+          Template added successfuly
+        </Alert>
+    </Snackbar>
     </div>
   )
 }
