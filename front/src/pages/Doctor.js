@@ -167,6 +167,8 @@ const handleCloseConfirm = () => {setOpenConfirm(false)}
       console.log(er)
     }) */
   if(select!=null){
+  setAvailable({lab:false,rec:true,drg:false,rep:false})
+  setHistDone(false)
   axios.get('https://localhost:7205/api/History/history'+`?Pid=${selectedAppointment[0].patient.id}`)
   .then((res)=>{
     console.log(res.data)
@@ -178,6 +180,7 @@ const handleCloseConfirm = () => {setOpenConfirm(false)}
     setHistDone(true)
   })
   .catch((er)=>{
+    setHistDone(true)
   })
   }
   }
@@ -224,8 +227,11 @@ const handleCloseConfirm = () => {setOpenConfirm(false)}
                             >
                           </PersonDetail>
                       ))}
-                    {!histDone?<CircularProgress sx={{position:'fixed',top:'75px',right:'30px',zIndex:'40'}} size={20}/>:''}
-                    {available.lab?<ScienceIcon sx={{position:'fixed',top:'75px',right:'40px',zIndex:'40',color:'lightblue',cursor:'pointer'}} onClick={handleAddIconClick2}></ScienceIcon>:''}
+                    {!histDone?<div style={{position:'fixed',top:'75px',right:'30px',zIndex:'40'}}>
+                      <Typography sx={{display:'inline',fontSize:'15px',fontStyle:'italic',color:'lightgrey'}}>Checking records...</Typography>
+                      <CircularProgress size={20}/>
+                    </div>:''}
+                    {available.lab?<ScienceIcon sx={{position:'fixed',top:'75px',right:'60px',zIndex:'40',color:'#438ad1',cursor:'pointer'}} onClick={handleAddIconClick2}></ScienceIcon>:''}
                     {available.rec? <UpdateIcon sx={{position:'fixed',top:'75px',right:'20px',zIndex:'40',color:'rgb(255, 153, 0)',cursor:'pointer'}} onClick={handleAddIconClick}></UpdateIcon> :''}
                     <PatientsRecords openPopup={openPopup} setOpenPopup={setOpenPopup}   selectedPatientId={selectedAppointment[0].patient.id}/>
                     <LabResult openPopup2={openPopup2} setOpenPopup2={setOpenPopup2} data={labReport}></LabResult>

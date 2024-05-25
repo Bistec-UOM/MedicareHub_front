@@ -36,7 +36,7 @@ export default function LabResult({data,openPopup2,setOpenPopup2}) {
 
   return (
     <Dialog open={openPopup2} onClose={handleClose} maxWidth="md"  fullWidth={true}>
-        <DialogContent dividers sx={{ maxHeight: '500px', overflowY: 'scroll',p:'0'}}>
+        <DialogContent dividers sx={{ minHeight:'300px',maxHeight:'500px', overflowY: 'scroll',p:'10px'}}>
         {data.map((el,ind) => {
         return (
         <Box>
