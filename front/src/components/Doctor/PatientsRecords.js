@@ -11,12 +11,12 @@ import { Box } from '@mui/system';
 
 export default function PatientsRecords(props) {
     const { openPopup, setOpenPopup, selectedPatientId } = props;
-    const [patientRecords, setPatientRecords] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [records, setRecords] = useState(props.rec);
+    //const [patientRecords, setPatientRecords] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [records, setRecords] = useState(props.records);
     const [mode,setMode] =useState(true);//records-true , analytics-false
 
-    useEffect(() => {
+/*     useEffect(() => {
         if (selectedPatientId) {
             fetchPatientRecords(selectedPatientId);
         }
@@ -32,7 +32,7 @@ export default function PatientsRecords(props) {
             console.error('Error fetching patient records:', error);
         }
     };
-
+ */
     const handleClose = () => {
         setOpenPopup(false);
     };
@@ -78,13 +78,13 @@ export default function PatientsRecords(props) {
     {/* --------------------- patient records list----------------------------------------------------- */}
                     {loading ? (
                         <Typography>Loading...</Typography>
-                    ) : patientRecords.length === 0 ? (
+                    ) : records.length === 0 ? (
                         <Typography sx={{ color: '#717D7E', wordSpacing: '5px', fontSize: '20px',textAlign: 'center'  }}>No history records available.</Typography>
                     ) : (
                         <Grid container spacing={1} sx={{ marginTop: "5px" }}>
-                            {patientRecords.map((item, index) => (
+                            {records.map((item, index) => (
                                 <Grid item xs={12} key={index}>
-                                    <DialogTitle sx={{ m: 0, p: 2 }}>{calculateDaysDifference(item.prescription.dateTime)}</DialogTitle>
+                                    <Typography sx={{ ml:'20px',mt:'20px',fontSize:'15px'}}>{calculateDaysDifference(item.prescription.dateTime)}</Typography>
                                     {item.drugs.map((drug, i) => (
                                         <div key={i}>
                                             <Card sx={{ m: 1,display:'flex', backgroundColor: '#0099cc', color: 'white', fontSize: '19px', height: '30px' }}>
