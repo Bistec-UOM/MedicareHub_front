@@ -42,10 +42,11 @@ export default function Doctor() {
 
   //--------------------------------------------------------------------------------------------------------
   const [labReport,setLabReport]=useState([]);//hold the fetched available lab reports
-  const [analytics,setanalytics] = useState([])//hold the fetched analytics
+  const [drgAnalytics,setDrganalytics] = useState([])//hold the fetched drug analytics
+  const [lbAnalytics,setLbanalytics] = useState([])//hold the fetched lab analytics
   const [records,setRecords]=useState([]);//hold the fetched history records
   const [histDone,setHistDone] = useState(false)//history checking loading button
-  const [available,setAvailable]=useState({lab:false,rec:true,drg:false,rep:false});//is fetch available
+  const [available,setAvailable] = useState({lab:false,rec:false,drg:false,rprt:false});//is fetch available
 
   useEffect(() => {
     document.body.style.margin = '0';
@@ -167,16 +168,30 @@ const handleCloseConfirm = () => {setOpenConfirm(false)}
       console.log(er)
     }) */
   if(select!=null){
-  setAvailable({lab:false,rec:true,drg:false,rep:false})
+  setAvailable({lab:false,rec:false,drg:false,rep:false})
   setHistDone(false)
   axios.get('https://localhost:7205/api/History/history'+`?Pid=${selectedAppointment[0].patient.id}`)
   .then((res)=>{
     console.log(res.data)
+    let tmp={lab:false,rec:false,drg:false,rprt:false}
     if(res.data.lb.length>0){
-      setAvailable({lab:true,rec:true,drg:false,rep:false})
-      console.log(res.data.lb)
+      tmp.lab=true
       setLabReport(res.data.lb)
     }
+    if(res.data.rec.length>0){
+      tmp.rec=true
+      setRecords(res.data.rec)
+    }
+    if(res.data.drgs.length>0){
+      tmp.drg=true
+      setDrganalytics(res.data.drgs)
+    }
+    if(res.data.rprts.length>0){
+      tmp.rprt=true
+      setLbanalytics(res.data.rprts)
+    }
+    console.log(tmp)
+    setAvailable(tmp)
     setHistDone(true)
   })
   .catch((er)=>{
@@ -232,7 +247,7 @@ const handleCloseConfirm = () => {setOpenConfirm(false)}
                       <CircularProgress size={20}/>
                     </div>:''}
                     {available.lab?<ScienceIcon sx={{position:'fixed',top:'75px',right:'60px',zIndex:'40',color:'#438ad1',cursor:'pointer'}} onClick={handleAddIconClick2}></ScienceIcon>:''}
-                    {available.rec? <UpdateIcon sx={{position:'fixed',top:'75px',right:'20px',zIndex:'40',color:'rgb(255, 153, 0)',cursor:'pointer'}} onClick={handleAddIconClick}></UpdateIcon> :''}
+                    {available.rec?<UpdateIcon sx={{position:'fixed',top:'75px',right:'20px',zIndex:'40',color:'rgb(255, 153, 0)',cursor:'pointer'}} onClick={handleAddIconClick}></UpdateIcon> :''}
                     <PatientsRecords openPopup={openPopup} setOpenPopup={setOpenPopup}   selectedPatientId={selectedAppointment[0].patient.id}/>
                     <LabResult openPopup2={openPopup2} setOpenPopup2={setOpenPopup2} data={labReport}></LabResult>
 {/*.........................Add Drugs...............................................*/}
