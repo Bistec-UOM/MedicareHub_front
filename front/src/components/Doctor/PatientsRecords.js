@@ -84,6 +84,7 @@ export default function PatientsRecords(props) {
                         <Grid container spacing={1} sx={{ marginTop: "5px" }}>
                             {records.map((item, index) => (
                                 <Grid item xs={12} key={index}>
+
                                     <Typography sx={{ ml:'20px',mt:'20px',fontSize:'15px'}}>{calculateDaysDifference(item.prescription.dateTime)}</Typography>
                                     {item.drugs.map((drug, i) => (
                                         <div key={i}>
@@ -93,10 +94,19 @@ export default function PatientsRecords(props) {
                                                 <Typography gutterBottom variant="p" sx={{ marginLeft: '10px' ,flex: '4'}}> {drug.period}</Typography>
                                             </Card>
                                         </div>
-                                    ))}
+                                    ))
+                                )}
                                     {item.prescription.description && (
-                                        <Card sx={{ m: 2, backgroundColor: 'rgb(209, 224, 250)', color: 'blue', fontSize: '20px', width: '600px', height: calculateDescriptionCardHeight(item.prescription.description) }}>
-                                            <Typography variant="p" sx={{ padding: '10px' }}>{item.prescription.description}</Typography>
+                                        <Card sx={{ m: 2, backgroundColor: 'rgb(209, 224, 250)', color: 'blue', fontSize: '20px', width: '830px', height: calculateDescriptionCardHeight(item.prescription.description) }}>
+                                        <Typography variant="p" sx={{ padding: '10px' }}>{item.prescription.description}</Typography>
+                                    </Card>
+                                    
+                                    )}
+                                   {item.testNames && item.testNames.length > 0 && (
+                                        <Card sx={{ m: 2, backgroundColor: '#18A816 ', color: 'white', fontSize: '20px', width: '830px',height:'30px' }}>
+                                            <Typography variant="p" sx={{ padding: '10px' }}>
+                                                {item.testNames.join(', ')}   Lab  Report 
+                                            </Typography>
                                         </Card>
                                     )}
                                 </Grid>
