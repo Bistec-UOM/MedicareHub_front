@@ -533,7 +533,7 @@ done?<Box sx={{width:'100%'}}>
         </FormGroup>
       </Paper>
       
-    <ResponsiveContainer width={700} height={280}>
+    <ResponsiveContainer width={700} height={260}>
       <LineChart
         data={data}
         margin={{
@@ -580,7 +580,7 @@ done?<Box sx={{width:'100%'}}>
         </FormGroup>
       </Paper>
       
-    <ResponsiveContainer width={700} height={280}>
+    <ResponsiveContainer width={700} height={260}>
       <LineChart
         data={data2}
         margin={{
