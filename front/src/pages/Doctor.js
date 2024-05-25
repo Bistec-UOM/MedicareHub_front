@@ -190,7 +190,6 @@ const handleCloseConfirm = () => {setOpenConfirm(false)}
       tmp.rprt=true
       setLbanalytics(res.data.rprts)
     }
-    console.log(tmp)
     setAvailable(tmp)
     setHistDone(true)
   })
@@ -248,7 +247,7 @@ const handleCloseConfirm = () => {setOpenConfirm(false)}
                     </div>:''}
                     {available.lab?<ScienceIcon sx={{position:'fixed',top:'75px',right:'60px',zIndex:'40',color:'#438ad1',cursor:'pointer'}} onClick={handleAddIconClick2}></ScienceIcon>:''}
                     {available.rec?<UpdateIcon sx={{position:'fixed',top:'75px',right:'20px',zIndex:'40',color:'rgb(255, 153, 0)',cursor:'pointer'}} onClick={handleAddIconClick}></UpdateIcon> :''}
-                    <PatientsRecords openPopup={openPopup} setOpenPopup={setOpenPopup}   selectedPatientId={selectedAppointment[0].patient.id} records={records}/>
+                    {available.rec?<PatientsRecords openPopup={openPopup} setOpenPopup={setOpenPopup}   selectedPatientId={selectedAppointment[0].patient.id} records={records} lbAnalytics={lbAnalytics} drgAnalytics={drgAnalytics}/>:''}
                     <LabResult openPopup2={openPopup2} setOpenPopup2={setOpenPopup2} data={labReport}></LabResult>
 {/*.........................Add Drugs...............................................*/}
  <div style={{paddingTop:'60px'}}>
