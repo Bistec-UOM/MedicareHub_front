@@ -25,7 +25,7 @@ export default function PatientsRecords(props) {
     const fetchPatientRecords = async (PatientId) => {
         try {
             const response = await axios.get(`https://localhost:7205/api/Doctor/prescription/${PatientId}`);
-            console.log("patient History records:", PatientId, JSON.stringify(response.data));
+            //console.log("patient History records:", PatientId, JSON.stringify(response.data));
             setPatientRecords(response.data);
             setLoading(false);
         } catch (error) {

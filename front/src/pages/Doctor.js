@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { SidebarContainer, SidebarTop, SidebarList } from '../components/sidebar/Sidebar'
 import Navbar from '../components/navbar/Navbar'
-import { Grid,Typography} from '@mui/material'
+import { CircularProgress, Grid,Typography} from '@mui/material'
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -23,11 +23,13 @@ import axios from 'axios';
 import { PersonDetail } from '../components/Other';
 import DoneIcon from '@mui/icons-material/Done'
 import { ConfirmPropmt } from '../components/Common';
+import LabResult from '../components/Lab/LabResult';
 
 export default function Doctor() {
   
   const [select,setSelect]=useState(null);//hold the selected appoinment patient
   const [openPopup, setOpenPopup] = useState(false);// for patient history records
+  const [openPopup2, setOpenPopup2] = useState(false);// for result view
   const [openBox, setOpenBox] = useState(false);// for add drugs
   const [openpopBox, setOpenpopBox] = useState(false);//for lab reports
   const [openAreports, setOpenAreports] = useState(false);//for analitical reports
@@ -37,9 +39,13 @@ export default function Doctor() {
   const [pres,setPres]=useState([]) ;// hold the pres details from doctoradd drug component
   const [rep,setrep]=useState([]); // hold the  lab request from component
   const [appointments, setAppointments] = useState([]);// hold the appoinment list
-  const [labReport,setLabReport]=useState([]);//hold the available lab reports
-  const [Records,setRecords]=useState([]);//hold the drug and lab records
-  const [available,setAvailable]=useState({lab:false,rec:true});//is available
+
+  //--------------------------------------------------------------------------------------------------------
+  const [labReport,setLabReport]=useState([]);//hold the fetched available lab reports
+  const [analytics,setanalytics] = useState([])//hold the fetched analytics
+  const [records,setRecords]=useState([]);//hold the fetched history records
+  const [histDone,setHistDone] = useState(false)//history checking loading button
+  const [available,setAvailable]=useState({lab:false,rec:true,drg:false,rep:false});//is fetch available
 
   useEffect(() => {
     document.body.style.margin = '0';
@@ -55,6 +61,10 @@ export default function Doctor() {
 
    const handleAddIconClick = () => {//for patient history record popu up
     setOpenPopup(true);
+  }; 
+
+  const handleAddIconClick2 = () => {//for view lab result
+    setOpenPopup2(true);
   }; 
 
   const handleAddDrugsClick = () => {
@@ -150,16 +160,31 @@ const handleCloseConfirm = () => {setOpenConfirm(false)}
 
 //check whether patient history details is availale
   const loadPatientDetails=()=>{
-    axios.get(baseURL+endPoints.PATIENTHISTORY+select)
+/*     axios.get(baseURL+endPoints.PATIENTHISTORY+select)
     .then(res => {
     })
     .catch(er => {
       console.log(er)
-    })
+    }) */
+  if(select!=null){
+  axios.get('https://localhost:7205/api/History/history'+`?Pid=${selectedAppointment[0].patient.id}`)
+  .then((res)=>{
+    console.log(res.data)
+    if(res.data.lb.length>0){
+      setAvailable({lab:true,rec:true,drg:false,rep:false})
+      console.log(res.data.lb)
+      setLabReport(res.data.lb)
+    }
+    setHistDone(true)
+  })
+  .catch((er)=>{
+  })
   }
+  }
+
   useEffect(() => {//load patient history details as the patient selected
     loadPatientDetails()
-  },[selectedAppointment])
+  },[select])
 
  return (
   <div>
@@ -199,8 +224,11 @@ const handleCloseConfirm = () => {setOpenConfirm(false)}
                             >
                           </PersonDetail>
                       ))}
+                    {!histDone?<CircularProgress sx={{position:'fixed',top:'75px',right:'30px',zIndex:'40'}} size={20}/>:''}
+                    {available.lab?<ScienceIcon sx={{position:'fixed',top:'75px',right:'40px',zIndex:'40',color:'lightblue',cursor:'pointer'}} onClick={handleAddIconClick2}></ScienceIcon>:''}
                     {available.rec? <UpdateIcon sx={{position:'fixed',top:'75px',right:'20px',zIndex:'40',color:'rgb(255, 153, 0)',cursor:'pointer'}} onClick={handleAddIconClick}></UpdateIcon> :''}
-                    <PatientsRecords openPopup={openPopup} setOpenPopup={setOpenPopup}   selectedPatientId={selectedAppointment[0].patient.id} rec={Records}/>
+                    <PatientsRecords openPopup={openPopup} setOpenPopup={setOpenPopup}   selectedPatientId={selectedAppointment[0].patient.id}/>
+                    <LabResult openPopup2={openPopup2} setOpenPopup2={setOpenPopup2} data={labReport}></LabResult>
 {/*.........................Add Drugs...............................................*/}
  <div style={{paddingTop:'60px'}}>
                    <div style={{marginBottom:'80px'}}>
