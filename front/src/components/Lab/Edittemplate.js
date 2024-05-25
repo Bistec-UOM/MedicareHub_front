@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {Paper,Toolbar, Typography,Box, Button} from "@mui/material"
+import {Paper,Toolbar, Typography,Box, Button, Alert, Snackbar} from "@mui/material"
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
@@ -108,18 +108,15 @@ export default function Edittemplate({setPage,tId,Tdata,setTload}) {
           Fields:ld
         }
         console.log(JSON.stringify(obj))
-/*         axios.put(baseURL+endPoints.TEMPLATE,obj)
+        axios.put(baseURL+endPoints.TEMPLATE,obj)
         .then(res=>{
-          setLoadingBConfirm(false)
-          handleCloseConfirm()
-          setTload([])//make test list empty to reload again
-          setPage(2)
+          handleClick1()
         })
         .catch(er=>{
           console.log(er)
           setLoadingBConfirm(false)
           handleCloseConfirm()
-        }) */
+        })
       }
     
 
@@ -146,6 +143,34 @@ export default function Edittemplate({setPage,tId,Tdata,setTload}) {
   }
   const handleCloseConfirm = () => {setOpenConfirm(false)}  
 
+      // SnackBar component===========================================================================
+      const [open1, setOpen1] = React.useState(false);
+      const [sent,setSent]=useState(false)//to integrate setTimeout with a useEffect
+
+      const handleClick1 = () => {
+        setLoadingBConfirm(false)
+        setOpenConfirm(false)
+        setOpen1(true);
+        setSent(true)
+      };
+    
+      const handleClose1 = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+        setOpen1(false);
+      }
+
+      useEffect(()=>{//navigate to page 2 after snackbar is displayed
+        if(sent){
+          const tmr= setTimeout(() => {
+            handleClose1()
+            setPage(2)
+          }, 2000)
+          return () => clearTimeout(tmr);
+        }
+      },[sent])
+
   return (
     <div>
         <Toolbar sx={{position:'fixed',width:{xs:'100%',sm:'70%'},justifyContent:'space-between',alignItems:'center',p:'0',pt:{xs:'10px'},backgroundColor:'white'}}>
@@ -166,7 +191,6 @@ export default function Edittemplate({setPage,tId,Tdata,setTload}) {
            {/*--------------------------------------------------------------------------------------*/}
            {/*---------- Printed lab sheet----------------------------------------------------------*/}
            {/*--------------------------------------------------------------------------------------*/}
-         
                {!loading ?
                    testField.map((elm,indx)=>{
                         elm.index=indx
@@ -265,9 +289,22 @@ export default function Edittemplate({setPage,tId,Tdata,setTload}) {
         </Paper>:''
         }
 
-        {/*--------------- confirmation popup box------------------------------------------*/}
+      {/*--------------- confirmation popup box------------------------------------------*/}
         <ConfirmPropmt action={saveTemplate} message="Are you sure that template is ready?"
        handleClose={handleCloseConfirm} loadingB={loadingBConfirm} open={openConfirm}></ConfirmPropmt>
+
+      {/*------------------ Snackbar alert ---------------------------------------------- */}
+
+      <Snackbar open={open1} autoHideDuration={2000} onClose={handleClose1}>
+        <Alert
+          onClose={handleClose1}
+          severity="success"
+          variant="filled"
+          sx={{ width: '100%' }}
+        >
+          Template edited successfuly
+        </Alert>
+      </Snackbar>
     </div>
   )
 }

@@ -60,33 +60,13 @@ export default function SubmitPage({setpage}) {
     <div>
 
           <Toolbar sx={{width:{xs:'100%',sm:'70%'},justifyContent:'space-between',position:'fixed',backgroundColor:'white',pt:{xs:'10px'}}}>
-            <ArrowBackIcon sx={{cursor:'pointer'}} onClick={()=>setpage(1)}></ArrowBackIcon>
+            <ArrowBackIcon sx={{cursor:'pointer'}} onClick={()=>setpage(1)}></ArrowBackIcon>    
 
-            {/*-------Search bar------------------------------------ */}
-            <Paper component="form" 
-              sx={{
-                p: "2px 4px",
-                display: "flex",
-                alignItems: "center",
-                height:'30px',
-                width:{xs:'40%',sm:'40%'},
-                borderRadius: "10px",
-                boxShadow: 1,
-                mr:'300px'
-                }}
-            >
-            <InputBase type="text" className="form-control" sx={{ flex: 1 }} placeholder="Search"/>
-            <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-            <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
-              <SearchIcon />
-            </IconButton>
-            </Paper>  
-
-        </Toolbar>
+          </Toolbar>
 
       {/*------------------ List of accepted samples ---------------------------------------------- */}
 
-        <Stack sx={{paddingTop:{xs:'60px',sm:'80px'},paddingLeft:{xs:'5%',sm:'8%'}}}>
+        <Stack sx={{paddingTop:{xs:'40px',sm:'60px'},paddingLeft:{xs:'5%',sm:'8%'}}}>
         {loadOK?<Load></Load>:''}
         {
             load.map((i,ind)=>{
@@ -103,10 +83,10 @@ export default function SubmitPage({setpage}) {
                             }} 
                           onClick={()=>handleClickOpen(i.id)}
                         >
-                    <Typography sx={{fontSize:'12px',flex:'1',color:'grey'}}>{ind+1}</Typography>
-                    <Typography sx={{fontSize:'15px',flex:'1',color:'#568a91',fontWeight:'bold'}}>{i.id}</Typography>
-                    <Typography sx={{fontSize:'15px',flex:'1'}}>{i.abb}</Typography>
-                    <Typography sx={{fontSize:'15px',flex:'2'}}>{i.testName}</Typography>
+                    <div style={{flex:'1'}}>
+                      <Typography sx={{fontSize:'15px',color:'#ffffff',fontWeight:'bold',flex:'1',display:'inline',backgroundColor:'#568a91',pl:'10px',pr:'10px',pt:'2px',pb:'2px',borderRadius:'4px'}}>{i.id}</Typography>
+                    </div>
+                    <Typography sx={{fontSize:'15px',flex:'3'}}>{`${i.abb} (${i.testName})`}</Typography>
             </Paper>
             })
         }
