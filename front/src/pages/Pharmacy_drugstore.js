@@ -15,8 +15,14 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import DoneIcon from '@mui/icons-material/Done'
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from '@mui/icons-material/Edit'
 
 export default function Pharmacy_drugstore() {
+
+  useEffect(()=>{
+    document.body.style.margin = '0'
+    getData();
+   },[]) 
 
   const [brand, setBrand] = useState('');
   const [drug, setDrug] = useState('');
@@ -27,10 +33,6 @@ export default function Pharmacy_drugstore() {
   const [snackbarMessage, setSnackbarMessage] = useState(''); // State for Snackbar message
 
   const [rows, setRows] = useState([]) // fetched drug list is stored
-
-  useEffect(()=>{
-    getData();
-  },[])
 
   const getData = () => { // get
     axios.get(baseURL+endPoints.DRUGGET)
@@ -49,8 +51,8 @@ export default function Pharmacy_drugstore() {
         console.log(error)
     })
 }
-//////////////////////////////////////////////////////////////////
- const handleConfirm=()=>{    // set and post
+//New drug adding ==========================================>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+ const handleConfirm=()=>{
     setLoadingBAdd(true)
     const data={
       "genericN": drug,
@@ -105,9 +107,10 @@ export default function Pharmacy_drugstore() {
       </MuiAlert>
     </Snackbar>
   );
-/////////////////////////////////////////////////////////////////////////////////
 
-  const handleDelete = (id) => {              ////// delete
+  //Drug deletion =====================================>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+  const handleDelete = (id) => {             
     axios.delete(baseURL+endPoints.DRUGDELETE+`/${id}`)
       .then(() => {
         getData(); // Refresh data after delete
@@ -120,52 +123,46 @@ export default function Pharmacy_drugstore() {
       });
   };
 
-//Sending edited drug details ========================================>>>>>>>>>>>>>>>>>>>>>>
+//Drug eiditing ========================================>>>>>>>>>>>>>>>>>>>>>>
   const handleEdit = () => {
-    setLoadingBEdit(true)       
-    let updatedData = {
-      genericN: selectedCard.drug,
-      brandN: selectedCard.brand,
-      weight: selectedCard.dosage,
-      avaliable: selectedCard.quantity,
-      price: selectedCard.price
-    };
-    //console.log('check this')
-    //console.log('check',updatedData)
-    axios.put(baseURL+endPoints.DRUGUPDATE+`/${selectedCard.ID}`, updatedData)
-      .then((response) => {
-        setLoadingBEdit(false)       
-        getData(); // Refresh data after edit
-        setSnackbarMessage('Drug edited successfully'); // Set success message
-        setSnackbarOpen(true); // Show Snackbar
-        console.log("sent ",updatedData)
-        handleEditClose();
-      })
-      .catch((error) => {
-        setLoadingBEdit(false)       
-        console.log(error);
-        handleEditClose();
-      });
+    if(editEnable){//only proceed when editing enable state
+      setLoadingBEdit(true)       
+      let updatedData = {
+        genericN: selectedCard.drug,
+        brandN: selectedCard.brand,
+        weight: selectedCard.dosage,
+        avaliable: selectedCard.quantity,
+        price: selectedCard.price
+      };
+      //console.log('check this')
+      //console.log('check',updatedData)
+      axios.put(baseURL+endPoints.DRUGUPDATE+`/${selectedCard.ID}`, updatedData)
+        .then((response) => {
+          setLoadingBEdit(false)       
+          getData(); // Refresh data after edit
+          setSnackbarMessage('Drug edited successfully'); // Set success message
+          setSnackbarOpen(true); // Show Snackbar
+          console.log("sent ",updatedData)
+          handleEditClose();
+          setEditEnable(false)
+        })
+        .catch((error) => {
+          setLoadingBEdit(false)       
+          console.log(error);
+          handleEditClose();
+          setEditEnable(false)
+        });
+    }else{
+      setEditEnable(true)
+    }
   };
 
+  const [editEnable,setEditEnable] = useState(false)
  
  //filtered Rload data by the search===========================================
   const [filter, setFilter] = useState('');
   const filteredRows = rows.filter(item => item.drug.toLowerCase().includes(filter)||item.brand.toLowerCase().includes(filter))
 
-/*   const Filter = (event) => {
-    const searchValue = event.target.value.toLowerCase();
-  
-  setRows(
-    rows.filter(
-      (f) =>
-        (typeof f.drug === 'string' && f.drug.toLowerCase().includes(searchValue)) ||
-        (typeof f.brand === 'string' && f.brand.toLowerCase().includes(searchValue)) 
-        
-    )
-  );
-    
-  }; */
   
   const [open, setOpen] =useState(false);
   const [selectedCard, setSelectedCard] =useState(null);
@@ -178,8 +175,6 @@ export default function Pharmacy_drugstore() {
     setOpen(false)
   }; 
 
-  
-
   const handleEditClose = () => {
     setSelectedCard(null);
     setEditOpen(false);
@@ -190,10 +185,6 @@ export default function Pharmacy_drugstore() {
     setEditOpen(true);
   };
 
-  useEffect(()=>{
-    document.body.style.margin = '0';
-
-   },[]) 
    const handleFieldChange = (fieldName, value) => {
     console.log(`Updating ${fieldName} to ${value}`);
     setSelectedCard(prevState => ({
@@ -201,7 +192,7 @@ export default function Pharmacy_drugstore() {
       [fieldName]: value
     }));
   };
-  const [select,setSelect]=useState(null)
+
   let x=[
     {
       "id": 1,
@@ -286,9 +277,10 @@ export default function Pharmacy_drugstore() {
   //Loading button states---------------------------------------------------------------
   const [loadingBAdd, setLoadingBAdd] = useState(false)
   const [loadingBEdit, setLoadingBEdit] = useState(false)
+
+
   return (
-    
-    
+  
     <div style={{paddingTop:'100px'}}>
     <div>
       {renderSnackbar()}
@@ -417,8 +409,7 @@ export default function Pharmacy_drugstore() {
           
         </DialogContent>
         <DialogActions>
-          
-          <Button
+          {editEnable? <Button
             color='error'
             size='small'
             onClick={() => handleDelete(selectedCard.ID)}
@@ -427,16 +418,15 @@ export default function Pharmacy_drugstore() {
             endIcon={<DeleteIcon></DeleteIcon>}
           >
             Delete
-          </Button>
-          
+          </Button>:''}        
           <LoadingButton 
             variant='contained' 
             size='small' 
-            endIcon={<DoneIcon></DoneIcon>}           
+            endIcon={editEnable?<DoneIcon></DoneIcon>:<EditIcon></EditIcon>}           
             loading={loadingBEdit}
             loadingPosition="end"
             onClick={handleEdit}
-          >Save</LoadingButton>
+          >{editEnable?'Save':'Edit'}</LoadingButton>
         </DialogActions>
       </Dialog>
   </div>
