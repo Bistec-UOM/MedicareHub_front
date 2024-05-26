@@ -1,44 +1,20 @@
 import React, { useEffect, useState } from 'react'
-import {SidebarContainer,SidebarTop,SidebarList} from '../components/sidebar/Sidebar'
-import Navbar from '../components/navbar/Navbar'
-import { Grid,Card,Paper,Button,InputBase, Typography,TextField, List } from '@mui/material'
-import IconButton from "@mui/material/IconButton";
-import SearchIcon from "@mui/icons-material/Search";
-import Filter from "@mui/icons-material/Filter";
-import TuneIcon from '@mui/icons-material/Tune';
+import { Grid,Card,Button,Typography,TextField,Toolbar } from '@mui/material'
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import CloseIcon from '@mui/icons-material/Close';
 import '../components/CustomScroll.css'
-import Box from '@mui/material/Box';
 import { Snackbar } from '@mui/material'; 
 import MuiAlert from '@mui/material/Alert';
-import { Sideunit_Bill } from '../components/sidebar/Sideunits';
 import axios from 'axios';
 import { baseURL,endPoints } from '../Services/Pharmacy';
-import AddIcon from '@mui/icons-material/Add';
-import Avatar from '@mui/material/Avatar';
-
-function createData(
-  ID,
-  drug,
-  brand,
-  dosage,
-  quantity,
-  price,
-) {
-  return { ID, drug, brand, dosage, quantity, price };
-}
-
-
-
+import { SearchBarSM } from '../components/Common';
 
 export default function Pharmacy_drugstore() {
 
-   const [data, setData] =useState([]);
-   const [brand, setBrand] = useState('');
+  const [brand, setBrand] = useState('');
   const [drug, setDrug] = useState('');
   const [quantity, setQuantity] = useState('');
   const [dosage, setDosage] = useState('');
@@ -46,16 +22,12 @@ export default function Pharmacy_drugstore() {
   const [snackbarOpen, setSnackbarOpen] = useState(false); // State for Snackbar visibility
   const [snackbarMessage, setSnackbarMessage] = useState(''); // State for Snackbar message
 
-  
+  const [rows, setRows] = useState([]) // fetched drug list is stored
+
   useEffect(()=>{
     getData();
   },[])
 
-  
-
- 
-
-  ////////////////////////////////////////////////////////////////////////////////////
   const getData = () => { // get
     axios.get(baseURL+endPoints.DRUGGET)
     .then((result) => {
@@ -82,8 +54,7 @@ export default function Pharmacy_drugstore() {
       "brandN": brand,
       "weight": dosage,
       "avaliable": quantity,
-      "price": price,
-      
+      "price": price    
       
     }
     axios.post(baseURL+endPoints.DRUGPOST,data)
@@ -107,7 +78,7 @@ export default function Pharmacy_drugstore() {
   const renderSnackbar = () => (
     <Snackbar
       open={snackbarOpen}
-      autoHideDuration={6000} // Snackbar duration in milliseconds
+      autoHideDuration={2000} // Snackbar duration in milliseconds
       onClose={handleCloseSnackbar}
       anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }} // Position Snackbar at bottom left
     >
@@ -161,9 +132,10 @@ export default function Pharmacy_drugstore() {
   ///////////////////////////////////////////////////////////////////////////
  
  
-  const [searchValue, setSearchValue] = useState('');
-  const [rows, setRows] = useState(data);
-  const Filter = (event) => {
+  const [filter, setFilter] = useState('');
+  const filteredRows = rows.filter(item => item.drug.toLowerCase().includes(filter)||item.brand.toLowerCase().includes(filter))//filtered Rload data by the search
+
+/*   const Filter = (event) => {
     const searchValue = event.target.value.toLowerCase();
   
   setRows(
@@ -175,7 +147,7 @@ export default function Pharmacy_drugstore() {
     )
   );
     
-  };
+  }; */
   
   const [open, setOpen] =useState(false);
   const [selectedCard, setSelectedCard] =useState(null);
@@ -297,80 +269,37 @@ export default function Pharmacy_drugstore() {
   return (
     
     
+    <div style={{paddingTop:'100px'}}>
     <div>
-       <div>
-      
-      {renderSnackbar()}    // snackbar render
+      {renderSnackbar()}
     </div>
-    <Navbar></Navbar>
 
-    <Grid container spacing={0} sx={{paddingTop:'64px',height:'100vh'}}>
-      <Grid item xs={3} style={{height:'100%',backgroundColor:'#DEF4F2'}}>
-        <SidebarContainer sx={{ backgroundColor:'#E7FFF9'}}>
-          <SidebarTop>
-
-          </SidebarTop>
-          <SidebarList>
-          {
-         x.map((elm,ind)=>{
-            return(
-             <>
-              <Sideunit_Bill key={ind} id={elm.id} name={elm["name"]} time={elm["time"]}  setSelect={setSelect} selected={elm.id==select?true:''}></Sideunit_Bill>
-             </>
-            )
-         })
-       }
-          </SidebarList>
-        </SidebarContainer>
-      </Grid>
-
-      <Grid item xs={9} style={{height:'100%',overflowY:'scroll'}}>
       <Grid sx={{ display: "flex", justifyContent: "space-between" }}>
-      <Paper
-          component="form"
-          sx={{
-            p: "2px 4px",
-            display: "flex",
-            alignItems: "center",
-            width: "60vh",
-            borderRadius: "20px",
-            boxShadow: 4,
-            marginLeft:"15px",
-            marginTop:"10px",
-          }}
-        >
-          <InputBase type="text" className="form-control" onChange={Filter} sx={{ ml: 3, flex: 1 }} placeholder="Search " />
-         
-          <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
-            <SearchIcon />
-          </IconButton>
-        </Paper>
-        <TuneIcon
-          sx={{
-            marginRight:"420px",
-            marginTop:"20px",
-          }}
-        >
-          
-        </TuneIcon>
-        <Button
-          variant="contained"
-          size="small"
-          sx={{
-            backgroundColor: "rgb(121, 204, 190)",
-            width: "10vh",
-            height: "5vh",
-            fontWeight: "bolder",
-            alignItems:'end',
-            marginRight:"20px",
-            marginTop:"10px",
-          }}
-          onClick={handleClickOpen}
-        >
-          Add
-        </Button>
+
+      <Toolbar sx={{justifyContent:'space-between',width:'70%',backgroundColor:'white',position:'absolute',top:'64px'}}>
+        <SearchBarSM height='1px' placeholder="Search Drugs" value={filter} onChange={(e)=>setFilter(e.target.value)}></SearchBarSM>
+          <Button
+            variant="contained"
+            size="small"
+            sx={{
+              backgroundColor: "rgb(121, 204, 190)",
+              width: "10vh",
+              height: "5vh",
+              fontWeight: "bolder",
+              alignItems:'end',
+              marginRight:"20px",
+              marginTop:"10px",
+            }}
+            onClick={handleClickOpen}
+          >
+            Add
+          </Button>
+      </Toolbar>
+
         </Grid>
-        <Grid>
+
+{/* --------------- New drug adding popup ---------------------------------------------------- */}
+
 <Dialog open={open} onClose={handleClose}>
         <DialogTitle
           sx={{
@@ -395,46 +324,30 @@ export default function Pharmacy_drugstore() {
              onClick={handleConfirm}
             variant="contained"
             sx={{ backgroundColor: "rgb(121, 204, 190)", m: 2 }}
-            
           >
             confirm
           </Button>
         </DialogActions>
       </Dialog>
-</Grid>
-       
-        {rows.map((row) => (
-    <div><Card 
-    sx={{ minWidth:"30px",marginTop:"20px",marginLeft:"20px",marginRight:"20px"}}
+
+{/*-------------------------- Drug list-------------------------------------------------------- */}     
+{filteredRows.map((row) => (
+  <Card 
+    sx={{width:'90%',marginTop:"5px",marginLeft:"20px",marginRight:"20px",height:'40px',display:'flex',alignItems:'center',cursor:'pointer'}}
     onClick={() =>handleEditOpen(row)}
     key={row.ID}
     >
-    <Grid container spacing={2}>
-  <Grid item xs={3}>
-    <Typography sx={{flex:1, paddingLeft: '10px'}}>{row.drug}</Typography>
-  </Grid>
-  <Grid item xs={3}>
-  <Typography sx={{flex:1}}>{row.brand}</Typography>
-  </Grid>
-  <Grid item xs={2}>
-  <Typography sx={{flex:1}}>
-                  {row.dosage}
-                 
-                </Typography>
-  </Grid>
-  <Grid item xs={2}>
-  <Typography sx={{flex:1}}> {row.quantity}</Typography>
-  </Grid>
-  <Grid item xs={2}>
-  <Typography sx={{flex:1}}>{row.price}</Typography>
-  </Grid>
- 
-</Grid>
-    </Card>
-    </div>
-        ))
+    <Typography sx={{flex:3,ml:'20px'}}>{row.drug}</Typography>
+    <Typography sx={{flex:3}}>{row.brand}</Typography>
+    <Typography sx={{flex:1}}>{row.dosage}</Typography>
+    <Typography sx={{flex:1}}>{row.quantity}</Typography>
+    <Typography sx={{flex:1}}>{row.price}</Typography>
+</Card>
+  ))
 }
-<Grid>
+
+
+{/* --------------- Drug editing popup ---------------------------------------------------- */}
 <Dialog open={editOpen} onClose={handleEditClose}>
         <DialogTitle
           sx={{
@@ -504,12 +417,6 @@ export default function Pharmacy_drugstore() {
           </Button>
         </DialogActions>
       </Dialog>
-</Grid>
-      </Grid>
-
-
-    </Grid>
-
   </div>
   )
 }
