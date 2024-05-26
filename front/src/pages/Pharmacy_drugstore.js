@@ -20,6 +20,7 @@ import axios from 'axios';
 import { baseURL,endPoints } from '../Services/Pharmacy';
 import AddIcon from '@mui/icons-material/Add';
 import Avatar from '@mui/material/Avatar';
+import { SearchBarSM } from '../components/Common';
 
 function createData(
   ID,
@@ -37,8 +38,8 @@ function createData(
 
 export default function Pharmacy_drugstore() {
 
-   const [data, setData] =useState([]);
-   const [brand, setBrand] = useState('');
+  const [data, setData] =useState([]);
+  const [brand, setBrand] = useState('');
   const [drug, setDrug] = useState('');
   const [quantity, setQuantity] = useState('');
   const [dosage, setDosage] = useState('');
@@ -46,16 +47,12 @@ export default function Pharmacy_drugstore() {
   const [snackbarOpen, setSnackbarOpen] = useState(false); // State for Snackbar visibility
   const [snackbarMessage, setSnackbarMessage] = useState(''); // State for Snackbar message
 
-  
+  const [rows, setRows] = useState(data) // fetched drug list is stored
+
   useEffect(()=>{
     getData();
   },[])
 
-  
-
- 
-
-  ////////////////////////////////////////////////////////////////////////////////////
   const getData = () => { // get
     axios.get(baseURL+endPoints.DRUGGET)
     .then((result) => {
@@ -161,9 +158,10 @@ export default function Pharmacy_drugstore() {
   ///////////////////////////////////////////////////////////////////////////
  
  
-  const [searchValue, setSearchValue] = useState('');
-  const [rows, setRows] = useState(data);
-  const Filter = (event) => {
+  const [filter, setFilter] = useState('');
+  const filteredRows = rows.filter(item => item.drug.toLowerCase().includes(filter)||item.brand.toLowerCase().includes(filter))//filtered Rload data by the search
+
+/*   const Filter = (event) => {
     const searchValue = event.target.value.toLowerCase();
   
   setRows(
@@ -175,7 +173,7 @@ export default function Pharmacy_drugstore() {
     )
   );
     
-  };
+  }; */
   
   const [open, setOpen] =useState(false);
   const [selectedCard, setSelectedCard] =useState(null);
@@ -298,53 +296,13 @@ export default function Pharmacy_drugstore() {
     
     
     <div>
-       <div>
-      
-      {renderSnackbar()}    // snackbar render
+    <div>
+      {renderSnackbar()}
     </div>
-    <Navbar></Navbar>
 
-    <Grid container spacing={0} sx={{paddingTop:'64px',height:'100vh'}}>
-      <Grid item xs={3} style={{height:'100%',backgroundColor:'#DEF4F2'}}>
-        <SidebarContainer sx={{ backgroundColor:'#E7FFF9'}}>
-          <SidebarTop>
-
-          </SidebarTop>
-          <SidebarList>
-          {
-         x.map((elm,ind)=>{
-            return(
-             <>
-              <Sideunit_Bill key={ind} id={elm.id} name={elm["name"]} time={elm["time"]}  setSelect={setSelect} selected={elm.id==select?true:''}></Sideunit_Bill>
-             </>
-            )
-         })
-       }
-          </SidebarList>
-        </SidebarContainer>
-      </Grid>
-
-      <Grid item xs={9} style={{height:'100%',overflowY:'scroll'}}>
       <Grid sx={{ display: "flex", justifyContent: "space-between" }}>
-      <Paper
-          component="form"
-          sx={{
-            p: "2px 4px",
-            display: "flex",
-            alignItems: "center",
-            width: "60vh",
-            borderRadius: "20px",
-            boxShadow: 4,
-            marginLeft:"15px",
-            marginTop:"10px",
-          }}
-        >
-          <InputBase type="text" className="form-control" onChange={Filter} sx={{ ml: 3, flex: 1 }} placeholder="Search " />
-         
-          <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
-            <SearchIcon />
-          </IconButton>
-        </Paper>
+
+      <SearchBarSM placeholder="Search Drugs" value={filter} onChange={(e)=>setFilter(e.target.value)}></SearchBarSM>
         <TuneIcon
           sx={{
             marginRight:"420px",
@@ -403,7 +361,7 @@ export default function Pharmacy_drugstore() {
       </Dialog>
 </Grid>
        
-        {rows.map((row) => (
+        {filteredRows.map((row) => (
     <div><Card 
     sx={{ minWidth:"30px",marginTop:"20px",marginLeft:"20px",marginRight:"20px"}}
     onClick={() =>handleEditOpen(row)}
@@ -505,11 +463,6 @@ export default function Pharmacy_drugstore() {
         </DialogActions>
       </Dialog>
 </Grid>
-      </Grid>
-
-
-    </Grid>
-
   </div>
   )
 }

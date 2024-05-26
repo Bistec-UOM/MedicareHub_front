@@ -19,9 +19,14 @@ import axios from 'axios';
 import { baseURL,endPoints } from '../Services/Pharmacy';
 import { ConfirmPropmt, PersonDetail } from '../components/Common';
 import StoreIcon from '@mui/icons-material/Store';
+import DescriptionIcon from '@mui/icons-material/Description';
 import AddCardIcon from '@mui/icons-material/AddCard';
+import Pharmacy_drugstore from './Pharmacy_drugstore';
 
 export default function Pharmacy() {
+
+  const [store,setStore] = useState(false) //true -> in drug store
+
   const [select,setSelect]=useState(null)//current selected prescription id(patient)
   const [Data,SetData]=useState([])//Store incoming prescription details
   const selectedPrescription = select ? Data.filter(data => data.id === select) : [];
@@ -348,9 +353,10 @@ useEffect(()=>{
         <SidebarContainer sx={{ backgroundColor:'#E7FFF9'}}>
           <SidebarTop>
           <Box sx={{width:'100%',display:'flex',justifyContent:'space-between',alignItems:'center',pr:'14px',pl:'14px'}}>
-          <AddCardIcon sx={{cursor:'pointer'}}></AddCardIcon>
+          <DescriptionIcon></DescriptionIcon>
           <Typography sx={{ fontSize:'14px'}}>{formattedDate}</Typography>
-          <StoreIcon sx={{cursor:'pointer'}}></StoreIcon>
+          {store? <AddCardIcon sx={{cursor:'pointer'}} onClick={()=>setStore(false)}></AddCardIcon>:
+          <StoreIcon sx={{cursor:'pointer'}} onClick={()=>setStore(true)}></StoreIcon>}
           </Box>
           </SidebarTop>
           <SidebarList>
@@ -366,9 +372,8 @@ useEffect(()=>{
           </SidebarList>
         </SidebarContainer>
       </Grid>
-
+{!store?
       <Grid item xs={9} style={{height:'100%',overflowY:'scroll'}}>
-
 {/* =====================      Person details          ===========================================*/}        
       {select ? (
       <div style={{ position: 'sticky', top: 0, zIndex: 1000 }}>
@@ -480,7 +485,8 @@ useEffect(()=>{
       </Snackbar>
       </div>
 )}
-      </Grid>
+      </Grid>:<Grid item xs={9} style={{height:'100%',overflowY:'scroll'}}><Pharmacy_drugstore></Pharmacy_drugstore></Grid>}
+      
     </Grid>
 
   </div>
