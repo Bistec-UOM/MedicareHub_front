@@ -11,6 +11,10 @@ import MuiAlert from '@mui/material/Alert';
 import axios from 'axios';
 import { baseURL,endPoints } from '../Services/Pharmacy';
 import { SearchBarSM } from '../components/Common';
+import LoadingButton from '@mui/lab/LoadingButton';
+import DoneIcon from '@mui/icons-material/Done'
+import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from "@mui/icons-material/Delete";
 
 export default function Pharmacy_drugstore() {
 
@@ -47,8 +51,7 @@ export default function Pharmacy_drugstore() {
 }
 //////////////////////////////////////////////////////////////////
  const handleConfirm=()=>{    // set and post
-    handleClose();
-      setConfirm(false)
+    setLoadingBAdd(true)
     const data={
       "genericN": drug,
       "brandN": brand,
@@ -59,13 +62,23 @@ export default function Pharmacy_drugstore() {
     }
     axios.post(baseURL+endPoints.DRUGPOST,data)
     .then((result)=>{
+      setLoadingBAdd(false)
+      handleClose();
       getData() 
-      setSnackbarMessage('Drug added successfully'); // Set success message
-        setSnackbarOpen(true); // Show Snackbar
+      setSnackbarMessage('Drug added successfully')
+      setSnackbarOpen(true)
     })
     .catch((error)=>{
+      handleClose();
+      setLoadingBAdd(false)
       console.log(error)
     })
+    setDrug('')
+    setBrand('')
+    setDosage('')
+    setQuantity('')
+    setDosage('')
+    setPrice('')
   }
 //////////////////////////////////////////////////////////////////////////////////
 
@@ -106,9 +119,10 @@ export default function Pharmacy_drugstore() {
         console.log(error);
       });
   };
-//////////////////////////////////////////////////////////////////////
-  const handleEdit = () => {          // edit
-    handleEditClose();
+
+//Sending edited drug details ========================================>>>>>>>>>>>>>>>>>>>>>>
+  const handleEdit = () => {
+    setLoadingBEdit(true)       
     let updatedData = {
       genericN: selectedCard.drug,
       brandN: selectedCard.brand,
@@ -116,24 +130,28 @@ export default function Pharmacy_drugstore() {
       avaliable: selectedCard.quantity,
       price: selectedCard.price
     };
-    console.log('check this')
-    console.log('check',updatedData)
+    //console.log('check this')
+    //console.log('check',updatedData)
     axios.put(baseURL+endPoints.DRUGUPDATE+`/${selectedCard.ID}`, updatedData)
       .then((response) => {
+        setLoadingBEdit(false)       
         getData(); // Refresh data after edit
         setSnackbarMessage('Drug edited successfully'); // Set success message
         setSnackbarOpen(true); // Show Snackbar
         console.log("sent ",updatedData)
+        handleEditClose();
       })
       .catch((error) => {
+        setLoadingBEdit(false)       
         console.log(error);
+        handleEditClose();
       });
   };
-  ///////////////////////////////////////////////////////////////////////////
+
  
- 
+ //filtered Rload data by the search===========================================
   const [filter, setFilter] = useState('');
-  const filteredRows = rows.filter(item => item.drug.toLowerCase().includes(filter)||item.brand.toLowerCase().includes(filter))//filtered Rload data by the search
+  const filteredRows = rows.filter(item => item.drug.toLowerCase().includes(filter)||item.brand.toLowerCase().includes(filter))
 
 /*   const Filter = (event) => {
     const searchValue = event.target.value.toLowerCase();
@@ -153,7 +171,6 @@ export default function Pharmacy_drugstore() {
   const [selectedCard, setSelectedCard] =useState(null);
   const [editOpen, setEditOpen] =useState(false);
 
-  const [confirm, setConfirm] =useState(false);
   const handleClickOpen =() => {
     setOpen(true)
   };
@@ -266,6 +283,9 @@ export default function Pharmacy_drugstore() {
     }
   ]
   
+  //Loading button states---------------------------------------------------------------
+  const [loadingBAdd, setLoadingBAdd] = useState(false)
+  const [loadingBEdit, setLoadingBEdit] = useState(false)
   return (
     
     
@@ -282,14 +302,10 @@ export default function Pharmacy_drugstore() {
             variant="contained"
             size="small"
             sx={{
-              backgroundColor: "rgb(121, 204, 190)",
-              width: "10vh",
-              height: "5vh",
-              fontWeight: "bolder",
-              alignItems:'end',
               marginRight:"20px",
               marginTop:"10px",
             }}
+            endIcon={<AddIcon/>}
             onClick={handleClickOpen}
           >
             Add
@@ -320,13 +336,14 @@ export default function Pharmacy_drugstore() {
           <TextField label="Amount" sx={{ mb: 1 }} value={price} onChange={(e) => setPrice(e.target.value)}/>
         </DialogContent>
         <DialogActions>
-          <Button
-             onClick={handleConfirm}
-            variant="contained"
-            sx={{ backgroundColor: "rgb(121, 204, 190)", m: 2 }}
-          >
-            confirm
-          </Button>
+          <LoadingButton 
+            variant='contained' 
+            size='small' 
+            endIcon={<DoneIcon></DoneIcon>}           
+            loading={loadingBAdd}
+            loadingPosition="end"
+            onClick={handleConfirm}
+          >Save</LoadingButton>
         </DialogActions>
       </Dialog>
 
@@ -402,19 +419,24 @@ export default function Pharmacy_drugstore() {
         <DialogActions>
           
           <Button
+            color='error'
+            size='small'
             onClick={() => handleDelete(selectedCard.ID)}
             variant="contained"
-            sx={{ backgroundColor: "rgb(121, 204, 190)", m: 2 }}
+            sx={{ mr: 2 }}
+            endIcon={<DeleteIcon></DeleteIcon>}
           >
             Delete
           </Button>
-          <Button
+          
+          <LoadingButton 
+            variant='contained' 
+            size='small' 
+            endIcon={<DoneIcon></DoneIcon>}           
+            loading={loadingBEdit}
+            loadingPosition="end"
             onClick={handleEdit}
-            variant="contained"
-            sx={{ backgroundColor: "rgb(121, 204, 190)", m: 2 }}
-          >
-            confirm
-          </Button>
+          >Save</LoadingButton>
         </DialogActions>
       </Dialog>
   </div>
