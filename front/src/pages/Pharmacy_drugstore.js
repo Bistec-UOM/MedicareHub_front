@@ -10,7 +10,7 @@ import { Snackbar } from '@mui/material';
 import MuiAlert from '@mui/material/Alert';
 import axios from 'axios';
 import { baseURL,endPoints } from '../Services/Pharmacy';
-import { SearchBarSM } from '../components/Common';
+import { ConfirmPropmt, SearchBarSM } from '../components/Common';
 import LoadingButton from '@mui/lab/LoadingButton';
 import DoneIcon from '@mui/icons-material/Done'
 import AddIcon from '@mui/icons-material/Add';
@@ -109,18 +109,25 @@ export default function Pharmacy_drugstore() {
   );
 
   //Drug deletion =====================================>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-  const handleDelete = (id) => {             
-    axios.delete(baseURL+endPoints.DRUGDELETE+`/${id}`)
+  const [deleteId,setdeleteId] = useState('')
+  const handleDelete = () => {  
+    setLoadingBConfirm(true)           
+    axios.delete(baseURL+endPoints.DRUGDELETE+`/${deleteId}`)
       .then(() => {
+        setLoadingBConfirm(false)
+        handleCloseConfirm()
+        handleEditClose(); // Close the dialog
         getData(); // Refresh data after delete
         setSnackbarMessage('Drug deleted successfully'); // Set success message
         setSnackbarOpen(true); // Show Snackbar
-        handleEditClose(); // Close the dialog
       })
       .catch((error) => {
+        setLoadingBConfirm(false)
+        handleCloseConfirm()
+        handleEditClose(); // Close the dialog
         console.log(error);
       });
+      setdeleteId('')
   };
 
 //Drug eiditing ========================================>>>>>>>>>>>>>>>>>>>>>>
@@ -278,9 +285,16 @@ export default function Pharmacy_drugstore() {
   const [loadingBAdd, setLoadingBAdd] = useState(false)
   const [loadingBEdit, setLoadingBEdit] = useState(false)
 
+  //confirmation popup for drug deletion------------------------------------------------
+  const [loadingBConfirm, setLoadingBConfirm] = useState(false)//Loading button
+  const [openConfirm, setOpenConfirm] = useState(false)
+  const handleClickOpenConfirm = (x) => {
+      setdeleteId(x)
+      setOpenConfirm(true)
+  }
+  const handleCloseConfirm = () => {setOpenConfirm(false)}  
 
   return (
-  
     <div style={{paddingTop:'100px'}}>
     <div>
       {renderSnackbar()}
@@ -355,6 +369,9 @@ export default function Pharmacy_drugstore() {
   ))
 }
 
+{/*--------------- confirmation popup box for delete------------------------------------------*/}
+      <ConfirmPropmt action={handleDelete} message="Are you sure this must be deleted?"
+       handleClose={handleCloseConfirm} loadingB={loadingBConfirm} open={openConfirm}></ConfirmPropmt>
 
 {/* --------------- Drug editing popup ---------------------------------------------------- */}
 <Dialog open={editOpen} onClose={handleEditClose}>
@@ -412,7 +429,7 @@ export default function Pharmacy_drugstore() {
           {editEnable? <Button
             color='error'
             size='small'
-            onClick={() => handleDelete(selectedCard.ID)}
+            onClick={() => handleClickOpenConfirm(selectedCard.ID)}
             variant="contained"
             sx={{ mr: 2 }}
             endIcon={<DeleteIcon></DeleteIcon>}
