@@ -24,12 +24,11 @@ A. Pop up box
 B. List
     header style
     sticky header
+    gap/ height of list
+    border radius
 
 C. Custom scroll
     some pages are not wrapped with CustomScroll
-
-D. Navbar
-    doctor/pharm hasn't emplemented ResNavBar
 
 E. Error handle
     when a huge description recieves as an eror
@@ -40,6 +39,8 @@ F . Pharmacy has to check the prescription status before GET ()
 G. Doctor has to get completed lab reports when getting appointment list
 
 H. when navigating on calendar doctor changes
+
+I. form fields/ size/ text
 
 ======================================================================
 ==============                 Migrations        =====================

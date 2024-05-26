@@ -8,6 +8,7 @@ import axios from 'axios';
 import { baseURL, endPoints } from '../../../../Services/Lab';
 import { Load } from '../../../Other';
 import ScienceIcon from '@mui/icons-material/Science';
+import { SearchBarSM } from '../../../Common';
 
 export default function SubmitPage({setpage}) {
 
@@ -56,12 +57,28 @@ export default function SubmitPage({setpage}) {
       }
     },[loadOK])
 
+    //date difference
+    const calculateDaysDifference = (date) => {
+      const currentDate = new Date();
+      const prescriptionDate = new Date(date);
+      const differenceInTime = currentDate.getTime() - prescriptionDate.getTime();
+      const differenceInDays = Math.floor(differenceInTime / (1000 * 3600 * 24));
+      if (differenceInDays === 0) {
+          return "Today";
+      } else {
+          return `${differenceInDays} days ago`;
+      }
+  };
+
+  const [filter, setFilter] = useState('');
+  const filteredRows = load.filter(item => `${item.id}`.includes(filter)) 
+
   return (
     <div>
 
-          <Toolbar sx={{width:{xs:'100%',sm:'70%'},justifyContent:'space-between',position:'fixed',backgroundColor:'white',pt:{xs:'10px'}}}>
-            <ArrowBackIcon sx={{cursor:'pointer'}} onClick={()=>setpage(1)}></ArrowBackIcon>    
-
+          <Toolbar sx={{width:{xs:'100%',sm:'70%'},justifyContent:'flex-start',position:'fixed',backgroundColor:'white',pt:{xs:'10px',position:'absolute'}}}>
+            <ArrowBackIcon sx={{cursor:'pointer',mr:'50px'}} onClick={()=>setpage(1)}></ArrowBackIcon>    
+            <SearchBarSM placeholder="Search Token" onChange={(e)=>setFilter(e.target.value)} value={filter}></SearchBarSM>
           </Toolbar>
 
       {/*------------------ List of accepted samples ---------------------------------------------- */}
@@ -69,7 +86,7 @@ export default function SubmitPage({setpage}) {
         <Stack sx={{paddingTop:{xs:'40px',sm:'60px'},paddingLeft:{xs:'5%',sm:'8%'}}}>
         {loadOK?<Load></Load>:''}
         {
-            load.map((i,ind)=>{
+            filteredRows.map((i,ind)=>{
                 return <Paper 
                           sx={{
                             width:'70%',
@@ -87,6 +104,7 @@ export default function SubmitPage({setpage}) {
                       <Typography sx={{fontSize:'15px',color:'#ffffff',fontWeight:'bold',flex:'1',display:'inline',backgroundColor:'#568a91',pl:'10px',pr:'10px',pt:'2px',pb:'2px',borderRadius:'4px'}}>{i.id}</Typography>
                     </div>
                     <Typography sx={{fontSize:'15px',flex:'3'}}>{`${i.abb} (${i.testName})`}</Typography>
+                    <Typography sx={{fontSize:'15px',flex:'2'}}>{calculateDaysDifference(i.accepted)}</Typography>
             </Paper>
             })
         }
