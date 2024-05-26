@@ -9,14 +9,14 @@ import CloseIcon from '@mui/icons-material/Close'
 
 {/*================Search bar components ================================================= */}
 
-const SearchBarSM=({onChange,value,placeholder})=> {
+const SearchBarSM=({onChange,value,placeholder,height})=> {
 
     return (
         <Paper component="form"
             sx={{
                 p:2.3,display: "flex",
                 alignItems: "center",
-                height:'20px',
+                height:height?height:'20px',
                 width: "210px",
                 borderRadius: "8px",
                 boxShadow: 1
