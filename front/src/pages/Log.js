@@ -33,6 +33,8 @@ export default function Log() {
   //======================================================================================================
 
   const [count,setCount]=useState(0)
+  const [password,setPassword]=useState("")
+  const [user,setUser]=useState("")
 
   const setData=()=>{
     if(password==="" || user===""){
@@ -80,8 +82,10 @@ export default function Log() {
     setUser("")
     setPassword("")
   }
-  const [password,setPassword]=useState("")
-  const [user,setUser]=useState("")
+
+  useEffect(()=>{
+    setCount(0)
+  },[user])
 
   useEffect(()=>{
     document.body.style.margin = '0';

@@ -5,8 +5,10 @@ import axios from 'axios';
 import { baseURL ,endPoints} from '../Services/Lab';
 import {Load} from '../components/Common'
 
-const Doctor_analytics = ({pId}) => {
-
+const Doctor_analytics = ({lbAnalytics,drgAnalytics}) => {
+  console.log(lbAnalytics)
+  console.log(drgAnalytics)
+  // lbAnalytics , drgAnalytics ===> fetched analytics raw data from parent component
   const [medList,setMedList]=useState([]);//all unique drugs (list) extracted from records
   const [labList,setlabList]=useState([]);//all unique lab parameters (list) extracted from records
   const [fieldNames,setFieldNames]=useState([]);//test names with their paraemters
@@ -381,16 +383,9 @@ const Doctor_analytics = ({pId}) => {
   }
 
   useEffect(()=>{
-    listLabs(temp)
-    axios.get(`${baseURL+endPoints.ANALYTIC}?Id=${pId}`)
-    .then((res)=>{
-      listDrugs(res.data)
-      //start requesting lab reports
-    })
-    .catch((er)=>{
-      console.log(er)
-    })
-    listLabs(temp)
+    //axios.get(`${baseURL+endPoints.ANALYTIC}?Id=${pId}`)
+    listDrugs(drgAnalytics)
+    listLabs(lbAnalytics)
   },[])
 
   //scaling the date
@@ -521,10 +516,10 @@ const Doctor_analytics = ({pId}) => {
  
 
 return(
-done?<Box>
+done?<Box sx={{width:'100%'}}>
     {/*------------ drugs graph -------------------------------------------------------*/}
-    <Box sx={{display:'flex',justifyContent:'space-between',alignItems:'start'}}>
-      <Paper sx={{p:'5px',borderRadius:'0'}}>
+    <Box sx={{display:'flex',justifyContent:'space-between',alignItems:'center',pl:'10px',pr:'10px'}}>
+      <Paper sx={{p:'5px',borderRadius:'0',maxWidth:'150px',maxHeight:'280px',overflowY:'scroll'}}>
         <Typography sx={{fontSize:'14px',color:'grey',fontWeight:'bold'}}>Drugs</Typography>
         <Divider></Divider>
         <FormGroup >
@@ -538,7 +533,7 @@ done?<Box>
         </FormGroup>
       </Paper>
       
-    <ResponsiveContainer width={750} height={350}>
+    <ResponsiveContainer width={700} height={260}>
       <LineChart
         data={data}
         margin={{
@@ -562,8 +557,8 @@ done?<Box>
     </Box>
 
     {/*------------ Lab reports graph -------------------------------------------------------*/}
-    <Box sx={{display:'flex',justifyContent:'space-between',alignItems:'start'}}>
-    <Paper sx={{p:'5px',borderRadius:'0'}}>
+    <Box sx={{display:'flex',justifyContent:'space-between',alignItems:'center',pl:'10px',pr:'10px'}}>
+    <Paper sx={{p:'5px',borderRadius:'0',maxWidth:'150px',maxHeight:'280px',overflowY:'scroll'}}>
         <Typography sx={{fontSize:'14px',color:'grey',fontWeight:'bold'}}>Lab Reports</Typography>
         <Divider></Divider>
         <FormGroup >
@@ -585,7 +580,7 @@ done?<Box>
         </FormGroup>
       </Paper>
       
-    <ResponsiveContainer width={750} height={350}>
+    <ResponsiveContainer width={700} height={260}>
       <LineChart
         data={data2}
         margin={{

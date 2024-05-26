@@ -1,44 +1,30 @@
 import React, { useEffect, useState } from 'react'
-import {SidebarContainer,SidebarTop,SidebarList} from '../components/sidebar/Sidebar'
-import Navbar from '../components/navbar/Navbar'
-import { Grid,Card,Paper,Button,InputBase, Typography,TextField, List } from '@mui/material'
-import IconButton from "@mui/material/IconButton";
-import SearchIcon from "@mui/icons-material/Search";
-import Filter from "@mui/icons-material/Filter";
-import TuneIcon from '@mui/icons-material/Tune';
+import { Grid,Card,Button,Typography,TextField,Toolbar } from '@mui/material'
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import CloseIcon from '@mui/icons-material/Close';
 import '../components/CustomScroll.css'
-import Box from '@mui/material/Box';
 import { Snackbar } from '@mui/material'; 
 import MuiAlert from '@mui/material/Alert';
-import { Sideunit_Bill } from '../components/sidebar/Sideunits';
 import axios from 'axios';
 import { baseURL,endPoints } from '../Services/Pharmacy';
+import { ConfirmPropmt, SearchBarSM } from '../components/Common';
+import LoadingButton from '@mui/lab/LoadingButton';
+import DoneIcon from '@mui/icons-material/Done'
 import AddIcon from '@mui/icons-material/Add';
-import Avatar from '@mui/material/Avatar';
-
-function createData(
-  ID,
-  drug,
-  brand,
-  dosage,
-  quantity,
-  price,
-) {
-  return { ID, drug, brand, dosage, quantity, price };
-}
-
-
-
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from '@mui/icons-material/Edit'
 
 export default function Pharmacy_drugstore() {
 
-   const [data, setData] =useState([]);
-   const [brand, setBrand] = useState('');
+  useEffect(()=>{
+    document.body.style.margin = '0'
+    getData();
+   },[]) 
+
+  const [brand, setBrand] = useState('');
   const [drug, setDrug] = useState('');
   const [quantity, setQuantity] = useState('');
   const [dosage, setDosage] = useState('');
@@ -46,16 +32,8 @@ export default function Pharmacy_drugstore() {
   const [snackbarOpen, setSnackbarOpen] = useState(false); // State for Snackbar visibility
   const [snackbarMessage, setSnackbarMessage] = useState(''); // State for Snackbar message
 
-  
-  useEffect(()=>{
-    getData();
-  },[])
+  const [rows, setRows] = useState([]) // fetched drug list is stored
 
-  
-
- 
-
-  ////////////////////////////////////////////////////////////////////////////////////
   const getData = () => { // get
     axios.get(baseURL+endPoints.DRUGGET)
     .then((result) => {
@@ -73,28 +51,36 @@ export default function Pharmacy_drugstore() {
         console.log(error)
     })
 }
-//////////////////////////////////////////////////////////////////
- const handleConfirm=()=>{    // set and post
-    handleClose();
-      setConfirm(false)
+//New drug adding ==========================================>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+ const handleConfirm=()=>{
+    setLoadingBAdd(true)
     const data={
       "genericN": drug,
       "brandN": brand,
       "weight": dosage,
       "avaliable": quantity,
-      "price": price,
-      
+      "price": price    
       
     }
     axios.post(baseURL+endPoints.DRUGPOST,data)
     .then((result)=>{
+      setLoadingBAdd(false)
+      handleClose();
       getData() 
-      setSnackbarMessage('Drug added successfully'); // Set success message
-        setSnackbarOpen(true); // Show Snackbar
+      setSnackbarMessage('Drug added successfully')
+      setSnackbarOpen(true)
     })
     .catch((error)=>{
+      handleClose();
+      setLoadingBAdd(false)
       console.log(error)
     })
+    setDrug('')
+    setBrand('')
+    setDosage('')
+    setQuantity('')
+    setDosage('')
+    setPrice('')
   }
 //////////////////////////////////////////////////////////////////////////////////
 
@@ -107,7 +93,7 @@ export default function Pharmacy_drugstore() {
   const renderSnackbar = () => (
     <Snackbar
       open={snackbarOpen}
-      autoHideDuration={6000} // Snackbar duration in milliseconds
+      autoHideDuration={2000} // Snackbar duration in milliseconds
       onClose={handleCloseSnackbar}
       anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }} // Position Snackbar at bottom left
     >
@@ -121,75 +107,80 @@ export default function Pharmacy_drugstore() {
       </MuiAlert>
     </Snackbar>
   );
-/////////////////////////////////////////////////////////////////////////////////
 
-  const handleDelete = (id) => {              ////// delete
-    axios.delete(baseURL+endPoints.DRUGDELETE+`/${id}`)
+  //Drug deletion =====================================>>>>>>>>>>>>>>>>>>>>>>>>>>
+  const [deleteId,setdeleteId] = useState('')
+  const handleDelete = () => {  
+    setLoadingBConfirm(true)           
+    axios.delete(baseURL+endPoints.DRUGDELETE+`/${deleteId}`)
       .then(() => {
+        setLoadingBConfirm(false)
+        handleCloseConfirm()
+        handleEditClose(); // Close the dialog
         getData(); // Refresh data after delete
         setSnackbarMessage('Drug deleted successfully'); // Set success message
         setSnackbarOpen(true); // Show Snackbar
+      })
+      .catch((error) => {
+        setLoadingBConfirm(false)
+        handleCloseConfirm()
         handleEditClose(); // Close the dialog
-      })
-      .catch((error) => {
         console.log(error);
       });
+      setdeleteId('')
   };
-//////////////////////////////////////////////////////////////////////
-  const handleEdit = () => {          // edit
-    handleEditClose();
-    let updatedData = {
-      genericN: selectedCard.drug,
-      brandN: selectedCard.brand,
-      weight: selectedCard.dosage,
-      avaliable: selectedCard.quantity,
-      price: selectedCard.price
-    };
-    console.log('check this')
-    console.log('check',updatedData)
-    axios.put(baseURL+endPoints.DRUGUPDATE+`/${selectedCard.ID}`, updatedData)
-      .then((response) => {
-        getData(); // Refresh data after edit
-        setSnackbarMessage('Drug edited successfully'); // Set success message
-        setSnackbarOpen(true); // Show Snackbar
-        console.log("sent ",updatedData)
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+
+//Drug eiditing ========================================>>>>>>>>>>>>>>>>>>>>>>
+  const handleEdit = () => {
+    if(editEnable){//only proceed when editing enable state
+      setLoadingBEdit(true)       
+      let updatedData = {
+        genericN: selectedCard.drug,
+        brandN: selectedCard.brand,
+        weight: selectedCard.dosage,
+        avaliable: selectedCard.quantity,
+        price: selectedCard.price
+      };
+      //console.log('check this')
+      //console.log('check',updatedData)
+      axios.put(baseURL+endPoints.DRUGUPDATE+`/${selectedCard.ID}`, updatedData)
+        .then((response) => {
+          setLoadingBEdit(false)       
+          getData(); // Refresh data after edit
+          setSnackbarMessage('Drug edited successfully'); // Set success message
+          setSnackbarOpen(true); // Show Snackbar
+          console.log("sent ",updatedData)
+          handleEditClose();
+          setEditEnable(false)
+        })
+        .catch((error) => {
+          setLoadingBEdit(false)       
+          console.log(error);
+          handleEditClose();
+          setEditEnable(false)
+        });
+    }else{
+      setEditEnable(true)
+    }
   };
-  ///////////////////////////////////////////////////////////////////////////
+
+  const [editEnable,setEditEnable] = useState(false)
  
- 
-  const [searchValue, setSearchValue] = useState('');
-  const [rows, setRows] = useState(data);
-  const Filter = (event) => {
-    const searchValue = event.target.value.toLowerCase();
-  
-  setRows(
-    rows.filter(
-      (f) =>
-        (typeof f.drug === 'string' && f.drug.toLowerCase().includes(searchValue)) ||
-        (typeof f.brand === 'string' && f.brand.toLowerCase().includes(searchValue)) 
-        
-    )
-  );
-    
-  };
+ //filtered Rload data by the search===========================================
+  const [filter, setFilter] = useState('');
+  const filteredRows = rows.filter(item => item.drug.toLowerCase().includes(filter)||item.brand.toLowerCase().includes(filter))
+
   
   const [open, setOpen] =useState(false);
   const [selectedCard, setSelectedCard] =useState(null);
   const [editOpen, setEditOpen] =useState(false);
 
-  const [confirm, setConfirm] =useState(false);
   const handleClickOpen =() => {
     setOpen(true)
   };
   const handleClose =() => {
     setOpen(false)
   }; 
-
-  
 
   const handleEditClose = () => {
     setSelectedCard(null);
@@ -201,10 +192,6 @@ export default function Pharmacy_drugstore() {
     setEditOpen(true);
   };
 
-  useEffect(()=>{
-    document.body.style.margin = '0';
-
-   },[]) 
    const handleFieldChange = (fieldName, value) => {
     console.log(`Updating ${fieldName} to ${value}`);
     setSelectedCard(prevState => ({
@@ -212,7 +199,7 @@ export default function Pharmacy_drugstore() {
       [fieldName]: value
     }));
   };
-  const [select,setSelect]=useState(null)
+
   let x=[
     {
       "id": 1,
@@ -294,83 +281,47 @@ export default function Pharmacy_drugstore() {
     }
   ]
   
+  //Loading button states---------------------------------------------------------------
+  const [loadingBAdd, setLoadingBAdd] = useState(false)
+  const [loadingBEdit, setLoadingBEdit] = useState(false)
+
+  //confirmation popup for drug deletion------------------------------------------------
+  const [loadingBConfirm, setLoadingBConfirm] = useState(false)//Loading button
+  const [openConfirm, setOpenConfirm] = useState(false)
+  const handleClickOpenConfirm = (x) => {
+      setdeleteId(x)
+      setOpenConfirm(true)
+  }
+  const handleCloseConfirm = () => {setOpenConfirm(false)}  
+
   return (
-    
-    
+    <div style={{paddingTop:'100px'}}>
     <div>
-       <div>
-      
-      {renderSnackbar()}    // snackbar render
+      {renderSnackbar()}
     </div>
-    <Navbar></Navbar>
 
-    <Grid container spacing={0} sx={{paddingTop:'64px',height:'100vh'}}>
-      <Grid item xs={3} style={{height:'100%',backgroundColor:'#DEF4F2'}}>
-        <SidebarContainer sx={{ backgroundColor:'#E7FFF9'}}>
-          <SidebarTop>
-
-          </SidebarTop>
-          <SidebarList>
-          {
-         x.map((elm,ind)=>{
-            return(
-             <>
-              <Sideunit_Bill key={ind} id={elm.id} name={elm["name"]} time={elm["time"]}  setSelect={setSelect} selected={elm.id==select?true:''}></Sideunit_Bill>
-             </>
-            )
-         })
-       }
-          </SidebarList>
-        </SidebarContainer>
-      </Grid>
-
-      <Grid item xs={9} style={{height:'100%',overflowY:'scroll'}}>
       <Grid sx={{ display: "flex", justifyContent: "space-between" }}>
-      <Paper
-          component="form"
-          sx={{
-            p: "2px 4px",
-            display: "flex",
-            alignItems: "center",
-            width: "60vh",
-            borderRadius: "20px",
-            boxShadow: 4,
-            marginLeft:"15px",
-            marginTop:"10px",
-          }}
-        >
-          <InputBase type="text" className="form-control" onChange={Filter} sx={{ ml: 3, flex: 1 }} placeholder="Search " />
-         
-          <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
-            <SearchIcon />
-          </IconButton>
-        </Paper>
-        <TuneIcon
-          sx={{
-            marginRight:"420px",
-            marginTop:"20px",
-          }}
-        >
-          
-        </TuneIcon>
-        <Button
-          variant="contained"
-          size="small"
-          sx={{
-            backgroundColor: "rgb(121, 204, 190)",
-            width: "10vh",
-            height: "5vh",
-            fontWeight: "bolder",
-            alignItems:'end',
-            marginRight:"20px",
-            marginTop:"10px",
-          }}
-          onClick={handleClickOpen}
-        >
-          Add
-        </Button>
+
+      <Toolbar sx={{justifyContent:'space-between',width:'70%',backgroundColor:'white',position:'absolute',top:'64px'}}>
+        <SearchBarSM height='1px' placeholder="Search Drugs" value={filter} onChange={(e)=>setFilter(e.target.value)}></SearchBarSM>
+          <Button
+            variant="contained"
+            size="small"
+            sx={{
+              marginRight:"20px",
+              marginTop:"10px",
+            }}
+            endIcon={<AddIcon/>}
+            onClick={handleClickOpen}
+          >
+            Add
+          </Button>
+      </Toolbar>
+
         </Grid>
-        <Grid>
+
+{/* --------------- New drug adding popup ---------------------------------------------------- */}
+
 <Dialog open={open} onClose={handleClose}>
         <DialogTitle
           sx={{
@@ -391,50 +342,38 @@ export default function Pharmacy_drugstore() {
           <TextField label="Amount" sx={{ mb: 1 }} value={price} onChange={(e) => setPrice(e.target.value)}/>
         </DialogContent>
         <DialogActions>
-          <Button
-             onClick={handleConfirm}
-            variant="contained"
-            sx={{ backgroundColor: "rgb(121, 204, 190)", m: 2 }}
-            
-          >
-            confirm
-          </Button>
+          <LoadingButton 
+            variant='contained' 
+            size='small' 
+            endIcon={<DoneIcon></DoneIcon>}           
+            loading={loadingBAdd}
+            loadingPosition="end"
+            onClick={handleConfirm}
+          >Save</LoadingButton>
         </DialogActions>
       </Dialog>
-</Grid>
-       
-        {rows.map((row) => (
-    <div><Card 
-    sx={{ minWidth:"30px",marginTop:"20px",marginLeft:"20px",marginRight:"20px"}}
+
+{/*-------------------------- Drug list-------------------------------------------------------- */}     
+{filteredRows.map((row) => (
+  <Card 
+    sx={{width:'90%',marginTop:"5px",marginLeft:"20px",marginRight:"20px",height:'40px',display:'flex',alignItems:'center',cursor:'pointer'}}
     onClick={() =>handleEditOpen(row)}
     key={row.ID}
     >
-    <Grid container spacing={2}>
-  <Grid item xs={3}>
-    <Typography sx={{flex:1, paddingLeft: '10px'}}>{row.drug}</Typography>
-  </Grid>
-  <Grid item xs={3}>
-  <Typography sx={{flex:1}}>{row.brand}</Typography>
-  </Grid>
-  <Grid item xs={2}>
-  <Typography sx={{flex:1}}>
-                  {row.dosage}
-                 
-                </Typography>
-  </Grid>
-  <Grid item xs={2}>
-  <Typography sx={{flex:1}}> {row.quantity}</Typography>
-  </Grid>
-  <Grid item xs={2}>
-  <Typography sx={{flex:1}}>{row.price}</Typography>
-  </Grid>
- 
-</Grid>
-    </Card>
-    </div>
-        ))
+    <Typography sx={{flex:3,ml:'20px'}}>{row.drug}</Typography>
+    <Typography sx={{flex:3}}>{row.brand}</Typography>
+    <Typography sx={{flex:1}}>{row.dosage}</Typography>
+    <Typography sx={{flex:1}}>{row.quantity}</Typography>
+    <Typography sx={{flex:1}}>{row.price}</Typography>
+</Card>
+  ))
 }
-<Grid>
+
+{/*--------------- confirmation popup box for delete------------------------------------------*/}
+      <ConfirmPropmt action={handleDelete} message="Are you sure this must be deleted?"
+       handleClose={handleCloseConfirm} loadingB={loadingBConfirm} open={openConfirm}></ConfirmPropmt>
+
+{/* --------------- Drug editing popup ---------------------------------------------------- */}
 <Dialog open={editOpen} onClose={handleEditClose}>
         <DialogTitle
           sx={{
@@ -487,29 +426,26 @@ export default function Pharmacy_drugstore() {
           
         </DialogContent>
         <DialogActions>
-          
-          <Button
-            onClick={() => handleDelete(selectedCard.ID)}
+          {editEnable? <Button
+            color='error'
+            size='small'
+            onClick={() => handleClickOpenConfirm(selectedCard.ID)}
             variant="contained"
-            sx={{ backgroundColor: "rgb(121, 204, 190)", m: 2 }}
+            sx={{ mr: 2 }}
+            endIcon={<DeleteIcon></DeleteIcon>}
           >
             Delete
-          </Button>
-          <Button
+          </Button>:''}        
+          <LoadingButton 
+            variant='contained' 
+            size='small' 
+            endIcon={editEnable?<DoneIcon></DoneIcon>:<EditIcon></EditIcon>}           
+            loading={loadingBEdit}
+            loadingPosition="end"
             onClick={handleEdit}
-            variant="contained"
-            sx={{ backgroundColor: "rgb(121, 204, 190)", m: 2 }}
-          >
-            confirm
-          </Button>
+          >{editEnable?'Save':'Edit'}</LoadingButton>
         </DialogActions>
       </Dialog>
-</Grid>
-      </Grid>
-
-
-    </Grid>
-
   </div>
   )
 }
