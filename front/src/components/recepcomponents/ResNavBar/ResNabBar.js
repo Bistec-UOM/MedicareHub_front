@@ -10,25 +10,26 @@ import MenuIcon from "@mui/icons-material/Menu";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from "@mui/icons-material/Logout";
-import { jwtDecode } from "jwt-decode";
+import {jwtDecode} from "jwt-decode";
 import { useNavigate } from 'react-router-dom'
 import { deleteLog } from "../../../Services/Auth";
+import { HubConnectionBuilder } from '@microsoft/signalr';
 
 const ResNavBar = ({ isClosing, setMobileOpen, mobileOpen }) => {
-  const [profile,SetProfile]=useState({Name:"Profile",Role:"Empty",Image:""})
+  const [profile, setProfile] = useState({ Name: "Profile", Role: "Empty", Image: "", Id: "" });
+  const [connection, setConnection] = useState(null);
   const drawerWidth = 358.4;
   
-  //drop down menu
-  const [anchorEl, setAnchorEl] =useState(null);
+  // Drop down menu
+  const [anchorEl, setAnchorEl] = useState(null);
   const handleClose = () => {
     setAnchorEl(null);
   };
 
-  //Profile icon
+  // Profile icon
   const handleMenu = (event) => {    
     setAnchorEl(event.currentTarget);
   };
-
 
   const handleDrawerToggle = () => {
     if (!isClosing) {
@@ -36,100 +37,127 @@ const ResNavBar = ({ isClosing, setMobileOpen, mobileOpen }) => {
     }
   };
 
-  const navigate=useNavigate()
-  const handleDelete=()=>{
-    deleteLog()
-    handleClose()
-    navigate('/')
-  }
+  const navigate = useNavigate();
 
-  useEffect(()=>{
-    let tmp=localStorage.getItem('medicareHubToken')
-    if(tmp!==null){
-      SetProfile({
-        Name:jwtDecode(localStorage.getItem('medicareHubToken')).Name,
-        Role:jwtDecode(localStorage.getItem('medicareHubToken')).Role,
-        Image:jwtDecode(localStorage.getItem('medicareHubToken')).Profile
-      })
+  const handleLogout = () => {
+    if (connection) {
+      connection.invoke('ManualDisconnect', profile.Id)
+        .then(() => connection.stop())
+        .then(() => {
+          deleteLog();
+          handleClose();
+          navigate('/');
+        })
+        .catch(err => console.error('Error while disconnecting:', err));
+    } else {
+      deleteLog();
+      handleClose();
+      navigate('/');
     }
-  },[])
+  };
+
+  useEffect(() => {
+    let token = localStorage.getItem('medicareHubToken');
+    if (token !== null) {
+      let decodedToken = jwtDecode(token);
+      setProfile({
+        Id: decodedToken.Id,
+        Name: decodedToken.Name,
+        Role: decodedToken.Role,
+        Image: decodedToken.Profile
+      });
+    }
+
+    const newConnection = new HubConnectionBuilder()
+      .withUrl('https://localhost:7205/notificationHub')
+      .withAutomaticReconnect()
+      .build();
+
+    newConnection.start()
+      .then(() => setConnection(newConnection))
+      .catch(err => console.error('Connection failed: ', err));
+
+    return () => {
+      if (connection) {
+        connection.stop()
+          .then(() => console.log('Connection stopped'))
+          .catch(err => console.error('Error while stopping connection:', err));
+      }
+    };
+  }, []);
 
   return (
-  <AppBar
-    position="fixed"
-    sx={{
-      width: { sm: "100%" },
-      zIndex: 1300,
-      ml: { sm: `${drawerWidth}px` },
-      backgroundColor: "#f7f8f7",
-      boxShadow: "none",
-    }}
-  >
-  <Toolbar style={{ justifyContent: "space-between" }}>
+    <AppBar
+      position="fixed"
+      sx={{
+        width: { sm: "100%" },
+        zIndex: 1300,
+        ml: { sm: `${drawerWidth}px` },
+        backgroundColor: "#f7f8f7",
+        boxShadow: "none",
+      }}
+    >
+      <Toolbar style={{ justifyContent: "space-between" }}>
+        {/* Medicare Hub logo and Name */}
+        <IconButton
+          color="black"
+          aria-label="open drawer"
+          edge="start"
+          onClick={handleDrawerToggle}
+          sx={{ mr: 2, display: { sm: "none" } }}
+        >
+          <MenuIcon />
+        </IconButton>
+        <Typography>
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <LocalHospitalIcon style={{ color: "red", marginRight: "8px" }} fontSize="large" />
+            <span style={{ color: "#09D636", fontWeight: "bold", fontSize: 25 }}>
+              Medicare
+            </span>
+            <span style={{ color: "#AFDCB9", fontWeight: "bold", fontSize: 25 }}>
+              Hub
+            </span>
+          </div>
+        </Typography>
 
-
-    {/* ===================  Medicare Hub logo and Name =====================================*/}
-      <IconButton
-        color="black"
-        aria-label="open drawer"
-        edge="start"
-        onClick={handleDrawerToggle}
-        sx={{ mr: 2, display: { sm: "none" } }}
-      >
-        <MenuIcon />
-      </IconButton>
-      <Typography>
-        <div style={{ display: "flex", alignItems: "center" }}>
-          <LocalHospitalIcon style={{ color: "red", marginRight: "8px" }} fontSize="large"/>
-          <span style={{ color: "#09D636", fontWeight: "bold", fontSize: 25 }}>
-            Medicare
-          </span>
-          <span style={{ color: "#AFDCB9", fontWeight: "bold", fontSize: 25 }}>
-            Hub
-          </span>
-        </div>
-      </Typography>
-
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          marginLeft: "2%",
-        }}
-      >
-          <div style={{display:'flex',flexDirection:'column'}}>
-            <Typography color="#030303" >{profile.Name}</Typography>
-            <Typography color="#AFADAD" sx={{fontSize:'12px',textAlign:'right'}}>{profile.Role}</Typography>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            marginLeft: "2%",
+          }}
+        >
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <Typography color="#030303">{profile.Name}</Typography>
+            <Typography color="#AFADAD" sx={{ fontSize: '12px', textAlign: 'right' }}>{profile.Role}</Typography>
           </div>
           {
-            profile.Name==="Profile"?
-          <Avatar
-            aria-label="account of current user"
-            aria-controls="menu-appbar"
-            aria-haspopup="true"
-            onClick={handleMenu}
-            sx={{ml:'5px',cursor:'pointer'}}
-          >
-            <AccountCircle />
-          </Avatar>:
-          <Avatar
-            aria-label="account of current user"
-            aria-controls="menu-appbar"
-            aria-haspopup="true"
-            onClick={handleMenu}
-            sx={{ml:'5px',cursor:'pointer'}}
-            src={profile.Image}
-            >
-          </Avatar>
+            profile.Name === "Profile" ?
+              <Avatar
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleMenu}
+                sx={{ ml: '5px', cursor: 'pointer' }}
+              >
+                <AccountCircle />
+              </Avatar> :
+              <Avatar
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleMenu}
+                sx={{ ml: '5px', cursor: 'pointer' }}
+                src={profile.Image}
+              >
+              </Avatar>
           }
-
-
 
           <Menu
             id="menu-appbar"
             anchorEl={anchorEl}
-            anchorOrigin={{vertical: "bottom",horizontal: "right"}}
-            transformOrigin={{vertical: "top",horizontal: "right"}}
+            anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+            transformOrigin={{ vertical: "top", horizontal: "right" }}
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
@@ -140,14 +168,13 @@ const ResNavBar = ({ isClosing, setMobileOpen, mobileOpen }) => {
             <MenuItem onClick={handleClose}>
               <SettingsIcon sx={{ paddingRight: "10%" }} /> Settings
             </MenuItem>
-            <MenuItem onClick={handleDelete}>
+            <MenuItem onClick={handleLogout}>
               <LogoutIcon sx={{ paddingRight: "10%" }} /> LogOut
             </MenuItem>
-            </Menu>
-      </div>
-  </Toolbar>
-  </AppBar>
-
+          </Menu>
+        </div>
+      </Toolbar>
+    </AppBar>
   );
 };
 

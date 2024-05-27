@@ -5,7 +5,7 @@ import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import { useState } from "react";
-import {Checkbox,Dialog,DialogActions,DialogContent,DialogTitle,FormControl,FormControlLabel,FormGroup,Grid,InputLabel,MenuItem,Select,TextField,Typography,} from "@mui/material";
+import {Checkbox,Dialog,DialogActions,DialogContent,DialogTitle,FormControl,FormControlLabel,FormGroup,FormHelperText,Grid,InputLabel,MenuItem,Select,TextField,Typography,} from "@mui/material";
 import { Button } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import axios from 'axios';
@@ -46,7 +46,7 @@ const EditPatientDialog = ({ editOpen, handleEditClose, formFields, formErrors, 
         isValid = false;
       }
       if (isDuplicateFullName) {
-        errors.name = 'Name already exists';
+        errors.fullName = 'Full Name already exists';
         isValid = false;
       }
   
@@ -68,12 +68,23 @@ const EditPatientDialog = ({ editOpen, handleEditClose, formFields, formErrors, 
         errors.email = 'Invalid email';
         isValid = false;
       }
-      const dob = new Date(formData.dob);
-  
-      if (isNaN(dob)) {
-        errors.dob = 'Invalid date of birth';
-        isValid = false;
-      }
+
+    //dob validation
+    const dob = new Date(formData.dob);
+    const today = new Date();
+    const hundredYearsAgo = new Date();
+    hundredYearsAgo.setFullYear(today.getFullYear() - 100);
+    
+    if (isNaN(dob.getTime())) {
+      errors.dob = "Invalid date of birth";
+      isValid = false;
+    } else if (dob > today) {
+      errors.dob = "Date of birth cannot be in the future";
+      isValid = false;
+    } else if (dob < hundredYearsAgo) {
+      errors.dob = "Date of birth cannot be more than 100 years ago";
+      isValid = false;
+    }
       if (!/^\d+$/.test(formData.contactNumber)) {
         errors.contactNumber = 'Invalid contact number, only integers allowed';
         isValid = false;
@@ -148,6 +159,8 @@ const EditPatientDialog = ({ editOpen, handleEditClose, formFields, formErrors, 
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DateField
                   label="Date Of Birth"
+                  error={!!formErrors.dob}
+                  helperText={formErrors.dob}
                   value={formData.dob ? dayjs(formData.dob) : null}
                   onChange={(newValue) => handleInputChange('dob', newValue)}
                   renderInput={(props) => <TextField {...props} />}
@@ -156,7 +169,6 @@ const EditPatientDialog = ({ editOpen, handleEditClose, formFields, formErrors, 
                 />
               </LocalizationProvider>
               <Select
-                labelId="gender-label"
                 id="gender"
                 value={formData.gender || ''}
                 onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
@@ -164,10 +176,12 @@ const EditPatientDialog = ({ editOpen, handleEditClose, formFields, formErrors, 
                 disabled={isDisabled}
                 sx={{ mt: 1, width: '38%'}}
               >
-                <MenuItem>Select Gender</MenuItem>
                 <MenuItem value="Male">Male</MenuItem>
                 <MenuItem value="Female">Female</MenuItem>
               </Select>
+              {formErrors.gender && (
+              <FormHelperText error>{formErrors.gender}</FormHelperText>
+            )}
             </div>
           </DialogContent>
           <DialogActions>

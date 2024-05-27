@@ -13,13 +13,15 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useNavigate } from 'react-router-dom'
 import { jwtDecode } from "jwt-decode";
+import { HubConnectionBuilder } from '@microsoft/signalr';
 import { deleteLog } from "../../Services/Auth";
 
 
 const Navbar = () => {
-    const [profile,SetProfile]=useState({Name:"Profile",Role:"Empty",Image:""})
-
-  //drop down menu
+    
+  const [profile, SetProfile] = useState({ name: '', role: '', image: '' ,Id:''});
+  const [connection, setConnection] = useState(null);
+  const [auth, setAuth] =useState(true);
   const [anchorEl, setAnchorEl] =useState(null);
   const handleClose = () => {
     setAnchorEl(null);
@@ -32,11 +34,22 @@ const Navbar = () => {
 
 
   const navigate=useNavigate()
-  const handleDelete=()=>{
-    deleteLog()
-    handleClose()
-    navigate('/')
-  }
+  const handleLogout = () => {
+    if (connection) {
+      connection.invoke('ManualDisconnect', profile.Id)
+        .then(() => connection.stop())
+        .then(() => {
+          deleteLog();
+          handleClose();
+          navigate('/');
+        })
+        .catch(err => console.error('Error while disconnecting:', err));
+    } else {
+      deleteLog();
+      handleClose();
+      navigate('/');
+    }
+  };
 
   useEffect(()=>{
     let tmp=localStorage.getItem('medicareHubToken')
@@ -44,9 +57,26 @@ const Navbar = () => {
       SetProfile({
         Name:jwtDecode(localStorage.getItem('medicareHubToken')).Name,
         Role:jwtDecode(localStorage.getItem('medicareHubToken')).Role,
-        Image:jwtDecode(localStorage.getItem('medicareHubToken')).Profile
+        Image:jwtDecode(localStorage.getItem('medicareHubToken')).Profile,
+        Id:jwtDecode(localStorage.getItem('medicareHubToken')).Id
       })
     }
+    const newConnection = new HubConnectionBuilder()
+    .withUrl('https://localhost:7205/notificationHub')
+    .withAutomaticReconnect()
+    .build();
+
+  newConnection.start()
+    .then(() => setConnection(newConnection))
+    .catch(err => console.error('Connection failed: ', err));
+
+  return () => {
+    if (connection) {
+      connection.stop()
+        .then(() => console.log('Connection stopped'))
+        .catch(err => console.error('Error while stopping connection:', err));
+    }
+  };
   },[])
 
   return (
@@ -122,7 +152,7 @@ const Navbar = () => {
             <MenuItem onClick={handleClose}>
               <SettingsIcon sx={{ paddingRight: "10%" }} /> Settings
             </MenuItem>
-            <MenuItem onClick={handleDelete}>
+            <MenuItem onClick={handleLogout}>
               <LogoutIcon sx={{ paddingRight: "10%" }} /> LogOut
             </MenuItem>
             </Menu>

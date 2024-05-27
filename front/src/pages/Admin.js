@@ -19,10 +19,10 @@ import Analysis from "../components/Admin/Analytics";
 import Patient from "../components/Admin/Patient";
 import ResNavBar from "../components/recepcomponents/ResNavBar/ResNabBar";
 import Staff from "../components/Admin/Staff";
-import SpaceDashboardIcon from '@mui/icons-material/SpaceDashboard';
-import AddchartIcon from '@mui/icons-material/Addchart';
+import SpaceDashboardIcon from "@mui/icons-material/SpaceDashboard";
+import AddchartIcon from "@mui/icons-material/Addchart";
 
-const drawerWidth = 210;
+const drawerWidth = 200;
 
 export default function Stest() {
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -52,18 +52,21 @@ export default function Stest() {
       <Divider />
       <Box>
         <List>
-          
-          {["Analysis","Staff", "Patient"].map((text, index) => (
+          {["Analysis", "Staff", "Patient"].map((text, index) => (
             <ListItem key={text} disablePadding>
               <ListItemButton
                 sx={{
                   backgroundColor:
                     selectedNavItem === text ? "rgb(121, 204, 190)" : "white",
-                  m: 0.8,
+                  m: 0.4,
+                  height:'6vh',
                   borderRadius: 2,
                   boxShadow: 2,
                   "&:hover": {
-                    boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
+                    backgroundColor:
+                      selectedNavItem === text
+                        ? "rgb(121, 204, 190)"
+                        : "rgb(235, 235, 235)", // Change this to the color you want on hover
                   },
                 }}
                 onClick={() => handleNavigationItemClick(text)}
@@ -123,7 +126,7 @@ export default function Stest() {
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
               width: drawerWidth,
-              backgroundColor: "rgb(222, 244, 242)", // Change the color value here
+              backgroundColor: "rgb(222, 244, 242)", 
             },
             height: "100%",
           }}
@@ -139,7 +142,7 @@ export default function Stest() {
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
               width: drawerWidth,
-              backgroundColor: "rgb(222, 244, 242)", // Change the color value here
+              backgroundColor: "rgb(222, 244, 242)", 
             },
           }}
           open

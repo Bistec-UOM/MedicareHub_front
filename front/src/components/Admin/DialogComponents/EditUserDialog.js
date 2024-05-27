@@ -1,4 +1,4 @@
-import {Button,Dialog,DialogTitle,DialogContent,DialogActions,TextField,FormControl,InputLabel,Select,MenuItem} from "@mui/material";
+import {Button,Dialog,DialogTitle,DialogContent,DialogActions,TextField,FormControl,InputLabel,Select,MenuItem, FormHelperText} from "@mui/material";
 import { useState,useEffect } from "react";
 import * as React from "react";
 import CloseIcon from "@mui/icons-material/Close";
@@ -156,7 +156,7 @@ const handleDropBoxClose = () => {
 }
   return (
    <>
-    <Dialog open={editOpen} onClose={handleEditClose}>
+    <Dialog open={editOpen}  onClose={handleEditClose}>
       <DialogTitle
         sx={{
           backgroundColor: "rgb(222, 244, 242)",
@@ -167,7 +167,7 @@ const handleDropBoxClose = () => {
         Edit User
         <CloseIcon onClick={handleEditClose} sx={{ cursor: "pointer" }} />
       </DialogTitle>
-      <DialogContent>
+      <DialogContent >
       <Avatar
         onClick={isDisabled ? null : handleDropBoxOpen}
         src={formData.imageUrl}
@@ -221,6 +221,9 @@ const handleDropBoxClose = () => {
             <MenuItem value="Male">Male</MenuItem>
             <MenuItem value="Female">Female</MenuItem>
           </Select>
+          {formErrors.gender && (
+              <FormHelperText error>{formErrors.gender}</FormHelperText>
+            )}
         </div>
       </DialogContent>
       <DialogActions>
