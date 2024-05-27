@@ -8,10 +8,11 @@ import { baseURL,deleteLog,endPoints } from '../Services/Auth';
 import { jwtDecode } from "jwt-decode";
 import LoadingButton from '@mui/lab/LoadingButton';
 import LoginIcon from '@mui/icons-material/Login';
+import {HubConnectionBuilder} from '@microsoft/signalr';
 
 export default function Log() {
   const navigate=useNavigate()
-
+  const[Log,SetLog] = useState(false);
   // SnackBar component====================================================================================
   const [open, setOpen] = React.useState(false);
   const [msg,setMsg]=useState('Init')
@@ -51,6 +52,7 @@ export default function Log() {
     .then((res)=>{
       localStorage.setItem('medicareHubToken', res.data)
       //Navigate User
+      SetLog(true)
       let tmp=jwtDecode(localStorage.getItem('medicareHubToken')).Role
       switch(tmp){
         case 'Admin':navigate('admin');break
@@ -77,7 +79,52 @@ export default function Log() {
       }
     })
   }
+//latest Code/////////////////////////////////////////////////////////////////////////////
+const [profile, setProfile] = useState({ name: '', role: '', image: '' });
+const [connection, setConnection] = useState(null);
 
+useEffect(() => {
+  // if(Log){
+    const token = localStorage.getItem('medicareHubToken');
+    console.log("in effect");
+  if (token) {
+    console.log('token captured');
+      const decodedToken = jwtDecode(token);
+      setProfile({
+          role: decodedToken.Role,
+          image: decodedToken.Id
+      });
+
+      // Setup SignalR connection
+      const newConnection = new HubConnectionBuilder()
+          .withUrl('https://localhost:7205/notificationHub')
+          .withAutomaticReconnect()
+          .build();
+
+
+      setConnection(newConnection);
+      console.log("connected with new connection");
+  }
+  
+ 
+  }
+// }
+, [Log]);
+
+useEffect(()=>{
+  if(connection){
+    connection.start()
+      .then(result=>{
+        console.log('Connected!');
+        connection.invoke('Send', profile.image, profile.role)
+            .then(() => console.log('Sent message'))
+            .catch(err => console.error(err));
+      })
+      .catch(e => console.log('Connection failed: ', e));
+  }
+})
+
+////////////////////////////////////////////////////////////////////////////
   const clearData=()=>{
     setUser("")
     setPassword("")

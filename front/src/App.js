@@ -14,6 +14,7 @@ import DoctorList from "./components/recepcomponents/DoctorAppointmentHandle/Doc
 import Doctor_analytics from "./components/Doctor_analytics";
 import ViewResult from "./components/Lab/ViewResult";
 import NotificationComponentlk from "./components/Admin/PageComponents/notify";
+import Login from "./components/Admin/PageComponents/login";
 
 
 function App() {
@@ -36,6 +37,8 @@ function App() {
       <Route path="doct/analytics" element={<Doctor_analytics pId={17}/>}></Route>
       <Route path="lab/view" element={<ViewResult id={4}></ViewResult>}></Route>
       <Route path="admin/final" element={<NotificationComponentlk/>}></Route>
+      <Route path="admin/test" element={<Login/>}></Route>
+      
       </Routes>
       </BrowserRouter>
     </div>

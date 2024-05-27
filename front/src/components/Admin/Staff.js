@@ -8,6 +8,8 @@ import EditUserDialog from "./DialogComponents/EditUserDialog";
 import { baseURL, endPoints } from "../../Services/Admin";
 import AddUserDialog from "./DialogComponents/AddUserDialog";
 import Skeleton from "@mui/material/Skeleton";
+import StyledBadge from "./PageComponents/Avatar";
+import { HubConnectionBuilder } from '@microsoft/signalr';
 
 export default function Staff() {
   const [notificationOpen, setNotificationOpen] = useState(false);
@@ -43,6 +45,7 @@ export default function Staff() {
         password: "",
         imageUrl: "",
         isDeleted:false,
+        isActive: true,
       });
     }
   }, [open, editOpen]);
@@ -62,6 +65,7 @@ export default function Staff() {
         password: "",
         imageUrl: "",
         isDeleted:false,
+        isActive: true,
       });
     }
   }, [open]);
@@ -80,6 +84,7 @@ export default function Staff() {
     password: "",
     imageUrl: "",
     isDeleted:false,
+    isActive: true,
   });
   const [formData, setFormData] = useState({
     id: 0,
@@ -96,26 +101,75 @@ export default function Staff() {
     password: "",
     imageUrl: "",
     isDeleted:false,
+    isActive: true,
   });
   const [update, forceUpdate] = useState(0);
+
+
+  // useEffect(() => {
+  //   axios
+  //     .get(baseURL + endPoints.StaffList)
+  //     .then((res) => {
+  //       console.log(res.data);
+  //       setStaffData(res.data);
+  //       // setRecords(res.data);
+  //     })
+  //     .catch((err) => {
+  //       if (err.message === "Network Error") {
+  //         console.error("You are not connected to internet");
+  //         setNotiMessage("You are not connected to internet");
+  //         settypenoti("error");
+  //         setNotificationOpen(true);
+  //       } else {
+  //         console.error(err);
+  //       }
+  //     });
+  // }, [update]);
+
+
+  //////////////////////////////////////////////////////////////////////////////////////
+  const [connection, setConnection] = useState(null);
+  const [users, setUsers] = useState([]);
+
+
+
   useEffect(() => {
-    axios
-      .get(baseURL + endPoints.StaffList)
-      .then((res) => {
-        setStaffData(res.data);
-        // setRecords(res.data);
-      })
-      .catch((err) => {
-        if (err.message === "Network Error") {
-          console.error("You are not connected to internet");
-          setNotiMessage("You are not connected to internet");
-          settypenoti("error");
-          setNotificationOpen(true);
-        } else {
-          console.error(err);
-        }
-      });
-  }, [update]);
+    const newConnection = new HubConnectionBuilder()
+      .withUrl('https://localhost:7205/notificationHub')
+      .withAutomaticReconnect()
+      .build();
+  
+    setConnection(newConnection);
+  }, []); // Dependency array should be empty to run only on mount
+  
+  
+  useEffect(() => {
+    if (connection) {
+      connection.start()
+        .then(result => {
+          console.log('Connected!');
+          
+          // Call UsersCalling to get the initial list of users
+          connection.invoke('UsersCalling')
+            .then(() => console.log('Requested users list'))
+            .catch(err => console.error(err));
+  
+          // Handle receiving the list of users
+          connection.on('Receiver', (usersJson) => {
+            const usersList = JSON.parse(usersJson);
+            setStaffData(usersList);
+            console.log('Received users list:', usersList);  // Change log to usersList for clarity
+          });
+        })
+        .catch(e => console.log('Connection failed: ', e));
+    }
+  }, [connection]);
+  
+  useEffect(() => {
+    console.log('row2 state updated:', row2);
+  }, [row2]);
+  
+
 
   const pData = {
     id: formData.id,
@@ -132,6 +186,7 @@ export default function Staff() {
     role: formData.role,
     imageUrl: formData.imageUrl,
     isDeleted:false,
+    isActive: true,
   };
 
   const [Role, setRole] = useState("");
@@ -171,6 +226,7 @@ export default function Staff() {
       password: row2.password,
       imageUrl: row2.imageUrl,
       isDeleted:row2.isDeleted,
+      isActive:row2.isActive,
     });
     console.log(pData);
     // setSelectedPaper(row2);
@@ -264,7 +320,7 @@ export default function Staff() {
     { label: "Email Address", key: "email" },
     { label: "Password", key: "password", style: { ml: "20px" } },
   ];
-  const RoleFields = ["Doctor", "Receptionist", "Lab Assistant", "Cashier"];
+  const RoleFields = ["Doctor", "Receptionist", "Lab Assistant", "Cashier","Admin"];
 
   return (
     <div>
@@ -352,9 +408,9 @@ export default function Staff() {
             </Button>
           </Paper>
           {/* recep Paper */}
-          {row2.filter((row2) => row2.role === rolefild ).length > 0 ? (
+          {row2.filter((row2) => row2.Role === rolefild ).length > 0 ? (
             row2
-              .filter((row2) => row2.role === rolefild)
+              .filter((row2) => row2.Role === rolefild)
               .map((row2) => (
                 //role data in here
                 <Paper
@@ -372,13 +428,29 @@ export default function Staff() {
                   }}
                   onClick={() => handleEditClickOpen(row2)} // Open the edit window when clicking on the paper
                 >
+                  {console.log('row2.isActive:', row2.IsActive)} 
                   <Box sx={{ display: "flex" }}>
                     <Box sx={{ display: "flex", alignItems: "center" }}>
-                      <Avatar
-                        alt="Remy Sharp"
-                        src={row2.imageUrl}
-                        sx={{ width: 50, height: 50 }}
-                      />
+                    {row2.IsActive ? (
+        <StyledBadge
+          overlap="circular"
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+          variant="dot"
+          color="red"
+        >
+          <Avatar
+            alt="Remy Sharp"
+            src={row2.ImageUrl}
+            sx={{ width: 50, height: 50 }}
+          />
+        </StyledBadge>
+      ) : (
+        <Avatar
+          alt="Remy Sharp"
+          src={row2.ImageUrl}
+          sx={{ width: 50, height: 50 }}
+        />
+      )}
                       {/* <Box sx={{ marginLeft: 3 }}> Add some left margin to the text */}
                     </Box>
                     <Grid
@@ -389,13 +461,13 @@ export default function Staff() {
                       }}
                     >
                       <Typography variant="h6" sx={{ paddingTop: 0.75 }}>
-                        {row2.fullName}
+                        {row2.FullName}
                       </Typography>
                       <Typography
                         variant="h10"
                         sx={{ fontSize: 10, color: "rgb(186, 177, 177)" }}
                       >
-                        {row2.qualifications}
+                        {row2.Qualifications}
                       </Typography>
                       <Typography
                         variant="h10"
@@ -405,7 +477,7 @@ export default function Staff() {
                           color: "rgb(186, 177, 177)",
                         }}
                       >
-                        {row2.role}
+                        {row2.Role}
                       </Typography>
                     </Grid>
                   </Box>
