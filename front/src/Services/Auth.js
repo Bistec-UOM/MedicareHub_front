@@ -1,7 +1,10 @@
 const baseURL='https://localhost:7205'
 
 const endPoints = {
-    LOG:'/api/Auth/log'
+    LOG:'/api/Auth/log',
+    SENDOTP:'/api/Auth/reset/sendOTP',
+    CHECKOPT:'/api/Auth/reset/checkOTP',
+    NEW:'/api/Auth/reset/new'
   };
   
 const setHeaders=()=>{
