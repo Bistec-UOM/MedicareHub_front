@@ -14,6 +14,7 @@ import {HubConnectionBuilder} from '@microsoft/signalr';
 
 export default function Log() {
   const navigate=useNavigate()
+  const[Log,SetLog]=useState(false);
 
   const [phase,setPhase] = useState(0) //0-> log     1-> enter Otp     2-> new pwd
 
