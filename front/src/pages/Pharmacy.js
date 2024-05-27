@@ -117,7 +117,7 @@ export default function Pharmacy() {
     setLoadingBConfirm(true);
     let load={data:obj,total:total+serviceCharge}
     setLoadingBConfirm(true);
-    console.log(load)
+    console.log(JSON.stringify(load))
     /*axios.post(baseURL+endPoints.ADDBILLDRUG,obj)
     .then(()=>{
       setLoadingBConfirm(false)
