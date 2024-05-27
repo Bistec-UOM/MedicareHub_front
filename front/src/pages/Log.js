@@ -99,12 +99,17 @@ export default function Log() {
    const [loadingB, setLoadingB] = useState(false)//Loading button states
    const [prog, setProg] = useState(false) // for progress when resetting
 
+   //stage 0
    //Password reset ===============================================>>>>>>>>>>>
 
    const [otpmsg,setOtpmsg] = useState('check your email')
    const [otp,setOtp] = useState('')
 
    const resetInit=()=>{
+      if(!user){
+        handleClick('No user','warning')
+        return
+      }
       setProg(true)
       axios.post(baseURL+endPoints.SENDOTP+`?id=${user}`)
       .then((res)=>{
@@ -116,11 +121,14 @@ export default function Log() {
       .catch((er)=>{
         setProg(false)
         setLoadingB(false)
+        if(er.hasOwnProperty('response')){
+          handleClick(`${er.response.data}`,'error')
+        }
         console.log(er);
       })
    }
 
-
+   //stage 1
    //Check OTP ==================================================>>>>>>>>>>>>>>>>
 
    const checkOTP=()=>{
@@ -138,7 +146,9 @@ export default function Log() {
     })
     .catch((er)=>{
       setLoadingB(false)
-      setOtpmsg(er.response.data)
+      if(er.hasOwnProperty('response')){
+        handleClick(`${er.response.data}`,'error')
+      }
       console.log(er);
     })
    }
@@ -147,11 +157,11 @@ export default function Log() {
    const [confpassword,setconfPassword]=useState("")
 
    const sendNewPwd=()=>{
-    let obj={
-      'UserId':user,
-      'Password':password
-    }
     if(confpassword==password){
+      let obj={
+        'UserId':user,
+        'Password':password
+      }
       setLoadingB(true)
       axios.post(baseURL+endPoints.NEW,obj)
       .then((res)=>{
@@ -161,10 +171,12 @@ export default function Log() {
       })
       .catch((er)=>{
         setLoadingB(false)
-        setPassword('');setconfPassword('');setOtp('');setOtpmsg('');setUser('')
+        setOtp('');setOtpmsg('')
         console.log(er);
       })
       setCount(0)
+    }else{
+      handleClick('Confirm password doesn\'t match','warning')
     }
    }
 
@@ -186,6 +198,7 @@ export default function Log() {
 
 {phase == 0? <Box 
         sx={{
+          width:'260px',
           display:'flex',
           flexDirection:'column',
           justifyContent:'space-evenly',
@@ -200,7 +213,7 @@ export default function Log() {
       >
         <Typography sx={{fontSize:'20px',alignSelf:'center',backgroundColor:'white'}}>User login</Typography>
 
-        <TextField size="small" sx={{mt:'5px',mb:'10px'}} id="1" label="User Id" type="text" autoComplete="current-password" onChange={(e)=>setUser(e.target.value)} value={user}/>
+        <TextField size="small" sx={{mt:'5px',mb:'10px'}} id="1" label="User Id" type="number" autoComplete="current-password" onChange={(e)=>setUser(e.target.value)} value={user}/>
         <TextField size="small" sx={{mt:'5px',mb:'10px'}} id="2" label="Password" type="password" autoComplete="current-password" onChange={(e)=>setPassword(e.target.value)} value={password}/>
 
         <div style={{display:'flex',flexDirection:'row-reverse',alignItems:'center'}}>
@@ -219,12 +232,12 @@ export default function Log() {
             color='warning'
             size="small"
             >Clear</Button>
-          {!prog?<Typography sx={{mr:'20%',color:'grey',textDecorationColor:'grey',fontSize:'16px',textDecorationLine:'underline',cursor:'pointer'}} onClick={resetInit}>Reset</Typography>:<CircularProgress></CircularProgress>}
+          {!prog?<Typography sx={{mr:'20%',color:'grey',textDecorationColor:'grey',fontSize:'16px',textDecorationLine:'underline',cursor:'pointer'}} onClick={resetInit}>Reset</Typography>:<CircularProgress size={20} sx={{mr:'50px'}}></CircularProgress>}
         </div>
         
       </Box>:phase == 1? <Box 
         sx={{
-          maxWidth:'300px',
+          width:'260px',
           display:'flex',
           flexDirection:'column',
           justifyContent:'space-evenly',
@@ -262,6 +275,7 @@ export default function Log() {
         
       </Box>:phase==2?<Box 
         sx={{
+          width:'260px',
           display:'flex',
           flexDirection:'column',
           justifyContent:'space-evenly',
