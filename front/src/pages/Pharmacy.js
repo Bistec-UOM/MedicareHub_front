@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import {SidebarContainer,SidebarTop,SidebarList} from '../components/sidebar/Sidebar'
 import Navbar from '../components/navbar/Navbar'
-import { Grid,Snackbar,Card, Typography,Dialog, DialogTitle, DialogContent, DialogActions,Button, CardContent } from '@mui/material'
+import { Grid,Snackbar,Card, Typography,Dialog,DialogContent,Button } from '@mui/material'
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -17,9 +17,16 @@ import { Sideunit_Bill } from '../components/sidebar/Sideunits';
 import MuiAlert from '@mui/material/Alert';
 import axios from 'axios';
 import { baseURL,endPoints } from '../Services/Pharmacy';
-import { PersonDetail } from '../components/Common';
+import { ConfirmPropmt, PersonDetail } from '../components/Common';
+import StoreIcon from '@mui/icons-material/Store';
+import DescriptionIcon from '@mui/icons-material/Description';
+import AddCardIcon from '@mui/icons-material/AddCard';
+import Pharmacy_drugstore from './Pharmacy_drugstore';
 
 export default function Pharmacy() {
+
+  const [store,setStore] = useState(false) //true -> in drug store
+
   const [select,setSelect]=useState(null)//current selected prescription id(patient)
   const [Data,SetData]=useState([])//Store incoming prescription details
   const selectedPrescription = select ? Data.filter(data => data.id === select) : [];
@@ -28,10 +35,16 @@ export default function Pharmacy() {
   const [serviceCharge,setServiceCharge]=useState(300)
   const [total,setTotal]=useState(0)//store the calculated total
 
+  useEffect(()=>{//initial data loading------------------------------------------------------
+    document.body.style.margin = '0';
+    getData();
+   },[]) 
+
+  //data loading as the prescription is selected--------------------------------
   useEffect(()=>{
     if(select!==null){
       const genericNames = selectedPrescription[0].medicine.map(drug => drug.name);
-      console.log(genericNames)
+      //console.log(genericNames)
       axios.post(baseURL+endPoints.MEDICINEDETAIL, genericNames)
       .then(response => {     
           //attach each the drug details requested from back to the corresponding drug in prescription
@@ -63,11 +76,6 @@ export default function Pharmacy() {
     }
   },[select])
 
-  
-  useEffect(()=>{//initial data loading------------------------------------------------------
-    document.body.style.margin = '0';
-    getData();
-   },[]) 
 
   const getData = () => {//get the prescriptions list to the side bar--------------------------
     axios.get(baseURL+endPoints.DRUGREQUEST)
@@ -79,10 +87,9 @@ export default function Pharmacy() {
       });
   }
 
+  //for the service charge edit dialog box-------------------
   const [open, setOpen] = useState(false);
-  const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-
   const handleOpen = () => {
     setOpen(true);
   };
@@ -90,19 +97,13 @@ export default function Pharmacy() {
     setOpen(false);
   };
 
-  //Send generated bil drugs list 
-  const handleConfirmDialogOpen = () => {
-    setConfirmDialogOpen(true);
-  };
-  const handleConfirmDialogClose = () => {
-    setConfirmDialogOpen(false);
-  };
+  //snackbar
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
   };
   
+  //Bill generation when confirm is allowed----------------------------------------
   const handleConfirmAction = () => {
-    //bill drug data set processing------------------------------ 
     let objunit={}
     let obj=[]
     drugBill.forEach((el)=>{
@@ -112,21 +113,27 @@ export default function Pharmacy() {
       obj.push(objunit)
       objunit={}
     })
-    console.log(JSON.stringify(obj))
 
-    setConfirmDialogOpen(false);//popup window closed-----
-
-    axios.post(baseURL+endPoints.ADDBILLDRUG,obj)
+    setLoadingBConfirm(true);
+    let load={data:obj,total:total+serviceCharge}
+    setLoadingBConfirm(true);
+    console.log(load)
+    /*axios.post(baseURL+endPoints.ADDBILLDRUG,obj)
     .then(()=>{
-      setSnackbarOpen(true);
+      setLoadingBConfirm(false)
+      handleCloseConfirm()
+      setSnackbarOpen(true)
     })
     .catch((er)=>{
+      setLoadingBConfirm(false)
+      handleCloseConfirm()
       console.log(er)
-    })
+    })*/
 
   };
   
-const handleWeight = (index,data,priceData) => {//update the weight
+  //update the weight-----------------------------------------------------
+const handleWeight = (index,data,priceData) => {
   let unitPrice=0
   let drugId=''
   priceData.forEach((el)=>{
@@ -141,7 +148,9 @@ const handleWeight = (index,data,priceData) => {//update the weight
     )
   )
 }
-const handleAmount = (index,data)=>{//update the drug amount
+
+//update the drug amount---------------------------------------------
+const handleAmount = (index,data)=>{
   let tmp=parseInt(data)
   tmp=isNaN(tmp)||tmp<0?0:tmp
   setDrugBill(prev =>
@@ -151,7 +160,8 @@ const handleAmount = (index,data)=>{//update the drug amount
   )
 }
 
-useEffect(()=>{//To calculate total ----------------------------
+//Keep the total in track ----------------------------
+useEffect(()=>{
   let t=0
   drugBill.forEach((el,ind)=>{
     t=t+parseInt(el.Amount)*parseInt(el.price)
@@ -313,6 +323,26 @@ useEffect(()=>{//To calculate total ----------------------------
      
    ] 
 
+   //Date------------------------------------------------------------------------------
+   const generatedate=()=>{
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'];
+    const dayOfWeek = daysOfWeek[date.getDay()];
+
+    return `${year}-${month}-${day} ${dayOfWeek}`;
+  }
+  const formattedDate = generatedate();
+
+   //Confirmation popup box-----------------------------------------------
+   const [loadingBConfirm, setLoadingBConfirm] = useState(false)
+   const [openConfirm, setOpenConfirm] = useState(false)
+   const handleClickOpenConfirm = (x) => {
+        setOpenConfirm(true)
+  }
+  const handleCloseConfirm = () => {setOpenConfirm(false)} 
    
   return (
     <div>
@@ -322,7 +352,12 @@ useEffect(()=>{//To calculate total ----------------------------
       <Grid item xs={3} style={{height:'100%',backgroundColor:'#E7FFF9'}}>
         <SidebarContainer sx={{ backgroundColor:'#E7FFF9'}}>
           <SidebarTop>
-
+          <Box sx={{width:'100%',display:'flex',justifyContent:'space-between',alignItems:'center',pr:'14px',pl:'14px'}}>
+          <DescriptionIcon></DescriptionIcon>
+          <Typography sx={{ fontSize:'14px'}}>{formattedDate}</Typography>
+          {store? <AddCardIcon sx={{cursor:'pointer'}} onClick={()=>setStore(false)}></AddCardIcon>:
+          <StoreIcon sx={{cursor:'pointer'}} onClick={()=>setStore(true)}></StoreIcon>}
+          </Box>
           </SidebarTop>
           <SidebarList>
           {
@@ -337,9 +372,8 @@ useEffect(()=>{//To calculate total ----------------------------
           </SidebarList>
         </SidebarContainer>
       </Grid>
-
+{!store?
       <Grid item xs={9} style={{height:'100%',overflowY:'scroll'}}>
-
 {/* =====================      Person details          ===========================================*/}        
       {select ? (
       <div style={{ position: 'sticky', top: 0, zIndex: 1000 }}>
@@ -347,10 +381,8 @@ useEffect(()=>{//To calculate total ----------------------------
             <PersonDetail name={patientdata.name} age={patientdata.age} gender={patientdata.gender}></PersonDetail>
           ))}
       </div>
-      ): 
-      (
-        <Typography gutterBottom variant="p"></Typography>
-    ) }
+      ): <Typography gutterBottom variant="p"></Typography>
+      }
       {select ? (
       <div style={{marginTop:"80px"}}>
 {/* =====================      Rendering the drug list =============================================*/}
@@ -382,7 +414,7 @@ useEffect(()=>{//To calculate total ----------------------------
       </Select>
     </FormControl>
     
-    {/* Input field for entering the amount of phills---------------------------------------------*/}
+  {/* Input field for entering the amount of phills---------------------------------------------*/}
       <TextField  
         size='small'
         sx={{'& > :not(style)': { m: 0, width: '10ch',ml:'120px'}}} 
@@ -399,10 +431,8 @@ useEffect(()=>{//To calculate total ----------------------------
     </Box> 
   </Box>)):''}
 </div>
-       ) : (
-        <Typography gutterBottom variant="p"></Typography>
-      )}
-      {select && (         // used for not visible this in page untill click
+       ) : ''}
+      {select && (    
         <div >
       {/* ---- Total value without service charge  ------------------------------------*/}
         <Box style={{ textAlign: 'right',width:'800px'}}>
@@ -428,47 +458,35 @@ useEffect(()=>{//To calculate total ----------------------------
       {/* ------------------- Confirmation         ------------------------------------*/}  
       <Box style={{ textAlign: 'right', marginTop: '20px', marginBottom: '20px' }}>
           <PrintIcon sx={{mr:'30px'}} size="small" />
-          <Button variant="contained" sx={{ backgroundColor: '#00cca3',marginRight: '220px' }}onClick={handleConfirmDialogOpen}>Confirm
+          <Button variant="contained" sx={{marginRight: '220px'}} onClick={handleClickOpenConfirm}>Confirm
           </Button>
       </Box>
 
        <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Edit Service Charge</DialogTitle>
         <DialogContent>
-          
-          <TextField label="Service Charge" variant="outlined" />
-          
+        <TextField label="Service Charge" size='small' variant="outlined" />
+          <div style={{display:'flex',justifyContent:'center',paddingTop:'10px'}}>
+          <Button onClick={handleClose} size='small' sx={{mr:'20px'}}>Cancel</Button>
+          <Button onClick={handleClose} size='small' variant="contained">Save</Button>
+        </div>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleClose} color="primary">Save</Button>
-        </DialogActions>
       </Dialog>
     
+    {/* --------------------------- Confirmation Dialog ------------------------------------- */}
+      <ConfirmPropmt action={handleConfirmAction} message="Are you sure bill is ready?"
+       handleClose={handleCloseConfirm} loadingB={loadingBConfirm} open={openConfirm}></ConfirmPropmt>
 
-  <Dialog open={confirmDialogOpen} onClose={handleConfirmDialogClose}>
-        <DialogTitle>Confirm Action</DialogTitle>
-        <DialogContent>
-          <Typography>Are you sure you want to confirm?</Typography>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleConfirmDialogClose} color="primary">
-            No
-          </Button>
-          <Button onClick={handleConfirmAction} color="primary" autoFocus>
-            Yes
-          </Button>
-        </DialogActions>
-      </Dialog>
-      {/* Snackbar */}
+     
+    {/* --------------------------- Snackbar ------------------------------------------------- */}
       <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose}>
         <MuiAlert onClose={handleSnackbarClose} severity="success" elevation={6} variant="filled">
           Bill generated suceessfully!
         </MuiAlert>
       </Snackbar>
-</div>
+      </div>
 )}
-      </Grid>
+      </Grid>:<Grid item xs={9} style={{height:'100%',overflowY:'scroll'}}><Pharmacy_drugstore></Pharmacy_drugstore></Grid>}
+      
     </Grid>
 
   </div>

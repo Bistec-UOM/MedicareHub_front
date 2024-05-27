@@ -24,18 +24,18 @@ const SidebarContainer = ({ children }) => {
 
 
 
-const SidebarTop = ({ children }) => {
+const SidebarTop = ({ children ,pd}) => {
   return (
     <div
         style={{
         width: '100%',
         height: '80px',
-        paddingBottom:'15px',
+        paddingBottom:pd,
         backgroundColor:'#e7fff9',
         display:'flex',
         justifyContent:'center',
         alignItems:'center',
-        paddingTop:'15px'
+        paddingTop:pd
       }}
     >
       {children}

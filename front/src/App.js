@@ -33,7 +33,7 @@ function App() {
       <Route path='/resday' element={<ResDay/>}></Route>
       <Route path='/dpage' element={<DoctorPage/>}></Route>
       <Route path="/dappList" element={<DoctorList/>}></Route>
-      <Route path="doct/analytics" element={<Doctor_analytics/>}></Route>
+      <Route path="doct/analytics" element={<Doctor_analytics pId={17}/>}></Route>
       <Route path="lab/view" element={<ViewResult id={4}></ViewResult>}></Route>
       <Route path="admin/final" element={<NotificationComponentlk/>}></Route>
       </Routes>

@@ -1,25 +1,27 @@
-import { Divider, IconButton, InputBase, Paper,Box,Typography } from "@mui/material"
+import { Divider, IconButton, InputBase, Paper,Box,Typography, Button, Dialog } from "@mui/material"
 import SearchIcon from "@mui/icons-material/Search";
 import CircularProgress from '@mui/material/CircularProgress';
 import PersonIcon from '@mui/icons-material/Person';
-
+import DoneIcon from '@mui/icons-material/Done'
+import WarningIcon from '@mui/icons-material/Warning';
+import LoadingButton from '@mui/lab/LoadingButton';
+import CloseIcon from '@mui/icons-material/Close'
 
 {/*================Search bar components ================================================= */}
 
-const SearchBarSM=({onChange,value,placeholder})=> {
+const SearchBarSM=({onChange,value,placeholder,height})=> {
 
     return (
         <Paper component="form"
             sx={{
                 p:2.3,display: "flex",
                 alignItems: "center",
-                height:'40px',
+                height:height?height:'20px',
                 width: "210px",
                 borderRadius: "8px",
                 boxShadow: 1
                 }}
         >
-       
         <InputBase type="text" className="form-control" sx={{ flex: 1 }} placeholder={placeholder} value={value}  onChange={onChange}/>
         <Divider sx={{ height: 20,position:'relative',left:'10px'}} orientation="vertical" />
         <IconButton type="button"  aria-label="search">
@@ -88,4 +90,35 @@ const SearchBarSM=({onChange,value,placeholder})=> {
     )
     }
     
-export {SearchBarSM,SearchBarLR,Load,PersonDetail} 
+
+    const ConfirmPropmt=({action,message,handleClose,loadingB,open})=>{
+      return(
+        <Dialog open={open} onClose={handleClose}>
+        <div style={{display:'flex',alignItems:'start',margin:'8px',paddingBottom:'5px',borderBottom:'1px solid lightgrey'}}>
+          <WarningIcon color='warning' sx={{mr:'10px'}}></WarningIcon>
+          <Typography>{message}</Typography>
+        </div>
+        <div style={{width:'100%',height:'60px',display:'flex',justifyContent:'center',alignItems:'center'}}>
+          <Button variant='outlined' sx={{mr:'40px'}} size='small' endIcon={<CloseIcon></CloseIcon>} onClick={handleClose} >No</Button>
+          <LoadingButton 
+            variant='contained' 
+            size='small' 
+            endIcon={<DoneIcon></DoneIcon>}           
+            loading={loadingB}
+            loadingPosition="end"
+            onClick={action}
+          >Yes</LoadingButton>
+        </div>
+      </Dialog>
+      )
+    }
+
+//extra functions and states
+/* const [loadingBConfirm, setLoadingBConfirm] = useState(false)//Loading button
+   const [openConfirm, setOpenConfirm] = useState(false)
+   const handleClickOpenConfirm = (x) => {
+        setOpenConfirm(true)
+  }
+  const handleCloseConfirm = () => {setOpenConfirm(false)}  
+ */
+export {SearchBarSM,SearchBarLR,Load,PersonDetail,ConfirmPropmt} 

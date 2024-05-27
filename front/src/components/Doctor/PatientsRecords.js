@@ -5,13 +5,20 @@ import DialogContent from '@mui/material/DialogContent';
 import CloseIcon from '@mui/icons-material/Close';
 import { Grid, Card, Typography } from '@mui/material';
 import axios from 'axios';
+import TimelineIcon from '@mui/icons-material/Timeline';
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import { Box } from '@mui/system';
+import Doctor_analytics from '../Doctor_analytics';
 
 export default function PatientsRecords(props) {
     const { openPopup, setOpenPopup, selectedPatientId } = props;
-    const [patientRecords, setPatientRecords] = useState([]);
-    const [loading, setLoading] = useState(true);
+    //const [patientRecords, setPatientRecords] = useState([]);
+    const [records, setRecords] = useState(props.records)
+    const [lbAnalytics,setlbAnalytics] = useState(props.lbAnalytics)
+    const [drgAnalytics,setdrgAnalytics] = useState(props.drgAnalytics)
+    const [mode,setMode] =useState(true);//records-true , analytics-false
 
-    useEffect(() => {
+/*     useEffect(() => {
         if (selectedPatientId) {
             fetchPatientRecords(selectedPatientId);
         }
@@ -20,14 +27,14 @@ export default function PatientsRecords(props) {
     const fetchPatientRecords = async (PatientId) => {
         try {
             const response = await axios.get(`https://localhost:7205/api/Doctor/prescription/${PatientId}`);
-            console.log("patient History records:", PatientId, JSON.stringify(response.data));
+            //console.log("patient History records:", PatientId, JSON.stringify(response.data));
             setPatientRecords(response.data);
             setLoading(false);
         } catch (error) {
             console.error('Error fetching patient records:', error);
         }
     };
-
+ */
     const handleClose = () => {
         setOpenPopup(false);
     };
@@ -58,18 +65,26 @@ export default function PatientsRecords(props) {
 
     return (
         <div>
-            <Dialog open={openPopup}  maxWidth="md"  fullWidth={true}>
-                <CloseIcon onClick={handleClose} style={{ position: 'absolute', right: '8px', top: '8px', cursor: 'pointer' }} />
-                <DialogContent dividers sx={{ maxHeight: '500px', overflowY: 'auto' }}>
-                    {loading ? (
-                        <Typography>Loading...</Typography>
-                    ) : patientRecords.length === 0 ? (
-                        <Typography sx={{ color: '#717D7E', wordSpacing: '5px', fontSize: '20px',textAlign: 'center'  }}>No history records available.</Typography>
-                    ) : (
+            <Dialog open={openPopup} onClose={handleClose} maxWidth="md"  fullWidth={true}>
+                <DialogContent dividers sx={{ maxHeight: '700px',maxWidth:'900px' ,overflowY: 'scroll',p:'0'}}>
+    {/* --------------------- Switch between analytics and records ------------------------------------ */}
+                    <Box sx={{height:'30px',width:'100%',display:'flex',justifyContent:'space-between',borderBottom:'1px solid lightgrey',position:'absolute',backgroundColor:'white',pt:'10px',zIndex:'40'}}>
+                        <Typography sx={{pl:'10px'}}>{mode?'Patient History Records':'History Analytics'}</Typography>
+                        <div>
+                            <FormatListBulletedIcon sx={{cursor:'pointer',mr:'30px'}} onClick={()=>setMode(true)} color={mode?'inherit':'disabled'}></FormatListBulletedIcon>
+                            <TimelineIcon sx={{cursor:'pointer',mr:'20px'}} onClick={()=>setMode(false)} color={mode?'disabled':'inherit'}></TimelineIcon>
+                        </div>
+                    </Box>
+                    <div style={{width:'100%',height:'30px'}}></div>
+
+    {/* --------------------- patient records list----------------------------------------------------- */}
+                    {!mode ? (
+                        <Doctor_analytics lbAnalytics={lbAnalytics} drgAnalytics={drgAnalytics}></Doctor_analytics>
+                    )  : (
                         <Grid container spacing={1} sx={{ marginTop: "5px" }}>
-                            {patientRecords.map((item, index) => (
+                            {records.map((item, index) => (
                                 <Grid item xs={12} key={index}>
-                                    <DialogTitle sx={{ m: 0, p: 2 }}>{calculateDaysDifference(item.prescription.dateTime)}</DialogTitle>
+                                    <Typography sx={{ ml:'20px',mt:'20px',fontSize:'15px'}}>{calculateDaysDifference(item.prescription.dateTime)}</Typography>
                                     {item.drugs.map((drug, i) => (
                                         <div key={i}>
                                             <Card sx={{ m: 1,display:'flex', backgroundColor: '#0099cc', color: 'white', fontSize: '19px', height: '30px' }}>

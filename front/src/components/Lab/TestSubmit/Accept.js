@@ -52,6 +52,7 @@ export default function Accept({req,reqOK,RLoad,setRLoad}) {
     .then((res)=>{
       handleClick()
       remTest(id)
+      setLoadingB(false)
     })
     .catch((er)=>{
       console.log(er)
@@ -94,7 +95,8 @@ export default function Accept({req,reqOK,RLoad,setRLoad}) {
                                       height:'20px',
                                       borderRadius:'5px',
                                       color:'white',
-                                      backgroundColor:'#568a91'
+                                      backgroundColor:'#568a91',
+                                      ml:'5px'
                                       }}
                                     ></Chip>
                     </Typography>

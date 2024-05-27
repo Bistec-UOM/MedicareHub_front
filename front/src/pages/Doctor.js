@@ -1,20 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { SidebarContainer, SidebarTop, SidebarList } from '../components/sidebar/Sidebar'
 import Navbar from '../components/navbar/Navbar'
-import { Grid, Card, Typography, Switch} from '@mui/material'
-import CardContent from '@mui/material/CardContent';
+import { CircularProgress, Grid,Typography} from '@mui/material'
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
-import AudioFileIcon from '@mui/icons-material/AudioFile';
 import UpdateIcon from '@mui/icons-material/Update';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-import ThermostatIcon from '@mui/icons-material/Thermostat';
+import ScienceIcon from '@mui/icons-material/Science';
 import PatientsRecords from '../components/Doctor/PatientsRecords';
 import DoctorAddDrugs from '../components/Doctor/DoctorAddDrugs';
-import AnaliticalReports from '../components/Doctor/AnaliticalReports';
 import '../components/CustomScroll.css'
 import LabRequest from '../components/Doctor/LabRequest';
 import { Sideunit_Patient } from '../components/sidebar/Sideunits';
@@ -24,13 +21,15 @@ import TopUnit from '../components/Doctor/TopUnit';
 import { baseURL,endPoints } from '../Services/Doctor';
 import axios from 'axios';
 import { PersonDetail } from '../components/Other';
-import LoadingButton from '@mui/lab/LoadingButton';
 import DoneIcon from '@mui/icons-material/Done'
+import { ConfirmPropmt } from '../components/Common';
+import LabResult from '../components/Lab/LabResult';
 
 export default function Doctor() {
   
   const [select,setSelect]=useState(null);//hold the selected appoinment patient
   const [openPopup, setOpenPopup] = useState(false);// for patient history records
+  const [openPopup2, setOpenPopup2] = useState(false);// for result view
   const [openBox, setOpenBox] = useState(false);// for add drugs
   const [openpopBox, setOpenpopBox] = useState(false);//for lab reports
   const [openAreports, setOpenAreports] = useState(false);//for analitical reports
@@ -40,7 +39,15 @@ export default function Doctor() {
   const [pres,setPres]=useState([]) ;// hold the pres details from doctoradd drug component
   const [rep,setrep]=useState([]); // hold the  lab request from component
   const [appointments, setAppointments] = useState([]);// hold the appoinment list
-  
+
+  //--------------------------------------------------------------------------------------------------------
+  const [labReport,setLabReport]=useState([]);//hold the fetched available lab reports
+  const [drgAnalytics,setDrganalytics] = useState([])//hold the fetched drug analytics
+  const [lbAnalytics,setLbanalytics] = useState([])//hold the fetched lab analytics
+  const [records,setRecords]=useState([]);//hold the fetched history records
+  const [histDone,setHistDone] = useState(false)//history checking loading button
+  const [available,setAvailable] = useState({lab:false,rec:false,drg:false,rprt:false});//is fetch available
+
   useEffect(() => {
     document.body.style.margin = '0';
     fetchData();
@@ -55,6 +62,10 @@ export default function Doctor() {
 
    const handleAddIconClick = () => {//for patient history record popu up
     setOpenPopup(true);
+  }; 
+
+  const handleAddIconClick2 = () => {//for view lab result
+    setOpenPopup2(true);
   }; 
 
   const handleAddDrugsClick = () => {
@@ -91,7 +102,7 @@ export default function Doctor() {
 
 
 const handleClick = () => {
-  setLoadingB(true)
+  setLoadingBConfirm(true)
   let obj = { //strore the all data in this object after click the confirm button
     id: select,
     drugs: pres, // drug array: from DoctorAddDrugs component
@@ -101,6 +112,8 @@ const handleClick = () => {
   console.log(JSON.stringify(obj))  
   axios.post(baseURL+endPoints.PRESCRIPTION, obj)
   .then(response => {
+    setLoadingBConfirm(false)
+    handleCloseConfirm()
     // Handle success
     handlesnapbarClick(); //show the snapbar component
     console.log('Response:', response.data);
@@ -113,10 +126,10 @@ const handleClick = () => {
     }, 1500);
   })
   .catch(er => {
+    setLoadingBConfirm(false)
     if(er.hasOwnProperty('response')){
       console.log(er.response.data)
     }else{
-      setLoadingB(false)
       console.log(er)
     }
   });
@@ -133,47 +146,68 @@ const fetchData = async () => {
   }
 };
 
- //-------------------------->patients appointments Array<--------------------------------------------------------// 
- /*const data=[
-  {
-    date:1,
-     id:51,  // -----------------------------------> appointment Id-------  
-     patient:{
-         name:"Nethmi Eranga",
-         age:23,
-         gender:"female"
-       },
-       time: "9:15",
-       status: "pending"
-   },
-   
-   {
-     date:4,
-     id:54,    
-     patient:{
-         name:"Chathumini Pamodya",
-         age:32,
-         gender:"female"
-       },
-       time: "12:00",
-       status: "pending"
-   },   
-    
- ]*/
  
 const selectedAppointment = select ? appointments.filter(appointment => appointment.id === select) : [];
 //------------filter  the selected patient---------------------------
 const filteredAppointments = showDonePatients ? appointments.filter(appointment => appointment.status === "pending") : appointments;
- //...............filter pending patients............................
 
- const [loadingB, setLoadingB] = useState(false)//Loading button
+//for confirmation popup box
+const [loadingBConfirm, setLoadingBConfirm] = useState(false)//Loading button
+   const [openConfirm, setOpenConfirm] = useState(false)
+   const handleClickOpenConfirm = (x) => {
+        setOpenConfirm(true)
+  }
+const handleCloseConfirm = () => {setOpenConfirm(false)}  
+
+//check whether patient history details is availale
+  const loadPatientDetails=()=>{
+/*     axios.get(baseURL+endPoints.PATIENTHISTORY+select)
+    .then(res => {
+    })
+    .catch(er => {
+      console.log(er)
+    }) */
+  if(select!=null){
+  setAvailable({lab:false,rec:false,drg:false,rep:false})
+  setHistDone(false)
+  axios.get('https://localhost:7205/api/History/history'+`?Pid=${selectedAppointment[0].patient.id}`)
+  .then((res)=>{
+    console.log(res.data)
+    let tmp={lab:false,rec:false,drg:false,rprt:false}
+    if(res.data.lb.length>0){
+      tmp.lab=true
+      setLabReport(res.data.lb)
+    }
+    if(res.data.rec.length>0){
+      tmp.rec=true
+      setRecords(res.data.rec)
+    }
+    if(res.data.drgs.length>0){
+      tmp.drg=true
+      setDrganalytics(res.data.drgs)
+    }
+    if(res.data.rprts.length>0){
+      tmp.rprt=true
+      setLbanalytics(res.data.rprts)
+    }
+    setAvailable(tmp)
+    setHistDone(true)
+  })
+  .catch((er)=>{
+    setHistDone(true)
+  })
+  }
+  }
+
+  useEffect(() => {//load patient history details as the patient selected
+    loadPatientDetails()
+  },[select])
 
  return (
   <div>
   <Navbar></Navbar>
-  <Grid container spacing={0} sx={{ paddingTop: '64px', height: '100vh' }}>
-      <Grid item xs={3} style={{ height: '100%', backgroundColor:'#E7FFF9'}}>
-          <SidebarContainer sx={{ backgroundColor:'#E7FFF9'}}>
+  <Grid container spacing={0} sx={{ height: '100vh',pt:'64px'}}>
+      <Grid item xs={3} sx={{ height: '100%', backgroundColor:'#e7fff9'}}>
               <SidebarTop>
  {/*..................switch.......................... */}
               <TopUnit appointments={appointments} SwitchOnChange={() => setShowDonePatients(prev => !prev)}></TopUnit>
@@ -192,7 +226,6 @@ const filteredAppointments = showDonePatients ? appointments.filter(appointment 
                                 />                                
                             ))}
               </SidebarList>
-          </SidebarContainer>
       </Grid>
 
       <Grid item xs={9} style={{ height: '100%', overflowY: 'scroll' }}>
@@ -208,18 +241,24 @@ const filteredAppointments = showDonePatients ? appointments.filter(appointment 
                             >
                           </PersonDetail>
                       ))}
-                    <UpdateIcon sx={{position:'fixed',top:'75px',right:'20px',zIndex:'40',color:'rgb(255, 153, 0)',cursor:'pointer'}} onClick={handleAddIconClick}></UpdateIcon >
-                    <PatientsRecords openPopup={openPopup} setOpenPopup={setOpenPopup}   selectedPatientId={selectedAppointment[0].patient.id}/>
+                    {!histDone?<div style={{position:'fixed',top:'75px',right:'30px',zIndex:'40'}}>
+                      <Typography sx={{display:'inline',fontSize:'15px',fontStyle:'italic',color:'lightgrey'}}>Checking records...</Typography>
+                      <CircularProgress size={20}/>
+                    </div>:''}
+                    {available.lab?<ScienceIcon sx={{position:'fixed',top:'75px',right:'60px',zIndex:'40',color:'#438ad1',cursor:'pointer'}} onClick={handleAddIconClick2}></ScienceIcon>:''}
+                    {available.rec?<UpdateIcon sx={{position:'fixed',top:'75px',right:'20px',zIndex:'40',color:'rgb(255, 153, 0)',cursor:'pointer'}} onClick={handleAddIconClick}></UpdateIcon> :''}
+                    {available.rec?<PatientsRecords openPopup={openPopup} setOpenPopup={setOpenPopup}   selectedPatientId={selectedAppointment[0].patient.id} records={records} lbAnalytics={lbAnalytics} drgAnalytics={drgAnalytics}/>:''}
+                    <LabResult openPopup2={openPopup2} setOpenPopup2={setOpenPopup2} data={labReport}></LabResult>
 {/*.........................Add Drugs...............................................*/}
  <div style={{paddingTop:'60px'}}>
                    <div style={{marginBottom:'80px'}}>
                    <DoctorAddDrugs pres={pres} setPres={setPres} openBox={openBox} setOpenBox={setOpenBox} />
-                   <AddCircleIcon sx={{ color: '#00cc66', marginLeft: '5%', fontSize: '30px', float: 'left', marginTop: '10px', cursor: 'pointer' }} onClick={handleAddDrugsClick} />
+                   <AddCircleIcon sx={{ color: '#00cc66', marginLeft: '5%', fontSize: '24px', float: 'left', marginTop: '10px', cursor: 'pointer' }} onClick={handleAddDrugsClick} />
                    </div>
   {/*........................Lab Request..............................................*/}
                   
                    <LabRequest openpopBox={openpopBox} setOpenpopBox={setOpenpopBox} rep={rep} setrep={setrep}/>
-                   <ThermostatIcon sx={{ color: '#33cc33', marginLeft: '80%', fontSize: '45px', cursor: 'pointer' }} onClick={() =>handleAddButtonClick(selectedAppointment)} />
+                   <ScienceIcon sx={{ color: '#33cc33', marginLeft: '87%', fontSize: '30px', cursor: 'pointer' }} onClick={() =>handleAddButtonClick(selectedAppointment)} />
   
   {/*.................patient extra details ............................................*/}
                        <Box
@@ -234,7 +273,7 @@ const filteredAppointments = showDonePatients ? appointments.filter(appointment 
                        </Box>
   {/*..............confirm button.........................................*/}
                        <br></br>
-                       <Button endIcon={<DoneIcon></DoneIcon>} variant="contained" sx={{ left: '80%' }} onClick={handleClick}>Confirm</Button>
+                       <Button size='small' endIcon={<DoneIcon></DoneIcon>} variant="contained" sx={{ left: '80%' }} onClick={handleClickOpenConfirm}>Confirm</Button>
  </div>
                      
  {/*...........snack bar component....................................... */}
@@ -252,6 +291,8 @@ const filteredAppointments = showDonePatients ? appointments.filter(appointment 
           ) : (
               <Typography gutterBottom variant="p"></Typography>
           )}
+      <ConfirmPropmt action={handleClick} message="Are you sure that prescription is ready?"
+       handleClose={handleCloseConfirm} loadingB={loadingBConfirm} open={openConfirm}></ConfirmPropmt>
       </Grid>
   </Grid>
 </div>    
