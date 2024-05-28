@@ -36,8 +36,7 @@ export default function Log() {
     setOpen(false);
   }
 
-  //======================================================================================================
-
+  //========================================================================================================
   const [count,setCount]=useState(0)
   const [password,setPassword]=useState("")
   const [user,setUser]=useState("")
@@ -84,52 +83,9 @@ export default function Log() {
       }
     })
   }
-//latest Code/////////////////////////////////////////////////////////////////////////////
-const [profile, setProfile] = useState({ name: '', role: '', image: '' });
-const [connection, setConnection] = useState(null);
-
-useEffect(() => {
-  // if(Log){
-    const token = localStorage.getItem('medicareHubToken');
-    console.log("in effect");
-  if (token) {
-    console.log('token captured');
-      const decodedToken = jwtDecode(token);
-      setProfile({
-          role: decodedToken.Role,
-          image: decodedToken.Id
-      });
-
-      // Setup SignalR connection
-      const newConnection = new HubConnectionBuilder()
-          .withUrl('https://localhost:7205/notificationHub')
-          .withAutomaticReconnect()
-          .build();
 
 
-      setConnection(newConnection);
-      console.log("connected with new connection");
-  }
-  
- 
-  }
-// }
-, [Log]);
 
-useEffect(()=>{
-  if(connection){
-    connection.start()
-      .then(result=>{
-        console.log('Connected!');
-        connection.invoke('Send', profile.image, profile.role)
-            .then(() => console.log('Sent message'))
-            .catch(err => console.error(err));
-      })
-      .catch(e => console.log('Connection failed: ', e));
-  }
-})
-
-////////////////////////////////////////////////////////////////////////////
   const clearData=()=>{
     setUser("")
     setPassword("")
