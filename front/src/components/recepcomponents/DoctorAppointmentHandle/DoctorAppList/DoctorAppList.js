@@ -21,6 +21,7 @@ import { baseURL,endPoints } from "../../../../Services/Appointment";
 import BlockSelectionPopup from "../BlockSelectionPopup/BlockSelectionPopup";
 import BlockTimeSelectionPopup from "../BlockTimeSelectionPopup/BlockTImeSelectionPopup";
 import { setHeaders } from "../../../../Services/Auth";
+import signalRConnection from '../../../../Services/SignalRService'
 
 const DoctorAppList = (props) => {
   const [notificationOpen, setNotificationOpen] = useState(false);
@@ -46,6 +47,18 @@ const DoctorAppList = (props) => {
   const [cancelAll, setCancelAll] = useState(false); //var for all app cancel popup
   const today = new Date();
   const compSelectedDay = new Date(selectedDay); //day object of selected day for comparison of blocking functionality
+
+  const [notifications, setNotifications] = useState([]);
+
+    useEffect(() => {  //signal R connection use effect
+        signalRConnection.on("ReceiveNotification", (message) => {
+            setNotifications((prev) => [...prev, message]);
+        });
+
+        return () => {
+            signalRConnection.off("ReceiveNotification");
+        };
+    }, []);
 
 
 
@@ -210,6 +223,14 @@ const DoctorAppList = (props) => {
                     />
                   </div>
                 ))}
+                 <div>
+            <h2>Notifications</h2>  
+            <ul>
+                {notifications.map((notification, index) => (  //for showing real time notification
+                    <li key={index}>{notification}</li>
+                ))}
+            </ul>
+        </div>
           </Box>
         }
       </div>

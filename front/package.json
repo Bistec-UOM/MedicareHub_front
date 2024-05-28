@@ -9,6 +9,7 @@
     "@fullcalendar/interaction": "^6.1.11",
     "@fullcalendar/react": "^6.1.11",
     "@hookform/resolvers": "^3.3.4",
+    "@microsoft/signalr": "^8.0.0",
     "@mui/icons-material": "^5.15.5",
     "@mui/lab": "^5.0.0-alpha.161",
     "@mui/material": "^5.15.14",
