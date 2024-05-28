@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { Typography, Box,  Grid, Card, AppBar, Toolbar, IconButton, Divider, Switch } from '@mui/material';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
-import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
-import CloseIcon from '@mui/icons-material/Close';
 import { Link } from 'react-router-dom';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 
 export default function TopUnit(props) {
   const generatedate=()=>{
@@ -44,7 +43,7 @@ export default function TopUnit(props) {
 
         <Typography sx={{ fontSize:'14px'}}>{formattedDate}</Typography>
 
-        <FormatListBulletedIcon sx={{ cursor: 'pointer',mr:'10px'}} onClick={handleClickOpen} />
+        <NotificationsIcon sx={{ cursor: 'pointer',mr:'10px'}} onClick={handleClickOpen} />
       </Box> 
       <Switch defaultChecked size="small" onChange={props.SwitchOnChange} sx={{position:'relative',top:'10px'}}/>
     </div>   

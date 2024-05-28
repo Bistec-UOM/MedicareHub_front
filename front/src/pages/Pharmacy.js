@@ -19,7 +19,7 @@ import axios from 'axios';
 import { baseURL,endPoints } from '../Services/Pharmacy';
 import { ConfirmPropmt, PersonDetail } from '../components/Common';
 import StoreIcon from '@mui/icons-material/Store';
-import DescriptionIcon from '@mui/icons-material/Description';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 import AddCardIcon from '@mui/icons-material/AddCard';
 import Pharmacy_drugstore from './Pharmacy_drugstore';
 
@@ -117,7 +117,7 @@ export default function Pharmacy() {
     setLoadingBConfirm(true);
     let load={data:obj,total:total+serviceCharge}
     setLoadingBConfirm(true);
-    console.log(load)
+    console.log(JSON.stringify(load))
     /*axios.post(baseURL+endPoints.ADDBILLDRUG,obj)
     .then(()=>{
       setLoadingBConfirm(false)
@@ -353,7 +353,7 @@ useEffect(()=>{
         <SidebarContainer sx={{ backgroundColor:'#E7FFF9'}}>
           <SidebarTop>
           <Box sx={{width:'100%',display:'flex',justifyContent:'space-between',alignItems:'center',pr:'14px',pl:'14px'}}>
-          <DescriptionIcon></DescriptionIcon>
+          <NotificationsIcon></NotificationsIcon>
           <Typography sx={{ fontSize:'14px'}}>{formattedDate}</Typography>
           {store? <AddCardIcon sx={{cursor:'pointer'}} onClick={()=>setStore(false)}></AddCardIcon>:
           <StoreIcon sx={{cursor:'pointer'}} onClick={()=>setStore(true)}></StoreIcon>}
