@@ -11,23 +11,23 @@ import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from "@mui/icons-material/Logout";
 import {jwtDecode} from "jwt-decode";
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
 import { deleteLog } from "../../../Services/Auth";
 import { HubConnectionBuilder } from '@microsoft/signalr';
 
 const ResNavBar = ({ isClosing, setMobileOpen, mobileOpen }) => {
   const [profile, setProfile] = useState({ Name: "Profile", Role: "Empty", Image: "", Id: "" });
   const [connection, setConnection] = useState(null);
-  const drawerWidth = 358.4;
-  
-  // Drop down menu
   const [anchorEl, setAnchorEl] = useState(null);
+
+  const drawerWidth = 358.4;
+  const navigate = useNavigate();
+
   const handleClose = () => {
     setAnchorEl(null);
   };
 
-  // Profile icon
-  const handleMenu = (event) => {    
+  const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -36,8 +36,6 @@ const ResNavBar = ({ isClosing, setMobileOpen, mobileOpen }) => {
       setMobileOpen(!mobileOpen);
     }
   };
-
-  const navigate = useNavigate();
 
   const handleLogout = () => {
     if (connection) {
@@ -73,18 +71,25 @@ const ResNavBar = ({ isClosing, setMobileOpen, mobileOpen }) => {
       .withAutomaticReconnect()
       .build();
 
+    setConnection(newConnection);
+
     newConnection.start()
-      .then(() => setConnection(newConnection))
+      .then(() => {
+        console.log('Connected!');
+        newConnection.invoke('Send', profile.Id, profile.Role)
+          .then(() => console.log('Sent message'))
+          .catch(err => console.error('Error sending message:', err));
+      })
       .catch(err => console.error('Connection failed: ', err));
 
     return () => {
-      if (connection) {
-        connection.stop()
+      if (newConnection) {
+        newConnection.stop()
           .then(() => console.log('Connection stopped'))
           .catch(err => console.error('Error while stopping connection:', err));
       }
     };
-  }, []);
+  }, [profile.Id, profile.Role]);
 
   return (
     <AppBar
@@ -98,7 +103,6 @@ const ResNavBar = ({ isClosing, setMobileOpen, mobileOpen }) => {
       }}
     >
       <Toolbar style={{ justifyContent: "space-between" }}>
-        {/* Medicare Hub logo and Name */}
         <IconButton
           color="black"
           aria-label="open drawer"
@@ -120,38 +124,21 @@ const ResNavBar = ({ isClosing, setMobileOpen, mobileOpen }) => {
           </div>
         </Typography>
 
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            marginLeft: "2%",
-          }}
-        >
+        <div style={{ display: "flex", alignItems: "center", marginLeft: "2%" }}>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <Typography color="#030303">{profile.Name}</Typography>
             <Typography color="#AFADAD" sx={{ fontSize: '12px', textAlign: 'right' }}>{profile.Role}</Typography>
           </div>
-          {
-            profile.Name === "Profile" ?
-              <Avatar
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleMenu}
-                sx={{ ml: '5px', cursor: 'pointer' }}
-              >
-                <AccountCircle />
-              </Avatar> :
-              <Avatar
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleMenu}
-                sx={{ ml: '5px', cursor: 'pointer' }}
-                src={profile.Image}
-              >
-              </Avatar>
-          }
+          <Avatar
+            aria-label="account of current user"
+            aria-controls="menu-appbar"
+            aria-haspopup="true"
+            onClick={handleMenu}
+            sx={{ ml: '5px', cursor: 'pointer' }}
+            src={profile.Image || ""}
+          >
+            {profile.Name === "Profile" && <AccountCircle />}
+          </Avatar>
 
           <Menu
             id="menu-appbar"

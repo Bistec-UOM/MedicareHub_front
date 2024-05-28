@@ -45,7 +45,7 @@ export default function Staff() {
         password: "",
         imageUrl: "",
         isDeleted:false,
-        isActive: true,
+        // isActive: true,
       });
     }
   }, [open, editOpen]);
@@ -65,7 +65,7 @@ export default function Staff() {
         password: "",
         imageUrl: "",
         isDeleted:false,
-        isActive: true,
+        // isActive: true,
       });
     }
   }, [open]);
@@ -84,7 +84,7 @@ export default function Staff() {
     password: "",
     imageUrl: "",
     isDeleted:false,
-    isActive: true,
+    // isActive: false,
   });
   const [formData, setFormData] = useState({
     id: 0,
@@ -101,35 +101,42 @@ export default function Staff() {
     password: "",
     imageUrl: "",
     isDeleted:false,
-    isActive: true,
+    // isActive: false,
   });
+
   const [update, forceUpdate] = useState(0);
+  const [connection, setConnection] = useState(null);
+  const [users, setUsers] = useState([]);
 
+  const [notification, setNotification] = useState(null);
 
-  // useEffect(() => {
-  //   axios
-  //     .get(baseURL + endPoints.StaffList)
-  //     .then((res) => {
-  //       console.log(res.data);
-  //       setStaffData(res.data);
-  //       // setRecords(res.data);
-  //     })
-  //     .catch((err) => {
-  //       if (err.message === "Network Error") {
-  //         console.error("You are not connected to internet");
-  //         setNotiMessage("You are not connected to internet");
-  //         settypenoti("error");
-  //         setNotificationOpen(true);
-  //       } else {
-  //         console.error(err);
-  //       }
-  //     });
-  // }, [update]);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      axios
+        .get(baseURL + endPoints.StaffList)
+        .then((res) => {
+          console.log(res.data);
+          setStaffData(res.data);
+          console.log("Updated users with", res.data);
+          // setRecords(res.data);
+        })
+        .catch((err) => {
+          if (err.message === "Network Error") {
+            console.error("You are not connected to internet");
+            setNotiMessage("You are not connected to internet");
+            settypenoti("error");
+            setNotificationOpen(true);
+          } else {
+            console.error(err);
+          }
+        });
+    }, 1000); // 1 second delay
+
+    return () => clearTimeout(timer); // Cleanup the timer on component unmount or update
+  }, [update]);
 
 
   //////////////////////////////////////////////////////////////////////////////////////
-  const [connection, setConnection] = useState(null);
-  const [users, setUsers] = useState([]);
 
 
 
@@ -138,36 +145,53 @@ export default function Staff() {
       .withUrl('https://localhost:7205/notificationHub')
       .withAutomaticReconnect()
       .build();
-  
+
     setConnection(newConnection);
-  }, []); // Dependency array should be empty to run only on mount
-  
-  
+  }, []);
+
+
   useEffect(() => {
     if (connection) {
       connection.start()
-        .then(result => {
+        .then(() => {
           console.log('Connected!');
-          
-          // Call UsersCalling to get the initial list of users
+
           connection.invoke('UsersCalling')
             .then(() => console.log('Requested users list'))
             .catch(err => console.error(err));
-  
-          // Handle receiving the list of users
-          connection.on('Receiver', (usersJson) => {
-            const usersList = JSON.parse(usersJson);
-            setStaffData(usersList);
-            console.log('Received users list:', usersList);  // Change log to usersList for clarity
+
+          // connection.on('Receiver', (usersJson) => {
+          //   const usersList = JSON.parse(usersJson);
+          //   setStaffData(usersList);
+          //   console.log('Received users list:', usersList);
+          // });
+          connection.on('broadcastMessage', (name, message) => {
+            console.log(`${name}: ${message}`);
+            forceUpdate((prevCount) => prevCount + 1); // Trigger a re-render
+            setNotification(prevMessages => [...prevMessages, { name, message }]);
+          });
+
+          connection.on('BroadcastMessage', (name, message) => {
+            console.log(`${name}: ${message}`);
+            // Optionally, you can update the users list here if needed
+            connection.invoke('UsersCalling');
+
+          });
+          connection.on('ReceiveNotification', (message) => {
+            console.log(message);
+            setNotification(message); // Update the notification state
+            forceUpdate((prevCount) => prevCount + 1); // Trigger a re-render
           });
         })
         .catch(e => console.log('Connection failed: ', e));
     }
-  }, [connection]);
+    console.log('users Updated');
+  }, [connection]); // Add notification to the dependency array
+
   
-  useEffect(() => {
-    console.log('row2 state updated:', row2);
-  }, [row2]);
+  // useEffect(() => {
+  //   console.log('row2 state updated:', row2);
+  // }, [row2]);
   
 
 
@@ -186,7 +210,7 @@ export default function Staff() {
     role: formData.role,
     imageUrl: formData.imageUrl,
     isDeleted:false,
-    isActive: true,
+    // isActive: true,
   };
 
   const [Role, setRole] = useState("");
@@ -226,7 +250,7 @@ export default function Staff() {
       password: row2.password,
       imageUrl: row2.imageUrl,
       isDeleted:row2.isDeleted,
-      isActive:row2.isActive,
+      // isActive:row2.isActive,
     });
     console.log(pData);
     // setSelectedPaper(row2);
@@ -408,9 +432,9 @@ export default function Staff() {
             </Button>
           </Paper>
           {/* recep Paper */}
-          {row2.filter((row2) => row2.Role === rolefild ).length > 0 ? (
+          {row2.filter((row2) => row2.role === rolefild ).length > 0 ? (
             row2
-              .filter((row2) => row2.Role === rolefild)
+              .filter((row2) => row2.role === rolefild)
               .map((row2) => (
                 //role data in here
                 <Paper
@@ -428,10 +452,10 @@ export default function Staff() {
                   }}
                   onClick={() => handleEditClickOpen(row2)} // Open the edit window when clicking on the paper
                 >
-                  {console.log('row2.isActive:', row2.IsActive)} 
+                  {console.log('row2.isActive:', row2.isActive)} 
                   <Box sx={{ display: "flex" }}>
                     <Box sx={{ display: "flex", alignItems: "center" }}>
-                    {row2.IsActive ? (
+                    {row2.isActive ? (
         <StyledBadge
           overlap="circular"
           anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
@@ -440,14 +464,14 @@ export default function Staff() {
         >
           <Avatar
             alt="Remy Sharp"
-            src={row2.ImageUrl}
+            src={row2.imageUrl}
             sx={{ width: 50, height: 50 }}
           />
         </StyledBadge>
       ) : (
         <Avatar
           alt="Remy Sharp"
-          src={row2.ImageUrl}
+          src={row2.imageUrl}
           sx={{ width: 50, height: 50 }}
         />
       )}
@@ -461,13 +485,13 @@ export default function Staff() {
                       }}
                     >
                       <Typography variant="h6" sx={{ paddingTop: 0.75 }}>
-                        {row2.FullName}
+                        {row2.fullName}
                       </Typography>
                       <Typography
                         variant="h10"
                         sx={{ fontSize: 10, color: "rgb(186, 177, 177)" }}
                       >
-                        {row2.Qualifications}
+                        {row2.qualifications}
                       </Typography>
                       <Typography
                         variant="h10"
@@ -477,7 +501,7 @@ export default function Staff() {
                           color: "rgb(186, 177, 177)",
                         }}
                       >
-                        {row2.Role}
+                        {row2.role}
                       </Typography>
                     </Grid>
                   </Box>
