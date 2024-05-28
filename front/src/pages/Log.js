@@ -18,8 +18,8 @@ export default function Log() {
 
   const [phase,setPhase] = useState(0) //0-> log     1-> enter Otp     2-> new pwd
 
-  // SnackBar component====================================================================================
-  const [open, setOpen] = React.useState(false);
+  // SnackBar component properties------------------
+  const [open, setOpen] = useState(false); 
   const [msg,setMsg]=useState('Init')
   const [col,setCol]=useState('Primary')
 
@@ -36,7 +36,7 @@ export default function Log() {
     setOpen(false);
   }
 
-  //========================================================================================================
+  //Basic loging =====================================================>>>>>>>>>>>>>>>>>>>
   const [count,setCount]=useState(0)
   const [password,setPassword]=useState("")
   const [user,setUser]=useState("")
@@ -157,6 +157,7 @@ export default function Log() {
     })
    }
 
+   //stage 2
    //New password ====================================================>>>>>>>>>>>>>
    const [confpassword,setconfPassword]=useState("")
 
