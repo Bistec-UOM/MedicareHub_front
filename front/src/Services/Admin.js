@@ -1,5 +1,5 @@
-const baseURL='https://mediicarehub.azurewebsites.net/api'
-// const baseURL='https://localhost:7205/api'
+// const baseURL='https://mediicarehub.azurewebsites.net/api'
+const baseURL='https://localhost:7205/api'
 
 const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/dung7ryl3/image/upload';
 
