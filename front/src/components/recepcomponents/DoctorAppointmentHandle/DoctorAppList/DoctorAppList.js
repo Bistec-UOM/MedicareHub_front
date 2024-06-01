@@ -21,7 +21,9 @@ import { baseURL,endPoints } from "../../../../Services/Appointment";
 import BlockSelectionPopup from "../BlockSelectionPopup/BlockSelectionPopup";
 import BlockTimeSelectionPopup from "../BlockTimeSelectionPopup/BlockTImeSelectionPopup";
 import { setHeaders } from "../../../../Services/Auth";
-import signalRConnection from '../../../../Services/SignalRService'
+import * as signalR from '@microsoft/signalr';
+import { jwtDecode } from "jwt-decode";
+
 
 const DoctorAppList = (props) => {
   const [notificationOpen, setNotificationOpen] = useState(false);
@@ -30,6 +32,44 @@ const DoctorAppList = (props) => {
   const [blockSelectionPopup, setBlockSelectionPopup] = useState(false); //var for doc blockSelection  block popup
   const [docDayBlockPopup, setDocDayBlockPopup] = useState(false); //var for doc day  block popup
   const [RloadDone,setRloadDone]=useState(false)  //state for doctorapplist loading 
+
+
+  const [connection, setConnection] = useState(null);
+  const [messages, setMessages] = useState([]);
+
+  // useEffect(() => {
+
+  //   let userId = jwtDecode(localStorage.getItem("medicareHubToken")).Id;
+
+   
+  //   // Create a connection to the SignalR hub
+  //   const newConnection = new signalR.HubConnectionBuilder()
+  //     .withUrl(`https://localhost:7205/appointmentnotificationHub?userId=${userId}`) // Ensure this matches the hub URL in your Startup.cs
+  //     .withAutomaticReconnect()
+  //     .build();
+
+  //   // Set up the connection
+  //   setConnection(newConnection);
+  // }, []);
+
+  // useEffect(() => {
+  //   console.log("before con");
+  //   if (connection) {
+  //     // Start the connection
+  //     connection.start()
+  //       .then(result => {
+  //         console.log('Connected! helo');
+
+  //         // Set up a listener for notifications
+  //         connection.on('ReceiveNotification', message => {
+  //           console.log("inside receive notification");
+  //           setMessages(messages => [...messages, message]);
+  //           console.log("mesage",message);
+  //         });
+  //       })
+  //       .catch(e => console.log('Connection failed: ', e));
+  //   }
+  // }, [connection]);
 
   const handleNotification = (msg, type) => {
     setNotiMessage(msg);
@@ -50,15 +90,15 @@ const DoctorAppList = (props) => {
 
   const [notifications, setNotifications] = useState([]);
 
-    useEffect(() => {  //signal R connection use effect
-        signalRConnection.on("ReceiveNotification", (message) => {
-            setNotifications((prev) => [...prev, message]);
-        });
+    // useEffect(() => {  //signal R connection use effect
+    //     signalRConnection.on("ReceiveNotification", (message) => {
+    //         setNotifications((prev) => [...prev, message]);
+    //     });
 
-        return () => {
-            signalRConnection.off("ReceiveNotification");
-        };
-    }, []);
+    //     return () => {
+    //         signalRConnection.off("ReceiveNotification");
+    //     };
+    // }, []);
 
 
 
@@ -77,6 +117,7 @@ const DoctorAppList = (props) => {
     //for fethcing the app of a day
     document.body.style.margin = "0";
     console.log("props",props.docid)
+    console.log("messages",messages);
 
     axios
       .get(
@@ -222,16 +263,16 @@ const DoctorAppList = (props) => {
                       item={item}
                     />
                   </div>
-                ))}
-                 <div>
-            <h2>Notifications</h2>  
-            <ul>
-                {notifications.map((notification, index) => (  //for showing real time notification
-                    <li key={index}>{notification}</li>
-                ))}
-            </ul>
-        </div>
+                  
+                ))}     
+                <div>
+                  <h1>Notifications</h1>
+                  {messages.map((item, index) => (
+        <Typography key={index}>{item}</Typography>
+      ))}
+                </div>
           </Box>
+        
         }
       </div>
       <DayBlockPopup
