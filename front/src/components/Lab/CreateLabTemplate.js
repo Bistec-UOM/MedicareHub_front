@@ -20,12 +20,41 @@ export default function CreateLabTemplate({setPage,setTload}) {
       //Field values--------------------------------------------------------------
       const [testData,setTestData]=useState({name:'',provider:'',price:0})
       const [testField,setTestField]=useState([])
-      const [fieldName,setFieldName]=useState()
+      const [fieldName,setFieldName]=useState('')
       const [refMin,setRefMin]=useState()
       const [refMax,setRefMax]=useState()
       const [unit,setUnit]=useState()
 
+      const validate=()=>{
+        if(fieldName==''){
+          seterMsg("Field name can't be empty")
+          return false
+        }
+        if(refMin==''||refMax==''){
+          seterMsg("Ref values can't be empty")
+          return false
+        }
+        if(parseFloat(refMin)>=parseFloat(refMax)){
+          seterMsg("Min ref must be lower than Max Ref ")
+          return false
+        }
+        let x=true
+        testField.forEach((el)=>{
+          if(fieldName==el.fieldname){
+            seterMsg("Use a different Field name")
+            x=false
+          }
+        })
+        if(!x){return false}
+        seterMsg('')
+        return true
+      }
+
       const addTestField=()=>{
+        if(!validate()){
+          handleClick2()
+          return
+        }
         let data_set={
          fieldname:fieldName,index:'',minRef:refMin,maxRef:refMax,unit:unit
         }
@@ -43,13 +72,45 @@ export default function CreateLabTemplate({setPage,setTload}) {
       //Edit fields---------------------------------------------------------------
       const[editMode,setEditMode]=useState(false)
       const[editData,setEditData]=useState({fieldname:'',index:'',minRef:'',maxRef:'',unit:''})
+      const[currentInd,setcurentInd]=useState(null)
 
       const setEditModeData=(indx)=>{
+        setcurentInd(indx)
         setEditMode(true)
         setEditData({...editData,fieldname:testField[indx].fieldname,index:indx,minRef:testField[indx].minRef,maxRef:testField[indx].maxRef,unit:testField[indx].unit})
       }
 
+      const validateEdit=()=>{
+        if(editData.fieldname==''){
+          seterMsg("Field name can't be empty")
+          return false
+        }
+        if(editData.minRef==''||editData.maxRef==''){
+          seterMsg("Ref values can't be empty")
+          return false
+        }
+        if(parseFloat(editData.minRef)>=parseFloat(editData.maxRef)){
+          seterMsg("Min ref must be lower than Max Ref ")
+          return false
+        }
+        let x=true
+        testField.forEach((el,ind)=>{
+          if(editData.fieldname==el.fieldname && ind!=currentInd){
+            seterMsg("Use a different Field name")
+            x=false
+          }
+        })
+        if(!x){return false}
+        seterMsg('')
+        return true
+      }
+
       const addEditData=()=>{
+        if(!validateEdit()){
+          handleClick2()
+          setcurentInd(null)
+          return
+        }
         let arr=[...testField]
         let e_data={
           fieldname:editData.fieldname,
@@ -109,25 +170,48 @@ export default function CreateLabTemplate({setPage,setTload}) {
         }
         axios.post(baseURL+endPoints.TEMPLATE,T)
         .then(res=>{
-          handleClick1 ()
+          seterMsg('Template added successfuly')
+          handleClick1 ('success')
+          setTload([])//make test list empty to reload again
+          setSent(true)
         })
         .catch(er=>{
+          if(er.response && er.response.status==404){
+            seterMsg('This test name already exist')
+            handleClick1 ('error')
+            return
+          }
+          seterMsg('Error occured! Try again')
+          handleClick1 ('error')
           console.log(er)
-          setOpenConfirm(false)
-          setLoadingBConfirm(false)
         })
       }
     
-      // SnackBar component===========================================================================
+      // SnackBar template===========================================================================
+        const [open2, setOpen2] = React.useState(false);
+        const [erMsg,seterMsg] = useState('');
+
+        const handleClick2 = () => {
+          setOpen2(true);
+        };
+      
+        const handleClose2 = (event, reason) => {
+          if (reason === 'clickaway') {
+            return;
+          }
+          setOpen2(false);
+        }
+
+      // SnackBar finalize===========================================================================
         const [open1, setOpen1] = React.useState(false);
         const [sent,setSent]=useState(false)//to integrate setTimeout with a useEffect
+        const [serverity,setServerity] = useState('Primary')
 
-        const handleClick1 = () => {
+        const handleClick1 = (x) => {
+          setServerity(x)
           setLoadingBConfirm(false)
           setOpenConfirm(false)
           setOpen1(true);
-          setTload([])//make test list empty to reload again
-          setSent(true)
         };
       
         const handleClose1 = (event, reason) => {
@@ -151,7 +235,28 @@ export default function CreateLabTemplate({setPage,setTload}) {
     const [loadingBConfirm, setLoadingBConfirm] = useState(false)//Loading button
     const [openConfirm, setOpenConfirm] = useState(false)
     const handleClickOpenConfirm = (x) => {
-        setOpenConfirm(true)
+      if(testField.length==0){
+        seterMsg("Template can't be empty")
+        handleClick2()
+        return
+      }
+      if(testData.name==''){
+        seterMsg("Test can't be empty")
+        handleClick2()
+        return
+      }
+      if(testData.price==''){
+        seterMsg("Price can't be empty")
+        handleClick2()
+        return
+      }
+      const integerRegex = /^-?\d+$/;
+      if(!integerRegex.test(testData.price)){
+        seterMsg("Price must be an integer")
+        handleClick2()
+        return
+      }
+      setOpenConfirm(true)
     }
     const handleCloseConfirm = () => {setOpenConfirm(false)}  
 
@@ -290,16 +395,28 @@ export default function CreateLabTemplate({setPage,setTload}) {
        <ConfirmPropmt action={createTemplate} message="Are you sure that your template is ready?"
        handleClose={handleCloseConfirm} loadingB={loadingBConfirm} open={openConfirm}></ConfirmPropmt>
 
-  {/*------------------ Snackbar alert ---------------------------------------------- */}
+  {/*------------------ Snackbar alert for template-------------------------------------- */}
+
+    <Snackbar open={open2} autoHideDuration={2000} onClose={handleClose2}>
+        <Alert
+          onClose={handleClose2}
+          severity='warning'
+          variant="filled"
+          sx={{ width: '100%' }}
+        >
+          {erMsg}
+        </Alert>
+    </Snackbar>
+  {/*------------------ Snackbar alert for finalizing-------------------------------------- */}
 
     <Snackbar open={open1} autoHideDuration={2000} onClose={handleClose1}>
         <Alert
           onClose={handleClose1}
-          severity="success"
+          severity={serverity}
           variant="filled"
           sx={{ width: '100%' }}
         >
-          Template added successfuly
+          {erMsg}
         </Alert>
     </Snackbar>
     </div>
