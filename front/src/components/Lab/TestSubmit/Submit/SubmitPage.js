@@ -13,12 +13,19 @@ import { SearchBarSM } from '../../../Common';
 export default function SubmitPage({setpage}) {
 
     // SnackBar component====================================================================================
-    const [open1, setOpen1] = React.useState(false);
+    const [open1, setOpen1] = useState(false);
+    const [msg,setMsg] = useState('')
+    const [svr,setSvr] = useState('')
 
-    const handleClick1 = (x) => {
+    const handleClick1 = (x,msg,sv) => {
+      if(x!=null){
+        setOpen1(true);
+        let tmp=load.filter((el)=>{return el.id!==x})
+        setLoad(tmp)
+      }
+      setMsg(msg)
+      setSvr(sv)
       setOpen1(true);
-      let tmp=load.filter((el)=>{return el.id!==x})
-      setLoad(tmp)
     };
   
     const handleClose1 = (event, reason) => {
@@ -36,7 +43,11 @@ export default function SubmitPage({setpage}) {
         settest(t); 
         setOpen(true)
     }
-    const handleClose = () => {setOpen(false)}  
+    const handleClose = (x,reason) => {
+      if (reason !== 'backdropClick') {
+        setOpen(false);
+      }
+    }  
 
     //----------------------------------------------------------------------------
 
@@ -127,11 +138,11 @@ export default function SubmitPage({setpage}) {
     <Snackbar open={open1} autoHideDuration={2000} onClose={handleClose1}>
         <Alert
           onClose={handleClose1}
-          severity="success"
+          severity={svr}
           variant="filled"
           sx={{ width: '100%' }}
         >
-          Results added successfuly
+          {msg}
         </Alert>
     </Snackbar>
     </div>
