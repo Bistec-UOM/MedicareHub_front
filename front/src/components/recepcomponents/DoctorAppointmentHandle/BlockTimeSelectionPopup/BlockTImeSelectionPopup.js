@@ -11,6 +11,7 @@ import MoreTimeIcon from "@mui/icons-material/MoreTime";
 import { useState } from "react";
 import dayjs from "dayjs";
 import { baseURL, endPoints } from "../../../../Services/Appointment";
+import { setHeaders } from "../../../../Services/Auth";
 
 //dayTime block popup
 
@@ -77,7 +78,7 @@ export default function BlockTimeSelectionPopup({
       endTime:formattedEndTIme
     };
     try {
-      await axios.post(baseURL + endPoints.UnableDates, obj);
+      await axios.post(baseURL + endPoints.UnableDates, obj,setHeaders());
       handleNotification("Time Blocked succesfully!", "success");
       setTimeSelection(false);
     } catch (err) {

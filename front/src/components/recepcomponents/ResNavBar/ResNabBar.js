@@ -1,4 +1,4 @@
-import { AppBar, Avatar, Toolbar } from "@mui/material";
+import { AppBar, Avatar, Toolbar, List, ListItem, ListItemText } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Typography from "@mui/material/Typography";
 import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
@@ -10,15 +10,45 @@ import MenuIcon from "@mui/icons-material/Menu";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from "@mui/icons-material/Logout";
-import {jwtDecode} from "jwt-decode";
-import { useNavigate } from 'react-router-dom';
+import { jwtDecode } from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 import { deleteLog } from "../../../Services/Auth";
-import { HubConnectionBuilder } from '@microsoft/signalr';
+import { HubConnectionBuilder } from "@microsoft/signalr";
+import Badge from "@mui/material/Badge";
+import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import Popover from "@mui/material/Popover";
+import axios from "axios";
+import { baseURL,endPoints } from "../../../Services/Appointment";
+import { setHeaders } from "../../../Services/Auth";
 
 const ResNavBar = ({ isClosing, setMobileOpen, mobileOpen }) => {
-  const [profile, setProfile] = useState({ Name: "Profile", Role: "Empty", Image: "", Id: "" });
+  const [profile, setProfile] = useState({
+    Name: "Profile",
+    Role: "Empty",
+    Image: "",
+    Id: "",
+  });
   const [connection, setConnection] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
+
+  const [notificationList,setNotificationList]=useState([]) //notification list
+
+  const [badgeContent, setBadgeContent] = useState(3); //var for notification count
+
+  const [anchorElPop, setAnchorElPop] = useState(null);
+
+  const handleClosePopOver = () => {
+    setAnchorElPop(null);
+  };
+
+  const openPopOver = Boolean(anchorElPop);
+  const id = openPopOver ? "simple-popover" : undefined;
+
+  const handleNotificationBell = (event) => {
+    setAnchorElPop(event.currentTarget);
+    setBadgeContent(0);
+  };
 
   const drawerWidth = 358.4;
   const navigate = useNavigate();
@@ -39,30 +69,44 @@ const ResNavBar = ({ isClosing, setMobileOpen, mobileOpen }) => {
 
   const handleLogout = () => {
     if (connection) {
-      connection.invoke('ManualDisconnect', profile.Id)
+      connection
+        .invoke("ManualDisconnect", profile.Id)
         .then(() => connection.stop())
         .then(() => {
           deleteLog();
           handleClose();
-          navigate('/');
+          navigate("/");
         })
-        .catch(err => console.error('Error while disconnecting:', err));
+        .catch((err) => console.error("Error while disconnecting:", err));
     } else {
       deleteLog();
       handleClose();
-      navigate('/');
+      navigate("/");
     }
   };
+ 
+  useEffect(() => {  //use effect for fetching notification list
+    let userId = jwtDecode(localStorage.getItem("medicareHubToken")).Id;
+    axios
+      .get(baseURL + endPoints.notifications + `${userId}`,setHeaders())
+      .then((response) => {
+        setNotificationList(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching disabled dates:", error);
+      });
+  }, []);
 
   useEffect(() => {
-    let token = localStorage.getItem('medicareHubToken');
+    console.log("nlist",notificationList);
+    let token = localStorage.getItem("medicareHubToken");
     if (token !== null) {
       let decodedToken = jwtDecode(token);
       setProfile({
         Id: decodedToken.Id,
         Name: decodedToken.Name,
         Role: decodedToken.Role,
-        Image: decodedToken.Profile
+        Image: decodedToken.Profile,
       });
     }
 
@@ -74,20 +118,25 @@ const ResNavBar = ({ isClosing, setMobileOpen, mobileOpen }) => {
 
     setConnection(newConnection);
 
-    newConnection.start()
+    newConnection
+      .start()
       .then(() => {
-        console.log('Connected!');
-        newConnection.invoke('Send', profile.Id, profile.Role)
-          .then(() => console.log('Sent message'))
-          .catch(err => console.error('Error sending message:', err));
+        console.log("Connected!");
+        newConnection
+          .invoke("Send", profile.Id, profile.Role)
+          .then(() => console.log("Sent message"))
+          .catch((err) => console.error("Error sending message:", err));
       })
-      .catch(err => console.error('Connection failed: ', err));
+      .catch((err) => console.error("Connection failed: ", err));
 
     return () => {
       if (newConnection) {
-        newConnection.stop()
-          .then(() => console.log('Connection stopped'))
-          .catch(err => console.error('Error while stopping connection:', err));
+        newConnection
+          .stop()
+          .then(() => console.log("Connection stopped"))
+          .catch((err) =>
+            console.error("Error while stopping connection:", err)
+          );
       }
     };
   }, [profile.Id, profile.Role]);
@@ -115,27 +164,42 @@ const ResNavBar = ({ isClosing, setMobileOpen, mobileOpen }) => {
         </IconButton>
         <Typography>
           <div style={{ display: "flex", alignItems: "center" }}>
-            <LocalHospitalIcon style={{ color: "red", marginRight: "8px" }} fontSize="large" />
-            <span style={{ color: "#09D636", fontWeight: "bold", fontSize: 25 }}>
+            <LocalHospitalIcon
+              style={{ color: "red", marginRight: "8px" }}
+              fontSize="large"
+            />
+            <span
+              style={{ color: "#09D636", fontWeight: "bold", fontSize: 25 }}
+            >
               Medicare
             </span>
-            <span style={{ color: "#AFDCB9", fontWeight: "bold", fontSize: 25 }}>
+            <span
+              style={{ color: "#AFDCB9", fontWeight: "bold", fontSize: 25 }}
+            >
               Hub
             </span>
           </div>
         </Typography>
 
-        <div style={{ display: "flex", alignItems: "center", marginLeft: "2%" }}>
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <div
+          style={{ display: "flex", alignItems: "center", marginLeft: "2%" }}
+        >
+          <div style={{ display: "flex", flexDirection: "column" }}>
             <Typography color="#030303">{profile.Name}</Typography>
-            <Typography color="#AFADAD" sx={{ fontSize: '12px', textAlign: 'right' }}>{profile.Role}</Typography>
+            <Typography
+              color="#AFADAD"
+              sx={{ fontSize: "12px", textAlign: "right" }}
+            >
+              {profile.Role}
+            </Typography>
           </div>
+
           <Avatar
             aria-label="account of current user"
             aria-controls="menu-appbar"
             aria-haspopup="true"
             onClick={handleMenu}
-            sx={{ ml: '5px', cursor: 'pointer' }}
+            sx={{ ml: "5px", cursor: "pointer" }}
             src={profile.Image || ""}
           >
             {profile.Name === "Profile" && <AccountCircle />}
@@ -160,6 +224,37 @@ const ResNavBar = ({ isClosing, setMobileOpen, mobileOpen }) => {
               <LogoutIcon sx={{ paddingRight: "10%" }} /> LogOut
             </MenuItem>
           </Menu>
+          <IconButton aria-describedby={id} onClick={handleNotificationBell}>
+            <Badge badgeContent={badgeContent} color="secondary">
+              {badgeContent > 1 ? (
+                <NotificationsIcon color="action" />
+              ) : (
+                <NotificationsNoneIcon color="action" />
+              )}
+            </Badge>
+          </IconButton>
+          <Popover
+            id={id}
+            open={openPopOver}
+            anchorEl={anchorElPop}
+            onClose={handleClosePopOver}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "left",
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "left",
+            }}
+          >
+            <List>
+              {notificationList.map((notification, index) => (
+                <ListItem key={index}>
+                  <ListItemText primary={notification.message} />
+                </ListItem>
+              ))}
+            </List>
+          </Popover>
         </div>
       </Toolbar>
     </AppBar>

@@ -16,6 +16,10 @@ import interactionPlugin from "@fullcalendar/interaction";
 import "../../../../recep.css";
 import CustomizedProgressBars from "../../CustomProgressBar/CustomProgressBar";
 import { baseURL,endPoints } from "../../../../Services/Appointment";
+import { setHeaders } from "../../../../Services/Auth";
+
+
+
 const DoctorAppCalender = ({ doctorId }) => {
   const [doctorList, setDoctorList] = useState([]);
   const [doctorAppDeleteOpen, setDoctorAppDeleteOpen] = useState(false); //state variable for popup of the doctor appointment cancellation
@@ -43,12 +47,19 @@ const DoctorAppCalender = ({ doctorId }) => {
 
   let newselectedDay;
   let today;
+
+
+  
+
+
+
+
   useEffect(() =>
     //for fetching the appoinments of the month for a doctor
     {
       axios
         .get(
-         baseURL+endPoints.AppDay+`${doctorId}`+"/month/"+`${pasMonth}`
+         baseURL+endPoints.AppDay+`${doctorId}`+"/month/"+`${pasMonth}`,setHeaders()
         )
         .then((response) => {
           setDayAppCount(response.data);
@@ -190,7 +201,6 @@ const DoctorAppCalender = ({ doctorId }) => {
       .getSeconds()
       .toString()
       .padStart(2, "0")}${millisecondsPart}`;
-      console.log("Hello world");
     if (!getDayStatus(formattedDate)) {
       if (selectedMonth === currentMonth) {
         navigate("/dappList", {

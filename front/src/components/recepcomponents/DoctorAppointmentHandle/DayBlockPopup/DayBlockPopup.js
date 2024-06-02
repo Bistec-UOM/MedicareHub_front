@@ -7,6 +7,7 @@ import { Box } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import ErrorIcon from "@mui/icons-material/Error";
 import { baseURL, endPoints } from "../../../../Services/Appointment";
+import { setHeaders } from "../../../../Services/Auth";
 
 //day block popup
 
@@ -74,7 +75,7 @@ export default function DayBlockPopup({
       endTime:formattedendDate
     };
     try {
-      await axios.post(baseURL + endPoints.UnableDates, obj);
+      await axios.post(baseURL + endPoints.UnableDates, obj,setHeaders());
       setDocDayBlockPopup(false);
       setBlockSelectionPopup(false);
       handleNotification("Day Blocked succesfully!", "success");

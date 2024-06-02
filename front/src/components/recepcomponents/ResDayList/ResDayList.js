@@ -12,6 +12,7 @@ import PageNotFound from "../PageNotFound/PageNotFound";
 import { Load } from "../../Other";
 import { baseURL, endPoints } from "../../../Services/Appointment";
 import AddIcon from "@mui/icons-material/Add";
+import { setHeaders } from "../../../Services/Auth";
 //day app list page for a day
 
 const ResDayList = (props) => {
@@ -50,7 +51,8 @@ const ResDayList = (props) => {
           endPoints.AppDay +
           `${props.docid}` +
           "/day/" +
-          `${selectedDay}`
+          `${selectedDay}`,
+          setHeaders()
       )
       .then((response) => {
         const responseData = response.data;

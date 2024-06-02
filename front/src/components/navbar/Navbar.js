@@ -1,20 +1,101 @@
-import { AppBar, Toolbar, Typography, Avatar, IconButton, MenuItem, Menu } from "@mui/material";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Avatar,
+  IconButton,
+  MenuItem,
+  Menu,
+ List, ListItem, ListItemText
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
-import AccountCircle from '@mui/icons-material/AccountCircle';
-import MenuIcon from '@mui/icons-material/Menu';
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
-import SettingsIcon from '@mui/icons-material/Settings';
-import LogoutIcon from '@mui/icons-material/Logout';
-import { useNavigate } from 'react-router-dom';
-import {jwtDecode} from "jwt-decode"; // Ensure correct import
-import { HubConnectionBuilder } from '@microsoft/signalr';
+import AccountCircle from "@mui/icons-material/AccountCircle";
+import MenuIcon from "@mui/icons-material/Menu";
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
+import SettingsIcon from "@mui/icons-material/Settings";
+import LogoutIcon from "@mui/icons-material/Logout";
+import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode"; // Ensure correct import
+import { HubConnectionBuilder } from "@microsoft/signalr";
 import { deleteLog } from "../../Services/Auth";
+import Badge from "@mui/material/Badge";
+import MailIcon from "@mui/icons-material/Mail";
+import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import Popover from "@mui/material/Popover";
+import { baseURL,endPoints } from "../../Services/Appointment";
+import { setHeaders } from "../../Services/Auth";
+import axios from "axios";
+import * as signalR from '@microsoft/signalr';
+
+
 
 const Navbar = () => {
-  const [profile, setProfile] = useState({ name: "", role: "", image: "", Id: "" });
+  const [profile, setProfile] = useState({
+    name: "",
+    role: "",
+    image: "",
+    Id: "",
+  });
   const [connection, setConnection] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
+
+  const [notificationList,setNotificationList]=useState([]) //notification list
+  const [notificationMessages,setNotificationMessages]=useState([]); //retreived messages from notificationList
+
+  const [badgeContent, setBadgeContent] = useState(0); //var for notification count
+
+  const [anchorElPop, setAnchorElPop] = useState(null);
+
+
+  const [AppNotificationconnection, setAppNotiConnection] = useState(null);
+
+  let userId = jwtDecode(localStorage.getItem("medicareHubToken")).Id;
+  
+
+  useEffect(() => {  //use effect for connection with hub
+
+    // Create a connection to the SignalR hub
+    const newConnection = new signalR.HubConnectionBuilder()
+    .withUrl(`https://localhost:7205/appointmentnotificationHub?userId=${userId}`)
+    .configureLogging(signalR.LogLevel.Information)
+    .build();
+    // Set up the connection
+    setAppNotiConnection(newConnection);
+  }, []);
+
+  useEffect(() => {  //use effect for receiving real time notification
+    console.log("before con");
+    if (AppNotificationconnection) {
+      // Start the connection
+      AppNotificationconnection.start()
+        .then(result => {
+          console.log('Connected! helo');
+          // Set up a listener for notifications
+          AppNotificationconnection.on('ReceiveNotification', message => {
+            console.log("inside receive side notification",message); //adding new real time notitication to the notification messages list
+            setNotificationMessages(notificationMessages => [...notificationMessages, message]);
+            setBadgeContent(badgeContent+1);  //increate badge content for new real time notification
+          });
+        })
+        .catch(e => console.log('Connection failed: ', e));
+    }
+  }, [AppNotificationconnection]);
+
+  const handleClosePopOver = () => {
+    setAnchorElPop(null);
+  };
+
+  const openPopOver = Boolean(anchorElPop);
+  const id = openPopOver ? "simple-popover" : undefined;
+
+  const handleNotificationBell = (event) => {
+    setAnchorElPop(event.currentTarget);
+    setBadgeContent(0);
+    axios.put(
+      baseURL+endPoints.MarkAsSennNotification+`${userId}`+"/user/"+`${true}`,setHeaders());
+  };
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -26,32 +107,54 @@ const Navbar = () => {
 
   const navigate = useNavigate();
 
+  useEffect(() => {  //use effect for fetching notification list
+    let userId = jwtDecode(localStorage.getItem("medicareHubToken")).Id;
+    axios
+      .get(baseURL + endPoints.notifications + `${userId}`,setHeaders())
+      .then((response) => {
+        setNotificationList(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching disabled dates:", error);
+      });
+  }, []);
+
+  useEffect(() => {  // Extract only  messages from notificationList and set notificationMessages 
+      const messages = notificationList.map((notification) => notification.message);
+      const unseenNotifications = notificationList.filter(notification => notification.seen===false);
+      setBadgeContent(unseenNotifications.length);
+      setNotificationMessages(messages);
+  
+  }, [notificationList]);
+
   const handleLogout = () => {
     if (connection) {
-      connection.invoke('ManualDisconnect', profile.Id)
+      connection
+        .invoke("ManualDisconnect", profile.Id)
         .then(() => connection.stop())
         .then(() => {
           deleteLog();
           handleClose();
-          navigate('/');
+          navigate("/");
         })
-        .catch(err => console.error('Error while disconnecting:', err));
+        .catch((err) => console.error("Error while disconnecting:", err));
     } else {
       deleteLog();
       handleClose();
-      navigate('/');
+      navigate("/");
     }
   };
 
   useEffect(() => {
-    const token = localStorage.getItem('medicareHubToken');
+    console.log("nlist",notificationList);
+    const token = localStorage.getItem("medicareHubToken");
     if (token) {
       const decodedToken = jwtDecode(token);
       setProfile({
         name: decodedToken.Name,
         role: decodedToken.Role,
         image: decodedToken.Profile,
-        Id: decodedToken.Id
+        Id: decodedToken.Id,
       });
     }
   }, []);
@@ -66,28 +169,32 @@ const Navbar = () => {
 
       setConnection(newConnection);
 
-      newConnection.start()
+      newConnection
+        .start()
         .then(() => {
-          console.log('Connected!');
-          console.log('name:', profile.name);
-          console.log('Id:', profile.Id);
-          console.log('Role:', profile.role);
-          newConnection.invoke('Send', profile.Id, profile.role);
+          console.log("Connected!");
+          console.log("name:", profile.name);
+          console.log("Id:", profile.Id);
+          console.log("Role:", profile.role);
+          newConnection.invoke("Send", profile.Id, profile.role);
         })
-        .catch(err => console.error('Connection failed: ', err));
+        .catch((err) => console.error("Connection failed: ", err));
 
       return () => {
         if (newConnection) {
-          newConnection.stop()
-            .then(() => console.log('Connection stopped'))
-            .catch(err => console.error('Error while stopping connection:', err));
+          newConnection
+            .stop()
+            .then(() => console.log("Connection stopped"))
+            .catch((err) =>
+              console.error("Error while stopping connection:", err)
+            );
         }
       };
     }
   }, [profile]);
 
   return (
-    <AppBar sx={{ backgroundColor: '#f7f8f7' }} elevation={0}>
+    <AppBar sx={{ backgroundColor: "#f7f8f7" }} elevation={0}>
       <Toolbar style={{ justifyContent: "space-between" }}>
         <IconButton
           color="black"
@@ -99,27 +206,41 @@ const Navbar = () => {
         </IconButton>
         <Typography>
           <div style={{ display: "flex", alignItems: "center" }}>
-            <LocalHospitalIcon style={{ color: "red", marginRight: "8px" }} fontSize="large" />
-            <span style={{ color: "#09D636", fontWeight: "bold", fontSize: 25 }}>
+            <LocalHospitalIcon
+              style={{ color: "red", marginRight: "8px" }}
+              fontSize="large"
+            />
+            <span
+              style={{ color: "#09D636", fontWeight: "bold", fontSize: 25 }}
+            >
               Medicare
             </span>
-            <span style={{ color: "#AFDCB9", fontWeight: "bold", fontSize: 25 }}>
+            <span
+              style={{ color: "#AFDCB9", fontWeight: "bold", fontSize: 25 }}
+            >
               Hub
             </span>
           </div>
         </Typography>
 
-        <div style={{ display: "flex", alignItems: "center", marginLeft: "2%" }}>
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <div
+          style={{ display: "flex", alignItems: "center", marginLeft: "2%" }}
+        >
+          <div style={{ display: "flex", flexDirection: "column" }}>
             <Typography color="#030303">{profile.name}</Typography>
-            <Typography color="#AFADAD" sx={{ fontSize: '12px', textAlign: 'right' }}>{profile.role}</Typography>
+            <Typography
+              color="#AFADAD"
+              sx={{ fontSize: "12px", textAlign: "right" }}
+            >
+              {profile.role}
+            </Typography>
           </div>
           <Avatar
             aria-label="account of current user"
             aria-controls="menu-appbar"
             aria-haspopup="true"
             onClick={handleMenu}
-            sx={{ ml: '5px', cursor: 'pointer' }}
+            sx={{ ml: "5px", cursor: "pointer" }}
             src={profile.image || ""}
           >
             {profile.name === "" && <AccountCircle />}
@@ -144,6 +265,37 @@ const Navbar = () => {
               <LogoutIcon sx={{ paddingRight: "10%" }} /> LogOut
             </MenuItem>
           </Menu>
+          <IconButton onClick={handleNotificationBell}>
+            <Badge badgeContent={badgeContent} color="secondary">
+              {badgeContent > 1 ? (
+                <NotificationsIcon color="action" />
+              ) : (
+                <NotificationsNoneIcon color="action" />
+              )}
+            </Badge>
+          </IconButton>
+          <Popover
+            id={id}
+            open={openPopOver}
+            anchorEl={anchorElPop}
+            onClose={handleClosePopOver}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "left",
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "left",
+            }}
+          >
+           <List>
+              {notificationMessages.map((notification, index) => (
+                <ListItem key={index}>
+                  <ListItemText primary={notification} />
+                </ListItem>
+              ))}
+            </List>
+          </Popover>
         </div>
       </Toolbar>
     </AppBar>
