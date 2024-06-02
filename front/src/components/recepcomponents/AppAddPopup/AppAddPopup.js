@@ -13,6 +13,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Grid, Stack } from "@mui/material";
 import { Load } from "../../Other";
 import { baseURL,endPoints } from "../../../Services/Appointment";
+import { setHeaders } from "../../../Services/Auth";
 
 export default function AppAddPopup({
   filteredAppointments,
@@ -81,7 +82,8 @@ export default function AppAddPopup({
     setRloadDone(false);
     event.preventDefault();
     var finalTime = getRealTime(appTime);
-    var date = finalTime;
+    var date = finalTime;//time object for scheduled appointment time
+    const createdDay=new Date(); //current time of appointment making time
     //format the time to string form
     const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1)
       .toString()
@@ -92,18 +94,34 @@ export default function AppAddPopup({
       .getSeconds()
       .toString()
       .padStart(2, "0")}.${date.getMilliseconds().toString().padStart(3, "0")}`;
+
+     
+
+      const formattedCreatedDate = `${createdDay.getFullYear()}-${(createdDay.getMonth() + 1)
+        .toString()
+        .padStart(2, "0")}-${createdDay.getDate().toString().padStart(2, "0")}T${createdDay
+        .getHours()
+        .toString()
+        .padStart(2, "0")}:${createdDay.getMinutes().toString().padStart(2, "0")}:${createdDay
+        .getSeconds()
+        .toString()
+        .padStart(2, "0")}.${createdDay.getMilliseconds().toString().padStart(3, "0")}`;
+
+
+
     let obj = {
       id: 0,
       dateTime: formattedDate,
       status: "new",
       patientId: activeData.id,
+      createdAt:formattedCreatedDate,
       doctorId: docid,
       recepId: 1,
     };
     try {
       var response = await axios.post(
         baseURL+endPoints.Appoinment,
-        obj
+        obj,setHeaders()
       );
       if (response.data == 0) { //check already appointments
         setRloadDone(true);

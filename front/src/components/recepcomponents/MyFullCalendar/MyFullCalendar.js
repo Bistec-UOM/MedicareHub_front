@@ -11,6 +11,7 @@ import { useState } from "react";
 import "../../../recep.css";
 import SuccessNotification from "../SnackBar/SuccessNotification";
 import { baseURL, endPoints } from "../../../Services/Appointment";
+import { setHeaders } from "../../../Services/Auth";
 
 //full calender for receptionist
 function MyFullCalendar({
@@ -47,7 +48,7 @@ function MyFullCalendar({
   //fetching blocked dates of a doctor
   useEffect(() => {
     axios
-      .get(baseURL + endPoints.BlockedDates + `${doctorId}`)
+      .get(baseURL + endPoints.BlockedDates + `${doctorId}`,setHeaders())
       .then((response) => {
         setDisabledDates(response.data);
       })
@@ -60,7 +61,7 @@ function MyFullCalendar({
   useEffect(() => {
     axios
       .get(
-        baseURL + endPoints.AppDay + `${doctorId}` + "/month/" + `${pasMonth}`
+        baseURL + endPoints.AppDay + `${doctorId}` + "/month/" + `${pasMonth}`,setHeaders()
       )
       .then((response) => {
         setDayAppCount(response.data); 

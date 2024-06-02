@@ -7,12 +7,13 @@ import { Box } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import ErrorIcon from "@mui/icons-material/Error";
 import { baseURL,endPoints } from "../../../Services/Appointment";
+import { setHeaders } from "../../../Services/Auth";
 
 export default function AppDeletePopup({appointlist,setAppointList,handleNotification,item,delcount,setDelcount, daopen, setDaopen,filteredAppointments,setFilteredAppointments,isDisabled,setIsDisabled }) {
 
   const handleRealDelete=(item)=>
   {
-    axios.delete(baseURL+endPoints.Appoinment+`${item.appointment.id}`)
+    axios.delete(baseURL+endPoints.Appoinment+`${item.appointment.id}`,setHeaders())
   .then(response => {
     setDelcount(delcount+1);  //for fetching the newly updated app list
     setDaopen(false);
