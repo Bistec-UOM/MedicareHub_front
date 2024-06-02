@@ -317,7 +317,7 @@ export default function CreateLabTemplate({setPage,setTload}) {
                            </Box>
      
                            <Box style={{width:'5%',height:'100%'}}>
-                              <HighlightOffIcon color='error'fontSize='small' sx={{cursor:'pointer'}} onClick={()=>deleteTestField(elm.field)} ></HighlightOffIcon>
+                              <HighlightOffIcon color='error'fontSize='small' sx={{cursor:'pointer'}} onDoubleClick={()=>deleteTestField(elm.field)} ></HighlightOffIcon>
                            </Box>
                            
                        </Box>

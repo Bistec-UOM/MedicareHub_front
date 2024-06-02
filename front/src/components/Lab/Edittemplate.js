@@ -302,7 +302,7 @@ export default function Edittemplate({setPage,tId,Tdata,setTload}) {
                            </Box>
      
                            <Box style={{width:'5%',height:'100%'}}>
-                              <HighlightOffIcon color='error'fontSize='small' sx={{cursor:'pointer'}} onClick={()=>deleteTestField(indx)} ></HighlightOffIcon>
+                              <HighlightOffIcon color='error'fontSize='small' sx={{cursor:'pointer'}} onDoubleClick={()=>deleteTestField(indx)} ></HighlightOffIcon>
                            </Box>
                        </Box>:''
                        )
