@@ -51,7 +51,18 @@ const Navbar = () => {
 
   const [AppNotificationconnection, setAppNotiConnection] = useState(null);
 
-  let userId = jwtDecode(localStorage.getItem("medicareHubToken")).Id;
+  let userId = 0;  // Default value
+
+const token = localStorage.getItem("medicareHubToken");
+if (token) {
+  try {
+    userId = jwtDecode(token).Id;
+  } catch (error) {
+    console.error("Error decoding token:", error);
+    // If decoding fails, userId remains 0
+  }
+}
+
   
 
   useEffect(() => {  //use effect for connection with hub
