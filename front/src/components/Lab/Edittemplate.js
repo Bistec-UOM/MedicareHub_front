@@ -16,12 +16,43 @@ export default function Edittemplate({setPage,tId,Tdata,setTload}) {
       
       //Field values--------------------------------------------------------------
       const [testField,setTestField]=useState([])
-      const [Fieldname,setFieldName]=useState()
-      const [MinRef,setMinRef]=useState()
-      const [MaxRef,setMaxRef]=useState()
-      const [Unit,setUnit]=useState()
+      const [Fieldname,setFieldName]=useState('')
+      const [MinRef,setMinRef]=useState('')
+      const [MaxRef,setMaxRef]=useState('')
+      const [Unit,setUnit]=useState('')
+
+      const validate=()=>{
+        if(Fieldname==''){
+          console.log(Fieldname)
+          seterMsg("Field name can't be empty")
+          return false
+        }
+        if(MinRef==''||MaxRef==''){
+          seterMsg("Ref values can't be empty")
+          return false
+        }
+        if(parseFloat(MinRef)>=parseFloat(MaxRef)){
+          seterMsg("Min ref must be lower than Max Ref ")
+          return false
+        }
+        let x=true
+        testField.forEach((el)=>{
+          if(Fieldname==el.fieldname){
+            console.log(el)
+            seterMsg("Use a different Field name")
+            x=false
+          }
+        })
+        if(!x){return false}
+        seterMsg('')
+        return true
+      }
 
       const addTestField=()=>{
+        if(!validate()){
+          handleClick2()
+          return
+        }
         let data_set={
           id:0,fieldname:Fieldname,index:testField.length,minRef:MinRef,maxRef:MaxRef,unit:Unit,stat:'new'
         }
@@ -49,8 +80,10 @@ export default function Edittemplate({setPage,tId,Tdata,setTload}) {
       //Edit fields---------------------------------------------------------------
       const[editMode,setEditMode]=useState(false)
       const[editData,setEditData]=useState({id:'',fieldname:'',index:'',minRef:'',maxRef:'',unit:'',stat:''})
+      const[currentInd,setcurentInd]=useState(null)
 
       const setEditModeData=(indx,id)=>{
+        setcurentInd(indx)
         setEditMode(true)
         setEditData({...editData,
           id:id,
@@ -63,7 +96,37 @@ export default function Edittemplate({setPage,tId,Tdata,setTload}) {
         })
       }
 
+      const validateEdit=()=>{
+        if(editData.fieldname==''){
+          seterMsg("Field name can't be empty")
+          return false
+        }
+        if(editData.minRef==''||editData.maxRef==''){
+          seterMsg("Ref values can't be empty")
+          return false
+        }
+        if(parseFloat(editData.minRef)>=parseFloat(editData.maxRef)){
+          seterMsg("Min ref must be lower than Max Ref ")
+          return false
+        }
+        let x=true
+        testField.forEach((el,ind)=>{
+          if(editData.fieldname==el.fieldname && ind!=currentInd){
+            seterMsg("Use a different Field name")
+            x=false
+          }
+        })
+        if(!x){return false}
+        seterMsg('')
+        return true
+      }
+
       const addEditData=()=>{
+        if(!validateEdit()){
+          handleClick2()
+          setcurentInd(null)
+          return
+        }
         let arr=[...testField]
         let e_data={
           id:editData.id,
@@ -110,12 +173,14 @@ export default function Edittemplate({setPage,tId,Tdata,setTload}) {
         console.log(JSON.stringify(obj))
         axios.put(baseURL+endPoints.TEMPLATE,obj)
         .then(res=>{
-          handleClick1()
+          seterMsg('Template edited successfuly')
+          handleClick1 ('success')
+          setSent(true)
         })
         .catch(er=>{
+          seterMsg('Error occured! Try again')
+          handleClick1 ('error')
           console.log(er)
-          setLoadingBConfirm(false)
-          handleCloseConfirm()
         })
       }
     
@@ -139,19 +204,40 @@ export default function Edittemplate({setPage,tId,Tdata,setTload}) {
   const [loadingBConfirm, setLoadingBConfirm] = useState(false)//Loading button
   const [openConfirm, setOpenConfirm] = useState(false)
   const handleClickOpenConfirm = (x) => {
-        setOpenConfirm(true)
+    if(testField.length==0){
+      seterMsg("Template can't be empty")
+      handleClick2()
+      return
+    }
+    setOpenConfirm(true)
   }
   const handleCloseConfirm = () => {setOpenConfirm(false)}  
 
-      // SnackBar component===========================================================================
+      // SnackBar template ===============================================================
+      const [open2, setOpen2] = React.useState(false);
+      const [erMsg,seterMsg] = useState('');
+
+      const handleClick2 = () => {
+        setOpen2(true);
+      };
+    
+      const handleClose2 = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+        setOpen2(false);
+      }
+
+      // SnackBar finalize =============================================================
       const [open1, setOpen1] = React.useState(false);
       const [sent,setSent]=useState(false)//to integrate setTimeout with a useEffect
+      const [serverity,setServerity] = useState('Primary')
 
-      const handleClick1 = () => {
+      const handleClick1 = (x) => {
+        setServerity(x)
         setLoadingBConfirm(false)
         setOpenConfirm(false)
         setOpen1(true);
-        setSent(true)
       };
     
       const handleClose1 = (event, reason) => {
@@ -216,7 +302,7 @@ export default function Edittemplate({setPage,tId,Tdata,setTload}) {
                            </Box>
      
                            <Box style={{width:'5%',height:'100%'}}>
-                              <HighlightOffIcon color='error'fontSize='small' sx={{cursor:'pointer'}} onClick={()=>deleteTestField(indx)} ></HighlightOffIcon>
+                              <HighlightOffIcon color='error'fontSize='small' sx={{cursor:'pointer'}} onDoubleClick={()=>deleteTestField(indx)} ></HighlightOffIcon>
                            </Box>
                        </Box>:''
                        )
@@ -293,16 +379,29 @@ export default function Edittemplate({setPage,tId,Tdata,setTload}) {
         <ConfirmPropmt action={saveTemplate} message="Are you sure that template is ready?"
        handleClose={handleCloseConfirm} loadingB={loadingBConfirm} open={openConfirm}></ConfirmPropmt>
 
-      {/*------------------ Snackbar alert ---------------------------------------------- */}
+  {/*------------------ Snackbar alert for template-------------------------------------- */}
+
+    <Snackbar open={open2} autoHideDuration={2000} onClose={handleClose2}>
+        <Alert
+          onClose={handleClose2}
+          severity='warning'
+          variant="filled"
+          sx={{ width: '100%' }}
+        >
+          {erMsg}
+        </Alert>
+    </Snackbar>
+
+      {/*------------------ Snackbar alert finalizing ------------------------------------- */}
 
       <Snackbar open={open1} autoHideDuration={2000} onClose={handleClose1}>
         <Alert
           onClose={handleClose1}
-          severity="success"
+          severity={serverity}
           variant="filled"
           sx={{ width: '100%' }}
         >
-          Template edited successfuly
+          {erMsg}
         </Alert>
       </Snackbar>
     </div>

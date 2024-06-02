@@ -16,9 +16,13 @@ import { SearchBarLR } from '../../Common';
 export default function LabTestList({setPage,settId,Tload,setTload}) {
 
     // SnackBar component====================================================================================
-    const [open1, setOpen1] = React.useState(false);
+    const [open1, setOpen1] = useState(false);
+    const [msg,setMsg] = useState('')
+    const [col,setCol] = useState('')
 
-    const handleClick1 = () => {
+    const handleClick1 = (msg,col) => {
+      setMsg(msg)
+      setCol(col)
       setOpen1(true)
     };
   
@@ -122,11 +126,11 @@ export default function LabTestList({setPage,settId,Tload,setTload}) {
     <Snackbar open={open1} autoHideDuration={2000} onClose={handleClose1}>
         <Alert
           onClose={handleClose1}
-          severity="success"
+          severity={col}
           variant="filled"
           sx={{ width: '100%' }}
         >
-          Details edited successfuly
+          {msg}
         </Alert>
     </Snackbar>
 

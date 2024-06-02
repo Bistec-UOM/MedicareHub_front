@@ -16,6 +16,20 @@ export default function TestDialogBox({test,setPage,setTload,handleClose,handleC
   const [loadingB, setLoadingB] = useState(false)//Loading button
 
   const saveButtonAction=()=>{
+    if(testName==''){
+      handleClick1('Test name can\'t be empty','warning')
+      return
+    }
+    if(price==''){
+      handleClick1('Price can\'t be empty','warning')
+      return
+    }
+    const integerRegex = /^-?\d+$/;
+    if(!integerRegex.test(price)){
+      handleClick1('Price must be integer','warning')
+      return
+    }
+
     if(isDisabled){
       setIsDisabled(false)
     }else{
@@ -29,12 +43,14 @@ export default function TestDialogBox({test,setPage,setTload,handleClose,handleC
       setLoadingB(true)
       axios.put(baseURL+endPoints.TEST,obj)
       .then(res=>{
+        setLoadingB(false)
         setTload([])//make test list empty to reload again
-        handleClick1()
+        handleClick1('Test details updated','success')
         handleClose()
       })
       .catch((er)=>{
-        console.log(er.message)
+        setLoadingB(false)
+        handleClick1('Error occured! Try again','error')
       })
     }
   }

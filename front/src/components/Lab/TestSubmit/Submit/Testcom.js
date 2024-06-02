@@ -7,6 +7,7 @@ import { baseURL,endPoints } from '../../../../Services/Lab';
 import { Load } from '../../../Other';
 import LoadingButton from '@mui/lab/LoadingButton';
 import SendIcon from '@mui/icons-material/Send';
+import { ConfirmPropmt } from '../../../Common';
 
 export default function Testcom({handleClick1,handleClose,test}) {
 
@@ -17,6 +18,7 @@ export default function Testcom({handleClick1,handleClose,test}) {
     let tmp=[...Fload]
     tmp.forEach((el)=>{
        el.value=''
+       el.status=null
     })
     setFload(tmp)
   }
@@ -27,11 +29,30 @@ export default function Testcom({handleClick1,handleClose,test}) {
     return `${dateString}.000Z`; // Add '000' as milliseconds
 }
 
-  const [loadingB, setLoadingB] = useState(false)//Loading button
+  //confirm prompt=========================================================================
+  const [loadingBConfirm, setLoadingBConfirm] = useState(false)//Loading button
+  const [openConfirm, setOpenConfirm] = useState(false)
+  const handleClickOpenConfirm = (x) => {
+    //validation for empty fields
+    let bol=true
+    Fload.forEach((el)=>{
+      if(el.value==''){
+        bol=false
+        console.log(el)
+      }
+    })
+    if(!bol){
+      console.log('error')
+      handleClick1(null,'Fill all fields','warning')
+      return
+    }
+    setOpenConfirm(true)
+  }
+  const handleCloseConfirm = () => {setOpenConfirm(false)}  
 
+  //data submition function==================================
   const submitData=()=>{
-      setLoadingB(true)//loading button
-
+      setLoadingBConfirm(true)
       let tmp=[...Fload]
       let ob=[]
       tmp.forEach((el,ind)=>{
@@ -51,18 +72,20 @@ export default function Testcom({handleClick1,handleClose,test}) {
     
     axios.post(baseURL+endPoints.RESULT,obj)
     .then((res)=>{
-      console.log(res.data)
-      handleClick1(test[0].id)
+      setLoadingBConfirm(false)
+      setOpenConfirm(false)
+      handleClick1(test[0].id,'Results uploaded successfully','success')
       handleClose()
     })
     .catch((er)=>{
-      console.log(er.message)
+      setLoadingBConfirm(false)
+      setOpenConfirm(false)
+      handleClick1(null,'Error occured! try again','error')
     }) 
- 
   }
 
-  const enterData=(indx,x)=>{
 
+  const enterData=(indx,x)=>{
     let stat=(min,max,val)=>{
       if(val<min){
         return 'low'
@@ -137,17 +160,16 @@ export default function Testcom({handleClick1,handleClose,test}) {
         pt:'20px'
         }}
     >
-        <LoadingButton           
+        <Button           
           size="small"
-          endIcon={<SendIcon />}
-          loading={loadingB}
-          loadingPosition="end"
-          variant="contained" onClick={submitData} 
+          variant="contained" onClick={handleClickOpenConfirm} 
           sx={{ml:'10px'}}
-        >Submit</LoadingButton>
+        >Submit</Button>
         <Button variant='outlined'onClick={clearData} size='small' >Clear</Button>
     </Box>
 
+    <ConfirmPropmt action={submitData} message="Are you sure that results are correct?"
+       handleClose={handleCloseConfirm} loadingB={loadingBConfirm} open={openConfirm}></ConfirmPropmt>
     </Box>
   )
 }
