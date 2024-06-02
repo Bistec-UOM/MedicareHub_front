@@ -119,7 +119,6 @@ if (token) {
   const navigate = useNavigate();
 
   useEffect(() => {  //use effect for fetching notification list
-    let userId = jwtDecode(localStorage.getItem("medicareHubToken")).Id;
     axios
       .get(baseURL + endPoints.notifications + `${userId}`,setHeaders())
       .then((response) => {
