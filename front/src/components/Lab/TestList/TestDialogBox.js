@@ -9,15 +9,40 @@ import LoadingButton from '@mui/lab/LoadingButton';
 
 export default function TestDialogBox({test,setPage,setTload,handleClose,handleClick1}) {
 
-  const [testName,settestName]=useState(test.testName)
+  const [testName,settestName]=useState(test.testName+' ('+test.abb+')')
   const [provider,setProvider]=useState(test.provider)
   const [price,setPrice]=useState(test.price)
 
   const [loadingB, setLoadingB] = useState(false)//Loading button
 
+  //test name string validation ------------------------------------->>>>>>>>>>>>>>>
+  function extractLastParenthesisContent(str) {
+    const regex = /\(([^)]+)\)(?!.*\([^)]*\))/;
+    const match = str.match(regex);
+    return match ? match[1] : null;
+  }
+
+  function extractUntilFirstParenthesis(str) {
+    const index = str.indexOf('(');
+    if (index !== -1) {
+        return str.slice(0, index);
+    }
+    return str;
+  }
+
+  function hasParenthesisAtEnd(str) {
+    const regex = /\([^)]*\)$/;
+    return regex.test(str);
+  }
+
+
   const saveButtonAction=()=>{
     if(testName==''){
       handleClick1('Test name can\'t be empty','warning')
+      return
+    }
+    if(!hasParenthesisAtEnd(testName)){
+      handleClick1('Invalid Test name format','warning')
       return
     }
     if(price==''){
@@ -30,16 +55,20 @@ export default function TestDialogBox({test,setPage,setTload,handleClose,handleC
       return
     }
 
+    let tstnm=extractUntilFirstParenthesis(testName).trimEnd()
+    let abb=extractLastParenthesisContent(testName).trimStart()
+    abb=abb.trimEnd()
     if(isDisabled){
       setIsDisabled(false)
     }else{
       let obj={
         id:test.id,
-        testName:testName,
-        abb:test.abb,
+        testName:tstnm,
+        abb:abb,
         price:price,
         provider:provider
       }
+      console.log(obj)
       setLoadingB(true)
       axios.put(baseURL+endPoints.TEST,obj)
       .then(res=>{

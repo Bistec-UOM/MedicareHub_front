@@ -140,27 +140,33 @@ export default function CreateLabTemplate({setPage,setTload}) {
         }
       }
 
-      //Extracting abbereviation------------------------------------------------
-      const getAbb=(str)=>{
-        const regex = /\(([^)]+)\)$/;
-        const match = regex.exec(str);
-        if (match) {
-          return match[1];
-        }
-        return "";
+      //Finalizing---------------------------------------------------------------
+
+      function extractLastParenthesisContent(str) {
+        const regex = /\(([^)]+)\)(?!.*\([^)]*\))/;
+        const match = str.match(regex);
+        return match ? match[1] : null;
       }
 
-      //Finalizing---------------------------------------------------------------
-      const createTemplate=()=>{
+      function extractUntilFirstParenthesis(str) {
+        const index = str.indexOf('(');
+        if (index !== -1) {
+            return str.slice(0, index);
+        }
+        return str;
+      }
+    
+const createTemplate=()=>{
         setLoadingBConfirm(true)
         let ar=testField
         ar.map((el,ind)=>{
           el.index=ind
         })
 
-        let abbr=getAbb(testData.name)
-        let nm = testData.name
-        // let nm = testData.name.substring(0, testData.name.length - abbr.length-2)
+        let abbr=extractLastParenthesisContent(testData.name).trimStart()
+        abbr=abbr.trimEnd()
+        let nm = extractUntilFirstParenthesis(testData.name).trimEnd()
+
         let T={
           testName:nm,
           abb:abbr,
@@ -168,6 +174,7 @@ export default function CreateLabTemplate({setPage,setTload}) {
           provider:testData.provider,
           reportFields:ar
         }
+        console.log(T)
         axios.post(baseURL+endPoints.TEMPLATE,T)
         .then(res=>{
           seterMsg('Template added successfuly')
@@ -185,7 +192,7 @@ export default function CreateLabTemplate({setPage,setTload}) {
           handleClick1 ('error')
           console.log(er)
         })
-      }
+}
     
       // SnackBar template===========================================================================
         const [open2, setOpen2] = React.useState(false);
@@ -234,6 +241,12 @@ export default function CreateLabTemplate({setPage,setTload}) {
     //Pop up dialog box===========================================================================
     const [loadingBConfirm, setLoadingBConfirm] = useState(false)//Loading button
     const [openConfirm, setOpenConfirm] = useState(false)
+
+    function hasParenthesisAtEnd(str) {
+      const regex = /\([^)]*\)$/;
+      return regex.test(str);
+    }
+
     const handleClickOpenConfirm = (x) => {
       if(testField.length==0){
         seterMsg("Template can't be empty")
@@ -242,6 +255,11 @@ export default function CreateLabTemplate({setPage,setTload}) {
       }
       if(testData.name==''){
         seterMsg("Test can't be empty")
+        handleClick2()
+        return
+      }
+      if(!hasParenthesisAtEnd(testData.name)){
+        seterMsg("Invalid test name format")
         handleClick2()
         return
       }
