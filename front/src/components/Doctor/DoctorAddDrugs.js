@@ -24,6 +24,8 @@ export default function DoctorAddDrugs(props) {
     
     const drugNames = ['Paracetamol', 'Aspirin', 'Ibuprofen', 'Amoxicillin', 'Lisinopril', 'Atorvastatin', 'Metformin', 'Simvastatin'];
     
+
+
       const handleSubmit = (e) => {
         e.preventDefault();
       
@@ -42,8 +44,8 @@ export default function DoctorAddDrugs(props) {
       setPres([...pres, newDrug]);
       setGenericN('');
       setWeight('');
-      setUnit('');
-      setPeriod('');
+      setUnit('mg');
+      setPeriod('BD');
   };
     const handleDeleteDrug = (index) => {
       const updatedPres = [...pres];
