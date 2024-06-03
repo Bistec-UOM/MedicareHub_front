@@ -17,6 +17,7 @@ import MyFullCalendar from "../MyFullCalendar/MyFullCalendar";
 import PageNotFound from "../PageNotFound/PageNotFound";
 import { baseURL,endPoints } from "../../../Services/Appointment";
 import { Load } from "../../Other";
+import { setHeaders } from "../../../Services/Auth";
 
 
 const drawerWidth = 358.4;
@@ -46,7 +47,7 @@ function ResponseAppCalender() {
     const fetchData = async () => {
       try {
       //  const response = await fetch("https://localhost:7205/api/Appointment/doctors");
-        const response = await fetch(baseURL+endPoints.DoctorsList);
+        const response = await fetch(baseURL+endPoints.DoctorsList,setHeaders());
         const responseData = await response.json();
         setDoctorCount((prevCount) => prevCount + 1);
         setDoctorList(responseData.result);

@@ -20,6 +20,7 @@ import LabRequest from '../../../Doctor/LabRequest';
 import { Sideunit_Patient } from '../../../sidebar/Sideunits';
 import DoctorAppCalender from '../DoctorAppCalender/DoctorAppCalender';
 import TopUnit from '../../../Doctor/TopUnit';
+import { jwtDecode } from 'jwt-decode';
 
 export default function DoctorPage() {
   const [select,setSelect]=useState(null)
@@ -37,6 +38,8 @@ export default function DoctorPage() {
   const load = [
     { name: 'Nethmi Eranga Wijeweera', age: '30', gender: 'Female' },
   ];
+
+  let tmpDocId=jwtDecode(localStorage.getItem('medicareHubToken')).RoleId;
   
 
   const [openPopup, setOpenPopup] = useState(false);
@@ -164,7 +167,7 @@ export default function DoctorPage() {
         </Grid>
         
         <Grid item xs={9} style={{ height: '100%', overflowY: 'scroll' }}>
-        <DoctorAppCalender doctorId={1}/>
+        <DoctorAppCalender doctorId={tmpDocId}/>
           
          
         </Grid>

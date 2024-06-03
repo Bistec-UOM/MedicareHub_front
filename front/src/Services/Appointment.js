@@ -13,7 +13,9 @@ const endPoints = {
     GET_ACCEPT:'/api/Values/Accept',
     RESULT:'/api/Values/Result',
     UpdateStatusCompleted:'/updateStatus/',
-    UnableDates:'/api/Appointment/unableDates'
+    UnableDates:'/api/Appointment/unableDates',
+    notifications:'/api/Appointment/Notifications/',
+    MarkAsSennNotification:'/api/Appointment/notifications/'
   };
   
 export { baseURL,endPoints};

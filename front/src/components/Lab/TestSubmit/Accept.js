@@ -12,9 +12,13 @@ import DoneIcon from '@mui/icons-material/Done';
 export default function Accept({req,reqOK,RLoad,setRLoad}) {
 
   // SnackBar component====================================================================================
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [msg,setMsg] = useState('')
+  const [col,setCol] = useState('')
 
-  const handleClick = () => {
+  const handleClick = (msg,col) => {
+    setMsg(msg)
+    setCol(col)
     setOpen(true);
   };
 
@@ -50,11 +54,12 @@ export default function Accept({req,reqOK,RLoad,setRLoad}) {
     setLoadingB(true)
     axios.post(baseURL+endPoints.SET_ACCEPT+'?id='+id)
     .then((res)=>{
-      handleClick()
+      handleClick('Sample Accepted','success')
       remTest(id)
       setLoadingB(false)
     })
     .catch((er)=>{
+      handleClick('Error occured! Try again','error')  
       console.log(er)
       setLoadingB(false)
     })
@@ -123,11 +128,11 @@ export default function Accept({req,reqOK,RLoad,setRLoad}) {
         <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
         <Alert
           onClose={handleClose}
-          severity="success"
+          severity={col}
           variant="filled"
           sx={{ width: '100%' }}
         >
-          Sample accepted
+          {msg}
         </Alert>
       </Snackbar>
 
