@@ -68,6 +68,7 @@ export default function Pharmacy() {
             unit.Amount=0
             unit.weight=''
             unit.price=0
+            unit.available=''
             arr.push(unit)
             unit={}
           })
@@ -154,28 +155,45 @@ export default function Pharmacy() {
 const handleWeight = (index,data,priceData) => {
   let unitPrice=0
   let drugId=''
+  let available=''
   priceData.forEach((el)=>{
     if(el.weight===data){
       unitPrice=parseInt(el.price)
       drugId=el.id
+      available=el.avaliable
     }
   })
   setDrugBill(prev =>
     prev.map((item, i) =>
-      i === index ? { ...item, weight:data ,price:unitPrice,DrugId:drugId} : item
+      i === index ? { ...item, weight:data ,price:unitPrice,DrugId:drugId,available:available} : item
     )
   )
 }
 
 //update the drug amount---------------------------------------------
 const handleAmount = (index,data)=>{
+  let pass=true
   let tmp=parseInt(data)
   tmp=isNaN(tmp)||tmp<0?0:tmp
   setDrugBill(prev =>
-    prev.map((item, i) =>
-      i === index ? { ...item, Amount:tmp } : item
-    )
+    prev.map((item, i) =>{
+      if(i===index){
+        if(item.available<tmp){
+          pass=false
+          return { ...item, Amount:item.available } 
+        }else{
+          return { ...item, Amount:tmp } 
+        }
+      }else{
+        return item
+      }
+    })
   )
+  if(!pass){
+    setMsg('Not enough drugs')
+    setCol('warning')
+    setSnackbarOpen(true)
+  }
 }
 
 //Keep the total in track ----------------------------
