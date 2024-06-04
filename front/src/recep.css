@@ -52,11 +52,6 @@
   overflow-y: none !important;
 }
 
-::-webkit-scrollbar-thumb {
-  background: red;
-  border-radius: 10px;
-}
-
 #root > div > div > nav > div > div > div > div.MuiGrid-root.MuiGrid-item.MuiGrid-grid-xs-3.MuiGrid-grid-sm-1.MuiGrid-grid-md-3.css-13i4rnv-MuiGrid-root
 {
   background-color: #DEF4F2;
