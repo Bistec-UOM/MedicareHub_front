@@ -270,8 +270,8 @@ useEffect(()=>{
       <div style={{marginTop:"80px"}}>
 {/* =====================      Rendering the drug list =============================================*/}
 
-{drugDetail!=null?drugDetail.medicine.map((drug, no) => (           
-  <Box key={no} sx={{mt:"10px"}}>
+{drugDetail!=null?drugDetail.medicine.map((drug, no) => {if(drug.detail.length>0){           
+  return(<Box key={no} sx={{mt:"10px"}}>
     {/*-----------------    Blue lable (prescript drug)  ----------------------------------------*/}
     <Card sx={{ backgroundColor: '#0099cc',display:'flex',flexDirection:'row', color: 'white', fontSize: '20px',width:"500px",marginLeft:"10px"}}>
                 <Typography gutterBottom variant="p" sx={{ flex:'3',marginLeft: '10px', }}>{drug.name}</Typography>
@@ -312,7 +312,7 @@ useEffect(()=>{
       <Typography gutterBottom  sx={{ marginLeft: '90px ', display:'inline',fontWeight:'bold',textAlign:'right',flex:2}}>{parseInt(drugBill[no].price)*parseInt(drugBill[no].Amount)}</Typography>
       
     </Box> 
-  </Box>)):loading?<Load></Load>:select?<Typography sx={{fontSize:'15px',pl:'20px',color:'gray'}}>No issued drugs</Typography>:''}
+  </Box>)}else{return<Typography sx={{fontSize:'15px',pl:'20px',color:'gray'}}>Not found in store</Typography>}}):loading?<Load></Load>:select?<Typography sx={{fontSize:'15px',pl:'20px',color:'gray'}}>No issued drugs</Typography>:''}
 </div>
        ) : ''}
       {select && (    

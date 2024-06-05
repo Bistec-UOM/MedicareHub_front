@@ -42,6 +42,10 @@ H. when navigating on calendar doctor changes
 
 I. form fields/ size/ text
 
+notify when a drug is not available
+notify when a lab test is not available
+
+
 ======================================================================
 ==============                 Migrations        =====================
 ======================================================================
