@@ -22,6 +22,7 @@ import StoreIcon from '@mui/icons-material/Store';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import AddCardIcon from '@mui/icons-material/AddCard';
 import Pharmacy_drugstore from './Pharmacy_drugstore';
+import { Load } from '../components/Other';
 
 export default function Pharmacy() {
 
@@ -29,7 +30,8 @@ export default function Pharmacy() {
 
   const [select,setSelect]=useState(null)//current selected prescription id(patient)
   const [Data,SetData]=useState([])//Store incoming prescription details
-  const selectedPrescription = select ? Data.filter(data => data.id === select) : [];
+  const [loading,setLoading]=useState(false)//loading circlular progress bar
+  const selectedPrescription = select ? Data.filter(el => el.id === select) : [];
   const [drugDetail,setDrugDetail]=useState(null)//final drug data to be rendered
   const [drugBill,setDrugBill]=useState([])//final drug bill details
   const [serviceCharge,setServiceCharge]=useState(300)
@@ -43,10 +45,14 @@ export default function Pharmacy() {
   //data loading as the prescription is selected--------------------------------
   useEffect(()=>{
     if(select!==null){
+      setDrugDetail(null)
       const genericNames = selectedPrescription[0].medicine.map(drug => drug.name);
-      //console.log(genericNames)
+      if(genericNames.length===0) return
+      console.log(genericNames)
+      setLoading(true)
       axios.post(baseURL+endPoints.MEDICINEDETAIL, genericNames)
-      .then(response => {     
+      .then(response => { 
+        setLoading(false) 
           //attach each the drug details requested from back to the corresponding drug in prescription
           let res=response.data
           let obj={...selectedPrescription}
@@ -70,7 +76,7 @@ export default function Pharmacy() {
           arr=[]
       })
       .catch(error => {
-        setDrugDetail(null)//stop rendering in case of loading failure
+        setLoading(false)
         console.error('Error sending generic names:', error);
       });
     }
@@ -102,14 +108,18 @@ export default function Pharmacy() {
     setSnackbarOpen(false);
   };
   
-  //Bill generation when confirm is allowed----------------------------------------
+  //Bill generation when confirm is allowed ======================= >>>>>>>>>>>>>>>>>>>>>>>>>
+
+  const [msg,setMsg] = useState('')
+  const [col,setCol] = useState('')
+
   const handleConfirmAction = () => {
     let objunit={}
     let obj=[]
     drugBill.forEach((el)=>{
-      objunit.DrugID=el.DrugId
-      objunit.PrescriptionID=el.PrescriptionId
-      objunit.Amount=el.Amount
+      objunit.drugID=el.DrugId
+      objunit.prescriptionID=el.PrescriptionId
+      objunit.amount=el.Amount
       obj.push(objunit)
       objunit={}
     })
@@ -118,17 +128,25 @@ export default function Pharmacy() {
     let load={data:obj,total:total+serviceCharge}
     setLoadingBConfirm(true);
     console.log(JSON.stringify(load))
-    /*axios.post(baseURL+endPoints.ADDBILLDRUG,obj)
+    axios.post(baseURL+endPoints.ADDBILLDRUG,load)
     .then(()=>{
       setLoadingBConfirm(false)
       handleCloseConfirm()
+      setMsg('Bill is uploaded successfully')
+      setCol('success')
       setSnackbarOpen(true)
+      SetData(Data.filter((el)=>el.id!==select))
+      setDrugDetail(null)
+      setSelect(null)
     })
     .catch((er)=>{
       setLoadingBConfirm(false)
       handleCloseConfirm()
+      setMsg('Error occured! Try again')
+      setCol('error')
+      setSnackbarOpen(true)
       console.log(er)
-    })*/
+    })
 
   };
   
@@ -169,159 +187,6 @@ useEffect(()=>{
   setTotal(t)
 },[drugBill])
 
-
-   const data=[
-    {
-       id:51,  // -----------------------------------> prescription Id-------  
-      name:"Dhammika Mahendra",
-      age:30,
-      gender:"male",
-      time: "08:10",
-      medicine :[{name:"Acetaminophe",quantity:"10",hour:"BID",value:"10",unit_price:"15.00",fullprice:"150.00"},
-             {name:"Sumatripan",quantity:"20",hour:"BID",value:"10",unit_price:"04.50",fullprice:"45.00"},
-             {name:"Rizatripan",quantity:"0.5",hour:"4H",value:"",unit_price:"",fullprice:""},
-]
-
-         
-     },
-     {
-       id:52,    
-       name:"Nethmi Eranga",
-      age:18,
-      gender:"female",
-         time: "09:15",
-         medicine :[{name:"Acetaminophe",quantity:"10",hour:"BID",value:"10",unit_price:"15.00",fullprice:"150.00"},
-         
-]    
-     },
-     {
-       id:53,    
-       name:"Chathumini Pamodya",
-       age:8,
-       gender:"female",
-         time: "10:10",
-         medicine :[{name:"Sumatripan",quantity:"20",hour:"BID",value:"10",unit_price:"04.50",fullprice:"45.00"},
-         {name:"Rizatripan",quantity:"0.5",hour:"4H",value:"",unit_price:"",fullprice:""},
-]       
-     },
-     {
-       id:54,    
-       name:"Yasiru Ramosh",
-       age:22,
-       gender:"male",
-         time: "10:25",
-         medicine :[{name:"Sumatripan",quantity:"10",hour:"BID",value:"10",unit_price:"15.00",fullprice:"150.00"},
-         {name:"Rizatripan",quantity:"0.5",hour:"4H",value:"",unit_price:"",fullprice:""},
-]        
-     },
-     {
-       id:55,    
-       name:"Chathura Ishara",
-       age:38,
-       gender:"male",
-         time: "11:15",
-         medicine :[{name:"Paracitamol",quantity:"10",hour:"BID",value:"10",unit_price:"15.00",fullprice:"150.00"},
-         {name:"Zithraceene",quantity:"20",hour:"BID",value:"10",unit_price:"04.50",fullprice:"45.00"},
-         {name:"Zithraceene",quantity:"20",hour:"BID",value:"10",unit_price:"04.50",fullprice:"45.00"},
-         {name:"Zithraceene",quantity:"20",hour:"BID",value:"10",unit_price:"04.50",fullprice:"45.00"},
-         
-]
-     },
-     {
-      id:75,    
-        name:"Hasini Chamodi",
-        age:48,
-        gender:"female",
-        time: "13:15",
-        medicine :[{name:"Acetaminophe",quantity:"10",hour:"BID",value:"10",unit_price:"15.00",fullprice:"150.00"},
-        {name:"Sumatripan",quantity:"20",hour:"BID",value:"10",unit_price:"04.50",fullprice:"45.00"},
-        
-]
-    },
-    {
-      id:76,    
-        name:"Nelunika Nuwanthi",
-        age:18,
-        gender:"female",
-        time: "13:35",
-        medicine :[{name:"Acetaminophe",quantity:"10",hour:"BID",value:"10",unit_price:"15.00",fullprice:"150.00"},
-        {name:"Sumatripan",quantity:"20",hour:"BID",value:"10",unit_price:"04.50",fullprice:"45.00"},
-        {name:"Rizatripan",quantity:"0.5",hour:"4H",value:"",unit_price:"",fullprice:""},
-]
-    },
-    {
-      id:79,    
-        name:"Methnula Thisum",
-        age:18,
-        gender:"male",
-        time: "14:15",
-        medicine :[{name:"Acetaminophe",quantity:"10",hour:"BID",value:"10",unit_price:"15.00",fullprice:"150.00"},
-        {name:"Sumatripan",quantity:"20",hour:"BID",value:"10",unit_price:"04.50",fullprice:"45.00"},
-        {name:"Rizatripan",quantity:"0.5",hour:"4H",value:"",unit_price:"",fullprice:""},
-]
-    },
-    {
-      id:81,    
-        name:"Eranga Kumari",
-        age:48,
-        gender:"female",
-        time: "14:45", 
-        medicine :[ {name:"Sumatripan",quantity:"20",hour:"BID",value:"10",unit_price:"04.50",fullprice:"45.00"},
-        {name:"Rizatripan",quantity:"0.5",hour:"4H",value:"",unit_price:"",fullprice:""},
-] 
-    },
-    {
-      id:88,    
-      name:"Kasun Kasun",
-      age:48,
-      gender:"male",
-      time: "15:15",
-      medicine :[{name:"Acetaminophe",quantity:"10",hour:"BID",value:"10",unit_price:"15.00",fullprice:"150.00"},
-        {name:"Sumatripan",quantity:"20",hour:"BID",value:"10",unit_price:"04.50",fullprice:"45.00"},
-        {name:"Rizatripan",quantity:"0.5",hour:"4H",value:"",unit_price:"",fullprice:""},
-]
-        
-    },
-    {
-      id:90,    
-        name:"Saman Perera",
-        age:48,
-        gender:"male",
-        time: "15:19",
-        medicine :[{name:"Acetaminophe",quantity:"10",hour:"BID",value:"10",unit_price:"15.00",fullprice:"150.00"},
-        {name:"Sumatripan",quantity:"20",hour:"BID",value:"10",unit_price:"04.50",fullprice:"45.00"},
-        
-]
-        
-    },
-   
-    {
-      id:99,    
-        name:"Pabodya Baumika",
-        age:48,
-        gender:"female",
-        time: "15:25",
-        medicine :[{name:"Acetaminophe",quantity:"10",hour:"BID",value:"10",unit_price:"15.00",fullprice:"150.00"},
-        {name:"Sumatripan",quantity:"20",hour:"BID",value:"10",unit_price:"04.50",fullprice:"45.00"},
-        {name:"Rizatripan",quantity:"0.5",hour:"4H",value:"",unit_price:"",fullprice:""},
-]
-
-        
-    },
-    {
-      id:101,    
-        name:"Akasha",
-        age:48,
-        gender:"female",
-        time: "16:15",
-        medicine :[{name:"Acetaminophe",quantity:"10",hour:"BID",value:"10",unit_price:"15.00",fullprice:"150.00"},
-        {name:"Sumatripan",quantity:"20",hour:"BID",value:"10",unit_price:"04.50",fullprice:"45.00"},
-        {name:"Rizatripan",quantity:"0.5",hour:"4H",value:"",unit_price:"",fullprice:""},
-]
-
-    },
-     
-   ] 
 
    //Date------------------------------------------------------------------------------
    const generatedate=()=>{
@@ -429,7 +294,7 @@ useEffect(()=>{
       <Typography gutterBottom  sx={{ marginLeft: '90px ', display:'inline',fontWeight:'bold',textAlign:'right',flex:2}}>{parseInt(drugBill[no].price)*parseInt(drugBill[no].Amount)}</Typography>
       
     </Box> 
-  </Box>)):''}
+  </Box>)):loading?<Load></Load>:select?<Typography sx={{fontSize:'15px',pl:'20px',color:'gray'}}>No issued drugs</Typography>:''}
 </div>
        ) : ''}
       {select && (    
@@ -478,9 +343,9 @@ useEffect(()=>{
 
      
     {/* --------------------------- Snackbar ------------------------------------------------- */}
-      <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose}>
-        <MuiAlert onClose={handleSnackbarClose} severity="success" elevation={6} variant="filled">
-          Bill generated suceessfully!
+      <Snackbar open={snackbarOpen} autoHideDuration={2000} onClose={handleSnackbarClose}>
+        <MuiAlert onClose={handleSnackbarClose} severity={col} elevation={6} variant="filled">
+          {msg}
         </MuiAlert>
       </Snackbar>
       </div>
