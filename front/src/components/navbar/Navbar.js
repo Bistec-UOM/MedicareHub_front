@@ -29,41 +29,38 @@ import { setHeaders } from "../../Services/Auth";
 import axios from "axios";
 import * as signalR from '@microsoft/signalr';
 
-
-
 const Navbar = () => {
-  const [profile, setProfile] = useState({
-    name: "",
-    role: "",
-    image: "",
-    Id: "",
-  });
-  const [connection, setConnection] = useState(null);
+  const [profile, setProfile] = useState({name: "",role: "",image: "",Id: ""});
   const [anchorEl, setAnchorEl] = useState(null);
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  const handleMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const navigate = useNavigate();
+  
+  //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  // +++++++++++++++++++                     CHATHURA              +++++++++++++++++++++++++++++++
+  //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
   const [notificationList,setNotificationList]=useState([]) //notification list
   const [notificationMessages,setNotificationMessages]=useState([]); //retreived messages from notificationList
-
   const [badgeContent, setBadgeContent] = useState(0); //var for notification count
-
   const [anchorElPop, setAnchorElPop] = useState(null);
-
-
   const [AppNotificationconnection, setAppNotiConnection] = useState(null);
 
   let userId = 0;  // Default value
 
-const token = localStorage.getItem("medicareHubToken");
-if (token) {
-  try {
-    userId = jwtDecode(token).Id;
-  } catch (error) {
-    console.error("Error decoding token:", error);
-    // If decoding fails, userId remains 0
+  const token = localStorage.getItem("medicareHubToken");
+  if (token) {
+    try {
+      userId = jwtDecode(token).Id;
+    } catch (error) {
+      console.error("Error decoding token:", error);
+      // If decoding fails, userId remains 0
+    }
   }
-}
-
-  
 
   useEffect(() => {  //use effect for connection with hub
 
@@ -108,16 +105,6 @@ if (token) {
       baseURL+endPoints.MarkAsSennNotification+`${userId}`+"/user/"+`${true}`,setHeaders());
   };
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleMenu = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const navigate = useNavigate();
-
   useEffect(() => {  //use effect for fetching notification list
     axios
       .get(baseURL + endPoints.notifications + `${userId}`,setHeaders())
@@ -137,11 +124,17 @@ if (token) {
   
   }, [notificationList]);
 
-  const handleLogout = () => {
+  //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  // +++++++++++++++++++                    YASIRU                  ++++++++++++++++++++++++++++++
+  //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+  const [connection, setConnection] = useState(null);
+
+  const handleLogout = () => {//AUTH----------------------------------
     if (connection) {
-      connection
-        .invoke("ManualDisconnect", profile.Id)
-        .then(() => connection.stop())
+      connection                                               //---------------------
+        .invoke("ManualDisconnect", profile.Id)                //   LOGOUT
+        .then(() => connection.stop())                         //---------------------
         .then(() => {
           deleteLog();
           handleClose();
@@ -155,19 +148,19 @@ if (token) {
     }
   };
 
-  useEffect(() => {
+  useEffect(() => {//AUTH----------------------------------------
     console.log("nlist",notificationList);
     const token = localStorage.getItem("medicareHubToken");
-    if (token) {
-      const decodedToken = jwtDecode(token);
-      setProfile({
-        name: decodedToken.Name,
+    if (token) {                                                    
+      const decodedToken = jwtDecode(token);                      //---------------
+      setProfile({                                                //  LOGIN
+        name: decodedToken.Name,                                  //---------------
         role: decodedToken.Role,
         image: decodedToken.Profile,
         Id: decodedToken.Id,
       });
     }
-  }, []);
+  }, [])
 
   useEffect(() => {
     if (profile.Id) {
@@ -202,6 +195,12 @@ if (token) {
       };
     }
   }, [profile]);
+
+
+  //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  // +++++++++++++++++++                    DHAMMIKA                ++++++++++++++++++++++++++++++
+  //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 
   return (
     <AppBar sx={{ backgroundColor: "#f7f8f7" }} elevation={0}>
