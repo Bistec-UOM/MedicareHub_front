@@ -245,6 +245,7 @@ if (token) {
               {profile.role}
             </Typography>
           </div>
+          <Badge badgeContent={badgeContent} color="secondary">
           <Avatar
             aria-label="account of current user"
             aria-controls="menu-appbar"
@@ -255,6 +256,7 @@ if (token) {
           >
             {profile.name === "" && <AccountCircle />}
           </Avatar>
+          </Badge>
 
           <Menu
             id="menu-appbar"
@@ -268,6 +270,13 @@ if (token) {
               <HelpOutlineIcon sx={{ paddingRight: "10%" }} />
               Help
             </MenuItem>
+            <MenuItem onClick={handleNotificationBell}>
+            {badgeContent > 1 ? (
+                <NotificationsIcon color="action" sx={{ paddingRight: "10%" }} />
+              ) : (
+                <NotificationsNoneIcon color="action" sx={{ paddingRight: "10%" }} />
+              )} Notification
+            </MenuItem>
             <MenuItem onClick={handleClose}>
               <SettingsIcon sx={{ paddingRight: "10%" }} /> Settings
             </MenuItem>
@@ -275,15 +284,6 @@ if (token) {
               <LogoutIcon sx={{ paddingRight: "10%" }} /> LogOut
             </MenuItem>
           </Menu>
-          <IconButton onClick={handleNotificationBell}>
-            <Badge badgeContent={badgeContent} color="secondary">
-              {badgeContent > 1 ? (
-                <NotificationsIcon color="action" />
-              ) : (
-                <NotificationsNoneIcon color="action" />
-              )}
-            </Badge>
-          </IconButton>
           <Popover
             id={id}
             open={openPopOver}

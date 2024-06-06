@@ -265,12 +265,7 @@ const DoctorAppList = (props) => {
                   </div>
                   
                 ))}     
-                <div>
-                  <h1>Notifications</h1>
-                  {messages.map((item, index) => (
-        <Typography key={index}>{item}</Typography>
-      ))}
-                </div>
+                
           </Box>
         
         }
