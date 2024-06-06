@@ -22,7 +22,12 @@ import axios from "axios";
 import { baseURL,endPoints } from "../../../Services/Appointment";
 import { setHeaders } from "../../../Services/Auth";
 
+
+
+
 const ResNavBar = ({ isClosing, setMobileOpen, mobileOpen }) => {
+
+
   const [profile, setProfile] = useState({
     Name: "Profile",
     Role: "Empty",
@@ -205,7 +210,7 @@ if (token) {
               {profile.Role}
             </Typography>
           </div>
-
+          <Badge badgeContent={badgeContent} color="secondary">
           <Avatar
             aria-label="account of current user"
             aria-controls="menu-appbar"
@@ -216,6 +221,7 @@ if (token) {
           >
             {profile.Name === "Profile" && <AccountCircle />}
           </Avatar>
+          </Badge>
 
           <Menu
             id="menu-appbar"
@@ -229,6 +235,13 @@ if (token) {
               <HelpOutlineIcon sx={{ paddingRight: "10%" }} />
               Help
             </MenuItem>
+            <MenuItem onClick={handleNotificationBell}>
+            {badgeContent > 1 ? (
+                <NotificationsIcon color="action" sx={{ paddingRight: "10%" }} />
+              ) : (
+                <NotificationsNoneIcon color="action" sx={{ paddingRight: "10%" }} />
+              )} Notification
+            </MenuItem>
             <MenuItem onClick={handleClose}>
               <SettingsIcon sx={{ paddingRight: "10%" }} /> Settings
             </MenuItem>
@@ -236,15 +249,6 @@ if (token) {
               <LogoutIcon sx={{ paddingRight: "10%" }} /> LogOut
             </MenuItem>
           </Menu>
-          <IconButton aria-describedby={id} onClick={handleNotificationBell}>
-            <Badge badgeContent={badgeContent} color="secondary">
-              {badgeContent > 1 ? (
-                <NotificationsIcon color="action" />
-              ) : (
-                <NotificationsNoneIcon color="action" />
-              )}
-            </Badge>
-          </IconButton>
           <Popover
             id={id}
             open={openPopOver}
@@ -259,13 +263,17 @@ if (token) {
               horizontal: "left",
             }}
           >
-            <List>
-              {notificationList.map((notification, index) => (
-                <ListItem key={index}>
-                  <ListItemText primary={notification.message} />
-                </ListItem>
-              ))}
-            </List>
+             {notificationList.length === 0 ? (
+        <Typography>No new notifications</Typography>
+      ) : (
+        <List>
+          {notificationList.map((notification, index) => (
+            <ListItem key={index}>
+              <ListItemText primary={notification.message} />
+            </ListItem>
+          ))}
+        </List>
+      )}
           </Popover>
         </div>
       </Toolbar>
