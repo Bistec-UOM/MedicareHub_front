@@ -68,6 +68,7 @@ export default function Pharmacy() {
             unit.Amount=0
             unit.weight=''
             unit.price=0
+            unit.available=''
             arr.push(unit)
             unit={}
           })
@@ -154,28 +155,45 @@ export default function Pharmacy() {
 const handleWeight = (index,data,priceData) => {
   let unitPrice=0
   let drugId=''
+  let available=''
   priceData.forEach((el)=>{
     if(el.weight===data){
       unitPrice=parseInt(el.price)
       drugId=el.id
+      available=el.avaliable
     }
   })
   setDrugBill(prev =>
     prev.map((item, i) =>
-      i === index ? { ...item, weight:data ,price:unitPrice,DrugId:drugId} : item
+      i === index ? { ...item, weight:data ,price:unitPrice,DrugId:drugId,available:available} : item
     )
   )
 }
 
 //update the drug amount---------------------------------------------
 const handleAmount = (index,data)=>{
+  let pass=true
   let tmp=parseInt(data)
   tmp=isNaN(tmp)||tmp<0?0:tmp
   setDrugBill(prev =>
-    prev.map((item, i) =>
-      i === index ? { ...item, Amount:tmp } : item
-    )
+    prev.map((item, i) =>{
+      if(i===index){
+        if(item.available<tmp){
+          pass=false
+          return { ...item, Amount:item.available } 
+        }else{
+          return { ...item, Amount:tmp } 
+        }
+      }else{
+        return item
+      }
+    })
   )
+  if(!pass){
+    setMsg('Not enough drugs')
+    setCol('warning')
+    setSnackbarOpen(true)
+  }
 }
 
 //Keep the total in track ----------------------------
@@ -252,8 +270,8 @@ useEffect(()=>{
       <div style={{marginTop:"80px"}}>
 {/* =====================      Rendering the drug list =============================================*/}
 
-{drugDetail!=null?drugDetail.medicine.map((drug, no) => (           
-  <Box key={no} sx={{mt:"10px"}}>
+{drugDetail!=null?drugDetail.medicine.map((drug, no) => {if(drug.detail.length>0){           
+  return(<Box key={no} sx={{mt:"10px"}}>
     {/*-----------------    Blue lable (prescript drug)  ----------------------------------------*/}
     <Card sx={{ backgroundColor: '#0099cc',display:'flex',flexDirection:'row', color: 'white', fontSize: '20px',width:"500px",marginLeft:"10px"}}>
                 <Typography gutterBottom variant="p" sx={{ flex:'3',marginLeft: '10px', }}>{drug.name}</Typography>
@@ -294,7 +312,7 @@ useEffect(()=>{
       <Typography gutterBottom  sx={{ marginLeft: '90px ', display:'inline',fontWeight:'bold',textAlign:'right',flex:2}}>{parseInt(drugBill[no].price)*parseInt(drugBill[no].Amount)}</Typography>
       
     </Box> 
-  </Box>)):loading?<Load></Load>:select?<Typography sx={{fontSize:'15px',pl:'20px',color:'gray'}}>No issued drugs</Typography>:''}
+  </Box>)}else{return<Typography sx={{fontSize:'15px',pl:'20px',color:'gray'}}>Not found in store</Typography>}}):loading?<Load></Load>:select?<Typography sx={{fontSize:'15px',pl:'20px',color:'gray'}}>No issued drugs</Typography>:''}
 </div>
        ) : ''}
       {select && (    

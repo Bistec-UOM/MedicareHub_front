@@ -22,25 +22,30 @@ import axios from "axios";
 import { baseURL,endPoints } from "../../../Services/Appointment";
 import { setHeaders } from "../../../Services/Auth";
 
-
-
-
 const ResNavBar = ({ isClosing, setMobileOpen, mobileOpen }) => {
-
-
-  const [profile, setProfile] = useState({
-    Name: "Profile",
-    Role: "Empty",
-    Image: "",
-    Id: "",
-  });
-  const [connection, setConnection] = useState(null);
+  const [profile, setProfile] = useState({Name: "Profile",Role: "Empty",Image: "",Id: ""});
   const [anchorEl, setAnchorEl] = useState(null);
+  
+  const drawerWidth = 358.4;
+  const navigate = useNavigate();
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  const handleMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleDrawerToggle = () => {
+    if (!isClosing) {
+      setMobileOpen(!mobileOpen);
+    }
+  };
 
+  //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  // +++++++++++++++++++                    CHATHURA                  ++++++++++++++++++++++++++++
+  //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  
   const [notificationList,setNotificationList]=useState([]) //notification list
-
   const [badgeContent, setBadgeContent] = useState(3); //var for notification count
-
   const [anchorElPop, setAnchorElPop] = useState(null);
 
   let userId = 0;  // Default value
@@ -54,7 +59,6 @@ if (token) {
   }
 }
 
-
   const handleClosePopOver = () => {
     setAnchorElPop(null);
   };
@@ -65,41 +69,6 @@ if (token) {
   const handleNotificationBell = (event) => {
     setAnchorElPop(event.currentTarget);
     setBadgeContent(0);
-  };
-
-  const drawerWidth = 358.4;
-  const navigate = useNavigate();
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleMenu = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleDrawerToggle = () => {
-    if (!isClosing) {
-      setMobileOpen(!mobileOpen);
-    }
-  };
-
-  const handleLogout = () => {
-    if (connection) {
-      connection
-        .invoke("ManualDisconnect", profile.Id)
-        .then(() => connection.stop())
-        .then(() => {
-          deleteLog();
-          handleClose();
-          navigate("/");
-        })
-        .catch((err) => console.error("Error while disconnecting:", err));
-    } else {
-      deleteLog();
-      handleClose();
-      navigate("/");
-    }
   };
  
   useEffect(() => {  //use effect for fetching notification list
@@ -114,13 +83,38 @@ if (token) {
       });
   }, []);
 
+
+  //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  // +++++++++++++++++++                    YASIRU                  ++++++++++++++++++++++++++++++
+  //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+  const [connection, setConnection] = useState(null);
+
+  const handleLogout = () => {//AUTH-----------------------------------------------------
+    if (connection) {
+      connection
+        .invoke("ManualDisconnect", profile.Id)                   //------------------
+        .then(() => connection.stop())                            //  LOOGOUT    
+        .then(() => {                                             //------------------
+          deleteLog();
+          handleClose();
+          navigate("/");
+        })
+        .catch((err) => console.error("Error while disconnecting:", err));
+    } else {
+      deleteLog();
+      handleClose();
+      navigate("/");
+    }
+  };
+
   useEffect(() => {
     console.log("nlist",notificationList);
     let token = localStorage.getItem("medicareHubToken");
     if (token !== null) {
-      let decodedToken = jwtDecode(token);
-      setProfile({
-        Id: decodedToken.Id,
+      let decodedToken = jwtDecode(token);                           //-----------------
+      setProfile({                                                   // LOGIN  
+        Id: decodedToken.Id,                                         // ---------------
         Name: decodedToken.Name,
         Role: decodedToken.Role,
         Image: decodedToken.Profile,
