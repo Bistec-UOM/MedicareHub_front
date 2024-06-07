@@ -21,6 +21,7 @@ import Popover from "@mui/material/Popover";
 import axios from "axios";
 import { baseURL,endPoints } from "../../../Services/Appointment";
 import { setHeaders } from "../../../Services/Auth";
+import * as signalR from '@microsoft/signalr';
 
 const ResNavBar = ({ isClosing, setMobileOpen, mobileOpen }) => {
   const [profile, setProfile] = useState({Name: "Profile",Role: "Empty",Image: "",Id: ""});
@@ -45,8 +46,10 @@ const ResNavBar = ({ isClosing, setMobileOpen, mobileOpen }) => {
   //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   
   const [notificationList,setNotificationList]=useState([]) //notification list
-  const [badgeContent, setBadgeContent] = useState(3); //var for notification count
+  const [notificationMessages,setNotificationMessages]=useState([]); //retreived messages from notificationList
+  const [badgeContent, setBadgeContent] = useState(0); //var for notification count
   const [anchorElPop, setAnchorElPop] = useState(null);
+  const [AppNotificationconnection, setAppNotiConnection] = useState(null);
 
   let userId = 0;  // Default value
 
@@ -59,6 +62,39 @@ if (token) {
   }
 }
 
+
+
+
+
+  useEffect(() => {  //use effect for connection with hub
+
+    // Create a connection to the SignalR hub
+    const newConnection = new signalR.HubConnectionBuilder()
+    .withUrl(`https://localhost:7205/appointmentnotificationHub?userId=${userId}`)
+    .configureLogging(signalR.LogLevel.Information)
+    .build();
+    // Set up the connection
+    setAppNotiConnection(newConnection);
+  }, []);
+
+  useEffect(() => {  //use effect for receiving real time notification
+    console.log("before con");
+    if (AppNotificationconnection) {
+      // Start the connection
+      AppNotificationconnection.start()
+        .then(result => {
+          console.log('Connected! helo');
+          // Set up a listener for notifications
+          AppNotificationconnection.on('ReceiveNotification', message => {
+            console.log("inside receive side notification",message); //adding new real time notitication to the notification messages list
+            setNotificationMessages(notificationMessages => [...notificationMessages, message]);
+            setBadgeContent(prevBadgeContent => prevBadgeContent + 1);  //increase badge content for new real time notification
+          });
+        })
+        .catch(e => console.log('Connection failed: ', e));
+    }
+  }, [AppNotificationconnection]);
+
   const handleClosePopOver = () => {
     setAnchorElPop(null);
   };
@@ -69,10 +105,11 @@ if (token) {
   const handleNotificationBell = (event) => {
     setAnchorElPop(event.currentTarget);
     setBadgeContent(0);
+    axios.put(
+      baseURL+endPoints.MarkAsSennNotification+`${userId}`+"/user/"+`${true}`,setHeaders());
   };
- 
+
   useEffect(() => {  //use effect for fetching notification list
-    
     axios
       .get(baseURL + endPoints.notifications + `${userId}`,setHeaders())
       .then((response) => {
@@ -82,6 +119,14 @@ if (token) {
         console.error("Error fetching disabled dates:", error);
       });
   }, []);
+
+  useEffect(() => {  // Extract only  messages from notificationList and set notificationMessages 
+      const messages = notificationList.map((notification) => notification.message);
+      const unseenNotifications = notificationList.filter(notification => notification.seen===false);
+      setBadgeContent(unseenNotifications.length);
+      setNotificationMessages(messages);
+  
+  }, [notificationList]);
 
 
   //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
