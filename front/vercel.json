@@ -1,7 +1,7 @@
 {
     "git": {
       "deploymentEnabled": {
-        "*": false,
+        "feature_labTest": false,
         "deploy": true
       }
     }
