@@ -1,8 +1,0 @@
-{
-    "git": {
-      "deploymentEnabled": {
-        "feature_labTest": false,
-        "deploy": true
-      }
-    }
-  }
