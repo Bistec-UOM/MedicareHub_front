@@ -176,12 +176,18 @@ const Navbar = () => {
         .start()
         .then(() => {
           console.log("Connected!");
-          console.log("name:", profile.name);
-          console.log("Id:", profile.Id);
-          console.log("Role:", profile.role);
           newConnection.invoke("Send", profile.Id, profile.role);
+          newConnection.invoke("NotiToPharmacist")
+            .then((data)=>{
+              console.log("captured data: ", data);
+            })
+            .catch((error) => {
+              console.error(error);
+          });
+
         })
         .catch((err) => console.error("Connection failed: ", err));
+
 
       return () => {
         if (newConnection) {
