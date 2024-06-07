@@ -1,0 +1,8 @@
+{
+    "git": {
+      "deploymentEnabled": {
+        "deploy": true,
+        "*": false
+      }
+    }
+  }
