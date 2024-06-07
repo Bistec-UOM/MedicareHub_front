@@ -84,7 +84,7 @@ const Navbar = () => {
           AppNotificationconnection.on('ReceiveNotification', message => {
             console.log("inside receive side notification",message); //adding new real time notitication to the notification messages list
             setNotificationMessages(notificationMessages => [...notificationMessages, message]);
-            setBadgeContent(badgeContent+1);  //increate badge content for new real time notification
+            setBadgeContent(prevBadgeContent => prevBadgeContent + 1);  //increase badge content for new real time notification
           });
         })
         .catch(e => console.log('Connection failed: ', e));
