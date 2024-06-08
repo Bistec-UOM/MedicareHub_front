@@ -12,6 +12,7 @@ import { baseURL,endPoints} from '../../../Services/Lab';
 import { Load } from '../../Other';
 import AddIcon from '@mui/icons-material/Add';
 import { SearchBarLR } from '../../Common';
+import theme from '../../Style';
 
 export default function LabTestList({setPage,settId,Tload,setTload}) {
 
@@ -114,7 +115,7 @@ export default function LabTestList({setPage,settId,Tload,setTload}) {
       {/*------------------ Enter values pop up box ---------------------------------------------- */}
 
       <Dialog open={open} onClose={handleClose}>
-          <DialogTitle sx={{backgroundColor: "rgb(222, 244, 242)",display: "flex",justifyContent: "space-between"}}>
+          <DialogTitle sx={{backgroundColor:theme.palette.custom.greenH,display: "flex",justifyContent: "space-between",color:'white'}}>
             <Typography sx={{fontSize:'18px'}}>Edit test</Typography>
           <CloseIcon onClick={handleClose} sx={{cursor:'pointer'}} />
           </DialogTitle>
