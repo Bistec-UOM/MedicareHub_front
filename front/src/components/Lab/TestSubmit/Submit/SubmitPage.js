@@ -9,6 +9,7 @@ import { baseURL, endPoints } from '../../../../Services/Lab';
 import { Load } from '../../../Other';
 import ScienceIcon from '@mui/icons-material/Science';
 import { SearchBarSM } from '../../../Common';
+import theme from '../../../Style';
 
 export default function SubmitPage({setpage}) {
 
@@ -112,7 +113,7 @@ export default function SubmitPage({setpage}) {
                           onClick={()=>handleClickOpen(i.id)}
                         >
                     <div style={{flex:'1'}}>
-                      <Typography sx={{fontSize:'15px',color:'#ffffff',fontWeight:'bold',flex:'1',display:'inline',backgroundColor:'#568a91',pl:'10px',pr:'10px',pt:'2px',pb:'2px',borderRadius:'4px'}}>{i.id}</Typography>
+                      <Typography sx={{fontSize:'15px',color:'#ffffff',fontWeight:'bold',flex:'1',display:'inline',backgroundColor:theme.palette.custom.Token,pl:'10px',pr:'10px',pt:'2px',pb:'2px',borderRadius:'4px'}}>{i.id}</Typography>
                     </div>
                     <Typography sx={{fontSize:'15px',flex:'3'}}>{`${i.abb} (${i.testName})`}</Typography>
                     <Typography sx={{fontSize:'15px',flex:'2'}}>{calculateDaysDifference(i.accepted)}</Typography>
@@ -124,7 +125,7 @@ export default function SubmitPage({setpage}) {
       {/*------------------ Enter values pop up box ---------------------------------------------- */}
 
       <Dialog open={open} onClose={handleClose}>
-          <DialogTitle sx={{display: "flex",justifyContent: "space-between", backgroundColor:'#438ad1',color:'white'}}>
+          <DialogTitle sx={{display: "flex",justifyContent: "space-between", backgroundColor:theme.palette.custom.greenH,color:'white'}}>
             <div style={{display:'flex',justifyContent:'start'}}>
               <ScienceIcon></ScienceIcon>
               <Typography sx={{fontSize:'18px',fontWeight:'medium'}}>Enter test results</Typography>

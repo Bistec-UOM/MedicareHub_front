@@ -45,7 +45,7 @@ export default function TopUnit(props) {
 
         <NotificationsIcon sx={{ cursor: 'pointer',mr:'10px'}} onClick={handleClickOpen} />
       </Box> 
-      <Switch defaultChecked size="small" onChange={props.SwitchOnChange} sx={{position:'relative',top:'10px'}}/>
+      <Switch defaultChecked color='success' size="small" onChange={props.SwitchOnChange} sx={{position:'relative',top:'10px'}}/>
     </div>   
   );
   

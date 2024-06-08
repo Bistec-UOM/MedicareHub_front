@@ -57,11 +57,10 @@ export default function DoctorAddDrugs(props) {
     return (
         <div>
 <Dialog open={openBox}>
-      <DialogContent dividers>
-        <CloseIcon onClick={handleClose} style={{ position: 'absolute', right: '3px', top: '5px', cursor: 'pointer',}} />
-        <SearchIcon sx={{ position: 'absolute', left: '30%', top: '35px', cursor: 'pointer', }} />
+  <DialogContent>
+    <SearchIcon sx={{ position: 'absolute', left: '30%', top: '35px', cursor: 'pointer', }} />
 
-        <form onSubmit={handleSubmit} style={{ display: 'flex', alignItems: 'center', }}>
+    <form onSubmit={handleSubmit} style={{ display: 'flex', alignItems: 'center'}}>
         {openBox && (
        <div style={{ position: 'relative' }}>      
       <Autocomplete
@@ -83,39 +82,40 @@ export default function DoctorAddDrugs(props) {
                 ...params.InputProps,
                 endAdornment: null // Remove the end adornment (clear icon)
             }}
+            />
+        )}
         />
-    )}
-/>
     </div>
         )}
           <div>
           </div>
-          <TextField size="small"  label="Amount"
-                    sx={{ flex: '1',fontSize: '13px', marginRight: '11px', '& .MuiOutlinedInput-root': { '& fieldset': { borderColor: '#0099cc', borderWidth: '2px' } } }} 
-            value={weight}
-            onChange={(e) => setWeight(e.target.value)}            
-          />
-            <Select 
-                    sx={{ border: '1px solid #0099cc', width: '60px', height: '40px', borderRadius:'4px'}}
-                     variant="standard" value={unit} onChange={(e) => setUnit(e.target.value)}>
-                        {quantityOptions.map((option, index) => (
-                            <MenuItem key={index} value={option}>{option}</MenuItem>
-                        ))}
-            </Select>
-            <Select
-                     sx={{ m: 1, top: '1px', border: '1px solid #0099cc', width: '60px', height: '40px',borderRadius:'4px' }}
-                      variant="standard" value={period} onChange={(e) => setPeriod(e.target.value)}>
-                        {hourOptions.map((option, index) => (
-                            <MenuItem key={index} value={option}>{option}</MenuItem>
-                        ))}
-            </Select>
+      <TextField size="small"  label="Amount"
+                sx={{ flex: '1',fontSize: '13px', marginRight: '11px', '& .MuiOutlinedInput-root': { '& fieldset': { borderColor: '#0099cc', borderWidth: '2px' } } }} 
+        value={weight}
+        onChange={(e) => setWeight(e.target.value)}            
+      />
+      <Select 
+                sx={{ border: '1px solid #0099cc', width: '60px', height: '40px', borderRadius:'4px'}}
+                 variant="standard" value={unit} onChange={(e) => setUnit(e.target.value)}>
+                    {quantityOptions.map((option, index) => (
+                        <MenuItem key={index} value={option}>{option}</MenuItem>
+                    ))}
+      </Select>
+      <Select
+                 sx={{ m: 1, top: '1px', border: '1px solid #0099cc', width: '60px', height: '40px',borderRadius:'4px' }}
+                  variant="standard" value={period} onChange={(e) => setPeriod(e.target.value)}>
+                    {hourOptions.map((option, index) => (
+                        <MenuItem key={index} value={option}>{option}</MenuItem>
+                    ))}
+      </Select>
                     
-          <Button type="submit" variant="contained"  sx={{ top: '0.5px'}}  
-            onClick={() => {handleAddDrug();handleClose()}}
-            endIcon={<AddIcon/>}
-          >Add</Button>
-          </form>
-          </DialogContent>
+      <Button type="submit" variant="contained" size='small' sx={{ top: '0.5px'}}  
+        onClick={() => {handleAddDrug();handleClose()}}
+        endIcon={<AddIcon/>}
+      >Add</Button>
+    </form>
+    <CloseIcon onClick={handleClose} sx={{cursor: 'pointer',ml:'10px',position:'absolute',top:'5px',right:'5px'}} />
+</DialogContent>
           
 </Dialog>
           

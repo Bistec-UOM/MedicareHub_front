@@ -5,10 +5,7 @@ import axios from 'axios';
 import Fieldcom from './Fieldcom';
 import { baseURL,endPoints } from '../../../../Services/Lab';
 import { Load } from '../../../Other';
-import LoadingButton from '@mui/lab/LoadingButton';
-import SendIcon from '@mui/icons-material/Send';
 import { ConfirmPropmt } from '../../../Common';
-
 export default function Testcom({handleClick1,handleClose,test}) {
 
   const [Fload,setFload]=useState([])//field set according to the needed test

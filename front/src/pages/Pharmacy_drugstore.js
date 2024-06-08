@@ -18,7 +18,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from '@mui/icons-material/Edit'
 import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
-
+import { Load } from '../components/Other';
+import theme from '../components/Style';
 
 export default function Pharmacy_drugstore() {
 
@@ -36,8 +37,10 @@ export default function Pharmacy_drugstore() {
   const [snackbarMessage, setSnackbarMessage] = useState(''); // State for Snackbar message
 
   const [rows, setRows] = useState([]) // fetched drug list is stored
-const [additionalQuantity, setAdditionalQuantity] = useState(0); // New state for additional quantity
+  const [loading,setLoading] = useState(true)
+  const [additionalQuantity, setAdditionalQuantity] = useState(0); // New state for additional quantity
   const [openPopup, setOpenPopup] = useState(false);
+  
   const getData = () => { // get
     axios.get(baseURL+endPoints.DRUGGET)
     .then((result) => {
@@ -49,9 +52,11 @@ const [additionalQuantity, setAdditionalQuantity] = useState(0); // New state fo
             quantity: drug.avaliable,
             price: drug.price
         }));
+        setLoading(false)
         setRows(drugs);
     })
     .catch((error) => {
+        setLoading(false)
         console.log(error)
     })
 }
@@ -186,6 +191,7 @@ const handleConfirm = () => {
   }; 
 
   const handleEditClose = () => {
+    setEditEnable(false)
     setSelectedCard(null);
     setEditOpen(false);
   };
@@ -203,87 +209,7 @@ const handleConfirm = () => {
     }));
   };
 
-  let x=[
-    {
-      "id": 1,
-      "name": "Dhammika Mahendra ",
-      "time": "08:10"
-      
-    },
-    {
-      "id": 2,
-      "name": "Nethmi Eranga",
-      "time": "09:15"
-      
-    },
-    {
-      "id": 3,
-      "name": "Chathumini Pamodya",
-      "time": "10:10"
-      
-    },
-    {
-      "id": 4,
-      "name": "Yasiru Ramosh",
-      "time": "10:25"
-    
-    },
-    {
-      "id": 5,
-      "name": "Chathura Ishara",
-      "time": "11:15"
-      
-    },
-    {
-      "id": 6,
-      "name": "Hasini Chamodi",
-      "time": "13:15"
-      
-    },
-    {
-      "id": 7,
-      "name": "Nelunika Nuwanthi",
-      "time": "13:35"
-      
-    },
-    {
-      "id": 8,
-      "name": "Methnula Thisum",
-      "time": "14:15"
-      
-    },
-    {
-      "id": 9,
-      "name": "Eranga Kumari",
-      "time": "14:45"
-      
-    },
-    {
-      "id": 10,
-      "name": "Kasun Kasun",
-      "time": "15:15"
-    
-    },
-    {
-      "id": 11,
-      "name": "Saman Perera",
-      "time": "15:19"
-      
-    },
-    {
-      "id": 12,
-      "name": "Pabodya Baumika",
-      "time": "15:25"
-      
-    },
-    {
-      "id": 13,
-      "name": "Akasha",
-      "time": "16:15"
-      
-    }
-  ]
-  
+
   //Loading button states---------------------------------------------------------------
   const [loadingBAdd, setLoadingBAdd] = useState(false)
   const [loadingBEdit, setLoadingBEdit] = useState(false)
@@ -328,8 +254,9 @@ const handleConfirm = () => {
 <Dialog open={open} onClose={handleClose}>
         <DialogTitle
           sx={{
-            backgroundColor: "rgb(222, 244, 242)",
+            backgroundColor: theme.palette.custom.greenH,
             display: "flex",
+            color:'white',
             justifyContent: "space-between",
             paddingLeft:"200px",
           }}
@@ -338,11 +265,13 @@ const handleConfirm = () => {
           <CloseIcon onClick={handleClose} sx={{cursor:'pointer'}}/>
         </DialogTitle>
         <DialogContent>
-          <TextField label="Genaric name" fullWidth sx={{ mb: 1, mt: 3 }} value={drug} onChange={(e) => setDrug(e.target.value)}  size='small'/>
-          <TextField label="Brand Name" sx={{ mb: 1 }}value={brand} onChange={(e) => setBrand(e.target.value)}  size='small'/>
-          <TextField label="dossage" sx={{ ml: 4, mb: 1 }} value={dosage} onChange={(e) => setDosage(e.target.value)}/>
-          <TextField label="unit price" fullWidth sx={{ mb: 1 }}value={quantity} onChange={(e) => setQuantity(e.target.value)}  size='small'/>
-          <TextField label="Amount" sx={{ mb: 1 }} value={price} onChange={(e) => setPrice(e.target.value)} size='small'/>
+          <TextField label="Genaric name" fullWidth sx={{ mb: 2, mt: 3 }} value={drug} onChange={(e) => setDrug(e.target.value)}  size='small'/>
+          <TextField label="Brand Name" sx={{ mb: 2 }} fullWidth value={brand} onChange={(e) => setBrand(e.target.value)}  size='small'/>
+          <div sx={{display:'flex',justifyContent:'space-between'}}>
+            <TextField label="weight (mg)" sx={{mb: 2 }} value={dosage} onChange={(e) => setDosage(e.target.value)} size='small' type='number'/>
+            <TextField label="unit price" sx={{ mb: 2 ,ml:2 }}value={quantity} onChange={(e) => setQuantity(e.target.value)}  size='small' type='number' />
+          </div>
+          <TextField label="Amount" sx={{ mb: 2 }} value={price} onChange={(e) => setPrice(e.target.value)} size='small' type='number'/>
         </DialogContent>
         <DialogActions>
           <LoadingButton 
@@ -357,7 +286,7 @@ const handleConfirm = () => {
       </Dialog>
 
 {/*-------------------------- Drug list-------------------------------------------------------- */}     
-{filteredRows.map((row) => (
+{!loading?filteredRows.map((row) => (
   <Card 
     sx={{width:'90%',marginTop:"5px",marginLeft:"20px",marginRight:"20px",height:'40px',display:'flex',alignItems:'center',cursor:'pointer'}}
     onClick={() =>handleEditOpen(row)}
@@ -370,7 +299,7 @@ const handleConfirm = () => {
     <Typography sx={{flex:1}}>{row.price}</Typography>
 </Card>
   ))
-}
+:<Load></Load>}
 
 {/*--------------- confirmation popup box for delete------------------------------------------*/}
       <ConfirmPropmt action={handleDelete} message="Are you sure this must be deleted?"
@@ -380,10 +309,11 @@ const handleConfirm = () => {
 <Dialog open={editOpen} onClose={handleEditClose}>
         <DialogTitle
           sx={{
-            backgroundColor: "rgb(222, 244, 242)",
+            backgroundColor: theme.palette.custom.greenH,
             display: "flex",
             justifyContent: "space-between",
             paddingLeft:"200px",
+            color:'white'
           }}
         >
           Edit drug
@@ -391,54 +321,65 @@ const handleConfirm = () => {
         </DialogTitle>
         <DialogContent>
           <TextField
+          disabled = {!editEnable}
+          sx={{ mb: 2 ,mt:3}}
+          size='small'
           label="Genaric name"
           fullWidth
-          margin='dense'
           value={selectedCard ? selectedCard.drug : ""}
           onChange={(e) => handleFieldChange('drug', e.target.value)}
           />
           <TextField
-          label="brand name"
+          disabled = {!editEnable}
+          sx={{ mb: 2 }}
+          size='small'
+          label="Brand name"
           fullWidth
-          margin='dense'
           value={selectedCard ? selectedCard.brand : ""}
           onChange={(e) => handleFieldChange('brand', e.target.value)}
           />
+
+      <div sx={{display:'flex',justifyContent:'space-between',width:'100%'}}>
           <TextField
-          label="dossage"
-          fullWidth
-          margin='dense'
+          disabled = {!editEnable}
+          sx={{ mb: 2 }}
+          size='small'
+          label="Weight (mg)"
           value={selectedCard ? selectedCard.dosage : ""}
           onChange={(e) => handleFieldChange('dosage', e.target.value)}
           />
-         <TextField
-  label="quantity"
-  fullWidth
-  margin="dense"
-  value={
-    selectedCard
-      ? selectedCard.quantity + additionalQuantity // Add additional quantity to the existing quantity
-      : ''
-  }
-  InputProps={{
-    endAdornment: (
-      <InputAdornment position="end">
-        <IconButton onClick={() => setOpenPopup(true)}>
-          <AddIcon />
-        </IconButton>
-      </InputAdornment>
-    ),
-  }}
-/>
+
           <TextField
-          label="amount"
-          fullWidth
-          margin='dense'
+          disabled = {!editEnable}
+          sx={{ mb: 2 ,ml:2}}
+          size='small'
+          label="Price"
           value={selectedCard ? selectedCard.price : ""}
           onChange={(e) => handleFieldChange('price', e.target.value)}
           />
 
-          
+      </div>
+         <TextField
+         disabled = {!editEnable}
+         sx={{ mb: 2 }}
+         size='small'
+          label="quantity"
+          value={
+            selectedCard
+              ? selectedCard.quantity + additionalQuantity // Add additional quantity to the existing quantity
+              : ''
+          }
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton onClick={() => setOpenPopup(true)}>
+                  <AddIcon />
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+        />
+
         </DialogContent>
         <DialogActions>
           {editEnable? <Button
@@ -461,11 +402,12 @@ const handleConfirm = () => {
           >{editEnable?'Save':'Edit'}</LoadingButton>
         </DialogActions>
       </Dialog>
+    {/* ------- ADD drugs +  */}
       <Dialog open={openPopup} onClose={() => setOpenPopup(false)}>
-  <DialogTitle>Add Additional Quantity</DialogTitle>
   <DialogContent>
     <TextField
-      label="Additional Quantity"
+      size='small'
+      label="Add"
       fullWidth
       type="number"
       value={additionalQuantity}
