@@ -16,6 +16,9 @@ import DoneIcon from '@mui/icons-material/Done'
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from '@mui/icons-material/Edit'
+import InputAdornment from '@mui/material/InputAdornment';
+import IconButton from '@mui/material/IconButton';
+
 
 export default function Pharmacy_drugstore() {
 
@@ -33,7 +36,8 @@ export default function Pharmacy_drugstore() {
   const [snackbarMessage, setSnackbarMessage] = useState(''); // State for Snackbar message
 
   const [rows, setRows] = useState([]) // fetched drug list is stored
-
+const [additionalQuantity, setAdditionalQuantity] = useState(0); // New state for additional quantity
+  const [openPopup, setOpenPopup] = useState(false);
   const getData = () => { // get
     axios.get(baseURL+endPoints.DRUGGET)
     .then((result) => {
@@ -52,16 +56,15 @@ export default function Pharmacy_drugstore() {
     })
 }
 //New drug adding ==========================================>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
- const handleConfirm=()=>{
-    setLoadingBAdd(true)
-    const data={
-      "genericN": drug,
-      "brandN": brand,
-      "weight": dosage,
-      "avaliable": quantity,
-      "price": price    
-      
-    }
+const handleConfirm = () => {
+  setLoadingBAdd(true);
+  const data = {
+    genericN: drug,
+    brandN: brand,
+    weight: dosage,
+    avaliable: Number(quantity) + additionalQuantity, // Add additional quantity to the entered quantity
+    price: price,
+  };
     axios.post(baseURL+endPoints.DRUGPOST,data)
     .then((result)=>{
       setLoadingBAdd(false)
@@ -408,13 +411,25 @@ export default function Pharmacy_drugstore() {
           value={selectedCard ? selectedCard.dosage : ""}
           onChange={(e) => handleFieldChange('dosage', e.target.value)}
           />
-          <TextField
-          label="quantity"
-          fullWidth
-          margin='dense'
-          value={selectedCard ? selectedCard.quantity : ""}
-          onChange={(e) => handleFieldChange('quantity', e.target.value)}
-          />
+         <TextField
+  label="quantity"
+  fullWidth
+  margin="dense"
+  value={
+    selectedCard
+      ? selectedCard.quantity + additionalQuantity // Add additional quantity to the existing quantity
+      : ''
+  }
+  InputProps={{
+    endAdornment: (
+      <InputAdornment position="end">
+        <IconButton onClick={() => setOpenPopup(true)}>
+          <AddIcon />
+        </IconButton>
+      </InputAdornment>
+    ),
+  }}
+/>
           <TextField
           label="amount"
           fullWidth
@@ -446,6 +461,18 @@ export default function Pharmacy_drugstore() {
           >{editEnable?'Save':'Edit'}</LoadingButton>
         </DialogActions>
       </Dialog>
+      <Dialog open={openPopup} onClose={() => setOpenPopup(false)}>
+  <DialogTitle>Add Additional Quantity</DialogTitle>
+  <DialogContent>
+    <TextField
+      label="Additional Quantity"
+      fullWidth
+      type="number"
+      value={additionalQuantity}
+      onChange={(e) => setAdditionalQuantity(Number(e.target.value))}
+    />
+  </DialogContent>
+</Dialog>
   </div>
   )
 }
