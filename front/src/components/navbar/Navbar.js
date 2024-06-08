@@ -79,15 +79,15 @@ const Navbar = () => {
       // Start the connection
       AppNotificationconnection.start()
         .then(result => {
-          console.log('Connected! helo');
           // Set up a listener for notifications
           AppNotificationconnection.on('ReceiveNotification', message => {
-            console.log("inside receive side notification",message); //adding new real time notitication to the notification messages list
-            setNotificationMessages(notificationMessages => [...notificationMessages, message]);
-            setBadgeContent(prevBadgeContent => prevBadgeContent + 1);  //increase badge content for new real time notification
+            console.log('Connected! helo',connection.id);
+            console.log("inside receive side notification", message); // Log the received message
+            setNotificationMessages(notificationMessages => [...notificationMessages, message]); // Add new notification to the list
+            setBadgeContent(prevBadgeContent => prevBadgeContent + 1); // Increase badge content for new notification
           });
         })
-        .catch(e => console.log('Connection failed: ', e));
+        .catch(e => console.log('Connection failed in Receive notification connection line: ', e));
     }
   }, [AppNotificationconnection]);
 
@@ -176,12 +176,24 @@ const Navbar = () => {
         .start()
         .then(() => {
           console.log("Connected!");
-          console.log("name:", profile.name);
-          console.log("Id:", profile.Id);
-          console.log("Role:", profile.role);
           newConnection.invoke("Send", profile.Id, profile.role);
+          newConnection.invoke("NotiToPharmacist")
+          .then((data)=>{
+            console.log("Invoked Noti");
+            console.log("captured data: ", data);
+            })
+              .catch((error) => {
+                console.error(error);
+            });
+          newConnection.on('ReceiveNotification', message => {
+            console.log("inside receive side notification", message); // Log the received message
+            setNotificationMessages(notificationMessages => [...notificationMessages, message]); // Add new notification to the list
+            setBadgeContent(prevBadgeContent => prevBadgeContent + 1); // Increase badge content for new notification
+          });
+
         })
         .catch((err) => console.error("Connection failed: ", err));
+
 
       return () => {
         if (newConnection) {
