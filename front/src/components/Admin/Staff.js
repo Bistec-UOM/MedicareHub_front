@@ -10,6 +10,8 @@ import AddUserDialog from "./DialogComponents/AddUserDialog";
 import Skeleton from "@mui/material/Skeleton";
 import StyledBadge from "./PageComponents/Avatar";
 import { HubConnectionBuilder } from '@microsoft/signalr';
+import AddIcon from '@mui/icons-material/Add';
+import UserAddToList from "./DialogComponents/UserAddToList";
 
 export default function Staff() {
   const [notificationOpen, setNotificationOpen] = useState(false);
@@ -107,7 +109,7 @@ export default function Staff() {
   const [update, forceUpdate] = useState(0);
   const [connection, setConnection] = useState(null);
   const [users, setUsers] = useState([]);
-
+  const [loadingB, setLoadingB] = useState(false); //Loading button states
   const [notification, setNotification] = useState(null);
 
   useEffect(() => {
@@ -161,11 +163,7 @@ export default function Staff() {
             .then(() => console.log('Requested users list'))
             .catch(err => console.error(err));
 
-          // connection.on('Receiver', (usersJson) => {
-          //   const usersList = JSON.parse(usersJson);
-          //   setStaffData(usersList);
-          //   console.log('Received users list:', usersList);
-          // });
+
           connection.on('broadcastMessage', (name, message) => {
             console.log(`${name}: ${message}`);
             forceUpdate((prevCount) => prevCount + 1); // Trigger a re-render
@@ -190,9 +188,7 @@ export default function Staff() {
   }, [connection]); // Add notification to the dependency array
 
   
-  // useEffect(() => {
-  //   console.log('row2 state updated:', row2);
-  // }, [row2]);
+
   
 
 
@@ -273,10 +269,16 @@ export default function Staff() {
       [field]: value,
     });
   };
-
+// const [RestoreOpen, setRestoreOpen] = useState(false);
+//   const handleRestore = (row2) => {
+//     setRestoreOpen(true);
+// }
+// const handleRestoreClose = () => {
+//     setRestoreOpen(false);
+// }
   const handleRemove = () => {
 
-
+    setLoadingB(true)
     axios
     .delete(baseURL + endPoints.StaffList + `/${formData.id}`)
     .then((res) => {
@@ -285,7 +287,9 @@ export default function Staff() {
       setNotificationOpen(true);
       forceUpdate((prevCount) => prevCount + 1); // Trigger a re-render
       console.log("success", formData);
-    
+      setLoadingB(false);
+      setEditOpen(false);
+      setDeleteOpen(false);
       // Make the post request here
 
     })
@@ -302,30 +306,17 @@ export default function Staff() {
       forceUpdate((prevCount) => prevCount + 1); // Trigger a re-render
 
       console.log("post success");
+      setLoadingB(false);
+      setEditOpen(false);
+      setDeleteOpen(false);
     })
     .catch((error) => {
       console.error("post error", error);
     });
     });
-
-    setEditOpen(false);
-    setDeleteOpen(false);
   };
 
-      // axios
-      //   .then((res) => {
-      //     console.log("Successfully reverted deletion");
-      //     console.log(res.data);
-      //     settypenoti("success");
-      //     setNotiMessage("Successfully reverted deletion");
-      //     setNotificationOpen(true);
-      //     forceUpdate((prevCount) => prevCount + 1); // Trigger a re-render
-      //     setOpen(false);
-      //   })
-      //   .catch((error) => {
-      //     console.error("Failed to add member after deletion failed");
-      //     console.error(error);
-      //   });
+
   
   
   
@@ -337,13 +328,13 @@ export default function Staff() {
 
   const fields = [
     { label: "Full Name", key: "fullName", fullWidth: true },
-    { label: "Usual Name", key: "name" },
-    { label: "NIC", key: "nic", style: { ml: "20px" } },
+    { label: "Usual Name", key: "name", style: { width:{xs:"100%",sm:"auto"} }  },
+    { label: "NIC", key: "nic", style: { ml: {md:5,xs:0},width:{xs:"100%",sm:"auto"} } },
     { label: "Address", key: "address", fullWidth: true },
-    { label: "Contact Number", key: "contactNumber" },
-    { label: "Qualifications", key: "qualifications", style: { ml: "20px" } },
-    { label: "Email Address", key: "email" },
-    { label: "Password", key: "password", style: { ml: "20px" } },
+    { label: "Contact Number", key: "contactNumber" , style: { width:{xs:"100%",sm:"auto"} }},
+    { label: "Qualifications", key: "qualifications", style: { ml: {md:5,xs:0},width:{xs:"100%",sm:"auto"} }},
+    { label: "Email Address", key: "email" , style: { width:{xs:"100%",sm:"auto"} } },
+    { label: "Password", key: "password", style: { ml: {md:5,xs:0},width:{xs:"100%",sm:"auto"} } },
   ];
   const RoleFields = ["Doctor", "Receptionist", "Lab Assistant", "Cashier","Admin"];
 
@@ -358,6 +349,7 @@ export default function Staff() {
         formErrors={formErrors}
         Type={Type}
         formData={formData}
+        loadingB={loadingB}
         row2={row2}
         pData={pData}
         setFormErrors={setFormErrors}
@@ -375,6 +367,7 @@ export default function Staff() {
         handleEditClose={handleEditClose}
         fields={fields}
         formErrors={formErrors}
+        loadingB={loadingB}
         formData={formData}
         isDisabled={isDisabled}
         setFormData={setFormData}
@@ -398,8 +391,10 @@ export default function Staff() {
             sx={{
               mt: 2,
               m: 1,
-              backgroundColor: "rgb(59, 135, 122)",
-              color: "white",
+              borderStyle: "solid",
+              borderColor:"rgb(121, 204, 190)",
+              borderWidth: 2,
+              color: "rgb(114, 114, 114)",
               margin: "10 auto",
               display: "flex",
               alignItems: "center",
@@ -421,10 +416,8 @@ export default function Staff() {
             <Button
               variant="contained"
               size="small"
+              endIcon={<AddIcon/>}
               sx={{
-                backgroundColor: "rgb(121, 204, 190)",
-                paddingLeft: "1rem",
-                paddingRight: "1rem",
                 fontWeight: "bolder",
               }}
               onClick={() => handleAddClickOpen(rolefild)}
@@ -525,10 +518,122 @@ export default function Staff() {
           )}
         </div>
       ))}
+
+
+
+
+
+
+
+
+
+
+
+{/* deleted section */}
+<Paper
+            sx={{
+              mt: 2,
+              m: 1,
+              borderStyle: "solid",
+              borderColor:"rgb(121, 204, 190)",
+              borderWidth: 2,
+              color: "rgb(114, 114, 114)",
+              margin: "10 auto",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              paddingLeft: 2,
+              paddingRight: 2,
+            }}
+          >            <Typography
+          variant="h5"
+          sx={{
+            paddingTop: 0.75,
+            paddingBottom: 0.75,
+            fontWeight: "bolder",
+          }}
+        >
+          Removed Staff
+        </Typography></Paper>
+        {row2.filter((row2)=>row2.isDeleted === true)
+            .map((row2) => (
+              //role data in here
+              <Paper
+                key={row2.Id}
+                sx={{
+                  cursor: "Pointer",
+                  mt: 1.1,
+                  display: "flex",
+                  flexDirection: "column", // Set to 'column' for vertical display
+                  paddingLeft: 2,
+                  paddingRight: 2,
+                  ":hover": {
+                    backgroundColor:'rgb(235, 235, 235)', // Change this to the desired hover effect
+                  }
+                }}
+                onClick={() => handleEditClickOpen(row2)} // Open the edit window when clicking on the paper
+              >
+
+                  {console.log('row2.isActive:', row2.isActive)} 
+                  <Box sx={{ display: "flex" }}>
+                    <Box sx={{ display: "flex", alignItems: "center" }}>
+                    {row2.isActive ? (
+        <StyledBadge
+          overlap="circular"
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+          variant="dot"
+          color="red"
+        >
+          <Avatar
+            alt="Remy Sharp"
+            src={row2.imageUrl}
+            sx={{ width: 50, height: 50 }}
+          />
+        </StyledBadge>
+      ) : (
+        <Avatar
+          alt="Remy Sharp"
+          src={row2.imageUrl}
+          sx={{ width: 50, height: 50 }}
+        />
+      )}
+                    </Box>
+                    <Grid
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        marginLeft: 3,
+                      }}
+                    >
+                      <Typography variant="h6" sx={{ paddingTop: 0.75 }}>
+                        {row2.fullName}
+                      </Typography>
+                      <Typography
+                        variant="h10"
+                        sx={{ fontSize: 10, color: "rgb(186, 177, 177)" }}
+                      >
+                        {row2.qualifications}
+                      </Typography>
+                      <Typography
+                        variant="h10"
+                        sx={{
+                          fontSize: 10,
+                          paddingBottom: 0.75,
+                          color: "rgb(186, 177, 177)",
+                        }}
+                      >
+                        {row2.role}
+                      </Typography>
+                    </Grid>
+                  </Box>
+                </Paper>
+            ))
+        }
       <AskDelete
         deleteOpen={deleteOpen}
         handleEditClose={handleClose}
         handleRemove={handleRemove}
+        loadingB={loadingB}
       ></AskDelete>
       <SuccessNotification
         setNotificationOpen={setNotificationOpen}
@@ -536,6 +641,7 @@ export default function Staff() {
         notificationOpen={notificationOpen}
         type={typenoti}
       ></SuccessNotification>
+      {/* <UserAddToList RestoreOpen={RestoreOpen} ></UserAddToList> */}
     </div>
   );
 }

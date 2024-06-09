@@ -1,20 +1,4 @@
-import {
-  Typography,
-  Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  TextField,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  Box,
-  DialogContentText,
-  Paper,
-  FormHelperText,
-} from "@mui/material";
+import {Typography,Button,Dialog,DialogTitle,DialogContent,DialogActions,TextField,FormControl,InputLabel,Select,MenuItem,Box,DialogContentText,Paper,FormHelperText,Grid} from "@mui/material";
 import * as React from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
@@ -27,28 +11,15 @@ import Avatar from "@mui/material/Avatar";
 import { useState } from "react";
 import DropBox from "./DropBox";
 import { useEffect } from "react";
+import LoadingButton from "@mui/lab/LoadingButton";
+import AddIcon from '@mui/icons-material/Add';
 
-const AddUserDialog = ({
-  open,
-  handleClose,
-  handleInputChange,
-  formErrors,
-  Type,
-  formData,
-  row2,
-  pData,
-  setFormErrors,
-  Role,
-  settypenoti,
-  setNotiMessage,
-  setNotificationOpen,
-  forceUpdate,
-  setOpen,
-}) => {
+const AddUserDialog = ({open,handleClose,handleInputChange,formErrors,Type,formData,row2,pData,setFormErrors,Role,settypenoti,setNotiMessage,setNotificationOpen,forceUpdate,setOpen}) => {
+  const [loadingB, setLoadingB] = useState(false);
   const handleAddSaveClose = () => {
     let errors = {};
     let isValid = true;
-
+    setLoadingB(true)
     const fields = [
       "fullName",
       "name",
@@ -116,12 +87,23 @@ const AddUserDialog = ({
       errors.email = "Invalid email";
       isValid = false;
     }
+    //dob validation
     const dob = new Date(formData.dob);
-
-    if (isNaN(dob)) {
+    const today = new Date();
+    const hundredYearsAgo = new Date();
+    hundredYearsAgo.setFullYear(today.getFullYear() - 100);
+    
+    if (isNaN(dob.getTime())) {
       errors.dob = "Invalid date of birth";
       isValid = false;
+    } else if (dob > today) {
+      errors.dob = "Date of birth cannot be in the future";
+      isValid = false;
+    } else if (dob < hundredYearsAgo) {
+      errors.dob = "Date of birth cannot be more than 100 years ago";
+      isValid = false;
     }
+
     if (!/^\d+$/.test(formData.contactNumber)) {
       errors.contactNumber = "Invalid contact number";
       isValid = false;
@@ -130,6 +112,7 @@ const AddUserDialog = ({
     // If any duplicates are found, set form errors and return
     if (!isValid) {
       setFormErrors(errors);
+      setLoadingB(false)
       return;
     }
 
@@ -147,6 +130,8 @@ const AddUserDialog = ({
 
         forceUpdate((prevCount) => prevCount + 1); // Trigger a re-render
         setOpen(false);
+        setLoadingB(false);
+        
       })
       .catch((error) => {
         if (error.message === "Network Error") {
@@ -173,10 +158,10 @@ const AddUserDialog = ({
   };
   return (
     <>
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog sx={{width: {md:'39.5vw',sm:"100%"},margin:"auto"}} open={open} onClose={handleClose}>
         <DialogTitle
           sx={{
-            backgroundColor: "rgb(222, 244, 242)",
+            // backgroundColor:""
             display: "flex",
             justifyContent: "space-between",
           }}
@@ -187,14 +172,14 @@ const AddUserDialog = ({
         <DialogContent>
           <Avatar
             onClick={handleDropBoxOpen}
-            // alt="Remy Sharp"
             src={dataUrl}
-            sx={{ width: 130, height: 130, margin: "auto" }}
+            sx={{ width: 100,cursor:"pointer", height: 100, margin: "auto",my:2 }}
           />
           {/* Add form fields or other content here */}
           <TextField
             required
             label="Full Name"
+            size="small"
             fullWidth
             sx={{ mb: 1 }}
             onChange={(e) => handleInputChange("fullName", e.target.value)}
@@ -204,7 +189,8 @@ const AddUserDialog = ({
           <TextField
             required
             label="Usual Name"
-            sx={{ mb: 1 }}
+            size="small"
+            sx={{ mb: 1,width:{xs:"100%",sm:"auto"} }}
             onChange={(e) => handleInputChange("name", e.target.value)}
             error={!!formErrors.name}
             helperText={formErrors.name}
@@ -212,7 +198,8 @@ const AddUserDialog = ({
           <TextField
             required
             label="NIC"
-            sx={{ ml: 4, mb: 1 }}
+            size="small"
+            sx={{ ml: {sm:5,xs:0},width:{xs:"100%",sm:"auto"}, mb: 1 }}
             onChange={(e) => handleInputChange("nic", e.target.value)}
             error={!!formErrors.nic}
             helperText={formErrors.nic}
@@ -220,6 +207,7 @@ const AddUserDialog = ({
           <TextField
             required
             label="Address"
+            size="small"
             fullWidth
             sx={{ mb: 1 }}
             onChange={(e) => handleInputChange("address", e.target.value)}
@@ -229,7 +217,8 @@ const AddUserDialog = ({
           <TextField
             required
             label="Contact Number"
-            sx={{ mb: 1 }}
+            size="small"
+            sx={{ mb: 1,width:{xs:"100%",sm:"auto"} }}
             onChange={(e) => handleInputChange("contactNumber", e.target.value)}
             error={!!formErrors.contactNumber}
             helperText={formErrors.contactNumber}
@@ -237,7 +226,8 @@ const AddUserDialog = ({
           <TextField
             required
             label="qualifications"
-            sx={{ ml: 4, mb: 1 }}
+            size="small"
+            sx={{ ml: {sm:5,xs:0},width:{xs:"100%",sm:"auto"}, mb: 1 }}
             onChange={(e) =>
               handleInputChange("qualifications", e.target.value)
             }
@@ -247,7 +237,8 @@ const AddUserDialog = ({
           <TextField
             required
             label="E-mail"
-            sx={{ mb: 1 }}
+            size="small"
+            sx={{ mb: 1,width:{xs:"100%",sm:"auto"} }}
             onChange={(e) => handleInputChange("email", e.target.value)}
             error={!!formErrors.email}
             helperText={formErrors.email}
@@ -255,17 +246,19 @@ const AddUserDialog = ({
           <TextField
             required
             label="Password"
-            sx={{ mb: 1, ml: 4 }}
+            size="small"
+            sx={{ mb: 1,width:{xs:"100%",sm:"auto"},ml: {sm:5,xs:0} }}
             onChange={(e) => handleInputChange("password", e.target.value)}
             error={!!formErrors.password}
             helperText={formErrors.password}
           />
-          <div style={{ display: "flex" }}>
+          <Grid sx={{ display: {sm:"flex",xs:"flow"} }}>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DemoContainer components={["DateField"]}>
                 <DateField
                   label="Date Of Birth"
-                  style={{ width: "200px" }}
+                  size="small"
+                  style={{ width: "200px",width:{xs:"100%",sm:"auto"} }}
                   required
                   onChange={(newValue) => handleInputChange("dob", newValue)}
                   renderInput={(props) => <TextField {...props} />} // You may need to import TextField from '@mui/material/TextField'
@@ -277,12 +270,13 @@ const AddUserDialog = ({
             </LocalizationProvider>
             <Box>
               <FormControl
-                style={{ width: "200px", margin: "9px", marginLeft: "40px" }}
+                sx={{ width: {sm:"205px",xs:"74vw"}, margin: "9px", marginLeft: {sm:"50px",xs:0} }}
               >
-                <InputLabel id="demo-simple-select-label">Gender</InputLabel>
+                <InputLabel sx={{top:'-1vh',marginLeft:".9vw"}} id="demo-simple-select-label">Gender</InputLabel>
                 <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
+                  size="small"
                   required
                   // value={handleInputChange("gender", e.target.value)} // Ensure you're using the correct value here
                   label="Gender"
@@ -298,18 +292,26 @@ const AddUserDialog = ({
             )}
               </FormControl>
             </Box>
-          </div>
+          </Grid>
 
           {/* Add more fields as needed */}
         </DialogContent>
         <DialogActions>
-          <Button
+          {/* <Button
             onClick={handleAddSaveClose}
             variant="contained"
-            sx={{ backgroundColor: "rgb(121, 204, 190)", m: 2 }}
-          >
+            >
             Add
-          </Button>
+            </Button> */}
+          <LoadingButton 
+            sx={{ m: 2 }}
+            variant='contained' 
+            size='small' 
+            endIcon={<AddIcon/>}           
+            loading={loadingB}
+            loadingPosition="end"
+            onClick={handleAddSaveClose}
+          >Add</LoadingButton>
         </DialogActions>
       </Dialog>
       <Dialog open={dropOpen} onClose={handleDropBoxClose}>

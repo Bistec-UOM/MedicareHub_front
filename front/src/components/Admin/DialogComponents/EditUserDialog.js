@@ -1,4 +1,4 @@
-import {Button,Dialog,DialogTitle,DialogContent,DialogActions,TextField,FormControl,InputLabel,Select,MenuItem, FormHelperText} from "@mui/material";
+import {Button,Dialog,DialogTitle,DialogContent,DialogActions,TextField,FormControl,InputLabel,Select,MenuItem, FormHelperText, Grid} from "@mui/material";
 import { useState,useEffect } from "react";
 import * as React from "react";
 import CloseIcon from "@mui/icons-material/Close";
@@ -11,8 +11,15 @@ import { DateField } from "@mui/x-date-pickers/DateField";
 import { baseURL, endPoints } from "../../../Services/Admin";
 import Avatar from '@mui/material/Avatar';
 import DropBox from "./DropBox";
+import EditIcon from '@mui/icons-material/Edit';
+import DoneIcon from '@mui/icons-material/Done';
+import DeleteIcon from "@mui/icons-material/Delete";
+import LoadingButton from "@mui/lab/LoadingButton";
+
 const EditUserDialog = ({editOpen,handleEditClose,fields,formErrors,formData,isDisabled,setFormData,handleInputChange,deletePopUp,handleEditClick,row2,setFormErrors,pData,settypenoti,setNotiMessage,setNotificationOpen,setIsDisabled,setEditOpen,forceUpdate}) => {
+  const [loadingB, setloadingB] = useState(false);
   const handleEditSave = () => {
+    setloadingB(true);
     let errors = {};
     let isValid = true;
     // Handle saving edited data here
@@ -74,7 +81,7 @@ const EditUserDialog = ({editOpen,handleEditClose,fields,formErrors,formData,isD
       }
 
       if (isDuplicateContactNumber) {
-        errors.contactNumber = "Contact number already exists";
+        errors.contactNumber = "Number already exists";
         isValid = false;
       }
 
@@ -102,13 +109,14 @@ const EditUserDialog = ({editOpen,handleEditClose,fields,formErrors,formData,isD
         isValid = false;
       }
       if (!/^\d+$/.test(formData.contactNumber)) {
-        errors.contactNumber = "Invalid contact number, only integers allowed";
+        errors.contactNumber = "Invalid contact number";
         isValid = false;
       }
     }
     // If any errors are found, set form errors and return
     if (!isValid) {
       setFormErrors(errors);
+      setloadingB(false);
       return;
     }
     try {
@@ -126,16 +134,17 @@ const EditUserDialog = ({editOpen,handleEditClose,fields,formErrors,formData,isD
           handleEditClose();
           setIsDisabled(true);
           forceUpdate((prevCount) => prevCount + 1); // Trigger a re-render
+          setloadingB(false);
 
           // Assume the Axios request is successful, then set showPatient to true
           // Close the edit dialog
           setEditOpen(false);
+          // setEditOpen(false);
         });
     } catch (error) {
       // Handle error, show an error messdob or dispatch an error action
       console.error("Error updating patient:", error.response.data);
     }
-    setEditOpen(false);
   };
 
 
@@ -156,7 +165,7 @@ const handleDropBoxClose = () => {
 }
   return (
    <>
-    <Dialog open={editOpen}  onClose={handleEditClose}>
+    <Dialog open={editOpen} sx={{width: {md:'39.5vw',xs:"100%",sm:"100%"},margin:"auto"}}  onClose={handleEditClose}>
       <DialogTitle
         sx={{
           backgroundColor: "rgb(222, 244, 242)",
@@ -171,7 +180,7 @@ const handleDropBoxClose = () => {
       <Avatar
         onClick={isDisabled ? null : handleDropBoxOpen}
         src={formData.imageUrl}
-        sx={{ width:130, height:130 ,margin:'auto',marginTop:'2vh'}}
+        sx={{ width:100, height:100 ,cursor:'pointer',margin:'auto',marginTop:'2vh'}}
       />
         {fields.map((field) => (
           <TextField
@@ -181,7 +190,8 @@ const handleDropBoxClose = () => {
             error={!!formErrors[field.key]}
             helperText={formErrors[field.key]}
             fullWidth={field.fullWidth || false}
-            margin="normal"
+            margin="dense"
+            size="small"
             value={formData[field.key]}
             disabled={isDisabled}
             onChange={(e) =>
@@ -189,10 +199,8 @@ const handleDropBoxClose = () => {
             }
           />
         ))}
-        <FormControl sx={{ m: 2, ml: 4 }}>
-          <InputLabel id="demo-simple-select-label">Gender</InputLabel>
-        </FormControl>
-        <div style={{ display: "flex" }}>
+     
+        <Grid sx={{ display: {sm:"flex" ,xs:"flow"} }}>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DemoContainer components={["DateField"]}>
               <DateField
@@ -200,50 +208,67 @@ const handleDropBoxClose = () => {
                 value={formData.dob ? dayjs(formData.dob) : null} // Ensure formData.dob is a valid date or null
                 onChange={(newValue) => handleInputChange("dob", newValue)}
                 renderInput={(props) => <TextField {...props} />}
-                style={{ width: "210px", marginTop: "9px" }}
                 disabled={isDisabled}
+                size="small"
                 // format="YYYY/MM/DD" // You can add this line back if it's needed
               />
             </DemoContainer>
           </LocalizationProvider>
+          <FormControl sx={{  ml: {md:2,xs:0},width:{md:"50%",xs:"100%"} }}>
+          <InputLabel sx={{left:{md:"1.6vw"},top:"0.9vh",opacity:"60%"}} id="demo-simple-select-label">Gender</InputLabel>
+        
           <Select
             labelId="gender-label"
             id="gender"
+            size="small"
             value={formData.gender}
             onChange={(e) =>
               setFormData({ ...formData, gender: e.target.value })
             }
             label="Gender"
             disabled={isDisabled}
-            style={{ width: "200px", height: "6vh" }}
-            sx={{ ml: 3, mt: 2 }}
+            sx={{ ml: {md:3,xs:0}, mt: 1 }}
           >
             <MenuItem value="Male">Male</MenuItem>
             <MenuItem value="Female">Female</MenuItem>
           </Select>
+          </FormControl>
           {formErrors.gender && (
               <FormHelperText error>{formErrors.gender}</FormHelperText>
             )}
-        </div>
+        </Grid>
       </DialogContent>
       <DialogActions>
         {!isDisabled && (
           <Button
             onClick={deletePopUp}
             variant="outlined"
+            endIcon={<DeleteIcon/>}
             color="error"
             sx={{ m: 2 }}
           >
             Delete
           </Button>
         )}
-        <Button
+        {/* <Button
           onClick={isDisabled ? handleEditClick : handleEditSave}
           variant="contained"
-          sx={{ backgroundColor: "rgb(121, 204, 190)", m: 2 }}
+          sx={{  m: 2 }}
         >
           {isDisabled ? "Edit" : "Save"}
-        </Button>
+        </Button> */}
+        <LoadingButton 
+            sx={{ m: 2 }}
+            variant='contained' 
+            size='small' 
+            endIcon={isDisabled ? <EditIcon /> : <DoneIcon/>}           
+            loading={loadingB}
+            loadingPosition="end"
+            onClick={isDisabled ? handleEditClick : handleEditSave}
+          >
+             {isDisabled ? 'Edit' : 'Save '}
+              {/* {isDisabled ? <EditIcon fontSize="small" sx={{ml:1}}/> : <DoneIcon fontSize="small" sx={{ml:1}}/>} */}
+          </LoadingButton>
       </DialogActions>
 
 

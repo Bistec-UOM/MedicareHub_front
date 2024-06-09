@@ -61,8 +61,11 @@ const AOther = () => {
             setNotiMessage("You are not connected to internet");
             settypenoti("error");
             setNotificationOpen(true);
+            setLoadingB(false);
+
           } else {
             console.error(error);
+            setLoadingB(false);
           }
         });
     }
