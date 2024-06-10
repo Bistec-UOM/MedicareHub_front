@@ -9,12 +9,12 @@ import { Box } from '@mui/system';
 import AddIcon from '@mui/icons-material/Add';
 
 export default function LabRequest(props) {
-  const { openpopBox, setOpenpopBox ,rep, setrep} = props;   
+  const { openpopBox, setOpenpopBox ,rep, setrep, labtestlist} = props;   
   //const [rep, setrep] = useState([]);
   const [name, setName] = useState('');
   const [selectedLabTestName, setSelectedLabTestName] = useState(null);//hold the selected labtest name
  
-  const Labs = [ 
+ /*  const Labs = [ 
   { TestId: 1, labTestName: 'Full Blood Count' },
   { TestId: 2, labTestName: 'Urine Analysis' },
   { TestId:3,labTestName:'Blood Glucose Test'},
@@ -22,7 +22,9 @@ export default function LabRequest(props) {
   {TestId: 5, labTestName: 'Kidney Function Test' },
   {TestId: 6, labTestName: 'Electrolyte Panel' },
   {TestId: 7, labTestName: 'Lipid Profile' },
-  { TestId: 24, labTestName: 'Thyroid Function Test' }];
+  { TestId: 24, labTestName: 'Thyroid Function Test' }]; */
+
+  const Labs =labtestlist
     
   const handleClose = () => {
     setOpenpopBox(false);   

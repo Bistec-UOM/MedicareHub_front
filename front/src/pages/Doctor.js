@@ -39,6 +39,7 @@ export default function Doctor() {
   const [pres,setPres]=useState([]) ;// hold the pres details from doctoradd drug component
   const [rep,setrep]=useState([]); // hold the  lab request from component
   const [appointments, setAppointments] = useState([]);// hold the appoinment list
+  const [labtestlist,setLabtestlist]=useState([]);//hold the fetched lab test list with aapointment req.
 
   //--------------------------------------------------------------------------------------------------------
   const [labReport,setLabReport]=useState([]);//hold the fetched available lab reports
@@ -139,7 +140,8 @@ const handleClick = () => {
 const fetchData = async () => {
   try {
     const response = await axios.get(baseURL+endPoints.APPOINTMENTLIST); 
-    setAppointments(response.data);
+    setAppointments(response.data.appointments);
+    setLabtestlist(response.data.tests)
     
   } catch (error) {
     console.error('Error fetching data:', error);
@@ -257,7 +259,7 @@ const handleCloseConfirm = () => {setOpenConfirm(false)}
                    </div>
   {/*........................Lab Request..............................................*/}
                   
-                   <LabRequest openpopBox={openpopBox} setOpenpopBox={setOpenpopBox} rep={rep} setrep={setrep}/>
+                   <LabRequest openpopBox={openpopBox} setOpenpopBox={setOpenpopBox} rep={rep} setrep={setrep} labtestlist={labtestlist}/>
                    <ScienceIcon sx={{ color: '#33cc33', marginLeft: '87%', fontSize: '30px', cursor: 'pointer' }} onClick={() =>handleAddButtonClick(selectedAppointment)} />
   
   {/*.................patient extra details ............................................*/}
