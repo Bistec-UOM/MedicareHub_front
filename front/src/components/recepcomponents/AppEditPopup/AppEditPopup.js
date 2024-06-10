@@ -13,6 +13,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Grid, Stack } from "@mui/material";
 import { baseURL,endPoints } from "../../../Services/Appointment";
 import { setHeaders } from "../../../Services/Auth";
+import { LoadingButton } from "@mui/lab";
 
 export default function AppEditPopup({
   delcount,
@@ -39,6 +40,7 @@ export default function AppEditPopup({
     ampm: " ",
   });
   const [activeData, setActiveData] = useState({});
+  const [appEditConLoading,setAppEditConLoading]=useState(false) //var for loading prop of app edit confirm button
 
   function formatAMPM(date) {
     //this function for display the selected date using am and pm,not used 24 based hours
@@ -69,6 +71,7 @@ export default function AppEditPopup({
     setAppEditOpen(false);
   };
   async function handleUpdate(event) {
+    setAppEditConLoading(true);
     event.preventDefault();
     var finalTime = getRealTime(appTime);
     var date = finalTime;
@@ -94,11 +97,13 @@ export default function AppEditPopup({
           },setHeaders()
       );
       if (response.data == 0) {
+        setAppEditConLoading(false);
         setDelcount(delcount + 1);
         setAppEditOpen(false);
         handleNotification("Appointment Edited succesfully!", "success");
       }
       else if (response.data == 2) {
+        setAppEditConLoading(false);
         handleNotification(
           "Time slot has been blocked. Select another time slot",
           "error"
@@ -106,6 +111,7 @@ export default function AppEditPopup({
       }
        
       else if (response.data == 1) {
+        setAppEditConLoading(false);
         handleNotification(
           "Time slot has been already booked!. Select another time slot",
           "error"
@@ -114,7 +120,8 @@ export default function AppEditPopup({
       }
       
     } catch (err) {
-      handleNotification(err.response.data,"error");
+      setAppEditConLoading(false);
+      handleNotification("Network Error Occured!","error");
     }
   }
 
@@ -290,18 +297,13 @@ export default function AppEditPopup({
                   selectedTime={selectedTime}
                   setSelectedTime={setSelectedTime}
                 />
-                <Button
-                  sx={{
-                    backgroundColor: "#79CCBE",
-                    "&:hover": {
-                      backgroundColor: "#79CCBE",
-                    },
-                  }}
+                <LoadingButton
+                  loading={appEditConLoading}
                   variant="contained"
                   type="submit"
                 >
                   Confirm
-                </Button>
+                </LoadingButton>
               </Stack>
             </DialogActions>
           </form>
