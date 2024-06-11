@@ -15,6 +15,7 @@ import { Load } from "../../Other";
 import { baseURL,endPoints } from "../../../Services/Appointment";
 import { setHeaders } from "../../../Services/Auth";
 import { LoadingButton } from "@mui/lab";
+import theme from "../../Style";
 
 export default function AppAddPopup({
   filteredAppointments,
@@ -172,7 +173,7 @@ export default function AppAddPopup({
       <Dialog open={apopen} onClose={handleClose}>
         <Box
           sx={{
-            backgroundColor: "#DEF4F2",
+            backgroundColor: theme.palette.custom.greenH,
             height: "40px",
             display: "flex",
             justifyContent: "flex-end",

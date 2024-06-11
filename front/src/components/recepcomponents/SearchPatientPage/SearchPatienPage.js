@@ -10,6 +10,9 @@ import { Load } from "../../Other";
 import "../../../recep.css";
 import { baseURL, endPoints } from "../../../Services/Appointment";
 import { setHeaders } from "../../../Services/Auth";
+import AddIcon from '@mui/icons-material/Add';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+
 
 const SearchPatientPage = (props) => {
   const [notificationOpen, setNotificationOpen] = useState(false);
@@ -101,14 +104,11 @@ const SearchPatientPage = (props) => {
         >
           <Button
             onClick={handleRegOpen}
-            sx={{
-              backgroundColor: "#79CCBE",
+            sx={{  
               fontWeight: 25,
-              "&:hover": {
-                backgroundColor: "#79CCBE", // Set hover background color to be the same
-              },
             }}
             variant="contained"
+            endIcon={<AddIcon></AddIcon>}
           >
             New
           </Button>
@@ -116,14 +116,14 @@ const SearchPatientPage = (props) => {
             onClick={handleBackToList}
             // disabled={isDisabled}
             sx={{
-              backgroundColor: "#F44336",
+              
               fontWeight: 25,
               whiteSpace: "nowrap",
-              "&:hover": {
-                backgroundColor: "#F34436", // Set hover background color to be the same
-              },
+              
             }}
-            variant="contained"
+            color="warning"
+            variant="outlined"
+            startIcon={<ArrowBackIosNewIcon></ArrowBackIosNewIcon>}
           >
             Back To List
           </Button>

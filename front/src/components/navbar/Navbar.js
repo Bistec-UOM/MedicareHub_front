@@ -65,7 +65,7 @@ const Navbar = () => {
     setAppNotiConnection(newConnection);
   }, []);
 
- useEffect(() => {  //for getting real time notification
+ useEffect(() => {  //use effect for real time notification
   console.log("before con", AppNotificationconnection);
   if (AppNotificationconnection) {
     console.log("Attempting to start connection...");
@@ -76,8 +76,8 @@ const Navbar = () => {
         // Set up a listener for notifications
         AppNotificationconnection.on('ReceiveNotification', message => {
           console.log('Connected! helo', AppNotificationconnection.connectionId);
-          console.log("inside receive notification chathura callback", message); // Log the received message
-          setNotificationMessages(notificationMessages => [...notificationMessages, message]); // Add new notification to the list
+          console.log("inside receive notification chathura callback", message.message); // Log the received message
+          setNotificationMessages(notificationMessages => [...notificationMessages, message.message]); // Add new notification to the list
           setBadgeContent(prevBadgeContent => prevBadgeContent + 1); // Increase badge content for new notification
         });
       })
@@ -159,53 +159,53 @@ const Navbar = () => {
     }
   }, [])
 
-  useEffect(() => {
-    if (profile.Id) {
-      const newConnection = new HubConnectionBuilder()
+  // useEffect(() => {
+  //   if (profile.Id) {
+  //     const newConnection = new HubConnectionBuilder()
 
-        .withUrl(baseURLA+'/notificationHub')
-        // .withUrl('https://mediicarehub.azurewebsites.net/notificationHub')
+  //       .withUrl(baseURLA+'/notificationHub')
+  //       // .withUrl('https://mediicarehub.azurewebsites.net/notificationHub')
 
-        .withAutomaticReconnect()
-        .build();
+  //       .withAutomaticReconnect()
+  //       .build();
 
-      setConnection(newConnection);
+  //     setConnection(newConnection);
 
-      newConnection
-        .start()
-        .then(() => {
-          console.log("Connected!");
-          newConnection.invoke("Send", profile.Id, profile.role);
-          newConnection.invoke("NotiToPharmacist")
-          .then((data)=>{
-            console.log("Invoked Noti");
-            console.log("captured data: ", data);
-            })
-              .catch((error) => {
-                console.error(error);
-            });
-          newConnection.on('ReceiveNotification', message => {
-            console.log("inside receive side notification", message); // Log the received message
-            setNotificationMessages(notificationMessages => [...notificationMessages, message]); // Add new notification to the list
-            setBadgeContent(prevBadgeContent => prevBadgeContent + 1); // Increase badge content for new notification
-          });
+  //     newConnection
+  //       .start()
+  //       .then(() => {
+  //         console.log("Connected!");
+  //         newConnection.invoke("Send", profile.Id, profile.role);
+  //         newConnection.invoke("NotiToPharmacist")
+  //         .then((data)=>{
+  //           console.log("Invoked Noti");
+  //           console.log("captured data: ", data);
+  //           })
+  //             .catch((error) => {
+  //               console.error(error);
+  //           });
+  //         newConnection.on('ReceiveNotification', message => {
+  //           console.log("inside receive side notification", message); // Log the received message
+  //           setNotificationMessages(notificationMessages => [...notificationMessages, message]); // Add new notification to the list
+  //           setBadgeContent(prevBadgeContent => prevBadgeContent + 1); // Increase badge content for new notification
+  //         });
 
-        })
-        .catch((err) => console.error("Connection failed: ", err));
+  //       })
+  //       .catch((err) => console.error("Connection failed: ", err));
 
 
-      return () => {
-        if (newConnection) {
-          newConnection
-            .stop()
-            .then(() => console.log("Connection stopped"))
-            .catch((err) =>
-              console.error("Error while stopping connection:", err)
-            );
-        }
-      };
-    }
-  }, [profile]);
+  //     return () => {
+  //       if (newConnection) {
+  //         newConnection
+  //           .stop()
+  //           .then(() => console.log("Connection stopped"))
+  //           .catch((err) =>
+  //             console.error("Error while stopping connection:", err)
+  //           );
+  //       }
+  //     };
+  //   }
+  // }, [profile]);
 
 
   //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -281,7 +281,7 @@ const Navbar = () => {
               Help
             </MenuItem>
             <MenuItem onClick={handleNotificationBell}>
-            {badgeContent > 1 ? (
+            {badgeContent >= 1 ? (
                 <NotificationsIcon color="action" sx={{ paddingRight: "10%" }} />
               ) : (
                 <NotificationsNoneIcon color="action" sx={{ paddingRight: "10%" }} />
