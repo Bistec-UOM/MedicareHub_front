@@ -13,6 +13,7 @@ import DropBox from "./DropBox";
 import { useEffect } from "react";
 import LoadingButton from "@mui/lab/LoadingButton";
 import AddIcon from '@mui/icons-material/Add';
+import theme from "../../Style";
 
 const AddUserDialog = ({open,handleClose,handleInputChange,formErrors,Type,formData,row2,pData,setFormErrors,Role,settypenoti,setNotiMessage,setNotificationOpen,forceUpdate,setOpen}) => {
   const [loadingB, setLoadingB] = useState(false);
@@ -162,6 +163,8 @@ const AddUserDialog = ({open,handleClose,handleInputChange,formErrors,Type,formD
         <DialogTitle
           sx={{
             // backgroundColor:""
+          backgroundColor:theme.palette.custom.greenH,
+          color: "white",
             display: "flex",
             justifyContent: "space-between",
           }}

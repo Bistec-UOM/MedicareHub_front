@@ -12,6 +12,7 @@ import axios from "axios";
 import LoadingButton from "@mui/lab/LoadingButton";
 import AddIcon from "@mui/icons-material/Add";
 import { useState } from "react";
+import theme from "../../Style";
 
 const AddPatientDialog = ({open,rows,handleAddClose,handleInputChange,formErrors,formData,setFormErrors,settype,setNotiMessage,setNotificationOpen,setOpen,forceUpdate,}) => {
   const [loadingB, setLoadingB] = useState(false);
@@ -149,7 +150,8 @@ const AddPatientDialog = ({open,rows,handleAddClose,handleInputChange,formErrors
     <Dialog sx={{width: {md:'39.5vw',sm:"100%"},margin:"auto"}} open={open}  onClose={handleAddClose}>
       <DialogTitle
         sx={{
-          backgroundColor: "rgb(222, 244, 242)",
+          backgroundColor:theme.palette.custom.greenH,
+          color: "white",
           display: "flex",
           justifyContent: "space-between",
         }}

@@ -15,6 +15,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DoneIcon from '@mui/icons-material/Done';
 import DeleteIcon from "@mui/icons-material/Delete";
 import LoadingButton from "@mui/lab/LoadingButton";
+import theme from "../../Style";
 
 const EditUserDialog = ({editOpen,handleEditClose,fields,formErrors,formData,isDisabled,setFormData,handleInputChange,deletePopUp,handleEditClick,row2,setFormErrors,pData,settypenoti,setNotiMessage,setNotificationOpen,setIsDisabled,setEditOpen,forceUpdate}) => {
   const [loadingB, setloadingB] = useState(false);
@@ -168,7 +169,8 @@ const handleDropBoxClose = () => {
     <Dialog open={editOpen} sx={{width: {md:'39.5vw',xs:"100%",sm:"100%"},margin:"auto"}}  onClose={handleEditClose}>
       <DialogTitle
         sx={{
-          backgroundColor: "rgb(222, 244, 242)",
+          backgroundColor:theme.palette.custom.greenH,
+          color: "white",
           display: "flex",
           justifyContent: "space-between",
         }}

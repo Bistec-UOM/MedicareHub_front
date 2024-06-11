@@ -21,6 +21,7 @@ import DoneIcon from '@mui/icons-material/Done';
 import DeleteIcon from "@mui/icons-material/Delete";
 import LoadingButton from "@mui/lab/LoadingButton";
 import AddIcon from '@mui/icons-material/Add';
+import theme from "../../Style";
 
 const EditPatientDialog = ({ editOpen, handleEditClose, formFields, formErrors, isDisabled, formData, setFormData, handleInputChange, deletePopUp, handleEditClick,rows,setFormErrors,pData,settype,setNotiMessage,setNotificationOpen,setShowPatient,forceUpdate,setEditOpen,setIsDisabled}) => {
 
@@ -138,7 +139,8 @@ const EditPatientDialog = ({ editOpen, handleEditClose, formFields, formErrors, 
         <Dialog open={editOpen} sx={{width: {md:'39.5vw',xs:"100%",sm:"100%"},margin:"auto"}} onClose={handleEditClose}>
           <DialogTitle
             sx={{
-              backgroundColor: "rgb(222, 244, 242)",
+              backgroundColor:theme.palette.custom.greenH,
+              color: "white",
               display: "flex",
               justifyContent: "space-between",
             }}
