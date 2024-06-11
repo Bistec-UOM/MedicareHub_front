@@ -22,6 +22,7 @@ import axios from "axios";
 import { baseURL,endPoints } from "../../../Services/Appointment";
 import { setHeaders } from "../../../Services/Auth";
 import * as signalR from '@microsoft/signalr';
+import { baseURLA,endPointsA } from "../../../Services/Admin";
 
 const ResNavBar = ({ isClosing, setMobileOpen, mobileOpen }) => {
   const [profile, setProfile] = useState({Name: "Profile",Role: "Empty",Image: "",Id: ""});
@@ -167,7 +168,7 @@ if (token) {
     }
 
     const newConnection = new HubConnectionBuilder()
-    .withUrl('https://localhost:7205/notificationHub')
+    .withUrl(baseURLA+endPointsA.C_Notification)
     // .withUrl('https://mediicarehub.azurewebsites.net/notificationHub')
     .withAutomaticReconnect()
       .build();

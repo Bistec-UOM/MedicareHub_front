@@ -1,12 +1,12 @@
 let baseURL;
-let baseURLA=baseURL;
 
 if (window.location.hostname === 'localhost') {
   baseURL = 'https://localhost:7205';
-} else {
-  baseURL = 'https://mediicarehub.azurewebsites.net';
-}
-
+  } else {
+    baseURL = 'https://mediicarehub.azurewebsites.net';
+  }
+    
+let baseURLA=baseURL;
 const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/dung7ryl3/image/upload';
 
 const endPoints = {
@@ -22,6 +22,10 @@ const endPoints = {
     
     A_Attendance:'/api/Analytic/userCheck',
     A_LabReports:'/api/Analytic/lab-report-Count',
+
+    C_Notification:'/notificationHub',
   };
-  
-export { baseURL,baseURLA,endPoints,CLOUDINARY_URL};
+
+  const endPointsA = endPoints;
+
+export { baseURL,baseURLA,endPoints,CLOUDINARY_URL,endPointsA};
