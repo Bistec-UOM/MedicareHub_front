@@ -3,7 +3,9 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 const theme = createTheme({
     palette: {
         custom: {
-          greenH: '#04c946'
+          greenH: '#04c946',
+          Token : '#03ad3c',
+          greenIcon : '#04c946'
         },
       },
     components: {

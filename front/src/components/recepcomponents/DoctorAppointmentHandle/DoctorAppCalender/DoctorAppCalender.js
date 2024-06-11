@@ -17,10 +17,15 @@ import "../../../../recep.css";
 import CustomizedProgressBars from "../../CustomProgressBar/CustomProgressBar";
 import { baseURL,endPoints } from "../../../../Services/Appointment";
 import { setHeaders } from "../../../../Services/Auth";
+import { jwtDecode } from "jwt-decode";
+import DoctorAppList from "../DoctorAppList/DoctorAppList";
 
 
 
-const DoctorAppCalender = ({ doctorId }) => {
+const DoctorAppCalender = () => {
+
+  const doctorId=jwtDecode(localStorage.getItem('medicareHubToken')).RoleId;
+
   const [doctorList, setDoctorList] = useState([]);
   const [doctorAppDeleteOpen, setDoctorAppDeleteOpen] = useState(false); //state variable for popup of the doctor appointment cancellation
   const [notificationOpen, setNotificationOpen] = useState(false);
@@ -182,6 +187,9 @@ const DoctorAppCalender = ({ doctorId }) => {
     end: moment().endOf("month"),
   });
 
+  const [listMode,setListMode]=useState(false);
+  const [selectedDay,setSelectedDay]=useState("")
+
   const handleDateClick = (arg) => {
     const selectedDate = moment(arg.dateStr);
     today = selectedDate.format("MMMM D, YYYY");
@@ -203,13 +211,15 @@ const DoctorAppCalender = ({ doctorId }) => {
       .padStart(2, "0")}${millisecondsPart}`;
     if (!getDayStatus(formattedDate)) {
       if (selectedMonth === currentMonth) {
-        navigate("/dappList", {
+        setSelectedDay(today);
+        setListMode(true);
+        /* navigate("/dappList", {
           state: {
             selectedDay: today,
             doctorid: doctorId,
             doctorList: doctorList,
           },
-        });
+        }); */
       }
     } else {
       handleNotification("This date has been blocked!", "error");
@@ -218,7 +228,7 @@ const DoctorAppCalender = ({ doctorId }) => {
 
   return (
     <div>
-      <Box sx={{ overflowY: "hidden" }}>
+      {!listMode?<Box sx={{ overflowY: "hidden" }}>
         <FullCalendar
           plugins={[dayGridPlugin, interactionPlugin]}
           initialView="dayGridMonth"
@@ -234,7 +244,7 @@ const DoctorAppCalender = ({ doctorId }) => {
             right: "next",
           }}
         />
-      </Box>
+      </Box>:<DoctorAppList selectedDay={selectedDay} docid={doctorId}></DoctorAppList>}
       <SuccessNotification
         type={notiType}
         setNotificationOpen={setNotificationOpen}

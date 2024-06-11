@@ -1,4 +1,4 @@
-const baseURL='https://mediicarehub.azurewebsites.net'
+const baseURL='https://localhost:7205'
 
 const endPoints = { 
     APPOINTMENTLIST:'/api/Doctor/AppointList',

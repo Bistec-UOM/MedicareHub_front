@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Typography, Box,  Grid, Card, AppBar, Toolbar, IconButton, Divider, Switch } from '@mui/material';
-import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
-import { Link } from 'react-router-dom';
+import { Typography, Box, Switch } from '@mui/material';
+import EventIcon from '@mui/icons-material/Event';
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import ListAltIcon from '@mui/icons-material/ListAlt';
 
-export default function TopUnit(props) {
+export default function TopUnit({setcalendarMode,calendarMode,appointments,SwitchOnChange}) {
+
   const generatedate=()=>{
     const date = new Date();
     const year = date.getFullYear();
@@ -21,7 +22,7 @@ export default function TopUnit(props) {
 
   const handleClickOpen = () => {
     setOpen(true);
-    const filteredAppointments = props.appointments.filter(appointment => appointment.status === "done");
+    const filteredAppointments = appointments.filter(appointment => appointment.status === "done");
     setFilteredAppointmentsdone(filteredAppointments);
   };
 
@@ -39,13 +40,13 @@ export default function TopUnit(props) {
     <div style={{position:'relative',width:'100%'}}>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
 
-        <Link path to="/dpage"><CalendarTodayIcon sx={{ cursor: 'pointer',ml:'10px' }} /></Link> 
+        {!calendarMode?<EventIcon sx={{ cursor: 'pointer',ml:'10px' }} onClick={()=>setcalendarMode(true)} />:<ListAltIcon sx={{ cursor: 'pointer',ml:'10px' }} onClick={()=>setcalendarMode(false)}></ListAltIcon>} 
 
         <Typography sx={{ fontSize:'14px'}}>{formattedDate}</Typography>
 
         <NotificationsIcon sx={{ cursor: 'pointer',mr:'10px'}} onClick={handleClickOpen} />
       </Box> 
-      <Switch defaultChecked size="small" onChange={props.SwitchOnChange} sx={{position:'relative',top:'10px'}}/>
+      <Switch defaultChecked size="small" onChange={SwitchOnChange} sx={{position:'relative',top:'10px'}}/>
     </div>   
   );
   
