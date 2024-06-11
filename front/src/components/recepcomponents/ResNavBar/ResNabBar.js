@@ -272,21 +272,21 @@ if (token) {
             onClose={handleClose}
           >
             <MenuItem onClick={handleClose}>
-              <HelpOutlineIcon sx={{ paddingRight: "10%" }} />
+              <HelpOutlineIcon sx={{ marginRight: "10%" }} />
               Help
             </MenuItem>
             <MenuItem onClick={handleNotificationBell}>
             {badgeContent > 1 ? (
-                <NotificationsIcon color="action" sx={{ paddingRight: "10%" }} />
+                <NotificationsIcon color="action" sx={{ marginRight: "10%" }} />
               ) : (
-                <NotificationsNoneIcon color="action" sx={{ paddingRight: "10%" }} />
+                <NotificationsNoneIcon color="action" sx={{ marginRight: "10%" }} />
               )} Notification
             </MenuItem>
             <MenuItem onClick={handleClose}>
-              <SettingsIcon sx={{ paddingRight: "10%" }} /> Settings
+              <SettingsIcon sx={{marginRight: "10%" }} /> Settings
             </MenuItem>
             <MenuItem onClick={handleLogout}>
-              <LogoutIcon sx={{ paddingRight: "10%" }} /> LogOut
+              <LogoutIcon sx={{ marginRight: "10%" }} /> LogOut
             </MenuItem>
           </Menu>
           <Popover

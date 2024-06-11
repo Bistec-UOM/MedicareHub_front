@@ -1,4 +1,4 @@
-import { Divider, IconButton, InputBase, Paper,Box,Typography, Button, Dialog } from "@mui/material"
+import { Divider, IconButton, InputBase, Paper,Box,Typography, Button, Dialog, DialogTitle } from "@mui/material"
 import SearchIcon from "@mui/icons-material/Search";
 import CircularProgress from '@mui/material/CircularProgress';
 import PersonIcon from '@mui/icons-material/Person';
@@ -6,6 +6,12 @@ import DoneIcon from '@mui/icons-material/Done'
 import WarningIcon from '@mui/icons-material/Warning';
 import LoadingButton from '@mui/lab/LoadingButton';
 import CloseIcon from '@mui/icons-material/Close'
+import theme from "./Style";
+import { useState } from "react";
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import NotificationsIcon from "@mui/icons-material/Notifications";
+
 
 {/*================Search bar components ================================================= */}
 
@@ -121,4 +127,119 @@ const SearchBarSM=({onChange,value,placeholder,height})=> {
   }
   const handleCloseConfirm = () => {setOpenConfirm(false)}  
  */
-export {SearchBarSM,SearchBarLR,Load,PersonDetail,ConfirmPropmt} 
+
+  const NotificationPrompt=({messageList,handleClose,open})=>{
+    return(
+      <Dialog open={open} onClose={handleClose}>
+      <DialogTitle sx={{backgroundColor:theme.palette.custom.greenH,display: "flex",justifyContent: "space-between",color:'white'}}>
+      <div style={{display:'flex',justifyContent:'start'}}>
+        <NotificationsIcon></NotificationsIcon>
+        <Typography sx={{fontSize:'18px',fontWeight:'medium'}}>Notifications</Typography>
+      </div>
+      <CloseIcon sx={{cursor:'pointer'}} onClick={handleClose}/>
+      </DialogTitle>
+      <Box sx={{height:'300px',width:'500px',pt:'10px',pb:'5px',display:'flex',flexDirection:'column',alignItems:'center',overflowY:'scroll'}}>
+        {messageList.map((i)=>(
+          <ListItem time={i.time} date={i.date} message={i.message}></ListItem>
+        ))}
+      </Box>
+      <Box sx={{backgroundColor:'white',height:'10px',width:'100%'}}></Box>
+      </Dialog>
+    )
+  }
+
+  //extra functions and states
+/* const [openNotify, setOpenNotify] = useState(false)
+   const handleClickOpenNotify = (x) => {
+        setOpenNotify(true)
+  }
+  const handleCloseNotify = () => {setOpenNotify(false)}  
+ */
+
+  const ListItem=({time,date,message})=>{
+    const [full,setFull]=useState(false)
+    return(
+      <Paper 
+      sx={{
+        width:'90%',
+        display:'flex',
+        flexDirection:'column',
+        alignItems:'start',
+        mt:'10px',
+        pt:'5px',
+        pl:'5px',
+        pr:'5px',
+        cursor:'pointer',
+        borderRadius:'0px',
+        overflow:full?'vivible':'hidden',
+        height:full?'auto':'50px',
+        position:'relative',
+        minHeight:full?'auto':'50px',
+        }} 
+      >
+        <div>
+        {full?<KeyboardArrowUpIcon sx={{position:'absolute',top:'0',right:'5px'}} onClick={()=>setFull(false)}></KeyboardArrowUpIcon>:<KeyboardArrowDownIcon sx={{position:'absolute',top:'0',right:'5px'}} onClick={()=>setFull(true)} ></KeyboardArrowDownIcon>}        
+      <div style={{display:'flex',justifyContent:'start',alignItems:'center',marginBottom:'4px'}}>
+        <div style={{
+              backgroundColor: '#adaaaa',
+              color:'white',
+              paddingRight:'4px',
+              paddingLeft:'4px',
+              paddingTop:'2px',
+              paddingBottom:'2px',
+              borderRadius:'15px',
+              marginRight:'4px'
+              }}>
+          <Typography sx={{fontSize:'12px'}}>{date}</Typography>
+        </div>
+          <div 
+            style={{
+              backgroundColor: '#adaaaa',
+              color:'white',
+              paddingRight:'4px',
+              paddingLeft:'4px',
+              paddingTop:'2px',
+              paddingBottom:'2px',
+              borderRadius:'15px',
+              marginRight:'4px'
+              }}
+          ><Typography sx={{fontSize:'12px'}}>{time}</Typography></div>
+      </div>
+      </div>
+        <Typography sx={{fontSize:'14px',flex:'3',borderTop:'1px solid lightGrey',p:'3px'}}>{message}</Typography>
+      </Paper>
+      )
+  }
+
+  {/* ------------------- Profile display ------------------------------- */}
+
+  const Profile=({open,handleClose})=>{
+
+    const data={
+      name:'David brown',
+      nic:'23029-29909329099',
+      gender:'male',
+      email:'huehfhfe@gmail.com',
+      contact:'0345-2342342',
+      qualification:'MBBS, FCPS'
+    }
+    return(
+      <Dialog open={open} onClose={handleClose}>
+      <DialogTitle sx={{backgroundColor:theme.palette.custom.greenH,display: "flex",justifyContent: "space-between",color:'white'}}>
+      <div style={{display:'flex',justifyContent:'start'}}>
+        <PersonIcon></PersonIcon>
+        <Typography sx={{fontSize:'18px',fontWeight:'medium'}}>My profile</Typography>
+      </div>
+      <CloseIcon sx={{cursor:'pointer'}} onClick={handleClose}/>
+      </DialogTitle>
+      </Dialog>
+    )
+  }
+
+/*   const [openProf, setOpenProf] = useState(false)
+  const handleClickOpenProf = (x) => {
+       setOpenProf(true)
+ }
+ const handleCloseProf = () => {setOpenProf(false)}   */
+
+export {SearchBarSM,SearchBarLR,Load,PersonDetail,ConfirmPropmt,NotificationPrompt,Profile} 

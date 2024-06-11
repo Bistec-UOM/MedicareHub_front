@@ -90,7 +90,11 @@ export default function Log() {
           if (count <= 2) {
             //allow only three errors
             setCount((prev) => prev + 1);
-            handleClick(er.response.data, "error");
+            if(er.response.status==401){
+              handleClick(er.response.data, "error");
+            }else{
+              handleClick("Error occured! Try again", "error");
+            }
           } else {
             handleClick("Forgot Password? Try Reset", "warning");
             setCount(0);
