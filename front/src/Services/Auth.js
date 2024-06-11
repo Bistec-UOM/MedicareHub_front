@@ -1,5 +1,5 @@
-const baseURL='https://localhost:7205'
-// const baseURL='https://mediicarehub.azurewebsites.net'
+//const baseURL='https://localhost:7205'
+const baseURL='https://mediicarehub.azurewebsites.net'
 
 const endPoints = {
     LOG:'/api/Auth/log',
