@@ -14,6 +14,7 @@ import { Grid, Stack } from "@mui/material";
 import { Load } from "../../Other";
 import { baseURL,endPoints } from "../../../Services/Appointment";
 import { setHeaders } from "../../../Services/Auth";
+import { LoadingButton } from "@mui/lab";
 
 export default function AppAddPopup({
   filteredAppointments,
@@ -42,6 +43,7 @@ export default function AppAddPopup({
     ampm: " ",
   });
   const [activeData, setActiveData] = useState({}); //for storing the selected patient object
+  const [appConfirmLoading,setAppConfirmLoading]=useState(false);//var for loading prop of appconfirm button
   function formatAMPM(date) {
     var hours = dayjs(date).get("hour");
     var minutes = dayjs(date).get("minute");
@@ -79,7 +81,8 @@ export default function AppAddPopup({
   };
 
   async function handleSubmit(event) {
-    setRloadDone(false);
+    setRloadDone(true);
+    setAppConfirmLoading(true);
     event.preventDefault();
     var finalTime = getRealTime(appTime);
     var date = finalTime;//time object for scheduled appointment time
@@ -124,27 +127,33 @@ export default function AppAddPopup({
         obj,setHeaders()
       );
       if (response.data == 0) { //check already appointments
+        setAppConfirmLoading(false);
         setRloadDone(true);
         setApopen(false);
         setDayAppTotal(dayAppTotal + 1);
         handleNotification("Appointment Added succesfully!", "success");
       } else if(response.data==1) {
+        setAppConfirmLoading(false);
         setRloadDone(true);
         handleNotification("You have already an appointment on that time !. Select another time slot","error");
       }
       else if(response.data==3)
       {
+        setAppConfirmLoading(false);
         setRloadDone(true);
         handleNotification("Time slot has been blocked!. Select another time slot","error");
 
       }
       else{
+        setAppConfirmLoading(false);
         setRloadDone(true);
         handleNotification("Time slot has been already booked!. Select another time slot","error");
 
       }
     } catch (err) {
-      handleNotification(err.response.data,"error");  //handling api request error
+      setAppConfirmLoading(false);
+     // handleNotification(err.response.data,"error");  //handling api request error
+     handleNotification("Network Error Occured!","error");
     }
   }
   useEffect(() => {
@@ -323,20 +332,18 @@ export default function AppAddPopup({
                   setSelectedTime={setSelectedTime}
                   label="Select your time"
                 />
-                <Button
+                <LoadingButton
                   disabled={confirmDisabled}
+                  loading={appConfirmLoading}
+                  size="small"
                   sx={{
                     marginTop: { xs: "20px !important", md: "0px" },
-                    backgroundColor: "#79CCBE",
-                    "&:hover": {
-                      backgroundColor: "#79CCBE",
-                    },
                   }}
                   variant="contained"
                   type="submit"
                 >
                   Confirm
-                </Button>
+                </LoadingButton>
               </Stack>
             </DialogActions>
           </form>

@@ -172,8 +172,8 @@ const ADrugs = () => {
           </Paper>
         </Grid>
         <Grid item xs={12} sm={6} md={8} style={{ textAlign: "right" }}>
-        <Typography fontSize={25} sx={{textAlign:'center'}}>Drug Usage Count</Typography>          
           <SearchGraph
+            topic="Drug Usage"
             uniqueModelTypes={uniqueDrugTypes}
             selectModelType={selectDrugType}
             Value={Value}

@@ -15,33 +15,36 @@ import Doctor_analytics from "./components/Doctor_analytics";
 import ViewResult from "./components/Lab/ViewResult";
 import NotificationComponentlk from "./components/Admin/PageComponents/notify";
 import Login from "./components/Admin/PageComponents/login";
-
+import { ThemeProvider } from "@mui/material";
+import theme from "./components/Style";
 
 function App() {
   return (
     
-    <div className="App">
-      <BrowserRouter>
-      <Routes>
-      <Route path='/' element={<Log></Log>}></Route>
-      <Route path='admin' element={<Admin></Admin>}></Route>
-      <Route path='doct' element={<Doctor></Doctor>}></Route>
-      <Route path='pharm' element={<Pharmacy></Pharmacy>}></Route>
-      <Route path='lab' element={<Lab></Lab>}></Route>
-      <Route path='lab/temp' element={<Lab_template></Lab_template>}></Route>
-      <Route path='pharm/drug' element={<Pharmacy_drugstore></Pharmacy_drugstore>}></Route>
-      <Route path="res" element={<ResponseAppCalender></ResponseAppCalender>}></Route>
-      <Route path='/resday' element={<ResDay/>}></Route>
-      <Route path='/dpage' element={<DoctorPage/>}></Route>
-      <Route path="/dappList" element={<DoctorList/>}></Route>
-      <Route path="doct/analytics" element={<Doctor_analytics pId={17}/>}></Route>
-      <Route path="lab/view" element={<ViewResult id={4}></ViewResult>}></Route>
-      <Route path="admin/final" element={<NotificationComponentlk/>}></Route>
-      <Route path="admin/test" element={<Login/>}></Route>
-      
-      </Routes>
-      </BrowserRouter>
-    </div>
+<ThemeProvider theme={theme}>
+      <div className="App">
+        <BrowserRouter>
+        <Routes>
+        <Route path='/' element={<Log></Log>}></Route>
+        <Route path='admin' element={<Admin></Admin>}></Route>
+        <Route path='doct' element={<Doctor></Doctor>}></Route>
+        <Route path='pharm' element={<Pharmacy></Pharmacy>}></Route>
+        <Route path='lab' element={<Lab></Lab>}></Route>
+        <Route path='lab/temp' element={<Lab_template></Lab_template>}></Route>
+        <Route path='pharm/drug' element={<Pharmacy_drugstore></Pharmacy_drugstore>}></Route>
+        <Route path="res" element={<ResponseAppCalender></ResponseAppCalender>}></Route>
+        <Route path='/resday' element={<ResDay/>}></Route>
+        <Route path='/dpage' element={<DoctorPage/>}></Route>
+        <Route path="/dappList" element={<DoctorList/>}></Route>
+        <Route path="doct/analytics" element={<Doctor_analytics pId={17}/>}></Route>
+        <Route path="lab/view" element={<ViewResult id={4}></ViewResult>}></Route>
+        <Route path="admin/final" element={<NotificationComponentlk/>}></Route>
+        <Route path="admin/test" element={<Login/>}></Route>
+        
+        </Routes>
+        </BrowserRouter>
+      </div>
+</ThemeProvider>
   );
 }
 

@@ -16,35 +16,17 @@ import { baseURL, endPoints } from "../../Services/Admin";
 import AddPatientDialog from "./DialogComponents/AddPatientDialog";
 import { SearchBarLR, SearchBarSM } from "../Common";
 import { setHeaders } from "../../Services/Auth";
+import AddIcon from '@mui/icons-material/Add';
 
-function createData(
-  id,
-  name,
-  nic,
-  address,
-  dob,
-  email,
-  gender,
-  fullName,
-  contactNumber
-) {
-  return {
-    id,
-    name,
-    nic,
-    address,
-    dob,
-    email,
-    gender,
-    fullName,
-    contactNumber,
-  };
+function createData(id,name,nic,address,dob,email,gender,fullName,contactNumber) {
+  return {id,name,nic,address,dob,email,gender,fullName,contactNumber};
 }
 
 function Patient() {
   const [notificationOpen, setNotificationOpen] = useState(false);
   const [notiMessage, setNotiMessage] = useState("");
   const [type, settype] = useState("success");
+  const [loadingB, setLoadingB] = useState(false);
 
   const [update, forceUpdate] = useState(0);
 
@@ -123,6 +105,7 @@ function Patient() {
     setDeleteOpen(true);
   };
   const handleRemove = () => {
+    setLoadingB(true)
     axios
       .delete(baseURL + endPoints.PatientList + `/${pData.id}`)
       .then((res) => {
@@ -131,6 +114,9 @@ function Patient() {
         setNotificationOpen(true);
         console.log("success");
         forceUpdate((prevCount) => prevCount + 1); // Trigger a re-render
+        setDeleteOpen(false);
+        setEditOpen(false);
+        setLoadingB(false)
       })
       .catch((err) => {
         console.error(err);
@@ -140,10 +126,10 @@ function Patient() {
         settype("error");
         setNotificationOpen(true);
       });
-    setDeleteOpen(false);
-    setEditOpen(false);
+
   };
 
+  
   // calling for edit
   const [isDisabled, setIsDisabled] = useState(true);
   //edit dialogbox functionalities
@@ -174,11 +160,11 @@ function Patient() {
 
   const formFields = [
     { label: "Full Name", key: "fullName", isfull: true },
-    { label: "Name", key: "name" },
-    { label: "NIC", key: "nic", sx: { ml: 1 } },
+    { label: "Name", key: "name",sx:{width:{xs:"100%",sm:"auto"}} },
+    { label: "NIC", key: "nic", sx: { ml: { xs: 0, md: "3vw" },width:{xs:"100%",sm:"auto"} } },
     { label: "Address", key: "address", isfull: true },
-    { label: "Contact Number", key: "contactNumber" },
-    { label: "Email", key: "email", sx: { ml: 1 } },
+    { label: "Contact Number", key: "contactNumber",sx:{width:{xs:"100%",sm:"auto"}} },
+    { label: "Email", key: "email",sx: { ml: { xs: 0, md: "3vw" } , width:{xs:"100%",sm:"auto"}} },
   ];
 
   const handleInputChange = (field, value) => {
@@ -257,7 +243,7 @@ function Patient() {
   return (
     <div>
       <Grid
-        sx={{ width: { xs: "80.5vw" }, paddingLeft: { xs: "0vw", sm: "0px" } }}
+        sx={{ width: { xs: "80.5vw" }, paddingRight: { xs: "0vw", sm: "0vw" } }}
       >
         {/* search bar */}
         <Paper
@@ -272,7 +258,7 @@ function Patient() {
           }}
         >
           <Grid
-            sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}
+            sx={{ display: "flex", justifyContent: "space-between", mb: 2 ,width:"97%"}}
           >
             <SearchBarLR
               onChange={Filter}
@@ -283,12 +269,12 @@ function Patient() {
             <Button
               variant="contained"
               size="small"
+              endIcon={<AddIcon/>}
               sx={{
-                backgroundColor: "rgb(121, 204, 190)",
-                width: "10vh",
-                height: "5vh",
+                width: "9vh",
+                height: "4.7vh",
                 fontWeight: "bolder",
-                marginLeft: { xs: "20px" },
+                // marginLeft: { xs: "20px" },
               }}
               onClick={handleAddOpen}
             >
@@ -409,6 +395,7 @@ function Patient() {
         deleteOpen={deleteOpen}
         handleEditClose={handleEditClose}
         handleRemove={handleRemove}
+        loadingB={loadingB}
       ></AskDelete>
     </div>
   );

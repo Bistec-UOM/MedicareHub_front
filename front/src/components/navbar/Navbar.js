@@ -1,13 +1,4 @@
-import {
-  AppBar,
-  Toolbar,
-  Typography,
-  Avatar,
-  IconButton,
-  MenuItem,
-  Menu,
- List, ListItem, ListItemText
-} from "@mui/material";
+import {AppBar,Toolbar,Typography,Avatar,IconButton,MenuItem,Menu,List, ListItem, ListItemText} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
 import AccountCircle from "@mui/icons-material/AccountCircle";
@@ -28,6 +19,7 @@ import { baseURL,endPoints } from "../../Services/Appointment";
 import { setHeaders } from "../../Services/Auth";
 import axios from "axios";
 import * as signalR from '@microsoft/signalr';
+import { baseURLA } from "../../Services/Admin";
 
 const Navbar = () => {
   const [profile, setProfile] = useState({name: "",role: "",image: "",Id: ""});
@@ -66,7 +58,7 @@ const Navbar = () => {
 
     // Create a connection to the SignalR hub
     const newConnection = new signalR.HubConnectionBuilder()
-    .withUrl(`https://localhost:7205/appointmentnotificationHub?userId=${userId}`)
+    .withUrl(baseURL+`/appointmentnotificationHub?userId=${userId}`)
     .configureLogging(signalR.LogLevel.Information)
     .build();
     // Set up the connection
@@ -79,15 +71,15 @@ const Navbar = () => {
       // Start the connection
       AppNotificationconnection.start()
         .then(result => {
-          console.log('Connected! helo');
           // Set up a listener for notifications
           AppNotificationconnection.on('ReceiveNotification', message => {
-            console.log("inside receive side notification",message); //adding new real time notitication to the notification messages list
-            setNotificationMessages(notificationMessages => [...notificationMessages, message]);
-            setBadgeContent(prevBadgeContent => prevBadgeContent + 1);  //increase badge content for new real time notification
+            console.log('Connected! helo',connection.id);
+            console.log("inside receive side notification", message); // Log the received message
+            setNotificationMessages(notificationMessages => [...notificationMessages, message]); // Add new notification to the list
+            setBadgeContent(prevBadgeContent => prevBadgeContent + 1); // Increase badge content for new notification
           });
         })
-        .catch(e => console.log('Connection failed: ', e));
+        .catch(e => console.log('Connection failed in Receive notification connection line: ', e));
     }
   }, [AppNotificationconnection]);
 
@@ -165,8 +157,10 @@ const Navbar = () => {
   useEffect(() => {
     if (profile.Id) {
       const newConnection = new HubConnectionBuilder()
-        //.withUrl('https://localhost:7205/notificationHub')
-        .withUrl('https://mediicarehub.azurewebsites.net/notificationHub')
+
+        .withUrl(baseURLA+'/notificationHub')
+        // .withUrl('https://mediicarehub.azurewebsites.net/notificationHub')
+
         .withAutomaticReconnect()
         .build();
 
@@ -176,12 +170,24 @@ const Navbar = () => {
         .start()
         .then(() => {
           console.log("Connected!");
-          console.log("name:", profile.name);
-          console.log("Id:", profile.Id);
-          console.log("Role:", profile.role);
           newConnection.invoke("Send", profile.Id, profile.role);
+          newConnection.invoke("NotiToPharmacist")
+          .then((data)=>{
+            console.log("Invoked Noti");
+            console.log("captured data: ", data);
+            })
+              .catch((error) => {
+                console.error(error);
+            });
+          newConnection.on('ReceiveNotification', message => {
+            console.log("inside receive side notification", message); // Log the received message
+            setNotificationMessages(notificationMessages => [...notificationMessages, message]); // Add new notification to the list
+            setBadgeContent(prevBadgeContent => prevBadgeContent + 1); // Increase badge content for new notification
+          });
+
         })
         .catch((err) => console.error("Connection failed: ", err));
+
 
       return () => {
         if (newConnection) {

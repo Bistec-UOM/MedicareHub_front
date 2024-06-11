@@ -1,21 +1,31 @@
-// const baseURL='https://mediicarehub.azurewebsites.net/api'
-const baseURL='https://localhost:7205/api'
+let baseURL;
 
+if (window.location.hostname === 'localhost') {
+  baseURL = 'https://localhost:7205';
+  } else {
+    baseURL = 'https://mediicarehub.azurewebsites.net';
+  }
+    
+let baseURLA=baseURL;
 const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/dung7ryl3/image/upload';
 
 const endPoints = {
-    PatientList:'/Patient',
-    StaffList:'/User', 
+    PatientList:'/api/Patient',
+    StaffList:'/api/User', 
     
-    A_patient_count:'/Analytic/male-female-patients-count',
+    A_patient_count:'/api/Analytic/male-female-patients-count',
     
-    A_income:'/Analytic/total-Income',
+    A_income:'/api/Analytic/total-Income',
     
-    A_DrugUsage:'/Analytic/daily-drug-usage',
-    A_DrugAvailable:'/Analytic/available-count',
+    A_DrugUsage:'/api/Analytic/daily-drug-usage',
+    A_DrugAvailable:'/api/Analytic/available-count',
     
-    A_Attendance:'/Analytic/userCheck',
-    A_LabReports:'/Analytic/lab-report-Count',
+    A_Attendance:'/api/Analytic/userCheck',
+    A_LabReports:'/api/Analytic/lab-report-Count',
+
+    C_Notification:'/notificationHub',
   };
-  
-export { baseURL,endPoints,CLOUDINARY_URL};
+
+  const endPointsA = endPoints;
+
+export { baseURL,baseURLA,endPoints,CLOUDINARY_URL,endPointsA};

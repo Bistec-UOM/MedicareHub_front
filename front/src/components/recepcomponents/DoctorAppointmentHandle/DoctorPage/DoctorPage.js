@@ -166,9 +166,7 @@ export default function DoctorPage() {
           </SidebarContainer>
         </Grid>
         
-        <Grid item xs={9} style={{ height: '100%', overflowY: 'scroll' }}>
-        <DoctorAppCalender doctorId={tmpDocId}/>
-          
+        <Grid item xs={9} style={{ height: '100%', overflowY: 'scroll' }}>          
          
         </Grid>
       </Grid>

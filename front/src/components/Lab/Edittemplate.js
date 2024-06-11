@@ -369,7 +369,7 @@ export default function Edittemplate({setPage,tId,Tdata,setTload}) {
           </Box>
  
           <div style={{height:'100%'}}>
-            <CheckCircleIcon color='primary' sx={{cursor:'pointer',mt:'75%',mr:'5px'}} onClick={()=>addEditData()}></CheckCircleIcon>
+            <CheckCircleIcon color='success' sx={{cursor:'pointer',mt:'75%',mr:'5px'}} onClick={()=>addEditData()}></CheckCircleIcon>
           </div>
  
         </Paper>:''
