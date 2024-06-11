@@ -167,7 +167,7 @@ export default function Log() {
     };
     console.log(obj);
     axios
-      .post(baseURL + endPoints.CHECKOPT, obj)
+      .post(baseURL + endPoints.CHECKOTP, obj)
       .then((res) => {
         setPassword("");
         setLoadingB(false);
