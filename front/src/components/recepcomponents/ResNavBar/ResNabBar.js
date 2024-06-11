@@ -167,8 +167,8 @@ if (token) {
     }
 
     const newConnection = new HubConnectionBuilder()
-    .withUrl('https://localhost:7205/notificationHub')
-    // .withUrl('https://mediicarehub.azurewebsites.net/notificationHub')
+    //.withUrl('https://localhost:7205/notificationHub')
+    .withUrl('https://mediicarehub.azurewebsites.net/notificationHub')
     .withAutomaticReconnect()
       .build();
 
