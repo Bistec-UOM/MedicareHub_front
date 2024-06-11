@@ -58,30 +58,35 @@ const Navbar = () => {
 
     // Create a connection to the SignalR hub
     const newConnection = new signalR.HubConnectionBuilder()
-    .withUrl(baseURL+`/appointmentnotificationHub?userId=${userId}`)
+    .withUrl(`https://localhost:7205/appointmentnotificationHub?userId=${userId}`)
     .configureLogging(signalR.LogLevel.Information)
     .build();
     // Set up the connection
     setAppNotiConnection(newConnection);
   }, []);
 
-  useEffect(() => {  //use effect for receiving real time notification
-    console.log("before con");
-    if (AppNotificationconnection) {
-      // Start the connection
-      AppNotificationconnection.start()
-        .then(result => {
-          // Set up a listener for notifications
-          AppNotificationconnection.on('ReceiveNotification', message => {
-            console.log('Connected! helo',connection.id);
-            console.log("inside receive side notification", message); // Log the received message
-            setNotificationMessages(notificationMessages => [...notificationMessages, message]); // Add new notification to the list
-            setBadgeContent(prevBadgeContent => prevBadgeContent + 1); // Increase badge content for new notification
-          });
-        })
-        .catch(e => console.log('Connection failed in Receive notification connection line: ', e));
-    }
-  }, [AppNotificationconnection]);
+ useEffect(() => {  //for getting real time notification
+  console.log("before con", AppNotificationconnection);
+  if (AppNotificationconnection) {
+    console.log("Attempting to start connection...");
+    // Start the connection
+    AppNotificationconnection.start()
+      .then(result => {
+        console.log("Connection started successfully", result);
+        // Set up a listener for notifications
+        AppNotificationconnection.on('ReceiveNotification', message => {
+          console.log('Connected! helo', AppNotificationconnection.connectionId);
+          console.log("inside receive notification chathura callback", message); // Log the received message
+          setNotificationMessages(notificationMessages => [...notificationMessages, message]); // Add new notification to the list
+          setBadgeContent(prevBadgeContent => prevBadgeContent + 1); // Increase badge content for new notification
+        });
+      })
+      .catch(e => console.log('Connection failed: ', e));
+  } else {
+    console.log("AppNotificationconnection is null or undefined.");
+  }
+}, [AppNotificationconnection]);
+
 
   const handleClosePopOver = () => {
     setAnchorElPop(null);
