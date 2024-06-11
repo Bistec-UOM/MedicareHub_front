@@ -16,16 +16,22 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateField } from '@mui/x-date-pickers/DateField';
 import { baseURL, endPoints } from '../../../Services/Admin';
-
+import EditIcon from '@mui/icons-material/Edit';
+import DoneIcon from '@mui/icons-material/Done';
+import DeleteIcon from "@mui/icons-material/Delete";
+import LoadingButton from "@mui/lab/LoadingButton";
+import AddIcon from '@mui/icons-material/Add';
+import theme from "../../Style";
 
 const EditPatientDialog = ({ editOpen, handleEditClose, formFields, formErrors, isDisabled, formData, setFormData, handleInputChange, deletePopUp, handleEditClick,rows,setFormErrors,pData,settype,setNotiMessage,setNotificationOpen,setShowPatient,forceUpdate,setEditOpen,setIsDisabled}) => {
 
+  const [loadingB, setloadingB] = useState(false);
   
   const handleEditSave = () => {
     // Validate form fields
     let errors = {};
     let isValid = true;
-  
+  setloadingB(true);
     // Check if any of the required fields are empty or null
     formFields.forEach((field) => {
       if (!formData[field.key] || formData[field.key].trim() === '') {
@@ -94,6 +100,7 @@ const EditPatientDialog = ({ editOpen, handleEditClose, formFields, formErrors, 
     // If any errors are found, set form errors and return
     if (!isValid) {
       setFormErrors(errors);
+      setloadingB(false);
       return;
     }
   try {
@@ -113,6 +120,8 @@ const EditPatientDialog = ({ editOpen, handleEditClose, formFields, formErrors, 
               forceUpdate(prevCount => prevCount + 1); // Trigger a re-render
               // Close the edit dialog
               setEditOpen(false);
+              setIsDisabled(true);
+              setloadingB(false);
             })
   } catch (error) {
     // Handle error, show an error message or dispatch an error action
@@ -120,17 +129,18 @@ const EditPatientDialog = ({ editOpen, handleEditClose, formFields, formErrors, 
     
   }
           
-      setEditOpen(false);
+      // setEditOpen(false);
       setIsDisabled(true);
   
     };
 
     return (
         <Grid>
-        <Dialog open={editOpen} onClose={handleEditClose}>
+        <Dialog open={editOpen} sx={{width: {md:'39.5vw',xs:"100%",sm:"100%"},margin:"auto"}} onClose={handleEditClose}>
           <DialogTitle
             sx={{
-              backgroundColor: "rgb(222, 244, 242)",
+              backgroundColor:theme.palette.custom.greenH,
+              color: "white",
               display: "flex",
               justifyContent: "space-between",
             }}
@@ -147,6 +157,7 @@ const EditPatientDialog = ({ editOpen, handleEditClose, formFields, formErrors, 
                 disabled={isDisabled}
                 label={field.label}
                 fullWidth={field.isfull}
+                size="small"
                 margin="dense"
                 value={formData[field.key] || ''}
                 onChange={(e) =>
@@ -155,26 +166,28 @@ const EditPatientDialog = ({ editOpen, handleEditClose, formFields, formErrors, 
                 sx={field.sx}
               />
             ))}
-            <div style={{ display: 'flex' }}>
+            <Grid sx={{ display: {md:"flex",xs:"flow"} }}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DateField
                   label="Date Of Birth"
+                  size="small"
                   error={!!formErrors.dob}
                   helperText={formErrors.dob}
                   value={formData.dob ? dayjs(formData.dob) : null}
                   onChange={(newValue) => handleInputChange('dob', newValue)}
                   renderInput={(props) => <TextField {...props} />}
-                  sx={{ mr: 1,mt:1}}
+                  sx={{ mr: 1,width:{xs:"100%",md:"auto"},mt:1}}
                   disabled={isDisabled}
                 />
               </LocalizationProvider>
               <Select
                 id="gender"
+                size="small"
                 value={formData.gender || ''}
                 onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
                 label="Gender"
                 disabled={isDisabled}
-                sx={{ mt: 1, width: '38%'}}
+                sx={{ mt: 1, width: {md:'46%',xs:"100%"},ml:{md:5,xs:0}}}
               >
                 <MenuItem value="Male">Male</MenuItem>
                 <MenuItem value="Female">Female</MenuItem>
@@ -182,26 +195,42 @@ const EditPatientDialog = ({ editOpen, handleEditClose, formFields, formErrors, 
               {formErrors.gender && (
               <FormHelperText error>{formErrors.gender}</FormHelperText>
             )}
-            </div>
+            </Grid>
           </DialogContent>
           <DialogActions>
             {!isDisabled && (
               <Button
+                size="small"
                 onClick={deletePopUp}
                 variant="outlined"
                 color="error"
                 sx={{ m: 2 }}
               >
                 Delete
+                <DeleteIcon fontSize="small" sx={{ml:1}}/>
               </Button>
             )}
-            <Button
+            {/* <Button
+              size="small"
               onClick={isDisabled ? handleEditClick : handleEditSave}
               variant="contained"
-              sx={{ backgroundColor: "rgb(121, 204, 190)", m: 2 }}
+              sx={{ m: 2 }}
             >
-              {isDisabled ? 'Edit' : 'Save'}
-            </Button>
+              {isDisabled ? 'Edit' : 'Save '}
+              {isDisabled ? <EditIcon fontSize="small" sx={{ml:1}}/> : <DoneIcon fontSize="small" sx={{ml:1}}/>}
+              </Button> */}
+              <LoadingButton 
+            sx={{ m: 2 }}
+            variant='contained' 
+            size='small' 
+            endIcon={isDisabled ? <EditIcon /> : <DoneIcon/>}           
+            loading={loadingB}
+            loadingPosition="end"
+            onClick={isDisabled ? handleEditClick : handleEditSave}
+          >
+             {isDisabled ? 'Edit' : 'Save '}
+              {/* {isDisabled ? <EditIcon fontSize="small" sx={{ml:1}}/> : <DoneIcon fontSize="small" sx={{ml:1}}/>} */}
+          </LoadingButton>
           </DialogActions>
         </Dialog>
       </Grid>

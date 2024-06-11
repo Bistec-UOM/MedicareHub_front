@@ -185,6 +185,7 @@ const APatient = () => {
               <FormControl sx={{ width:{xs:'40%',sm:'20%'}, marginRight: "2vw" }}>
                 <InputLabel>Gap</InputLabel>
                 <Select
+                size="small"
                   style={{ textAlign: "left" }}
                   id="demo-simple-select"
                   value={Value1} // Change value prop to Value
