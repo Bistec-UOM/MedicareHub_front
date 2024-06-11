@@ -1,5 +1,4 @@
-let baseURL;
-
+let baseURL
 if (window.location.hostname === 'localhost') {
   baseURL = 'https://localhost:7205';
 } else {

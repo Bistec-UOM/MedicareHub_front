@@ -36,6 +36,8 @@ export default function Doctor() {
   const [openAreports, setOpenAreports] = useState(false);//for analitical reports
   const [description,setDescription] = useState (""); // hold the text field descriptions(patient description)
   const [open, setOpen] = useState(false); //for snapbar
+  const [msg,setMsg]=useState('');//hold the message for snapbar
+  const [col,setCol]=useState('');//hold the color for snapbar
   const [showDonePatients, setShowDonePatients] = useState(false);// hold the patients when completed
   const [pres,setPres]=useState([]) ;// hold the pres details from doctoradd drug component
   const [rep,setrep]=useState([]); // hold the  lab request from component
@@ -117,6 +119,8 @@ const handleClick = () => {
     setLoadingBConfirm(false)
     handleCloseConfirm()
     // Handle success
+    setMsg('Successfully uploaded')
+    setCol('success')
     handlesnapbarClick(); //show the snapbar component
     console.log('Response:', response.data);
     setPres([])
@@ -129,6 +133,9 @@ const handleClick = () => {
   })
   .catch(er => {
     setLoadingBConfirm(false)
+    setMsg('Error occured! Try again')
+    setCol('error')
+    handlesnapbarClick();
     if(er.hasOwnProperty('response')){
       console.log(er.response.data)
     }else{
@@ -283,11 +290,11 @@ const handleCloseConfirm = () => {setOpenConfirm(false)}
 {/*...........snack bar component....................................... */}
                  <Snackbar open={open} autoHideDuration={6000}  anchorOrigin={{ vertical: 'bottom', horizontal: 'left'}} >
                  <Alert             
-                 severity="success"
+                 severity={col}
                  variant="filled"          
                  sx={{ width: '100%', }}
                 >
-               Successfully  Confirm  !
+               {msg}
                </Alert>
               </Snackbar>
 {/*.................... */}

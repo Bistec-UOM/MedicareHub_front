@@ -14,7 +14,7 @@ export default function LabRequest(props) {
   const [name, setName] = useState('');
   const [selectedLabTestName, setSelectedLabTestName] = useState(null);//hold the selected labtest name
  
- /*  const Labs = [ 
+/*   const Labs = [ 
   { TestId: 1, labTestName: 'Full Blood Count' },
   { TestId: 2, labTestName: 'Urine Analysis' },
   { TestId:3,labTestName:'Blood Glucose Test'},
@@ -24,7 +24,9 @@ export default function LabRequest(props) {
   {TestId: 7, labTestName: 'Lipid Profile' },
   { TestId: 24, labTestName: 'Thyroid Function Test' }]; */
 
-  const Labs =labtestlist
+  const Labs = labtestlist;
+
+  console.log(labtestlist);
     
   const handleClose = () => {
     setOpenpopBox(false);   
@@ -38,7 +40,7 @@ export default function LabRequest(props) {
     const selectedLabTest = Labs.find(test => test.labTestName === selectedLabTestName); 
      const newRep = {
       DateTime:null, // Placeholder for date and time
-      TestId: selectedLabTest ? selectedLabTest.TestId : null,
+      testId: selectedLabTest ? selectedLabTest.testId : null,
       Status: "new",   
       LbAstID: 1      
   };
@@ -98,7 +100,7 @@ const handleDeleteLabRequest = (index) => {
       {rep.map((drug, index) => (
       <Box key={index} sx={{marginTop: "5px",width:'80%',display:'flex',ml:'5%',alignItems:'center'}}>
             <Box sx={{backgroundColor: '#48EC4F', width:'500px', display: 'flex', flexDirection: 'row',color: 'white',fontSize: '18px',borderRadius:'4px',alignItems:'center'}}>
-                <Typography gutterBottom sx={{ marginLeft: '15px'}}>{Labs.find(test => test.TestId === drug.TestId)?.labTestName}</Typography>
+                <Typography gutterBottom sx={{ marginLeft: '15px'}}>{Labs.find(test => test.testId === drug.testId)?.labTestName}</Typography>
             </Box>
      {/*.....delete buttun ..................................... */}
             <Box item xs={8}>
