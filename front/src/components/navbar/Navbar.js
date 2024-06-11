@@ -1,13 +1,4 @@
-import {
-  AppBar,
-  Toolbar,
-  Typography,
-  Avatar,
-  IconButton,
-  MenuItem,
-  Menu,
- List, ListItem, ListItemText
-} from "@mui/material";
+import {AppBar,Toolbar,Typography,Avatar,IconButton,MenuItem,Menu,List, ListItem, ListItemText} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
 import AccountCircle from "@mui/icons-material/AccountCircle";
@@ -28,6 +19,7 @@ import { baseURL,endPoints } from "../../Services/Appointment";
 import { setHeaders } from "../../Services/Auth";
 import axios from "axios";
 import * as signalR from '@microsoft/signalr';
+import { baseURLA } from "../../Services/Admin";
 
 const Navbar = () => {
   const [profile, setProfile] = useState({name: "",role: "",image: "",Id: ""});
@@ -66,7 +58,7 @@ const Navbar = () => {
 
     // Create a connection to the SignalR hub
     const newConnection = new signalR.HubConnectionBuilder()
-    .withUrl(`https://localhost:7205/appointmentnotificationHub?userId=${userId}`)
+    .withUrl(baseURL+`/appointmentnotificationHub?userId=${userId}`)
     .configureLogging(signalR.LogLevel.Information)
     .build();
     // Set up the connection
@@ -165,7 +157,7 @@ const Navbar = () => {
   useEffect(() => {
     if (profile.Id) {
       const newConnection = new HubConnectionBuilder()
-        .withUrl('https://localhost:7205/notificationHub')
+        .withUrl(baseURLA+'/notificationHub')
         // .withUrl('https://mediicarehub.azurewebsites.net/notificationHub')
         .withAutomaticReconnect()
         .build();

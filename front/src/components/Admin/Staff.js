@@ -144,8 +144,7 @@ export default function Staff() {
 
   useEffect(() => {
     const newConnection = new HubConnectionBuilder()
-    .withUrl('https://localhost:7205/notificationHub')
-    // .withUrl('https://mediicarehub.azurewebsites.net/notificationHub')
+    .withUrl(baseURL+'/notificationHub')
     .withAutomaticReconnect()
       .build();
 
@@ -261,21 +260,25 @@ export default function Staff() {
     setDeleteOpen(false);
     // setIsDisabled(en);
   };
-
   const handleInputChange = (field, value) => {
     console.log("update values");
     setFormData({
       ...formData,
       [field]: value,
-    });
-  };
-// const [RestoreOpen, setRestoreOpen] = useState(false);
-//   const handleRestore = (row2) => {
-//     setRestoreOpen(true);
-// }
-// const handleRestoreClose = () => {
-//     setRestoreOpen(false);
-// }
+      });
+      };
+      const [RestoreOpen, setRestoreOpen] = useState(false);
+      const [RestoreClose, setRestoreClose] = useState(true);
+      const [selectedUser, setSelectedUser] = useState(null);
+const handleRestore = (row2) => {
+  console.log("row2 data is", row2);
+  setSelectedUser(row2);
+  setRestoreOpen(true);
+}
+const handleRestoreClose = () => {
+    setRestoreOpen(false);
+    setRestoreClose(true);
+  }
   const handleRemove = () => {
 
     setLoadingB(true)
@@ -425,10 +428,9 @@ export default function Staff() {
               Add
             </Button>
           </Paper>
-          {/* recep Paper */}
           {row2.filter((row2) => row2.role === rolefild ).length > 0 ? (
             row2
-              .filter((row2) => row2.role === rolefild)
+              .filter((row2) => row2.role === rolefild && row2.isDeleted === false)
               .map((row2) => (
                 //role data in here
                 <Paper
@@ -571,7 +573,7 @@ export default function Staff() {
                     backgroundColor:'rgb(235, 235, 235)', // Change this to the desired hover effect
                   }
                 }}
-                onClick={() => handleEditClickOpen(row2)} // Open the edit window when clicking on the paper
+                onClick={() => handleRestore(row2)} // Open the edit window when clicking on the paper
               >
 
                   {console.log('row2.isActive:', row2.isActive)} 
@@ -641,7 +643,7 @@ export default function Staff() {
         notificationOpen={notificationOpen}
         type={typenoti}
       ></SuccessNotification>
-      {/* <UserAddToList RestoreOpen={RestoreOpen} ></UserAddToList> */}
+      <UserAddToList forceUpdate={forceUpdate} RestoreOpen={RestoreOpen} handleRestoreOpen={handleRestore} selectedUser={selectedUser} handleRestoreClose={handleRestoreClose} RestoreClose={RestoreClose}></UserAddToList>
     </div>
   );
 }

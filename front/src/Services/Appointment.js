@@ -1,5 +1,10 @@
-const baseURL="https://localhost:7205"
-//const baseURL="https://https://medicarehub.azurewebsites.net/:7205"
+let baseURL;
+
+if (window.location.hostname === 'localhost') {
+  baseURL = 'https://localhost:7205';
+} else {
+  baseURL = 'https://mediicarehub.azurewebsites.net';
+}
 
 const endPoints = {
     DoctorsList:"/api/Appointment/doctors",
