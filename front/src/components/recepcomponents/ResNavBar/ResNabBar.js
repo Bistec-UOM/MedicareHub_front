@@ -168,8 +168,8 @@ if (token) {
     }
 
     const newConnection = new HubConnectionBuilder()
+
     .withUrl(baseURLA+endPointsA.C_Notification)
-    // .withUrl('https://mediicarehub.azurewebsites.net/notificationHub')
     .withAutomaticReconnect()
       .build();
 

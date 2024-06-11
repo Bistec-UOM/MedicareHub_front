@@ -157,8 +157,10 @@ const Navbar = () => {
   useEffect(() => {
     if (profile.Id) {
       const newConnection = new HubConnectionBuilder()
+
         .withUrl(baseURLA+'/notificationHub')
         // .withUrl('https://mediicarehub.azurewebsites.net/notificationHub')
+
         .withAutomaticReconnect()
         .build();
 
