@@ -131,7 +131,7 @@ const ResDayList = (props) => {
           <Button
             onClick={handleDeleteAll}
             disabled={isDisabled}
-            
+            color="warning"
             variant="outlined"
           >
             Cancel
