@@ -25,8 +25,6 @@ export default function LabRequest(props) {
   { TestId: 24, labTestName: 'Thyroid Function Test' }]; */
 
   const Labs = labtestlist;
-
-  console.log(labtestlist);
     
   const handleClose = () => {
     setOpenpopBox(false);   

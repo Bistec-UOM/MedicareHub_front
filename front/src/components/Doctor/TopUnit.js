@@ -4,7 +4,7 @@ import EventIcon from '@mui/icons-material/Event';
 import PersonSearchIcon from '@mui/icons-material/PersonSearch';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 
-export default function TopUnit({setcalendarMode,calendarMode,appointments,SwitchOnChange}) {
+export default function TopUnit({setMode,Mode,appointments,SwitchOnChange}) {
 
   const generatedate=()=>{
     const date = new Date();
@@ -40,11 +40,12 @@ export default function TopUnit({setcalendarMode,calendarMode,appointments,Switc
     <div style={{position:'relative',width:'100%'}}>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
 
-        {!calendarMode?<EventIcon sx={{ cursor: 'pointer',ml:'10px' }} onClick={()=>setcalendarMode(true)} />:<ListAltIcon sx={{ cursor: 'pointer',ml:'10px' }} onClick={()=>setcalendarMode(false)}></ListAltIcon>} 
+        {Mode!=2?<EventIcon sx={{ cursor: 'pointer',ml:'10px' }} onClick={()=>setMode(2)} />:<ListAltIcon sx={{ cursor: 'pointer',ml:'10px' }} onClick={()=>setMode(1)}></ListAltIcon>} 
 
         <Typography sx={{ fontSize:'14px'}}>{formattedDate}</Typography>
 
-        <PersonSearchIcon sx={{ cursor: 'pointer',mr:'10px'}} onClick={handleClickOpen} />
+        {Mode!=3?<PersonSearchIcon sx={{ cursor: 'pointer',mr:'10px'}} onClick={()=>setMode(3)} />:<ListAltIcon sx={{ cursor: 'pointer',mr:'10px' }} onClick={()=>setMode(1)}></ListAltIcon>}
+        
       </Box> 
       <Switch defaultChecked size="small" onChange={SwitchOnChange} sx={{position:'relative',top:'10px'}}/>
     </div>   
