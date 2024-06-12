@@ -140,7 +140,8 @@ const SearchBarSM=({onChange,value,placeholder,height})=> {
       </DialogTitle>
       <Box sx={{height:'300px',width:'500px',pt:'10px',pb:'5px',display:'flex',flexDirection:'column',alignItems:'center',overflowY:'scroll'}}>
         {messageList.map((i)=>(
-          <ListItem time={i.time} date={i.date} message={i.message}></ListItem>
+          <ListItem time={i.sendAt.slice(11,16)} date={i.sendAt.slice(0,10)} message={i.message}></ListItem>
+         
         ))}
       </Box>
       <Box sx={{backgroundColor:'white',height:'10px',width:'100%'}}></Box>
@@ -156,8 +157,9 @@ const SearchBarSM=({onChange,value,placeholder,height})=> {
   const handleCloseNotify = () => {setOpenNotify(false)}  
  */
 
-  const ListItem=({time,date,message})=>{
+  const ListItem=({date,time,message})=>{
     const [full,setFull]=useState(false)
+   
     return(
       <Paper 
       sx={{

@@ -20,6 +20,8 @@ import { setHeaders } from "../../Services/Auth";
 import axios from "axios";
 import * as signalR from '@microsoft/signalr';
 import { baseURLA } from "../../Services/Admin";
+import { NotificationPrompt } from "../Common";
+
 
 const Navbar = () => {
   const [profile, setProfile] = useState({name: "",role: "",image: "",Id: ""});
@@ -31,6 +33,16 @@ const Navbar = () => {
     setAnchorEl(event.currentTarget);
   };
   const navigate = useNavigate();
+
+  //notification prompt functions
+  const [openNotify, setOpenNotify] = useState(false)
+  const handleClickOpenNotify = (x) => {
+       setOpenNotify(true)
+       setBadgeContent(0);
+       axios.put(
+         baseURL+endPoints.MarkAsSennNotification+`${userId}`+"/user/"+`${true}`,setHeaders());
+ }
+ const handleCloseNotify = () => {setOpenNotify(false)}  
   
   //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // +++++++++++++++++++                     CHATHURA              +++++++++++++++++++++++++++++++
@@ -41,6 +53,9 @@ const Navbar = () => {
   const [badgeContent, setBadgeContent] = useState(0); //var for notification count
   const [anchorElPop, setAnchorElPop] = useState(null);
   const [AppNotificationconnection, setAppNotiConnection] = useState(null);
+
+  
+ 
 
   let userId = 0;  // Default value
 
@@ -114,6 +129,7 @@ const Navbar = () => {
   }, []);
 
   useEffect(() => {  // Extract only  messages from notificationList and set notificationMessages 
+      console.log("notilist",notificationList);
       const messages = notificationList.map((notification) => notification.message);
       const unseenNotifications = notificationList.filter(notification => notification.seen===false);
       setBadgeContent(unseenNotifications.length);
@@ -280,7 +296,7 @@ const Navbar = () => {
               <HelpOutlineIcon sx={{ paddingRight: "10%" }} />
               Help
             </MenuItem>
-            <MenuItem onClick={handleNotificationBell}>
+            <MenuItem onClick={handleClickOpenNotify}>
             {badgeContent >= 1 ? (
                 <NotificationsIcon color="action" sx={{ paddingRight: "10%" }} />
               ) : (
@@ -317,6 +333,7 @@ const Navbar = () => {
             </List>
           </Popover>
         </div>
+        <NotificationPrompt messageList={notificationList} handleClose={handleCloseNotify} open={openNotify}></NotificationPrompt>
       </Toolbar>
     </AppBar>
   );
