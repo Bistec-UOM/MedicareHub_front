@@ -6,6 +6,9 @@ import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import ScienceIcon from '@mui/icons-material/Science';
 import { Box } from '@mui/system';
+import axios from 'axios';
+import { baseURL, endPoints } from '../../Services/Doctor';
+import { setHeaders } from '../../Services/Auth';
 
 export default function LabResult({data,openPopup2,setOpenPopup2}) {
 
@@ -28,6 +31,15 @@ export default function LabResult({data,openPopup2,setOpenPopup2}) {
           tmp.push(true)
         }
         setOpen(tmp)
+
+        //Marking as read
+        let arr=[]
+        data.forEach((el)=>{
+          arr.push(el.reportId)
+        })
+        axios.post(baseURL+endPoints.MARK,arr,setHeaders())
+        .then((res)=>console.log(res))
+        .catch((err)=>console.log(err))
     },[])
 
     const handleClose = () => {

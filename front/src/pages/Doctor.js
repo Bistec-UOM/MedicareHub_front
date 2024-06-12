@@ -22,13 +22,15 @@ import { baseURL,endPoints } from '../Services/Doctor';
 import axios from 'axios';
 import { PersonDetail } from '../components/Other';
 import DoneIcon from '@mui/icons-material/Done'
-import { ConfirmPropmt } from '../components/Common';
+import { ConfirmPropmt, Load } from '../components/Common';
 import LabResult from '../components/Lab/LabResult';
 import DoctorAppCalender from '../components/recepcomponents/DoctorAppointmentHandle/DoctorAppCalender/DoctorAppCalender';
 import { setHeaders } from '../Services/Auth';
+import Patient_profile from '../components/Patient_profile';
 
 export default function Doctor() {
   
+  const [loadingDone, setLoadingDone] = useState(false);//appointments are loading
   const [select,setSelect]=useState(null);//hold the selected appoinment patient
   const [openPopup, setOpenPopup] = useState(false);// for patient history records
   const [openPopup2, setOpenPopup2] = useState(false);// for result view
@@ -146,10 +148,11 @@ const handleClick = () => {
 const fetchData = async () => {
   try {
     const response = await axios.get(baseURL+endPoints.APPOINTMENTLIST,setHeaders()); 
+    setLoadingDone(true)
     setAppointments(response.data.appointments);
-    setLabtestlist(response.data.tests)
-    
+    setLabtestlist(response.data.tests)   
   } catch (error) {
+    setLoadingDone(true)
     console.error('Error fetching data:', error);
   }
 };
@@ -206,7 +209,7 @@ const handleCloseConfirm = () => {setOpenConfirm(false)}
     loadPatientDetails()
   },[select])
 
-  const [calendarMode,setcalendarMode]=useState(false)
+  const [Mode,setMode]=useState(1)//1-> original  2-> calender  3-> patient profile
 
  return (
   <div>
@@ -215,10 +218,9 @@ const handleCloseConfirm = () => {setOpenConfirm(false)}
       <Grid item xs={3} sx={{ height: '100%', backgroundColor:'#e7fff9'}}>
               <SidebarTop>
  {/*..................switch.......................... */}
-              <TopUnit calendarMode={calendarMode} setcalendarMode={setcalendarMode} appointments={appointments} SwitchOnChange={() => setShowDonePatients(prev => !prev)}></TopUnit>
+              <TopUnit Mode={Mode} setMode={setMode} appointments={appointments} SwitchOnChange={() => setShowDonePatients(prev => !prev)}></TopUnit>
               </SidebarTop>
-              <SidebarList >
-{/*..........................................................show staus in done patients..................................................*/}
+              {loadingDone?<SidebarList >
                 {filteredAppointments.map((elm, ind) => (
                                 <Sideunit_Patient
                                     key={ind}
@@ -230,9 +232,10 @@ const handleCloseConfirm = () => {setOpenConfirm(false)}
                                     selected={elm.id === select ? true : ''}
                                 />                                
                             ))}
-              </SidebarList>
+              </SidebarList>:<SidebarList><Load></Load></SidebarList>}
+
       </Grid>
-  {!calendarMode?     <Grid item xs={9} style={{ height: '100%', overflowY: 'scroll' }}>
+  {Mode==1?     <Grid item xs={9} style={{ height: '100%', overflowY: 'scroll' }}>
         
         {select ? (
             <>
@@ -249,8 +252,8 @@ const handleCloseConfirm = () => {setOpenConfirm(false)}
                     <Typography sx={{display:'inline',fontSize:'15px',fontStyle:'italic',color:'lightgrey'}}>Checking records...</Typography>
                     <CircularProgress size={20}/>
                   </div>:''}
-                  {available.lab?<ScienceIcon sx={{position:'fixed',top:'75px',right:'60px',zIndex:'40',color:'#438ad1',cursor:'pointer'}} onClick={handleAddIconClick2}></ScienceIcon>:''}
-                  {available.rec?<UpdateIcon sx={{position:'fixed',top:'75px',right:'20px',zIndex:'40',color:'rgb(255, 153, 0)',cursor:'pointer'}} onClick={handleAddIconClick}></UpdateIcon> :''}
+                  {available.lab?<ScienceIcon sx={{position:'fixed',top:'75px',right:'60px',zIndex:'40',cursor:'pointer'}} onClick={handleAddIconClick2}></ScienceIcon>:''}
+                  {available.rec?<UpdateIcon sx={{position:'fixed',top:'75px',right:'20px',zIndex:'40',cursor:'pointer'}} onClick={handleAddIconClick}></UpdateIcon> :''}
                   {available.rec?<PatientsRecords openPopup={openPopup} setOpenPopup={setOpenPopup}   selectedPatientId={selectedAppointment[0].patient.id} records={records} lbAnalytics={lbAnalytics} drgAnalytics={drgAnalytics}/>:''}
                   <LabResult openPopup2={openPopup2} setOpenPopup2={setOpenPopup2} data={labReport}></LabResult>
 {/*.........................Add Drugs...............................................*/}
@@ -298,8 +301,11 @@ const handleCloseConfirm = () => {setOpenConfirm(false)}
     <ConfirmPropmt action={handleClick} message="Are you sure that prescription is ready?"
      handleClose={handleCloseConfirm} loadingB={loadingBConfirm} open={openConfirm}></ConfirmPropmt>
     </Grid>:''}
-    {calendarMode?<Grid item xs={9} style={{ height: '100%', overflowY: 'scroll' }}>
+    {Mode==2?<Grid item xs={9} style={{ height: '100%', overflowY: 'scroll' }}>
             <DoctorAppCalender></DoctorAppCalender>
+    </Grid>:''}
+    {Mode==3?<Grid item xs={9} style={{ height: '100%', overflowY: 'scroll' }}>
+            <Patient_profile></Patient_profile>
     </Grid>:''}
   </Grid>
 </div>    
