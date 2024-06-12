@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Typography, Box, Switch } from '@mui/material';
 import EventIcon from '@mui/icons-material/Event';
-import NotificationsIcon from '@mui/icons-material/Notifications';
+import PersonSearchIcon from '@mui/icons-material/PersonSearch';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 
 export default function TopUnit({setcalendarMode,calendarMode,appointments,SwitchOnChange}) {
@@ -22,8 +22,8 @@ export default function TopUnit({setcalendarMode,calendarMode,appointments,Switc
 
   const handleClickOpen = () => {
     setOpen(true);
-    const filteredAppointments = appointments.filter(appointment => appointment.status === "done");
-    setFilteredAppointmentsdone(filteredAppointments);
+/*     const filteredAppointments = appointments.filter(appointment => appointment.status === "done");
+    setFilteredAppointmentsdone(filteredAppointments); */
   };
 
   const handleClose = () => {
@@ -44,7 +44,7 @@ export default function TopUnit({setcalendarMode,calendarMode,appointments,Switc
 
         <Typography sx={{ fontSize:'14px'}}>{formattedDate}</Typography>
 
-        <NotificationsIcon sx={{ cursor: 'pointer',mr:'10px'}} onClick={handleClickOpen} />
+        <PersonSearchIcon sx={{ cursor: 'pointer',mr:'10px'}} onClick={handleClickOpen} />
       </Box> 
       <Switch defaultChecked size="small" onChange={SwitchOnChange} sx={{position:'relative',top:'10px'}}/>
     </div>   
