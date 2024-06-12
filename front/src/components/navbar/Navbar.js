@@ -87,14 +87,14 @@ const Navbar = () => {
     // Start the connection
     AppNotificationconnection.start()
       .then(result => {
+        AppNotificationconnection.invoke("NotiToPharmacist")
         console.log("Connection started successfully", result);
         // Set up a listener for notifications
         AppNotificationconnection.on('ReceiveNotification', message => {
           console.log('Connected! helo', AppNotificationconnection.connectionId);
           console.log("inside receive notification chathura callback", message.message); // Log the received message
-          setNotificationList(notificationMessages => [...notificationMessages, message]); // Add new notification to the list
-          const unseenNotifications = notificationList.filter(notification => notification.seen===false);
-          setBadgeContent(unseenNotifications.length); // Increase badge content for new notification
+          setNotificationMessages(notificationMessages => [...notificationMessages, message]); // Add new notification to the list
+          setBadgeContent(prevBadgeContent => prevBadgeContent + 1); // Increase badge content for new notification
         });
       })
       .catch(e => console.log('Connection failed: ', e));
@@ -156,6 +156,7 @@ const Navbar = () => {
         })
         .catch((err) => console.error("Error while disconnecting:", err));
     } else {
+      console.log("not connected to disconnect");
       deleteLog();
       handleClose();
       navigate("/");
