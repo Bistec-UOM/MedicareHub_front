@@ -8,6 +8,7 @@ import { PersonDetail } from '../../Other';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import LoadingButton from '@mui/lab/LoadingButton';
 import DoneIcon from '@mui/icons-material/Done';
+import theme from '../../Style';
 
 export default function Accept({req,reqOK,RLoad,setRLoad}) {
 
@@ -100,7 +101,7 @@ export default function Accept({req,reqOK,RLoad,setRLoad}) {
                                       height:'20px',
                                       borderRadius:'5px',
                                       color:'white',
-                                      backgroundColor:'#568a91',
+                                      backgroundColor:theme.palette.custom.Token,
                                       ml:'5px'
                                       }}
                                     ></Chip>

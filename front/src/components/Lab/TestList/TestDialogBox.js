@@ -88,9 +88,9 @@ export default function TestDialogBox({test,setPage,setTload,handleClose,handleC
 
   return (
     <div style={{padding:'20px',display:'flex',flexDirection:'column'}}>
-        <TextField disabled={isDisabled} label="Name" margin="dense" value={testName} onChange={(e)=>settestName(e.target.value)}/>
-        <TextField disabled={isDisabled} label="Provider" margin="dense" value={provider} onChange={(e)=>setProvider(e.target.value)}/>
-        <TextField disabled={isDisabled} label="Price" margin="dense" value={price} onChange={(e)=>setPrice(e.target.value)}/>
+        <TextField disabled={isDisabled} label="Name" margin="dense" value={testName} onChange={(e)=>settestName(e.target.value)} size='small'/>
+        <TextField disabled={isDisabled} label="Provider" margin="dense" value={provider} onChange={(e)=>setProvider(e.target.value)} size='small'/>
+        <TextField disabled={isDisabled} label="Price" margin="dense" value={price} onChange={(e)=>setPrice(e.target.value)} size='small'/>
         <div style={{paddingTop:'10px',display:'flex',flexDirection:'row-reverse',alignItems:'center'}} >
           
           
@@ -104,7 +104,7 @@ export default function TestDialogBox({test,setPage,setTload,handleClose,handleC
             endIcon={isDisabled?<EditIcon></EditIcon>:<DoneIcon></DoneIcon>}
           >{isDisabled?'Edit':'OK'}</LoadingButton>
           {
-            isDisabled===false?<Button sx={{ml:'20px'}} variant='outlined' endIcon={<DashboardCustomizeIcon></DashboardCustomizeIcon>}  onClick={()=>setPage(4)}></Button>:''
+            isDisabled===false?<Button variant='outlined' sx={{ml:'20px'}} endIcon={<DashboardCustomizeIcon></DashboardCustomizeIcon>}  onClick={()=>setPage(4)}></Button>:''
           }
         </div>
     </div>

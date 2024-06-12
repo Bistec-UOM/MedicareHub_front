@@ -6,6 +6,7 @@ import {
   Select,
   FormControl,
   Box,
+  Typography,
 } from "@mui/material";
 import {
   AreaChart,
@@ -28,10 +29,12 @@ const SearchGraph = ({
   handleChange,
   ModelData,
   graph,
+  topic
 }) => {
   return (
     <div>
       <Paper sx={{ width: { xs: "90vw", sm: "90%" } }}>
+        <Typography fontSize={25} sx={{textAlign:'center'}}>{topic}</Typography>          
         <Box
           sx={{
             display: "flex",
@@ -39,9 +42,12 @@ const SearchGraph = ({
             alignItems: "center",
           }}
         >
+          
+
           <Autocomplete
             id="highlights-demo"
-            sx={{ width: '20%', height: 100, marginRight: "3vw" }}
+            sx={{ width: '30%', height: 100, marginRight: "3vw" }}
+            size="small"
             options={uniqueModelTypes}
             getOptionLabel={(option) => option.name}
             onChange={(_, value) => selectModelType(value)}
@@ -71,13 +77,14 @@ const SearchGraph = ({
               );
             }}
           />
-          <FormControl sx={{ width: "20%", position: "relative", top: "-1vh" }}>
+          <FormControl sx={{ width: "20%", position: "relative", top: "-2vh",mr:'3vw' }}>
             <InputLabel>Gap</InputLabel>
             <Select
               style={{ textAlign: "left" }}
               id="demo-simple-select"
               value={Value}
               label="Gap"
+              size="small"
               onChange={handleChange}
             >
               <MenuItem value={"month"}>Last Month</MenuItem>
@@ -92,7 +99,7 @@ const SearchGraph = ({
             style={{ paddingBottom: "5vh", height: "70vh" }}
           >
             <XAxis
-              fontSize={20}
+              fontSize={10}
               dataKey={graph.x}
               interval={"preserveStartEnd"}
             >

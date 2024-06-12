@@ -1,4 +1,11 @@
-const baseURL='https://localhost:7205'
+let baseURL;
+
+if (window.location.hostname === 'localhost') {
+  baseURL = 'https://localhost:7205';
+} else {
+  baseURL = 'https://mediicarehub.azurewebsites.net';
+}
+
 
 const endPoints = {
     TEST:'/api/Test',

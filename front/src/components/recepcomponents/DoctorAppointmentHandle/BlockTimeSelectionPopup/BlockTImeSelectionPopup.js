@@ -12,6 +12,9 @@ import { useState } from "react";
 import dayjs from "dayjs";
 import { baseURL, endPoints } from "../../../../Services/Appointment";
 import { setHeaders } from "../../../../Services/Auth";
+import { LoadingButton } from "@mui/lab";
+import WarningIcon from '@mui/icons-material/Warning';
+import theme from "../../../Style";
 
 //dayTime block popup
 
@@ -35,15 +38,17 @@ export default function BlockTimeSelectionPopup({
     setTimeSelection(false);
   };
 
-  const [startTime, setStartTime] = useState(new dayjs(selectedDay));  //starttime of blocked time period
-  const [endTime, setEndTime] = useState(new dayjs(selectedDay));  //endtime of blocked time period
+  const [startTime, setStartTime] = useState(new dayjs(selectedDay)); //starttime of blocked time period
+  const [endTime, setEndTime] = useState(new dayjs(selectedDay)); //endtime of blocked time period
+  const [timeBlockLoading, setTimeBlockLoading] = useState(false); //var for loaing prop of confirm button
 
   //addig blocked date and doctor id to the table
   async function handleSubmit(event) {
+    setTimeBlockLoading(true);
     event.preventDefault();
     const date = new Date(selectedDay);
-    const startTimeDate=new Date(startTime);
-    const endTImeDate=new Date(endTime);
+    const startTimeDate = new Date(startTime);
+    const endTImeDate = new Date(endTime);
     const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1)
       .toString()
       .padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}T${date
@@ -53,56 +58,81 @@ export default function BlockTimeSelectionPopup({
       .getSeconds()
       .toString()
       .padStart(2, "0")}.${date.getMilliseconds().toString().padStart(3, "0")}`;
-      const formattedStartTime = `${startTimeDate.getFullYear()}-${(startTimeDate.getMonth() + 1)
-        .toString()
-        .padStart(2, "0")}-${startTimeDate.getDate().toString().padStart(2, "0")}T${startTimeDate
-        .getHours()
-        .toString()
-        .padStart(2, "0")}:${startTimeDate.getMinutes().toString().padStart(2, "0")}:${startTimeDate
-        .getSeconds()
-        .toString()
-        .padStart(2, "0")}.${startTimeDate.getMilliseconds().toString().padStart(3, "0")}`;
-        const formattedEndTIme = `${endTImeDate.getFullYear()}-${(endTImeDate.getMonth() + 1)
-          .toString()
-          .padStart(2, "0")}-${endTImeDate.getDate().toString().padStart(2, "0")}T${endTImeDate
-          .getHours()
-          .toString()
-          .padStart(2, "0")}:${endTImeDate.getMinutes().toString().padStart(2, "0")}:${endTImeDate
-          .getSeconds()
-          .toString()
-          .padStart(2, "0")}.${endTImeDate.getMilliseconds().toString().padStart(3, "0")}`;
+    const formattedStartTime = `${startTimeDate.getFullYear()}-${(
+      startTimeDate.getMonth() + 1
+    )
+      .toString()
+      .padStart(2, "0")}-${startTimeDate
+      .getDate()
+      .toString()
+      .padStart(2, "0")}T${startTimeDate
+      .getHours()
+      .toString()
+      .padStart(2, "0")}:${startTimeDate
+      .getMinutes()
+      .toString()
+      .padStart(2, "0")}:${startTimeDate
+      .getSeconds()
+      .toString()
+      .padStart(2, "0")}.${startTimeDate
+      .getMilliseconds()
+      .toString()
+      .padStart(3, "0")}`;
+    const formattedEndTIme = `${endTImeDate.getFullYear()}-${(
+      endTImeDate.getMonth() + 1
+    )
+      .toString()
+      .padStart(2, "0")}-${endTImeDate
+      .getDate()
+      .toString()
+      .padStart(2, "0")}T${endTImeDate
+      .getHours()
+      .toString()
+      .padStart(2, "0")}:${endTImeDate
+      .getMinutes()
+      .toString()
+      .padStart(2, "0")}:${endTImeDate
+      .getSeconds()
+      .toString()
+      .padStart(2, "0")}.${endTImeDate
+      .getMilliseconds()
+      .toString()
+      .padStart(3, "0")}`;
     let obj = {
       doctorId: doctorId,
-      Date: formattedDate, 
-      startTime:formattedStartTime,
-      endTime:formattedEndTIme
+      Date: formattedDate,
+      startTime: formattedStartTime,
+      endTime: formattedEndTIme,
     };
     try {
-      await axios.post(baseURL + endPoints.UnableDates, obj,setHeaders());
+      await axios.post(baseURL + endPoints.UnableDates, obj, setHeaders());
+      setTimeBlockLoading(false);
       handleNotification("Time Blocked succesfully!", "success");
       setTimeSelection(false);
     } catch (err) {
-      handleNotification(err.response.data, "error");
+      setTimeBlockLoading(false);
+      handleNotification("Network Error Occured!", "error");
     }
   }
 
   return (
     <React.Fragment>
       <Dialog open={timeSelection} onClose={handleClose}>
-        <Box sx={{ width: { xs: "100%", sm: "450px" }, height: "280px" }}>
-          <Box>
+        <Box sx={{ width: { xs: "100%", sm: "450px" }, height: "230px" }}>
+        <div style={{display:'flex',alignItems:'start',margin:'8px',paddingBottom:'5px',borderBottom:'1px solid lightgrey'}}>
+      <MoreTimeIcon color='warning' sx={{mr:'10px'}}></MoreTimeIcon>
+      <Typography> Select the Time Period</Typography>
+    </div>
+          {/* <Box>
             <Box
               sx={{
-                backgroundColor: "#DEF4F2",
+                //backgroundColor: theme.palette.custom.greenH,
                 height: "40px",
                 display: "flex",
                 justifyContent: "flex-end",
                 width: "100%",
               }}
             >
-              <IconButton onClick={handleClose}>
-                <CloseIcon />
-              </IconButton>
             </Box>
           </Box>
           <Box
@@ -119,7 +149,7 @@ export default function BlockTimeSelectionPopup({
             <Typography sx={{ marginTop: "1%", color: "#000000" }}>
               Select the Time Period?
             </Typography>
-          </Box>
+          </Box> */}
           <Box
             sx={{
               display: "flex",
@@ -129,31 +159,46 @@ export default function BlockTimeSelectionPopup({
             }}
           >
             <BasicTimePicker
+              size="small"
               sx={{ overflow: { xs: "hidden" } }}
               selectedTime={startTime}
               setSelectedTime={setStartTime}
               label="StartTime"
             ></BasicTimePicker>
-            <BasicTimePicker 
-             selectedTime={endTime}
-             setSelectedTime={setEndTime}
-            label="EndTIme"></BasicTimePicker>
-            <Button
-               onClick={handleSubmit}
-              sx={{
-                backgroundColor: "#79CCBE",
-                "&:hover": {
-                  backgroundColor: "#79CCBE",
-                },
-                marginLeft: "80%",
-                marginTop:"2%",
-                width: "90px",
-              }}
-              variant="contained"
-              type="submit"
-            >
-              Confirm
-            </Button>
+            <BasicTimePicker
+              selectedTime={endTime}
+              setSelectedTime={setEndTime}
+              label="EndTIme"
+            ></BasicTimePicker>
+             <Box
+      sx={{
+        display: "flex",
+        justifyContent: "space-between", // Distribute space between the buttons
+        alignItems: "center", // Align items vertically centered
+        marginTop: "2%", // Add margin to the top if needed
+      }}
+    >
+      <Button
+        variant="outlined"
+        sx={{ width: "90px" }}
+        size="small"
+        endIcon={<CloseIcon />}
+        onClick={handleClose}
+      >
+        No
+      </Button>
+      <LoadingButton
+        loading={timeBlockLoading}
+        onClick={handleSubmit}
+        sx={{
+          width: "90px",
+        }}
+        variant="contained"
+        type="submit"
+      >
+        Confirm
+      </LoadingButton>
+    </Box>
           </Box>
         </Box>
       </Dialog>

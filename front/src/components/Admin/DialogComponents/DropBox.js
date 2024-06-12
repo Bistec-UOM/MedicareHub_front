@@ -1,9 +1,12 @@
-import { Button, Grid } from "@mui/material";
+import { Button, Grid, Paper } from "@mui/material";
 import React, { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { CLOUDINARY_URL } from "../../../Services/Admin";
 import axios from "axios";
 import LoadingButton from "@mui/lab/LoadingButton";
+import AddIcon from '@mui/icons-material/Add';
+import CloseIcon from '@mui/icons-material/Close';
+import SuccessNotification from "../../recepcomponents/SnackBar/SuccessNotification";
 
 const DropBox = ({ className, handleDropBoxClose, DataUrl, setDataUrl }) => {
     //for loading
@@ -27,11 +30,19 @@ const DropBox = ({ className, handleDropBoxClose, DataUrl, setDataUrl }) => {
     multiple: false,
   });
 
+const [type, settype] = useState('');
+const [notiMessage, setNotiMessage] = useState('');
+const [notificationOpen, setNotificationOpen] = useState(false);
 
   const handleSubmit = async (e) => {
     setLoadingB(true)
     e.preventDefault(); // prevent form submission
-    if (!files.length) return; // if no files, return
+    if (!files.length) {
+      settype('error')
+      setNotiMessage("No files selected!");
+      setNotificationOpen(true);
+      setLoadingB(false)
+      return;} // if no files, return
     const file = files[0]; // get the first file
     const formData = new FormData();
     formData.append("file", file);
@@ -87,39 +98,40 @@ const DropBox = ({ className, handleDropBoxClose, DataUrl, setDataUrl }) => {
         </div>
         <ul>
           {files.map((file) => (
-            <li key={file.name}>
+            <div key={file.name}>
               <img
                 src={file.preview}
                 alt={file.name}
                 width={100}
                 height={100}
               />
-            </li>
+            </div>
           ))}
         </ul>
         <Grid sx={{ float: "right" }}>
         <LoadingButton           
           size="small"
-          // endIcon={<PlayArrowIcon />}
+          endIcon={<CloseIcon />}
           loading={loadingB}
           loadingPosition="end"
-          variant="contained" 
+          variant="outlined" 
           onClick={handleDropBoxClose}
-          sx={{ml:'10px',p:'9px'}}
+          sx={{ml:'10px'}}
           color="error"
         >Close</LoadingButton>
           <LoadingButton           
           size="small"
-          // endIcon={<PlayArrowIcon />}
+          endIcon={<AddIcon />}
           loading={loadingB}
           loadingPosition="end"
           variant="contained" 
           onClick={handleSubmit}
-          sx={{ml:'10px',p:'9px'}}
+          sx={{ml:'10px'}}
         >Add</LoadingButton>
         
         </Grid>
       </form>
+      <SuccessNotification setNotificationOpen={setNotificationOpen} notiMessage={notiMessage} notificationOpen={notificationOpen} type={type} ></SuccessNotification>
     </div>
   );
 };

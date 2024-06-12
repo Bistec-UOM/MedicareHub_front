@@ -9,12 +9,12 @@ import { Box } from '@mui/system';
 import AddIcon from '@mui/icons-material/Add';
 
 export default function LabRequest(props) {
-  const { openpopBox, setOpenpopBox ,rep, setrep} = props;   
+  const { openpopBox, setOpenpopBox ,rep, setrep, labtestlist} = props;   
   //const [rep, setrep] = useState([]);
   const [name, setName] = useState('');
   const [selectedLabTestName, setSelectedLabTestName] = useState(null);//hold the selected labtest name
  
-  const Labs = [ 
+/*   const Labs = [ 
   { TestId: 1, labTestName: 'Full Blood Count' },
   { TestId: 2, labTestName: 'Urine Analysis' },
   { TestId:3,labTestName:'Blood Glucose Test'},
@@ -22,7 +22,11 @@ export default function LabRequest(props) {
   {TestId: 5, labTestName: 'Kidney Function Test' },
   {TestId: 6, labTestName: 'Electrolyte Panel' },
   {TestId: 7, labTestName: 'Lipid Profile' },
-  { TestId: 24, labTestName: 'Thyroid Function Test' }];
+  { TestId: 24, labTestName: 'Thyroid Function Test' }]; */
+
+  const Labs = labtestlist;
+
+  console.log(labtestlist);
     
   const handleClose = () => {
     setOpenpopBox(false);   
@@ -36,7 +40,7 @@ export default function LabRequest(props) {
     const selectedLabTest = Labs.find(test => test.labTestName === selectedLabTestName); 
      const newRep = {
       DateTime:null, // Placeholder for date and time
-      TestId: selectedLabTest ? selectedLabTest.TestId : null,
+      testId: selectedLabTest ? selectedLabTest.testId : null,
       Status: "new",   
       LbAstID: 1      
   };
@@ -53,17 +57,11 @@ const handleDeleteLabRequest = (index) => {
 };
 
   return (
-    <div>
-      <Dialog open={openpopBox}>
-      <DialogContent dividers 
-              sx={{ '&::before': { content: "''", position: 'absolute', top: 0, right: 0, width: '35px', height: '100%', background: 'hsl(0, 0%, 90%)', }}}>
-   
-        <IconButton
-              sx={{ position: 'absolute', left:'88%'}}
-              onClick={handleClose}
-        >
-            <CloseIcon />
-        </IconButton>
+<div>
+<Dialog open={openpopBox}>
+  <DialogContent
+              sx={{position: 'relative'}}>
+  
       <form style={{ display: 'flex', alignItems: 'center' }} onClick={handleSubmit}> 
       <Autocomplete
       sx={{ flex: '1', marginRight: '10px', width: '200px', '& .MuiOutlinedInput-root': { '& fieldset': { borderColor: '#0099cc', borderWidth: '2px' } } }}
@@ -86,17 +84,23 @@ const handleDeleteLabRequest = (index) => {
         />
           )}
           /> 
-        <Button variant="contained" sx={{ top: '0.1px',marginRight: '30px'}} 
+        <Button size='small' variant="contained" sx={{ top: '0.1px',marginRight: '30px'}} 
          onClick={() => {handleAddLabRequest(); handleClose()}} endIcon={<AddIcon></AddIcon>}> Add </Button>        
-      </form>      
-     </DialogContent>      
-      </Dialog> 
-     <div >
+      </form>  
+      <IconButton
+              sx={{ position: 'absolute', top:'5px',right:'5px'}}
+              onClick={handleClose}
+        >
+        <CloseIcon />
+      </IconButton>    
+  </DialogContent>      
+</Dialog> 
+<div >
       {/*---- rendered lab request list-------------------------*/}
       {rep.map((drug, index) => (
       <Box key={index} sx={{marginTop: "5px",width:'80%',display:'flex',ml:'5%',alignItems:'center'}}>
             <Box sx={{backgroundColor: '#48EC4F', width:'500px', display: 'flex', flexDirection: 'row',color: 'white',fontSize: '18px',borderRadius:'4px',alignItems:'center'}}>
-                <Typography gutterBottom sx={{ marginLeft: '15px'}}>{Labs.find(test => test.TestId === drug.TestId)?.labTestName}</Typography>
+                <Typography gutterBottom sx={{ marginLeft: '15px'}}>{Labs.find(test => test.testId === drug.testId)?.labTestName}</Typography>
             </Box>
      {/*.....delete buttun ..................................... */}
             <Box item xs={8}>

@@ -99,10 +99,11 @@ const AIncome = () => {
         </Grid>
         <Grid item xs={12} sm={8} style={{ textAlign: 'right' }}>
           <Paper sx={{ padding: '10px' }}>
-            <Typography fontSize={30} sx={{ textAlign: 'center' }}>Income</Typography>
+            <Typography fontSize={25} sx={{ textAlign: 'center' }}>Income</Typography>
             <FormControl sx={{ width: { xs: '40%', sm: '20%' } }}>
               <InputLabel>Gap</InputLabel>
               <Select
+                size='small'
                 style={{ textAlign: 'left' }}
                 id="demo-simple-select"
                 value={Value}

@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { Box } from '@mui/system';
-import { Button, Divider, Typography } from '@mui/material';
+import { Button, Checkbox, Divider, Typography } from '@mui/material';
 import axios from 'axios';
 import Fieldcom from './Fieldcom';
 import { baseURL,endPoints } from '../../../../Services/Lab';
 import { Load } from '../../../Other';
-import LoadingButton from '@mui/lab/LoadingButton';
-import SendIcon from '@mui/icons-material/Send';
 import { ConfirmPropmt } from '../../../Common';
-
 export default function Testcom({handleClick1,handleClose,test}) {
 
   const [Fload,setFload]=useState([])//field set according to the needed test
   const [loading,setloading]=useState(true)
+  const [servere,setServere]=useState(false)
 
   const clearData=()=>{
     let tmp=[...Fload]
@@ -20,6 +18,7 @@ export default function Testcom({handleClick1,handleClose,test}) {
        el.value=''
        el.status=null
     })
+    setServere(false)
     setFload(tmp)
   }
 
@@ -59,16 +58,17 @@ export default function Testcom({handleClick1,handleClose,test}) {
         let tmp2={
           "fieldid":el.fieldId,
           "result":parseFloat(el.value),
-          "status":el.status
+          "status":el.status,
         }
         ob.push(tmp2)
       })
-
-    let obj={
-      "reportId":test[0].id,
-      "dateTime":getUTCDateTimeString(),
-      "results":ob
-    }
+      
+      let obj={
+        "reportId":test[0].id,
+        "dateTime":getUTCDateTimeString(),
+        "results":ob,
+        "servere":servere
+      }
     
     axios.post(baseURL+endPoints.RESULT,obj)
     .then((res)=>{
@@ -165,7 +165,11 @@ export default function Testcom({handleClick1,handleClose,test}) {
           variant="contained" onClick={handleClickOpenConfirm} 
           sx={{ml:'10px'}}
         >Submit</Button>
-        <Button variant='outlined'onClick={clearData} size='small' >Clear</Button>
+        <Button variant='outlined' color='warning' onClick={clearData} size='small' >Clear</Button>
+        <div style={{flex:'1',display:'flex',alignItems:'center'}}>
+          <Typography sx={{fontSize:'14px'}}>Servere</Typography>
+          <Checkbox color='error' checked={servere?true:false} onChange={(e)=>setServere(e.target.checked)}></Checkbox>
+        </div>
     </Box>
 
     <ConfirmPropmt action={submitData} message="Are you sure that results are correct?"

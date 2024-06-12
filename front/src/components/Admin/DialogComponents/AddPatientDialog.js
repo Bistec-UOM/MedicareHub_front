@@ -1,16 +1,5 @@
 import * as React from "react";
-import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  FormControl,
-  FormHelperText,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-} from "@mui/material";
+import {Dialog,DialogActions,DialogContent,DialogTitle,FormControl,FormHelperText,Grid,InputLabel,MenuItem,Select,TextField} from "@mui/material";
 import { Button } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import dayjs from "dayjs";
@@ -20,27 +9,20 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateField } from "@mui/x-date-pickers/DateField";
 import { baseURL, endPoints } from "../../../Services/Admin";
 import axios from "axios";
+import LoadingButton from "@mui/lab/LoadingButton";
+import AddIcon from "@mui/icons-material/Add";
+import { useState } from "react";
+import theme from "../../Style";
 
-const AddPatientDialog = ({
-  open,
-  rows,
-  handleAddClose,
-  handleInputChange,
-  formErrors,
-  formData,
-  setFormErrors,
-  settype,
-  setNotiMessage,
-  setNotificationOpen,
-  setOpen,
-  forceUpdate,
-}) => {
+const AddPatientDialog = ({open,rows,handleAddClose,handleInputChange,formErrors,formData,setFormErrors,settype,setNotiMessage,setNotificationOpen,setOpen,forceUpdate,}) => {
+  const [loadingB, setLoadingB] = useState(false);
+
   const handleAddSaveClose = () => {
     // Validate form fields
     let errors = {};
     let isValid = true;
     console.log(formData);
-
+    setLoadingB(true);
     // Check if any of the required fields are empty
     const fields = [
       "fullName",
@@ -150,6 +132,7 @@ const AddPatientDialog = ({
         setOpen(false);
         console.log("Data added successfully:", response.data);
         forceUpdate((prevCount) => prevCount + 1); // Trigger a re-render
+        setLoadingB(false);
         // Optionally, fetch updated data from the API and update the state
       })
       .catch((error) => {
@@ -164,10 +147,11 @@ const AddPatientDialog = ({
   };
 
   return (
-    <Dialog open={open} onClose={handleAddClose}>
+    <Dialog sx={{width: {md:'39.5vw',sm:"100%"},margin:"auto"}} open={open}  onClose={handleAddClose}>
       <DialogTitle
         sx={{
-          backgroundColor: "rgb(222, 244, 242)",
+          backgroundColor:theme.palette.custom.greenH,
+          color: "white",
           display: "flex",
           justifyContent: "space-between",
         }}
@@ -175,22 +159,31 @@ const AddPatientDialog = ({
         Add Patient
         <CloseIcon onClick={handleAddClose} sx={{ cursor: "pointer" }} />
       </DialogTitle>
-      <DialogContent>
+      <DialogContent >
         {/* Add form fields or other content here */}
         <TextField
           required
           label="Full Name"
           fullWidth
+
           sx={{ mb: 1, mt: 3 }}
           onChange={(e) => handleInputChange("fullName", e.target.value)}
+          size="small"
           //!! use for convert value into a boolean btw error is a boolean data value
           error={!!formErrors.fullName}
           helperText={formErrors.fullName}
         />
         <TextField
           required
+          size="small"
           label="Name"
-          sx={{ mb: 1 }}
+          sx={{
+            mb: 1,
+            width: {
+              xs: '100%', // Full width on extra-small (mobile) devices
+              sm: 'auto' // Default width on devices larger than extra-small
+            }
+          }}
           onChange={(e) => handleInputChange("name", e.target.value)}
           error={!!formErrors.name}
           helperText={formErrors.name}
@@ -198,6 +191,7 @@ const AddPatientDialog = ({
         <TextField
           required
           label="Address"
+          size="small"
           fullWidth
           sx={{ mb: 1 }}
           onChange={(e) => handleInputChange("address", e.target.value)}
@@ -206,22 +200,33 @@ const AddPatientDialog = ({
         />
         <TextField
           required
+          size="small"
           label="NIC"
-          sx={{ mb: 1 }}
+          sx={{ mb: 1 ,            
+            width: {
+            xs: '100%', // Full width on extra-small (mobile) devices
+            sm: 'auto' // Default width on devices larger than extra-small
+          }}}
           onChange={(e) => handleInputChange("nic", e.target.value)}
           error={!!formErrors.nic}
           helperText={formErrors.nic}
         />
         <TextField
           required
+          size="small"
           label="Contact Number"
-          sx={{ mb: 1, ml: 2 }}
+          sx={{ mb: 1,marginLeft:{md:'2.9vw',sm:0},            
+            width: {
+            xs: '100%', // Full width on extra-small (mobile) devices
+            sm: 'auto' // Default width on devices larger than extra-small
+          } }}
           onChange={(e) => handleInputChange("contactNumber", e.target.value)}
           error={!!formErrors.contactNumber}
           helperText={formErrors.contactNumber}
         />
         <TextField
           required
+          size="small"
           label="E-mail"
           fullWidth
           sx={{ mb: 1 }}
@@ -229,7 +234,7 @@ const AddPatientDialog = ({
           error={!!formErrors.email}
           helperText={formErrors.email}
         />
-        <div style={{ display: "flex" }}>
+        <Grid sx={{ display: {md:"flex",sm:"flow"} }} >
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DemoContainer components={["DateField"]}>
               <DateField
@@ -237,18 +242,20 @@ const AddPatientDialog = ({
                 value={formData.dob ? dayjs(formData.dob) : null}
                 onChange={(newValue) => handleInputChange("dob", newValue)}
                 renderInput={(props) => <TextField {...props} />}
-                style={{ width: "225px" }}
+                sx={{ width: {md:"215px"} }}
                 error={!!formErrors.dob}
+                size="small"
                 helperText={formErrors.dob}
                 required // Ensure date of birth is required
               />
             </DemoContainer>
           </LocalizationProvider>
-          <FormControl style={{ marginLeft: "15px", marginTop: "8px" }}>
-            <InputLabel id="demo-simple-select-label">Gender</InputLabel>
+          <FormControl sx={{ marginLeft: {sm:"25px",xs:"10px"}, marginTop: "8px" }}>
+            <InputLabel sx={{top:'-1vh',marginLeft:".9vw"}} id="demo-simple-select-label">Gender *</InputLabel>
             <Select
+              size="small"
               required
-              style={{ width: "200px" }}
+              sx={{ width: {md:"210px",xs:"69vw"},marginLeft:{md:'.9vw',xs:"-10px"} }}
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               label="Gender"
@@ -262,16 +269,27 @@ const AddPatientDialog = ({
               <FormHelperText error>{formErrors.gender}</FormHelperText>
             )}
           </FormControl>
-        </div>
+        </Grid>
       </DialogContent>
       <DialogActions>
-        <Button
+        {/* <Button
           onClick={handleAddSaveClose}
           variant="contained"
-          sx={{ backgroundColor: "rgb(121, 204, 190)", m: 2 }}
+          size="small"
+          sx={{ m: 1 }}
         >
           Add
-        </Button>
+        </Button> */}
+
+<LoadingButton 
+            sx={{ m: 2 }}
+            variant='contained' 
+            size='small' 
+            endIcon={<AddIcon/>}           
+            loading={loadingB}
+            loadingPosition="end"
+            onClick={handleAddSaveClose}
+          >Add</LoadingButton>
       </DialogActions>
     </Dialog>
   );

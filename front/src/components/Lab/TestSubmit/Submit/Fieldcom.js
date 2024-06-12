@@ -26,7 +26,7 @@ export default function Fieldcom({field,unit,value,status,min,max,enterData,indx
         <Typography sx={{fontSize:'15px',flex:5}}>{field}</Typography>
         <Typography sx={{fontSize:'12px',flex:3,color:'grey'}}>{min}-{max}</Typography>
         
-        <input type='text' 
+        <input type='number' 
           style={{
             width:'80px',
             height:'20px',

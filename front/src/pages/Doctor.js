@@ -24,6 +24,7 @@ import { PersonDetail } from '../components/Other';
 import DoneIcon from '@mui/icons-material/Done'
 import { ConfirmPropmt } from '../components/Common';
 import LabResult from '../components/Lab/LabResult';
+import DoctorAppCalender from '../components/recepcomponents/DoctorAppointmentHandle/DoctorAppCalender/DoctorAppCalender';
 
 export default function Doctor() {
   
@@ -35,10 +36,13 @@ export default function Doctor() {
   const [openAreports, setOpenAreports] = useState(false);//for analitical reports
   const [description,setDescription] = useState (""); // hold the text field descriptions(patient description)
   const [open, setOpen] = useState(false); //for snapbar
+  const [msg,setMsg]=useState('');//hold the message for snapbar
+  const [col,setCol]=useState('');//hold the color for snapbar
   const [showDonePatients, setShowDonePatients] = useState(false);// hold the patients when completed
   const [pres,setPres]=useState([]) ;// hold the pres details from doctoradd drug component
   const [rep,setrep]=useState([]); // hold the  lab request from component
   const [appointments, setAppointments] = useState([]);// hold the appoinment list
+  const [labtestlist,setLabtestlist]=useState([]);//hold the fetched lab test list with aapointment req.
 
   //--------------------------------------------------------------------------------------------------------
   const [labReport,setLabReport]=useState([]);//hold the fetched available lab reports
@@ -115,6 +119,8 @@ const handleClick = () => {
     setLoadingBConfirm(false)
     handleCloseConfirm()
     // Handle success
+    setMsg('Successfully uploaded')
+    setCol('success')
     handlesnapbarClick(); //show the snapbar component
     console.log('Response:', response.data);
     setPres([])
@@ -127,6 +133,9 @@ const handleClick = () => {
   })
   .catch(er => {
     setLoadingBConfirm(false)
+    setMsg('Error occured! Try again')
+    setCol('error')
+    handlesnapbarClick();
     if(er.hasOwnProperty('response')){
       console.log(er.response.data)
     }else{
@@ -139,7 +148,8 @@ const handleClick = () => {
 const fetchData = async () => {
   try {
     const response = await axios.get(baseURL+endPoints.APPOINTMENTLIST); 
-    setAppointments(response.data);
+    setAppointments(response.data.appointments);
+    setLabtestlist(response.data.tests)
     
   } catch (error) {
     console.error('Error fetching data:', error);
@@ -203,6 +213,8 @@ const handleCloseConfirm = () => {setOpenConfirm(false)}
     loadPatientDetails()
   },[select])
 
+  const [calendarMode,setcalendarMode]=useState(false)
+
  return (
   <div>
   <Navbar></Navbar>
@@ -210,7 +222,7 @@ const handleCloseConfirm = () => {setOpenConfirm(false)}
       <Grid item xs={3} sx={{ height: '100%', backgroundColor:'#e7fff9'}}>
               <SidebarTop>
  {/*..................switch.......................... */}
-              <TopUnit appointments={appointments} SwitchOnChange={() => setShowDonePatients(prev => !prev)}></TopUnit>
+              <TopUnit calendarMode={calendarMode} setcalendarMode={setcalendarMode} appointments={appointments} SwitchOnChange={() => setShowDonePatients(prev => !prev)}></TopUnit>
               </SidebarTop>
               <SidebarList >
 {/*..........................................................show staus in done patients..................................................*/}
@@ -227,73 +239,75 @@ const handleCloseConfirm = () => {setOpenConfirm(false)}
                             ))}
               </SidebarList>
       </Grid>
-
-      <Grid item xs={9} style={{ height: '100%', overflowY: 'scroll' }}>
+  {!calendarMode?     <Grid item xs={9} style={{ height: '100%', overflowY: 'scroll' }}>
         
-          {select ? (
-              <>
+        {select ? (
+            <>
 {/*.............patient profile Top field.......................................... */}
-                     {selectedAppointment.map((index) => (
-                          <PersonDetail style={{backgroundColor:'white'}}
-                            name={selectedAppointment[0].patient.name}
-                            age={selectedAppointment[0].patient.age}
-                            gender={selectedAppointment[0].patient.gender}
-                            >
-                          </PersonDetail>
-                      ))}
-                    {!histDone?<div style={{position:'fixed',top:'75px',right:'30px',zIndex:'40'}}>
-                      <Typography sx={{display:'inline',fontSize:'15px',fontStyle:'italic',color:'lightgrey'}}>Checking records...</Typography>
-                      <CircularProgress size={20}/>
-                    </div>:''}
-                    {available.lab?<ScienceIcon sx={{position:'fixed',top:'75px',right:'60px',zIndex:'40',color:'#438ad1',cursor:'pointer'}} onClick={handleAddIconClick2}></ScienceIcon>:''}
-                    {available.rec?<UpdateIcon sx={{position:'fixed',top:'75px',right:'20px',zIndex:'40',color:'rgb(255, 153, 0)',cursor:'pointer'}} onClick={handleAddIconClick}></UpdateIcon> :''}
-                    {available.rec?<PatientsRecords openPopup={openPopup} setOpenPopup={setOpenPopup}   selectedPatientId={selectedAppointment[0].patient.id} records={records} lbAnalytics={lbAnalytics} drgAnalytics={drgAnalytics}/>:''}
-                    <LabResult openPopup2={openPopup2} setOpenPopup2={setOpenPopup2} data={labReport}></LabResult>
+                   {selectedAppointment.map((index) => (
+                        <PersonDetail style={{backgroundColor:'white'}}
+                          name={selectedAppointment[0].patient.name}
+                          age={selectedAppointment[0].patient.age}
+                          gender={selectedAppointment[0].patient.gender}
+                          >
+                        </PersonDetail>
+                    ))}
+                  {!histDone?<div style={{position:'fixed',top:'75px',right:'30px',zIndex:'40'}}>
+                    <Typography sx={{display:'inline',fontSize:'15px',fontStyle:'italic',color:'lightgrey'}}>Checking records...</Typography>
+                    <CircularProgress size={20}/>
+                  </div>:''}
+                  {available.lab?<ScienceIcon sx={{position:'fixed',top:'75px',right:'60px',zIndex:'40',color:'#438ad1',cursor:'pointer'}} onClick={handleAddIconClick2}></ScienceIcon>:''}
+                  {available.rec?<UpdateIcon sx={{position:'fixed',top:'75px',right:'20px',zIndex:'40',color:'rgb(255, 153, 0)',cursor:'pointer'}} onClick={handleAddIconClick}></UpdateIcon> :''}
+                  {available.rec?<PatientsRecords openPopup={openPopup} setOpenPopup={setOpenPopup}   selectedPatientId={selectedAppointment[0].patient.id} records={records} lbAnalytics={lbAnalytics} drgAnalytics={drgAnalytics}/>:''}
+                  <LabResult openPopup2={openPopup2} setOpenPopup2={setOpenPopup2} data={labReport}></LabResult>
 {/*.........................Add Drugs...............................................*/}
- <div style={{paddingTop:'60px'}}>
-                   <div style={{marginBottom:'80px'}}>
-                   <DoctorAddDrugs pres={pres} setPres={setPres} openBox={openBox} setOpenBox={setOpenBox} />
-                   <AddCircleIcon sx={{ color: '#00cc66', marginLeft: '5%', fontSize: '24px', float: 'left', marginTop: '10px', cursor: 'pointer' }} onClick={handleAddDrugsClick} />
-                   </div>
-  {/*........................Lab Request..............................................*/}
-                  
-                   <LabRequest openpopBox={openpopBox} setOpenpopBox={setOpenpopBox} rep={rep} setrep={setrep}/>
-                   <ScienceIcon sx={{ color: '#33cc33', marginLeft: '87%', fontSize: '30px', cursor: 'pointer' }} onClick={() =>handleAddButtonClick(selectedAppointment)} />
-  
-  {/*.................patient extra details ............................................*/}
-                       <Box
-                           component="form"
-                           sx={{
-                               '& .MuiTextField-root': { m: 1, width: '90%' }, marginLeft: '4%',
-                           }}
-                           noValidate
-                           autoComplete="off">
-                           <TextField id="outlined-multiline-flexible" placeholder="Patient extra details" multiline rows={7} onChange={(event) => setDescription(event.target.value)}
-                           InputProps={{ style: { backgroundColor: '#fffed9', borderRadius: '4px', fontSize: '16px'}}} />
-                       </Box>
-  {/*..............confirm button.........................................*/}
-                       <br></br>
-                       <Button size='small' endIcon={<DoneIcon></DoneIcon>} variant="contained" sx={{ left: '80%' }} onClick={handleClickOpenConfirm}>Confirm</Button>
- </div>
-                     
- {/*...........snack bar component....................................... */}
-                   <Snackbar open={open} autoHideDuration={6000}  anchorOrigin={{ vertical: 'bottom', horizontal: 'left'}} >
-                   <Alert             
-                   severity="success"
-                   variant="filled"          
-                   sx={{ width: '100%', }}
-                  >
-                 Successfully  Confirm  !
-                 </Alert>
-                </Snackbar>
- {/*.................... */}
-              </>
-          ) : (
-              <Typography gutterBottom variant="p"></Typography>
-          )}
-      <ConfirmPropmt action={handleClick} message="Are you sure that prescription is ready?"
-       handleClose={handleCloseConfirm} loadingB={loadingBConfirm} open={openConfirm}></ConfirmPropmt>
-      </Grid>
+<div style={{paddingTop:'60px'}}>
+                 <div style={{marginBottom:'80px'}}>
+                 <DoctorAddDrugs pres={pres} setPres={setPres} openBox={openBox} setOpenBox={setOpenBox} />
+                 <AddCircleIcon sx={{ color: '#00cc66', marginLeft: '5%', fontSize: '24px', float: 'left', marginTop: '10px', cursor: 'pointer' }} onClick={handleAddDrugsClick} />
+                 </div>
+{/*........................Lab Request..............................................*/}
+                
+                 <LabRequest openpopBox={openpopBox} setOpenpopBox={setOpenpopBox} rep={rep} setrep={setrep} labtestlist={labtestlist}/>
+                 <ScienceIcon sx={{ color: '#33cc33', marginLeft: '87%', fontSize: '30px', cursor: 'pointer' }} onClick={() =>handleAddButtonClick(selectedAppointment)} />
+
+{/*.................patient extra details ............................................*/}
+                     <Box
+                         component="form"
+                         sx={{
+                             '& .MuiTextField-root': { m: 1, width: '90%' }, marginLeft: '4%',
+                         }}
+                         noValidate
+                         autoComplete="off">
+                         <TextField id="outlined-multiline-flexible" placeholder="Patient extra details" multiline rows={7} onChange={(event) => setDescription(event.target.value)}
+                         InputProps={{ style: { backgroundColor: '#fffed9', borderRadius: '4px', fontSize: '16px'}}} />
+                     </Box>
+{/*..............confirm button.........................................*/}
+                     <br></br>
+                     <Button size='small' endIcon={<DoneIcon></DoneIcon>} variant="contained" sx={{ left: '80%' }} onClick={handleClickOpenConfirm}>Confirm</Button>
+</div>
+                   
+{/*...........snack bar component....................................... */}
+                 <Snackbar open={open} autoHideDuration={6000}  anchorOrigin={{ vertical: 'bottom', horizontal: 'left'}} >
+                 <Alert             
+                 severity={col}
+                 variant="filled"          
+                 sx={{ width: '100%', }}
+                >
+               {msg}
+               </Alert>
+              </Snackbar>
+{/*.................... */}
+            </>
+        ) : (
+            <Typography gutterBottom variant="p"></Typography>
+        )}
+    <ConfirmPropmt action={handleClick} message="Are you sure that prescription is ready?"
+     handleClose={handleCloseConfirm} loadingB={loadingBConfirm} open={openConfirm}></ConfirmPropmt>
+    </Grid>:''}
+    {calendarMode?<Grid item xs={9} style={{ height: '100%', overflowY: 'scroll' }}>
+            <DoctorAppCalender></DoctorAppCalender>
+    </Grid>:''}
   </Grid>
 </div>    
   )

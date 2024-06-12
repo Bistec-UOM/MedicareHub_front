@@ -21,22 +21,36 @@ import Popover from "@mui/material/Popover";
 import axios from "axios";
 import { baseURL,endPoints } from "../../../Services/Appointment";
 import { setHeaders } from "../../../Services/Auth";
+import * as signalR from '@microsoft/signalr';
+import { baseURLA,endPointsA } from "../../../Services/Admin";
 
 const ResNavBar = ({ isClosing, setMobileOpen, mobileOpen }) => {
-  const [profile, setProfile] = useState({
-    Name: "Profile",
-    Role: "Empty",
-    Image: "",
-    Id: "",
-  });
-  const [connection, setConnection] = useState(null);
+  const [profile, setProfile] = useState({Name: "Profile",Role: "Empty",Image: "",Id: ""});
   const [anchorEl, setAnchorEl] = useState(null);
+  
+  const drawerWidth = 358.4;
+  const navigate = useNavigate();
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  const handleMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleDrawerToggle = () => {
+    if (!isClosing) {
+      setMobileOpen(!mobileOpen);
+    }
+  };
 
+  //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  // +++++++++++++++++++                    CHATHURA                  ++++++++++++++++++++++++++++
+  //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  
   const [notificationList,setNotificationList]=useState([]) //notification list
-
-  const [badgeContent, setBadgeContent] = useState(3); //var for notification count
-
+  const [notificationMessages,setNotificationMessages]=useState([]); //retreived messages from notificationList
+  const [badgeContent, setBadgeContent] = useState(0); //var for notification count
   const [anchorElPop, setAnchorElPop] = useState(null);
+  const [AppNotificationconnection, setAppNotiConnection] = useState(null);
 
   let userId = 0;  // Default value
 
@@ -50,6 +64,38 @@ if (token) {
 }
 
 
+
+
+
+  useEffect(() => {  //use effect for connection with hub
+
+    // Create a connection to the SignalR hub
+    const newConnection = new signalR.HubConnectionBuilder()
+    .withUrl(`https://localhost:7205/appointmentnotificationHub?userId=${userId}`)
+    .configureLogging(signalR.LogLevel.Information)
+    .build();
+    // Set up the connection
+    setAppNotiConnection(newConnection);
+  }, []);
+
+  useEffect(() => {  //use effect for receiving real time notification
+    console.log("before con");
+    if (AppNotificationconnection) {
+      // Start the connection
+      AppNotificationconnection.start()
+        .then(result => {
+          console.log('Connected! helo');
+          // Set up a listener for notifications
+          AppNotificationconnection.on('ReceiveNotification', message => {
+            console.log("inside receive side notification",message); //adding new real time notitication to the notification messages list
+            setNotificationMessages(notificationMessages => [...notificationMessages, message]);
+            setBadgeContent(prevBadgeContent => prevBadgeContent + 1);  //increase badge content for new real time notification
+          });
+        })
+        .catch(e => console.log('Connection failed: ', e));
+    }
+  }, [AppNotificationconnection]);
+
   const handleClosePopOver = () => {
     setAnchorElPop(null);
   };
@@ -60,31 +106,42 @@ if (token) {
   const handleNotificationBell = (event) => {
     setAnchorElPop(event.currentTarget);
     setBadgeContent(0);
+    axios.put(
+      baseURL+endPoints.MarkAsSennNotification+`${userId}`+"/user/"+`${true}`,setHeaders());
   };
 
-  const drawerWidth = 358.4;
-  const navigate = useNavigate();
+  useEffect(() => {  //use effect for fetching notification list
+    axios
+      .get(baseURL + endPoints.notifications + `${userId}`,setHeaders())
+      .then((response) => {
+        setNotificationList(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching disabled dates:", error);
+      });
+  }, []);
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  useEffect(() => {  // Extract only  messages from notificationList and set notificationMessages 
+      const messages = notificationList.map((notification) => notification.message);
+      const unseenNotifications = notificationList.filter(notification => notification.seen===false);
+      setBadgeContent(unseenNotifications.length);
+      setNotificationMessages(messages);
+  
+  }, [notificationList]);
 
-  const handleMenu = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
 
-  const handleDrawerToggle = () => {
-    if (!isClosing) {
-      setMobileOpen(!mobileOpen);
-    }
-  };
+  //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  // +++++++++++++++++++                    YASIRU                  ++++++++++++++++++++++++++++++
+  //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-  const handleLogout = () => {
+  const [connection, setConnection] = useState(null);
+
+  const handleLogout = () => {//AUTH-----------------------------------------------------
     if (connection) {
       connection
-        .invoke("ManualDisconnect", profile.Id)
-        .then(() => connection.stop())
-        .then(() => {
+        .invoke("ManualDisconnect", profile.Id)                   //------------------
+        .then(() => connection.stop())                            //  LOOGOUT    
+        .then(() => {                                             //------------------
           deleteLog();
           handleClose();
           navigate("/");
@@ -96,26 +153,14 @@ if (token) {
       navigate("/");
     }
   };
- 
-  useEffect(() => {  //use effect for fetching notification list
-    
-    axios
-      .get(baseURL + endPoints.notifications + `${userId}`,setHeaders())
-      .then((response) => {
-        setNotificationList(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching disabled dates:", error);
-      });
-  }, []);
 
   useEffect(() => {
     console.log("nlist",notificationList);
     let token = localStorage.getItem("medicareHubToken");
     if (token !== null) {
-      let decodedToken = jwtDecode(token);
-      setProfile({
-        Id: decodedToken.Id,
+      let decodedToken = jwtDecode(token);                           //-----------------
+      setProfile({                                                   // LOGIN  
+        Id: decodedToken.Id,                                         // ---------------
         Name: decodedToken.Name,
         Role: decodedToken.Role,
         Image: decodedToken.Profile,
@@ -123,8 +168,8 @@ if (token) {
     }
 
     const newConnection = new HubConnectionBuilder()
-    .withUrl('https://localhost:7205/notificationHub')
-    // .withUrl('https://mediicarehub.azurewebsites.net/notificationHub')
+
+    .withUrl(baseURLA+endPointsA.C_Notification)
     .withAutomaticReconnect()
       .build();
 
@@ -205,7 +250,7 @@ if (token) {
               {profile.Role}
             </Typography>
           </div>
-
+          <Badge badgeContent={badgeContent} color="secondary">
           <Avatar
             aria-label="account of current user"
             aria-controls="menu-appbar"
@@ -216,6 +261,7 @@ if (token) {
           >
             {profile.Name === "Profile" && <AccountCircle />}
           </Avatar>
+          </Badge>
 
           <Menu
             id="menu-appbar"
@@ -226,25 +272,23 @@ if (token) {
             onClose={handleClose}
           >
             <MenuItem onClick={handleClose}>
-              <HelpOutlineIcon sx={{ paddingRight: "10%" }} />
+              <HelpOutlineIcon sx={{ marginRight: "10%" }} />
               Help
             </MenuItem>
+            <MenuItem onClick={handleNotificationBell}>
+            {badgeContent > 1 ? (
+                <NotificationsIcon color="action" sx={{ marginRight: "10%" }} />
+              ) : (
+                <NotificationsNoneIcon color="action" sx={{ marginRight: "10%" }} />
+              )} Notification
+            </MenuItem>
             <MenuItem onClick={handleClose}>
-              <SettingsIcon sx={{ paddingRight: "10%" }} /> Settings
+              <SettingsIcon sx={{marginRight: "10%" }} /> Settings
             </MenuItem>
             <MenuItem onClick={handleLogout}>
-              <LogoutIcon sx={{ paddingRight: "10%" }} /> LogOut
+              <LogoutIcon sx={{ marginRight: "10%" }} /> LogOut
             </MenuItem>
           </Menu>
-          <IconButton aria-describedby={id} onClick={handleNotificationBell}>
-            <Badge badgeContent={badgeContent} color="secondary">
-              {badgeContent > 1 ? (
-                <NotificationsIcon color="action" />
-              ) : (
-                <NotificationsNoneIcon color="action" />
-              )}
-            </Badge>
-          </IconButton>
           <Popover
             id={id}
             open={openPopOver}
@@ -259,13 +303,17 @@ if (token) {
               horizontal: "left",
             }}
           >
-            <List>
-              {notificationList.map((notification, index) => (
-                <ListItem key={index}>
-                  <ListItemText primary={notification.message} />
-                </ListItem>
-              ))}
-            </List>
+             {notificationList.length === 0 ? (
+        <Typography>No new notifications</Typography>
+      ) : (
+        <List>
+          {notificationList.map((notification, index) => (
+            <ListItem key={index}>
+              <ListItemText primary={notification.message} />
+            </ListItem>
+          ))}
+        </List>
+      )}
           </Popover>
         </div>
       </Toolbar>

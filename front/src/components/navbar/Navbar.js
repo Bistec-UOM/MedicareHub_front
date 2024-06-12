@@ -1,13 +1,4 @@
-import {
-  AppBar,
-  Toolbar,
-  Typography,
-  Avatar,
-  IconButton,
-  MenuItem,
-  Menu,
- List, ListItem, ListItemText
-} from "@mui/material";
+import {AppBar,Toolbar,Typography,Avatar,IconButton,MenuItem,Menu,List, ListItem, ListItemText} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
 import AccountCircle from "@mui/icons-material/AccountCircle";
@@ -28,42 +19,55 @@ import { baseURL,endPoints } from "../../Services/Appointment";
 import { setHeaders } from "../../Services/Auth";
 import axios from "axios";
 import * as signalR from '@microsoft/signalr';
-
+import { baseURLA } from "../../Services/Admin";
+import { NotificationPrompt } from "../Common";
 
 
 const Navbar = () => {
-  const [profile, setProfile] = useState({
-    name: "",
-    role: "",
-    image: "",
-    Id: "",
-  });
-  const [connection, setConnection] = useState(null);
+  const [profile, setProfile] = useState({name: "",role: "",image: "",Id: ""});
   const [anchorEl, setAnchorEl] = useState(null);
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  const handleMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const navigate = useNavigate();
+
+  //notification prompt functions
+  const [openNotify, setOpenNotify] = useState(false)
+  const handleClickOpenNotify = (x) => {
+       setOpenNotify(true)
+       setBadgeContent(0);
+       axios.put(
+         baseURL+endPoints.MarkAsSennNotification+`${userId}`+"/user/"+`${true}`,setHeaders());
+ }
+ const handleCloseNotify = () => {setOpenNotify(false)}  
+  
+  //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  // +++++++++++++++++++                     CHATHURA              +++++++++++++++++++++++++++++++
+  //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
   const [notificationList,setNotificationList]=useState([]) //notification list
   const [notificationMessages,setNotificationMessages]=useState([]); //retreived messages from notificationList
-
   const [badgeContent, setBadgeContent] = useState(0); //var for notification count
-
   const [anchorElPop, setAnchorElPop] = useState(null);
-
-
   const [AppNotificationconnection, setAppNotiConnection] = useState(null);
+
+  
+ 
 
   let userId = 0;  // Default value
 
-const token = localStorage.getItem("medicareHubToken");
-if (token) {
-  try {
-    userId = jwtDecode(token).Id;
-  } catch (error) {
-    console.error("Error decoding token:", error);
-    // If decoding fails, userId remains 0
+  const token = localStorage.getItem("medicareHubToken");
+  if (token) {
+    try {
+      userId = jwtDecode(token).Id;
+    } catch (error) {
+      console.error("Error decoding token:", error);
+      // If decoding fails, userId remains 0
+    }
   }
-}
-
-  
 
   useEffect(() => {  //use effect for connection with hub
 
@@ -76,23 +80,28 @@ if (token) {
     setAppNotiConnection(newConnection);
   }, []);
 
-  useEffect(() => {  //use effect for receiving real time notification
-    console.log("before con");
-    if (AppNotificationconnection) {
-      // Start the connection
-      AppNotificationconnection.start()
-        .then(result => {
-          console.log('Connected! helo');
-          // Set up a listener for notifications
-          AppNotificationconnection.on('ReceiveNotification', message => {
-            console.log("inside receive side notification",message); //adding new real time notitication to the notification messages list
-            setNotificationMessages(notificationMessages => [...notificationMessages, message]);
-            setBadgeContent(badgeContent+1);  //increate badge content for new real time notification
-          });
-        })
-        .catch(e => console.log('Connection failed: ', e));
-    }
-  }, [AppNotificationconnection]);
+ useEffect(() => {  //use effect for real time notification
+  console.log("before con", AppNotificationconnection);
+  if (AppNotificationconnection) {
+    console.log("Attempting to start connection...");
+    // Start the connection
+    AppNotificationconnection.start()
+      .then(result => {
+        console.log("Connection started successfully", result);
+        // Set up a listener for notifications
+        AppNotificationconnection.on('ReceiveNotification', message => {
+          console.log('Connected! helo', AppNotificationconnection.connectionId);
+          console.log("inside receive notification chathura callback", message.message); // Log the received message
+          setNotificationMessages(notificationMessages => [...notificationMessages, message.message]); // Add new notification to the list
+          setBadgeContent(prevBadgeContent => prevBadgeContent + 1); // Increase badge content for new notification
+        });
+      })
+      .catch(e => console.log('Connection failed: ', e));
+  } else {
+    console.log("AppNotificationconnection is null or undefined.");
+  }
+}, [AppNotificationconnection]);
+
 
   const handleClosePopOver = () => {
     setAnchorElPop(null);
@@ -108,16 +117,6 @@ if (token) {
       baseURL+endPoints.MarkAsSennNotification+`${userId}`+"/user/"+`${true}`,setHeaders());
   };
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleMenu = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const navigate = useNavigate();
-
   useEffect(() => {  //use effect for fetching notification list
     axios
       .get(baseURL + endPoints.notifications + `${userId}`,setHeaders())
@@ -130,6 +129,7 @@ if (token) {
   }, []);
 
   useEffect(() => {  // Extract only  messages from notificationList and set notificationMessages 
+      console.log("notilist",notificationList);
       const messages = notificationList.map((notification) => notification.message);
       const unseenNotifications = notificationList.filter(notification => notification.seen===false);
       setBadgeContent(unseenNotifications.length);
@@ -137,11 +137,17 @@ if (token) {
   
   }, [notificationList]);
 
-  const handleLogout = () => {
+  //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  // +++++++++++++++++++                    YASIRU                  ++++++++++++++++++++++++++++++
+  //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+  const [connection, setConnection] = useState(null);
+
+  const handleLogout = () => {//AUTH----------------------------------
     if (connection) {
-      connection
-        .invoke("ManualDisconnect", profile.Id)
-        .then(() => connection.stop())
+      connection                                               //---------------------
+        .invoke("ManualDisconnect", profile.Id)                //   LOGOUT
+        .then(() => connection.stop())                         //---------------------
         .then(() => {
           deleteLog();
           handleClose();
@@ -155,53 +161,73 @@ if (token) {
     }
   };
 
-  useEffect(() => {
+  useEffect(() => {//AUTH----------------------------------------
     console.log("nlist",notificationList);
     const token = localStorage.getItem("medicareHubToken");
-    if (token) {
-      const decodedToken = jwtDecode(token);
-      setProfile({
-        name: decodedToken.Name,
+    if (token) {                                                    
+      const decodedToken = jwtDecode(token);                      //---------------
+      setProfile({                                                //  LOGIN
+        name: decodedToken.Name,                                  //---------------
         role: decodedToken.Role,
         image: decodedToken.Profile,
         Id: decodedToken.Id,
       });
     }
-  }, []);
+  }, [])
 
-  useEffect(() => {
-    if (profile.Id) {
-      const newConnection = new HubConnectionBuilder()
-        .withUrl('https://localhost:7205/notificationHub')
-        // .withUrl('https://mediicarehub.azurewebsites.net/notificationHub')
-        .withAutomaticReconnect()
-        .build();
+  // useEffect(() => {
+  //   if (profile.Id) {
+  //     const newConnection = new HubConnectionBuilder()
 
-      setConnection(newConnection);
+  //       .withUrl(baseURLA+'/notificationHub')
+  //       // .withUrl('https://mediicarehub.azurewebsites.net/notificationHub')
 
-      newConnection
-        .start()
-        .then(() => {
-          console.log("Connected!");
-          console.log("name:", profile.name);
-          console.log("Id:", profile.Id);
-          console.log("Role:", profile.role);
-          newConnection.invoke("Send", profile.Id, profile.role);
-        })
-        .catch((err) => console.error("Connection failed: ", err));
+  //       .withAutomaticReconnect()
+  //       .build();
 
-      return () => {
-        if (newConnection) {
-          newConnection
-            .stop()
-            .then(() => console.log("Connection stopped"))
-            .catch((err) =>
-              console.error("Error while stopping connection:", err)
-            );
-        }
-      };
-    }
-  }, [profile]);
+  //     setConnection(newConnection);
+
+  //     newConnection
+  //       .start()
+  //       .then(() => {
+  //         console.log("Connected!");
+  //         newConnection.invoke("Send", profile.Id, profile.role);
+  //         newConnection.invoke("NotiToPharmacist")
+  //         .then((data)=>{
+  //           console.log("Invoked Noti");
+  //           console.log("captured data: ", data);
+  //           })
+  //             .catch((error) => {
+  //               console.error(error);
+  //           });
+  //         newConnection.on('ReceiveNotification', message => {
+  //           console.log("inside receive side notification", message); // Log the received message
+  //           setNotificationMessages(notificationMessages => [...notificationMessages, message]); // Add new notification to the list
+  //           setBadgeContent(prevBadgeContent => prevBadgeContent + 1); // Increase badge content for new notification
+  //         });
+
+  //       })
+  //       .catch((err) => console.error("Connection failed: ", err));
+
+
+  //     return () => {
+  //       if (newConnection) {
+  //         newConnection
+  //           .stop()
+  //           .then(() => console.log("Connection stopped"))
+  //           .catch((err) =>
+  //             console.error("Error while stopping connection:", err)
+  //           );
+  //       }
+  //     };
+  //   }
+  // }, [profile]);
+
+
+  //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  // +++++++++++++++++++                    DHAMMIKA                ++++++++++++++++++++++++++++++
+  //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 
   return (
     <AppBar sx={{ backgroundColor: "#f7f8f7" }} elevation={0}>
@@ -245,6 +271,7 @@ if (token) {
               {profile.role}
             </Typography>
           </div>
+          <Badge badgeContent={badgeContent} color="secondary">
           <Avatar
             aria-label="account of current user"
             aria-controls="menu-appbar"
@@ -255,6 +282,7 @@ if (token) {
           >
             {profile.name === "" && <AccountCircle />}
           </Avatar>
+          </Badge>
 
           <Menu
             id="menu-appbar"
@@ -268,6 +296,13 @@ if (token) {
               <HelpOutlineIcon sx={{ paddingRight: "10%" }} />
               Help
             </MenuItem>
+            <MenuItem onClick={handleClickOpenNotify}>
+            {badgeContent >= 1 ? (
+                <NotificationsIcon color="action" sx={{ paddingRight: "10%" }} />
+              ) : (
+                <NotificationsNoneIcon color="action" sx={{ paddingRight: "10%" }} />
+              )} Notification
+            </MenuItem>
             <MenuItem onClick={handleClose}>
               <SettingsIcon sx={{ paddingRight: "10%" }} /> Settings
             </MenuItem>
@@ -275,15 +310,6 @@ if (token) {
               <LogoutIcon sx={{ paddingRight: "10%" }} /> LogOut
             </MenuItem>
           </Menu>
-          <IconButton onClick={handleNotificationBell}>
-            <Badge badgeContent={badgeContent} color="secondary">
-              {badgeContent > 1 ? (
-                <NotificationsIcon color="action" />
-              ) : (
-                <NotificationsNoneIcon color="action" />
-              )}
-            </Badge>
-          </IconButton>
           <Popover
             id={id}
             open={openPopOver}
@@ -307,6 +333,7 @@ if (token) {
             </List>
           </Popover>
         </div>
+        <NotificationPrompt messageList={notificationList} handleClose={handleCloseNotify} open={openNotify}></NotificationPrompt>
       </Toolbar>
     </AppBar>
   );

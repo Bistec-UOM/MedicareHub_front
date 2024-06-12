@@ -19,7 +19,6 @@ import LoginIcon from "@mui/icons-material/Login";
 import DoneIcon from "@mui/icons-material/Done";
 import SendIcon from "@mui/icons-material/Send";
 
-
 export default function Log() {
   const navigate = useNavigate();
   const [Log, SetLog] = useState(false);
@@ -91,7 +90,11 @@ export default function Log() {
           if (count <= 2) {
             //allow only three errors
             setCount((prev) => prev + 1);
-            handleClick(er.response.data, "error");
+            if(er.response.status==401){
+              handleClick(er.response.data, "error");
+            }else{
+              handleClick("Error occured! Try again", "error");
+            }
           } else {
             handleClick("Forgot Password? Try Reset", "warning");
             setCount(0);
@@ -164,7 +167,7 @@ export default function Log() {
     };
     console.log(obj);
     axios
-      .post(baseURL + endPoints.CHECKOPT, obj)
+      .post(baseURL + endPoints.CHECKOTP, obj)
       .then((res) => {
         setPassword("");
         setLoadingB(false);
@@ -301,13 +304,13 @@ export default function Log() {
               loadingPosition="end"
               variant="contained"
               onClick={setData}
-              sx={{ ml: "5px" }}
+              sx={{ ml: "5px"}}
             >
               Log
             </LoadingButton>
             <Button
               variant="outlined"
-              sx={{ ml: "5px" }}
+              sx={{ ml: "5px"}}
               onClick={clearData}
               color="warning"
               size="small"
