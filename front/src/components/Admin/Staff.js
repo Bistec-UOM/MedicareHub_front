@@ -158,23 +158,23 @@ export default function Staff() {
         .then(() => {
           console.log('Connected!');
 
-          connection.invoke('UsersCalling')
-            .then(() => console.log('Requested users list'))
-            .catch(err => console.error(err));
+          // connection.invoke('UsersCalling')
+          //   .then(() => console.log('Requested users list'))
+          //   .catch(err => console.error(err));
 
 
-          connection.on('broadcastMessage', (name, message) => {
+          connection.on('AdminBroadcastMessage', (name, message) => {
             console.log(`${name}: ${message}`);
             forceUpdate((prevCount) => prevCount + 1); // Trigger a re-render
-            setNotification(prevMessages => [...prevMessages, { name, message }]);
+            // setNotification(prevMessages => [...prevMessages, { name, message }]);
           });
 
-          connection.on('BroadcastMessage', (name, message) => {
-            console.log(`${name}: ${message}`);
-            // Optionally, you can update the users list here if needed
-            connection.invoke('UsersCalling');
+          // connection.on('BroadcastMessage', (name, message) => {
+          //   console.log(`${name}: ${message}`);
+          //   // Optionally, you can update the users list here if needed
+          //   connection.invoke('UsersCalling');
 
-          });
+          // });
           connection.on('ReceiveNotification', (message) => {
             console.log(message);
             setNotification(message); // Update the notification state
@@ -448,7 +448,6 @@ const handleRestoreClose = () => {
                   }}
                   onClick={() => handleEditClickOpen(row2)} // Open the edit window when clicking on the paper
                 >
-                  {console.log('row2.isActive:', row2.isActive)} 
                   <Box sx={{ display: "flex" }}>
                     <Box sx={{ display: "flex", alignItems: "center" }}>
                     {row2.isActive ? (
@@ -520,16 +519,6 @@ const handleRestoreClose = () => {
           )}
         </div>
       ))}
-
-
-
-
-
-
-
-
-
-
 
 {/* deleted section */}
 <Paper
