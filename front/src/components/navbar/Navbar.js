@@ -20,9 +20,11 @@ import { setHeaders } from "../../Services/Auth";
 import axios from "axios";
 import * as signalR from '@microsoft/signalr';
 import { baseURLA } from "../../Services/Admin";
+import { NotificationPrompt } from "../Common";
+
 
 const Navbar = () => {
-  const [profile, setProfile] = useState({name: "",role: "",image: "",Id: ""});
+  const [profile, setProfile] = useState({name: "Profile",role: "Empty",image: "",Id: ""});
   const [anchorEl, setAnchorEl] = useState(null);
   const handleClose = () => {
     setAnchorEl(null);
@@ -31,6 +33,16 @@ const Navbar = () => {
     setAnchorEl(event.currentTarget);
   };
   const navigate = useNavigate();
+
+  //notification prompt functions
+  const [openNotify, setOpenNotify] = useState(false)
+  const handleClickOpenNotify = (x) => {
+       setOpenNotify(true)
+       setBadgeContent(0);
+       axios.put(
+         baseURL+endPoints.MarkAsSennNotification+`${userId}`+"/user/"+`${true}`,setHeaders());
+ }
+ const handleCloseNotify = () => {setOpenNotify(false)}  
   
   //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // +++++++++++++++++++                     CHATHURA              +++++++++++++++++++++++++++++++
@@ -41,6 +53,9 @@ const Navbar = () => {
   const [badgeContent, setBadgeContent] = useState(0); //var for notification count
   const [anchorElPop, setAnchorElPop] = useState(null);
   const [AppNotificationconnection, setAppNotiConnection] = useState(null);
+
+  
+ 
 
   let userId = 0;  // Default value
 
@@ -58,30 +73,36 @@ const Navbar = () => {
 
     // Create a connection to the SignalR hub
     const newConnection = new signalR.HubConnectionBuilder()
-    .withUrl(baseURL+`/appointmentnotificationHub?userId=${userId}`)
+    .withUrl(`https://localhost:7205/appointmentnotificationHub?userId=${userId}`)
     .configureLogging(signalR.LogLevel.Information)
     .build();
     // Set up the connection
     setAppNotiConnection(newConnection);
   }, []);
 
-  useEffect(() => {  //use effect for receiving real time notification
-    console.log("before con");
-    if (AppNotificationconnection) {
-      // Start the connection
-      AppNotificationconnection.start()
-        .then(result => {
-          // Set up a listener for notifications
-          AppNotificationconnection.on('ReceiveNotification', message => {
-            console.log('Connected! helo',connection.id);
-            console.log("inside receive side notification", message); // Log the received message
-            setNotificationMessages(notificationMessages => [...notificationMessages, message]); // Add new notification to the list
-            setBadgeContent(prevBadgeContent => prevBadgeContent + 1); // Increase badge content for new notification
-          });
-        })
-        .catch(e => console.log('Connection failed in Receive notification connection line: ', e));
-    }
-  }, [AppNotificationconnection]);
+ useEffect(() => {  //use effect for real time notification
+  console.log("before con", AppNotificationconnection);
+  if (AppNotificationconnection) {
+    console.log("Attempting to start connection...");
+    // Start the connection
+    AppNotificationconnection.start()
+      .then(result => {
+        console.log("Connection started successfully", result);
+        // Set up a listener for notifications
+        AppNotificationconnection.on('ReceiveNotification', message => {
+          console.log('Connected! helo', AppNotificationconnection.connectionId);
+          console.log("inside receive notification chathura callback", message.message); // Log the received message
+          setNotificationList(notificationMessages => [...notificationMessages, message]); // Add new notification to the list
+          const unseenNotifications = notificationList.filter(notification => notification.seen===false);
+          setBadgeContent(unseenNotifications.length); // Increase badge content for new notification
+        });
+      })
+      .catch(e => console.log('Connection failed: ', e));
+  } else {
+    console.log("AppNotificationconnection is null or undefined.");
+  }
+}, [AppNotificationconnection]);
+
 
   const handleClosePopOver = () => {
     setAnchorElPop(null);
@@ -109,6 +130,7 @@ const Navbar = () => {
   }, []);
 
   useEffect(() => {  // Extract only  messages from notificationList and set notificationMessages 
+      console.log("notilist",notificationList);
       const messages = notificationList.map((notification) => notification.message);
       const unseenNotifications = notificationList.filter(notification => notification.seen===false);
       setBadgeContent(unseenNotifications.length);
@@ -259,7 +281,7 @@ const Navbar = () => {
             sx={{ ml: "5px", cursor: "pointer" }}
             src={profile.image || ""}
           >
-            {profile.name === "" && <AccountCircle />}
+            {profile.name === "Profile" && <AccountCircle />}
           </Avatar>
           </Badge>
 
@@ -275,8 +297,8 @@ const Navbar = () => {
               <HelpOutlineIcon sx={{ paddingRight: "10%" }} />
               Help
             </MenuItem>
-            <MenuItem onClick={handleNotificationBell}>
-            {badgeContent > 1 ? (
+            <MenuItem onClick={handleClickOpenNotify}>
+            {badgeContent >= 1 ? (
                 <NotificationsIcon color="action" sx={{ paddingRight: "10%" }} />
               ) : (
                 <NotificationsNoneIcon color="action" sx={{ paddingRight: "10%" }} />
@@ -312,6 +334,7 @@ const Navbar = () => {
             </List>
           </Popover>
         </div>
+        <NotificationPrompt messageList={notificationList} handleClose={handleCloseNotify} open={openNotify}></NotificationPrompt>
       </Toolbar>
     </AppBar>
   );

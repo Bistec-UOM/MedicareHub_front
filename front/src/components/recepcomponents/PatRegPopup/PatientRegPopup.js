@@ -24,6 +24,8 @@ import { setHeaders } from "../../../Services/Auth";
 import theme from "../../../components/Style";
 import { LoadingButton } from "@mui/lab";
 import Style from '../../Style';
+import DoneIcon from '@mui/icons-material/Done'; 
+import SendIcon from '@mui/icons-material/Send'
 
 const PatientRegpopup = ({
   handleNotification,
@@ -201,7 +203,7 @@ const PatientRegpopup = ({
           >
             <Typography
               variant="h5"
-              sx={{ textAlign: "center", color: "#20415C", flexGrow: 1 }}
+              sx={{ textAlign: "center", color: "white", flexGrow: 1 }}
             >
               Patient Registration Form
             </Typography>
@@ -316,8 +318,9 @@ const PatientRegpopup = ({
               }}
               variant="contained"
               type="submit"
+              endIcon={<SendIcon></SendIcon>}
             >
-              Save
+              Send
             </LoadingButton>
           </Box>
         </form>

@@ -23,6 +23,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import AddCardIcon from '@mui/icons-material/AddCard';
 import Pharmacy_drugstore from './Pharmacy_drugstore';
 import { Load } from '../components/Other';
+import DoneIcon from '@mui/icons-material/Done'
 
 export default function Pharmacy() {
 
@@ -341,16 +342,16 @@ useEffect(()=>{
       {/* ------------------- Confirmation         ------------------------------------*/}  
       <Box style={{ textAlign: 'right', marginTop: '20px', marginBottom: '20px' }}>
           <PrintIcon sx={{mr:'30px'}} size="small" />
-          <Button variant="contained" sx={{marginRight: '220px'}} onClick={handleClickOpenConfirm}>Confirm
+          <Button variant="contained" sx={{marginRight: '220px'}} endIcon={<DoneIcon></DoneIcon>}       onClick={handleClickOpenConfirm}>Confirm
           </Button>
       </Box>
 
        <Dialog open={open} onClose={handleClose}>
         <DialogContent>
-        <TextField label="Service Charge" size='small' variant="outlined" />
+        <TextField label="Service Charge" size='small' variant="outlined" value={serviceCharge} />
           <div style={{display:'flex',justifyContent:'center',paddingTop:'10px'}}>
-          <Button onClick={handleClose} size='small' sx={{mr:'20px'}}>Cancel</Button>
-          <Button onClick={handleClose} size='small' variant="contained">Save</Button>
+          <Button onClick={handleClose} size='small' color='warning' variant='outlined' sx={{mr:'20px'}}>Cancel</Button>
+          <Button onClick={handleClose} size='small' variant="contained" endIcon={<DoneIcon></DoneIcon>}>Save</Button>
         </div>
         </DialogContent>
       </Dialog>

@@ -23,7 +23,7 @@ import BlockTimeSelectionPopup from "../BlockTimeSelectionPopup/BlockTImeSelecti
 import { setHeaders } from "../../../../Services/Auth";
 import * as signalR from '@microsoft/signalr';
 import { jwtDecode } from "jwt-decode";
-
+import CloseIcon from '@mui/icons-material/Close';
 
 const DoctorAppList = (props) => {
   const [notificationOpen, setNotificationOpen] = useState(false);
@@ -197,13 +197,12 @@ const DoctorAppList = (props) => {
             onClick={handleCancelAll}
             disabled={isDisabledCancel}
             sx={{
-              backgroundColor: "#F44336",
               fontWeight: 25,
-              "&:hover": {
-                backgroundColor: "#F34436", // Set hover background color to be the same
-              },
             }}
-            variant="contained"
+            variant="outlined"
+            color="warning"
+            endIcon={<CloseIcon></CloseIcon>}
+
           >
             Cancel
           </Button>

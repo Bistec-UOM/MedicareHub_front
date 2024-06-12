@@ -124,13 +124,6 @@ const ResDayList = (props) => {
             endIcon={<AddIcon />}
             onClick={handleAppAd}
             disabled={addDisabled}
-            sx={{
-              backgroundColor: "#79CCBE",
-              fontWeight: 25,
-              "&:hover": {
-                backgroundColor: "#79CCBE", // Set hover background color to be the same
-              },
-            }}
             variant="contained"
           >
             Add
@@ -138,14 +131,8 @@ const ResDayList = (props) => {
           <Button
             onClick={handleDeleteAll}
             disabled={isDisabled}
-            sx={{
-              backgroundColor: "#F44336",
-              fontWeight: 25,
-              "&:hover": {
-                backgroundColor: "#F34436", // Set hover background color to be the same
-              },
-            }}
-            variant="contained"
+            color="warning"
+            variant="outlined"
           >
             Cancel
           </Button>
