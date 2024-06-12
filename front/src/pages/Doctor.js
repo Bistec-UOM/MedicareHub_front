@@ -25,6 +25,7 @@ import DoneIcon from '@mui/icons-material/Done'
 import { ConfirmPropmt } from '../components/Common';
 import LabResult from '../components/Lab/LabResult';
 import DoctorAppCalender from '../components/recepcomponents/DoctorAppointmentHandle/DoctorAppCalender/DoctorAppCalender';
+import { setHeaders } from '../Services/Auth';
 
 export default function Doctor() {
   
@@ -97,7 +98,6 @@ export default function Doctor() {
           return appointment;
       });
       // Display updated appointments
-      console.log("Updated Appointments:", updatedAppointments);
       setAppointments(updatedAppointments);
       setSelect(null);
       setOpen(false); // Clear the selected patient account      
@@ -113,8 +113,7 @@ const handleClick = () => {
     labs: rep,  // lab test array: from Labrequest component
     description: description
   }
-  console.log(JSON.stringify(obj))  
-  axios.post(baseURL+endPoints.PRESCRIPTION, obj)
+  axios.post(baseURL+endPoints.PRESCRIPTION, obj,setHeaders())
   .then(response => {
     setLoadingBConfirm(false)
     handleCloseConfirm()
@@ -122,7 +121,6 @@ const handleClick = () => {
     setMsg('Successfully uploaded')
     setCol('success')
     handlesnapbarClick(); //show the snapbar component
-    console.log('Response:', response.data);
     setPres([])
     setrep([])
     setDescription('')
@@ -147,7 +145,7 @@ const handleClick = () => {
 
 const fetchData = async () => {
   try {
-    const response = await axios.get(baseURL+endPoints.APPOINTMENTLIST); 
+    const response = await axios.get(baseURL+endPoints.APPOINTMENTLIST,setHeaders()); 
     setAppointments(response.data.appointments);
     setLabtestlist(response.data.tests)
     
@@ -171,18 +169,12 @@ const handleCloseConfirm = () => {setOpenConfirm(false)}
 
 //check whether patient history details is availale
   const loadPatientDetails=()=>{
-/*     axios.get(baseURL+endPoints.PATIENTHISTORY+select)
-    .then(res => {
-    })
-    .catch(er => {
-      console.log(er)
-    }) */
   if(select!=null){
   setAvailable({lab:false,rec:false,drg:false,rep:false})
   setHistDone(false)
-  axios.get('https://localhost:7205/api/History/history'+`?Pid=${selectedAppointment[0].patient.id}`)
+  console.log(baseURL+endPoints.REC);
+  axios.get(baseURL+endPoints.REC+`?Pid=${selectedAppointment[0].patient.id}`,setHeaders())
   .then((res)=>{
-    console.log(res.data)
     let tmp={lab:false,rec:false,drg:false,rprt:false}
     if(res.data.lb.length>0){
       tmp.lab=true
@@ -204,6 +196,7 @@ const handleCloseConfirm = () => {setOpenConfirm(false)}
     setHistDone(true)
   })
   .catch((er)=>{
+    console.log(er)
     setHistDone(true)
   })
   }
