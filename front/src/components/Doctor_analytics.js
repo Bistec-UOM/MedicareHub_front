@@ -6,7 +6,7 @@ import { baseURL ,endPoints} from '../Services/Lab';
 import {Load} from '../components/Common'
 
 const Doctor_analytics = ({lbAnalytics,drgAnalytics}) => {
-  console.log(lbAnalytics)
+  //console.log(lbAnalytics)
   console.log(drgAnalytics)
   // lbAnalytics , drgAnalytics ===> fetched analytics raw data from parent component
   const [medList,setMedList]=useState([]);//all unique drugs (list) extracted from records
@@ -434,6 +434,7 @@ const Doctor_analytics = ({lbAnalytics,drgAnalytics}) => {
     setMedList(drugArr)//
     setSelectedMed(drugArr)
     setData(obj)
+    console.log(obj);
     //setcolors array
     let colobj={}
     drugArr.map((el)=>{
@@ -446,7 +447,7 @@ const Doctor_analytics = ({lbAnalytics,drgAnalytics}) => {
   const listLabs=(dt)=>{
     //extracting the dates list
     let dateList = dt.map(item => item.dateTime.substring(0, 10));
-    dateList = [...new Set(dateList)];
+    dateList = [... new Set(dateList)];
     dateList.sort();
 
     //test names with their paraemters
@@ -488,7 +489,6 @@ const Doctor_analytics = ({lbAnalytics,drgAnalytics}) => {
     });
 
     setData2(finalArray);
-
     //set the color array
     let colobj={}
     props.map((el)=>{
@@ -498,7 +498,7 @@ const Doctor_analytics = ({lbAnalytics,drgAnalytics}) => {
 
   }
 
-  //convert rank values into nominal values in legend
+  //drug tooltip
   const toolTipFormatter = (props) => {
     const { active, payload } = props;
     if (active && payload && payload.length) {
@@ -513,6 +513,20 @@ const Doctor_analytics = ({lbAnalytics,drgAnalytics}) => {
       )}
     return null;
   }
+
+  const CustomTooltip = ({ active, payload, label }) => {
+    if (active && payload && payload.length) {
+      return (
+        <Paper className="custom-tooltip" sx={{borderRadius:'0',pl:'4px',pr:'4px'}}>
+          <Typography sx={{fontSize:'14px',fontWeight:'bold',color:'grey'}}>{`${label}`}</Typography>
+          {payload.map((entry, index) => (
+            <Typography key={`item-${index}`} sx={{fontSize:'12px'}}>
+              {`${entry.name}: ${entry.value}`}
+            </Typography>
+          ))}
+        </Paper>
+      );
+    }}
  
 
 return(
@@ -556,6 +570,7 @@ done?<Box sx={{width:'100%'}}>
     </ResponsiveContainer>
     </Box>
 
+
     {/*------------ Lab reports graph -------------------------------------------------------*/}
     <Box sx={{display:'flex',justifyContent:'space-between',alignItems:'center',pl:'10px',pr:'10px'}}>
     <Paper sx={{p:'5px',borderRadius:'0',maxWidth:'150px',maxHeight:'280px',overflowY:'scroll'}}>
@@ -594,6 +609,7 @@ done?<Box sx={{width:'100%'}}>
         <XAxis 
           dataKey="date"
         />
+        <Tooltip content={<CustomTooltip />} />
         <YAxis />
         {selectedLab.map((el) => (
           <Line key={el} type="stepAfter" dataKey={el} stroke={col2[el]} activeDot={{ r: 8 }} />

@@ -24,7 +24,7 @@ import { NotificationPrompt } from "../Common";
 
 
 const Navbar = () => {
-  const [profile, setProfile] = useState({name: "",role: "",image: "",Id: ""});
+  const [profile, setProfile] = useState({name: "Profile",role: "Empty",image: "",Id: ""});
   const [anchorEl, setAnchorEl] = useState(null);
   const handleClose = () => {
     setAnchorEl(null);
@@ -280,7 +280,7 @@ const Navbar = () => {
             sx={{ ml: "5px", cursor: "pointer" }}
             src={profile.image || ""}
           >
-            {profile.name === "" && <AccountCircle />}
+            {profile.name === "Profile" && <AccountCircle />}
           </Avatar>
           </Badge>
 
