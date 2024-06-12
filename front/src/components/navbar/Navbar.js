@@ -92,8 +92,9 @@ const Navbar = () => {
         AppNotificationconnection.on('ReceiveNotification', message => {
           console.log('Connected! helo', AppNotificationconnection.connectionId);
           console.log("inside receive notification chathura callback", message.message); // Log the received message
-          setNotificationMessages(notificationMessages => [...notificationMessages, message.message]); // Add new notification to the list
-          setBadgeContent(prevBadgeContent => prevBadgeContent + 1); // Increase badge content for new notification
+          setNotificationList(notificationMessages => [...notificationMessages, message]); // Add new notification to the list
+          const unseenNotifications = notificationList.filter(notification => notification.seen===false);
+          setBadgeContent(unseenNotifications.length); // Increase badge content for new notification
         });
       })
       .catch(e => console.log('Connection failed: ', e));
