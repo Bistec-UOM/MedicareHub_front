@@ -15,6 +15,8 @@ import AppCancelPopup from "../AppCancelPoplup/AppCancelPopup";
 import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
 import BlockRoundedIcon from "@mui/icons-material/BlockRounded";
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
+import DoneIcon from '@mui/icons-material/Done';
+import CloseIcon from '@mui/icons-material/Close';
 
 const DoctorAppCard = ({
   selectedDay,
@@ -37,10 +39,12 @@ const DoctorAppCard = ({
   const completedStatus = (item) => {
     if (item.appointment.status == "Completed") {
       return (
-        <CheckCircleRoundedIcon color="success" sx={{ fontSize: "38px" }} />
+        <><DoneIcon color="success" sx={{display:{xs:'none',md:'flex'},fontSize: "38px" }} />
+        <Typography variant="p" sx={{display:{xs:'flex',md:'none'}}}>Completed</Typography></>
       );
     } else if (item.appointment.status == "cancelled") {
-      return <CancelOutlinedIcon color="warning" sx={{ fontSize: "38px" }} />;
+      return <> <CloseIcon color="warning" sx={{ display:{xs:'none',md:'flex'},fontSize: "38px" }} />
+       <Typography variant="p"  sx={{display:{xs:'flex',md:'none'}}}>Cancelled</Typography></>
     }
   };
 
@@ -102,11 +106,11 @@ const DoctorAppCard = ({
                 ) : (
                   <Box>
                     <IconButton onClick={handleMarkAsCompelted}>
-                      <TaskAltRoundedIcon color="success" />
+                      <DoneIcon color="success" />
                     </IconButton>
 
                     <IconButton onClick={handleCancelAppointment}>
-                      <HighlightOffRoundedIcon
+                      <CloseIcon
                         sx={{ marginLeft: "auto", color: "#E60000" }}
                       />
                     </IconButton>

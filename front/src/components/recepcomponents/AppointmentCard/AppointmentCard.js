@@ -15,6 +15,8 @@ import BlockRoundedIcon from "@mui/icons-material/BlockRounded";
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import {Avatar} from "@mui/material";
 import { BoltRounded } from "@mui/icons-material";
+import DoneIcon from '@mui/icons-material/Done';
+import CloseIcon from '@mui/icons-material/Close';
 
 const AppointmentCard = ({
   selectedDay,
@@ -54,11 +56,11 @@ const AppointmentCard = ({
   const completedStatus = (item) => {
     if (item.appointment.status == "Completed") {
       return (
-        <><CheckCircleRoundedIcon color="success" sx={{display:{xs:'none',md:'flex'},fontSize: "38px" }} />
+        <><DoneIcon color="success" sx={{display:{xs:'none',md:'flex'},fontSize: "38px" }} />
         <Typography variant="p" sx={{display:{xs:'flex',md:'none'}}}>Completed</Typography></>
       );
     } else if (item.appointment.status == "cancelled") {
-      return<> <CancelOutlinedIcon color="warning" sx={{ display:{xs:'none',md:'flex'},fontSize: "38px" }} />
+      return<> <CloseIcon color="warning" sx={{ display:{xs:'none',md:'flex'},fontSize: "38px" }} />
        <Typography variant="p"  sx={{display:{xs:'flex',md:'none'}}}>Cancelled</Typography>
 
       </>
