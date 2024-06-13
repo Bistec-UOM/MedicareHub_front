@@ -27,6 +27,7 @@ import DoneIcon from '@mui/icons-material/Done'
 
 export default function Pharmacy() {
 
+  const [loadingDone,setLoadingDone]=useState(false)
   const [store,setStore] = useState(false) //true -> in drug store
 
   const [select,setSelect]=useState(null)//current selected prescription id(patient)
@@ -88,9 +89,11 @@ export default function Pharmacy() {
   const getData = () => {//get the prescriptions list to the side bar--------------------------
     axios.get(baseURL+endPoints.DRUGREQUEST)
       .then((response) => {
+        setLoadingDone(true)
        SetData(response.data)
       })
       .catch((error) => {
+        setLoadingDone(true)
         console.log(error);
       });
   }
@@ -243,7 +246,7 @@ useEffect(()=>{
           <StoreIcon sx={{cursor:'pointer'}} onClick={()=>setStore(true)}></StoreIcon>}
           </Box>
           </SidebarTop>
-          <SidebarList>
+          {loadingDone?<SidebarList>
           {
          Data.map((elm,ind)=>{
             return(
@@ -253,7 +256,7 @@ useEffect(()=>{
             )
          })
        }
-          </SidebarList>
+          </SidebarList>:<SidebarList><Load></Load></SidebarList>}
         </SidebarContainer>
       </Grid>
 {!store?
