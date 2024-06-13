@@ -9,7 +9,7 @@ import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
 import UpdateIcon from '@mui/icons-material/Update';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-import ScienceIcon from '@mui/icons-material/Science';
+import ScienceOutlinedIcon from '@mui/icons-material/ScienceOutlined';
 import PatientsRecords from '../components/Doctor/PatientsRecords';
 import DoctorAddDrugs from '../components/Doctor/DoctorAddDrugs';
 import '../components/CustomScroll.css'
@@ -252,7 +252,7 @@ const handleCloseConfirm = () => {setOpenConfirm(false)}
                     <Typography sx={{display:'inline',fontSize:'15px',fontStyle:'italic',color:'lightgrey'}}>Checking records...</Typography>
                     <CircularProgress size={20}/>
                   </div>:''}
-                  {available.lab?<ScienceIcon sx={{position:'fixed',top:'75px',right:'60px',zIndex:'40',cursor:'pointer'}} onClick={handleAddIconClick2}></ScienceIcon>:''}
+                  {available.lab?<ScienceOutlinedIcon sx={{position:'fixed',top:'75px',right:'60px',zIndex:'40',cursor:'pointer'}} onClick={handleAddIconClick2}></ScienceOutlinedIcon>:''}
                   {available.rec?<UpdateIcon sx={{position:'fixed',top:'75px',right:'20px',zIndex:'40',cursor:'pointer'}} onClick={handleAddIconClick}></UpdateIcon> :''}
                   {available.rec?<PatientsRecords openPopup={openPopup} setOpenPopup={setOpenPopup}   selectedPatientId={selectedAppointment[0].patient.id} records={records} lbAnalytics={lbAnalytics} drgAnalytics={drgAnalytics}/>:''}
                   <LabResult openPopup2={openPopup2} setOpenPopup2={setOpenPopup2} data={labReport}></LabResult>
@@ -265,7 +265,7 @@ const handleCloseConfirm = () => {setOpenConfirm(false)}
 {/*........................Lab Request..............................................*/}
                 
                  <LabRequest openpopBox={openpopBox} setOpenpopBox={setOpenpopBox} rep={rep} setrep={setrep} labtestlist={labtestlist}/>
-                 <ScienceIcon sx={{ color: '#33cc33', marginLeft: '87%', fontSize: '30px', cursor: 'pointer' }} onClick={() =>handleAddButtonClick(selectedAppointment)} />
+                 <ScienceOutlinedIcon sx={{ color: '#33cc33', marginLeft: '87%', fontSize: '30px', cursor: 'pointer' }} onClick={() =>handleAddButtonClick(selectedAppointment)} />
 
 {/*.................patient extra details ............................................*/}
                      <Box
