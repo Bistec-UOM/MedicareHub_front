@@ -24,7 +24,7 @@ import { NotificationPrompt } from "../Common";
 
 
 const Navbar = () => {
-  const [profile, setProfile] = useState({name: "",role: "",image: "",Id: ""});
+  const [profile, setProfile] = useState({name: "Profile",role: "Empty",image: "",Id: ""});
   const [anchorEl, setAnchorEl] = useState(null);
   const handleClose = () => {
     setAnchorEl(null);
@@ -87,12 +87,13 @@ const Navbar = () => {
     // Start the connection
     AppNotificationconnection.start()
       .then(result => {
+        AppNotificationconnection.invoke("NotiToPharmacist")
         console.log("Connection started successfully", result);
         // Set up a listener for notifications
         AppNotificationconnection.on('ReceiveNotification', message => {
           console.log('Connected! helo', AppNotificationconnection.connectionId);
           console.log("inside receive notification chathura callback", message.message); // Log the received message
-          setNotificationMessages(notificationMessages => [...notificationMessages, message.message]); // Add new notification to the list
+          setNotificationMessages(notificationMessages => [...notificationMessages, message]); // Add new notification to the list
           setBadgeContent(prevBadgeContent => prevBadgeContent + 1); // Increase badge content for new notification
         });
       })
@@ -155,6 +156,7 @@ const Navbar = () => {
         })
         .catch((err) => console.error("Error while disconnecting:", err));
     } else {
+      console.log("not connected to disconnect");
       deleteLog();
       handleClose();
       navigate("/");
@@ -175,53 +177,53 @@ const Navbar = () => {
     }
   }, [])
 
-  // useEffect(() => {
-  //   if (profile.Id) {
-  //     const newConnection = new HubConnectionBuilder()
+  useEffect(() => {
+    if (profile.Id) {
+      const newConnection = new HubConnectionBuilder()
 
-  //       .withUrl(baseURLA+'/notificationHub')
-  //       // .withUrl('https://mediicarehub.azurewebsites.net/notificationHub')
+        .withUrl(baseURLA+'/notificationHub')
+        // .withUrl('https://mediicarehub.azurewebsites.net/notificationHub')
 
-  //       .withAutomaticReconnect()
-  //       .build();
+        .withAutomaticReconnect()
+        .build();
 
-  //     setConnection(newConnection);
+      setConnection(newConnection);
 
-  //     newConnection
-  //       .start()
-  //       .then(() => {
-  //         console.log("Connected!");
-  //         newConnection.invoke("Send", profile.Id, profile.role);
-  //         newConnection.invoke("NotiToPharmacist")
-  //         .then((data)=>{
-  //           console.log("Invoked Noti");
-  //           console.log("captured data: ", data);
-  //           })
-  //             .catch((error) => {
-  //               console.error(error);
-  //           });
-  //         newConnection.on('ReceiveNotification', message => {
-  //           console.log("inside receive side notification", message); // Log the received message
-  //           setNotificationMessages(notificationMessages => [...notificationMessages, message]); // Add new notification to the list
-  //           setBadgeContent(prevBadgeContent => prevBadgeContent + 1); // Increase badge content for new notification
-  //         });
+      newConnection
+        .start()
+        .then(() => {
+          console.log("Connected!");
+          newConnection.invoke("Send", profile.Id, profile.role);
+          newConnection.invoke("NotiToPharmacist")
+          .then((data)=>{
+            console.log("Invoked Noti");
+            console.log("captured data: ", data);
+            })
+              .catch((error) => {
+                console.error(error);
+            });
+          newConnection.on('ReceiveNotification', message => {
+            console.log("inside receive side notification", message); // Log the received message
+            setNotificationMessages(notificationMessages => [...notificationMessages, message]); // Add new notification to the list
+            setBadgeContent(prevBadgeContent => prevBadgeContent + 1); // Increase badge content for new notification
+          });
 
-  //       })
-  //       .catch((err) => console.error("Connection failed: ", err));
+        })
+        .catch((err) => console.error("Connection failed: ", err));
 
 
-  //     return () => {
-  //       if (newConnection) {
-  //         newConnection
-  //           .stop()
-  //           .then(() => console.log("Connection stopped"))
-  //           .catch((err) =>
-  //             console.error("Error while stopping connection:", err)
-  //           );
-  //       }
-  //     };
-  //   }
-  // }, [profile]);
+      return () => {
+        if (newConnection) {
+          newConnection
+            .stop()
+            .then(() => console.log("Connection stopped"))
+            .catch((err) =>
+              console.error("Error while stopping connection:", err)
+            );
+        }
+      };
+    }
+  }, [profile]);
 
 
   //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -280,7 +282,7 @@ const Navbar = () => {
             sx={{ ml: "5px", cursor: "pointer" }}
             src={profile.image || ""}
           >
-            {profile.name === "" && <AccountCircle />}
+            {profile.name === "Profile" && <AccountCircle />}
           </Avatar>
           </Badge>
 
