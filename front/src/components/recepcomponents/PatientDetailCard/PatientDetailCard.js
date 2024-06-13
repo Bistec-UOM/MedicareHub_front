@@ -41,6 +41,7 @@ const PatientDetailCard = ({
           width: { md: "80%", xs: "100%" },
           marginLeft: "auto",
           marginRight: "auto",
+          marginTop:{md:'0',xs:'20%'}
         }}
       >
         <Card

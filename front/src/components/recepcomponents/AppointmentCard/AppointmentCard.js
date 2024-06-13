@@ -13,6 +13,8 @@ import AppEditPopup from "../AppEditPopup/AppEditPopup";
 import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
 import BlockRoundedIcon from "@mui/icons-material/BlockRounded";
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
+import {Avatar} from "@mui/material";
+import { BoltRounded } from "@mui/icons-material";
 
 const AppointmentCard = ({
   selectedDay,
@@ -25,6 +27,7 @@ const AppointmentCard = ({
   item,
   delcount,
   setDelcount,
+  appno
 }) => {
   const [daopen, setDaopen] = useState(false); //var for app delete popup
   const [appEditOpen, setAppEditOpen] = useState(false); //var for appEdit open popup
@@ -51,10 +54,14 @@ const AppointmentCard = ({
   const completedStatus = (item) => {
     if (item.appointment.status == "Completed") {
       return (
-        <CheckCircleRoundedIcon color="success" sx={{ fontSize: "38px" }} />
+        <><CheckCircleRoundedIcon color="success" sx={{display:{xs:'none',md:'flex'},fontSize: "38px" }} />
+        <Typography variant="p" sx={{display:{xs:'flex',md:'none'}}}>Completed</Typography></>
       );
     } else if (item.appointment.status == "cancelled") {
-      return <CancelOutlinedIcon color="warning" sx={{ fontSize: "38px" }} />;
+      return<> <CancelOutlinedIcon color="warning" sx={{ display:{xs:'none',md:'flex'},fontSize: "38px" }} />
+       <Typography variant="p"  sx={{display:{xs:'flex',md:'none'}}}>Cancelled</Typography>
+
+      </>
     }
   };
 
@@ -75,81 +82,105 @@ const AppointmentCard = ({
     setDaopen(true);
   };
 
+  const findOpacityStatus = (label) => {
+    if (label == "Completed" || label == "cancelled") {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   return (
-    <div>
-      <Box
-        sx={{
-          width: { md: "80%", xs: "100%" },
-          marginLeft: "auto",
-          marginRight: "auto", // Disable pointer events
-          opacity: isCompletedOrCancelled ? 0.5 : 1,
-          pointerEvents: isCompletedOrCancelled ? "none" : "auto",
-          height:'140px'
-        }}
-      >
-        <Card
-          backgroundColor="success"
-          sx={{
-            textAlign: "left",
-            marginBottom: 2,
-         //   border: "1px solid #3B877A",
-            borderRadius: 5,
-          }}
-        >
-          <Stack direction={"column"}>
-            <CardContent sx={{ display: "flex" }}> 
-              <Grid container>
-                <Grid item xs={12} sm={6}>
-                  <Stack
-                    direction={"row"}
-                    sx={{
-                      justifyContent: "space-between",
-                      alignItem: "center",
-                    }}
-                  >
-                    <Typography variant="h5">
-                      {item.patient?.fullName}
+    <Box
+      sx={{
+        width: { md: "100%", xs: "100%" },
+        marginLeft: "auto",
+        marginRight: "auto", 
+        opacity: isCompletedOrCancelled ? 0.5 : 1,
+        pointerEvents: isCompletedOrCancelled ? "none" : "auto",
+        height: '140px',
+        marginBottom:{md:'0px',xs:'100px'},
+        marginTop:{md:'0px',xs:'15%'}
+      }}
+    >
+      <Grid container spacing={2} alignItems="center">
+      <Grid sx={{display:{md:'flex',xs:'none'}}} item md={1}>
+      <Avatar sx={{ bgcolor: 'rgb(121, 204, 190)', width: 30, height: 30 }}>
+            <Typography  sx={{
+                    opacity: findOpacityStatus(item.appointment?.status)
+                      ? 0.5
+                      : 1,
+                  }} variant="h6">{appno+1}</Typography>
+          </Avatar>
+        </Grid>
+        <Grid sx={{display:{md:'flex',xs:'none'}}} item md={3}>
+          <Typography sx={{textAlign:"left",opacity: findOpacityStatus(item.appointment?.status)
+                      ? 0.5
+                      : 1,}} variant="h6" >{getStartingTime(item.appointment?.dateTime)}-
+          {getEndingTime(item.appointment?.dateTime)}</Typography>
+        </Grid>
+        <Grid item md={8} xs>
+          <Card
+            backgroundColor="success"
+            sx={{
+              textAlign: "left",
+              marginBottom: 2,
+              borderRadius: 5,
+            }}
+          >
+            <Stack direction={"column"}>
+              <CardContent sx={{ display: "flex" }}> 
+                <Grid container>
+                  <Grid item xs={12} sm={6}>
+                    <Stack
+                      direction={"row"}
+                      sx={{
+                        justifyContent: "space-between",
+                        alignItem: "center",
+                      }}
+                    >
+                      <Typography variant="h5">
+                        {item.patient?.fullName}
+                      </Typography>
+                    </Stack>
+                  </Grid>
+                  <Grid item xs={12} sm={4}>
+                    <Typography variant="body2" color="text.secondary">
+                      {item.patient?.address}
                     </Typography>
-                  
-                  </Stack>
+                    <Typography variant="body2" color="text.secondary">
+                      {item.patient?.contactNumber}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12} sm={2}>
+                    <Typography
+                      sx={{ display: { xs: "flex", sm: "flex", md: "none" } }}
+                      variant="body2"
+                      color="text.secondary"
+                    >
+                      {getStartingTime(item.appointment?.dateTime)}-
+                      {getEndingTime(item.appointment?.dateTime)}
+                    </Typography>
+                    {isCompletedOrCancelled ? 
+                      <div> {completedStatus(item)} </div>
+                    : 
+                      <Box>
+                        <IconButton onClick={handleDeleteAppointment}>
+                          <DeleteIcon sx={{ color: "#E60000" }} />
+                        </IconButton>
+                        <IconButton onClick={handleEditAppointment}>
+                          <EditIcon sx={{ color: "#F66444" }} />
+                        </IconButton>
+                      </Box>
+                    }
+                  </Grid>
                 </Grid>
-                <Grid item xs={12} sm={4}>
-                  <Typography variant="body2" color="text.secondary">
-                    {item.patient?.address}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {item.patient?.contactNumber}
-                  </Typography>
-                </Grid>
-                <Grid item xs={12} sm={2}>
-                  <Typography //display time range only inside the app card for small and xs screen
-                    sx={{ display: { xs: "flex", sm: "flex", md: "none" } }}
-                    variant="body2"
-                    color="text.secondary"
-                  >
-                    {getStartingTime(item.appointment?.dateTime)}-
-                    {getEndingTime(item.appointment?.dateTime)}
-                  </Typography>
-                  {isCompletedOrCancelled ? 
-                    <div>   {completedStatus(item)} </div>
-                   : 
-                    <Box>
-                      <IconButton onClick={handleDeleteAppointment}>
-                        <DeleteIcon
-                          sx={{  color: "#E60000" }}
-                        />
-                      </IconButton>
-                      <IconButton onClick={handleEditAppointment}>
-                        <EditIcon sx={{ color: "#F66444" }} />
-                      </IconButton>
-                    </Box>
-                   }                
-                </Grid>
-              </Grid>
-            </CardContent>
-          </Stack>
-        </Card>
-      </Box>
+              </CardContent>
+            </Stack>
+          </Card>
+        </Grid>
+      </Grid>
+
       <AppDeletePopup
         appointlist={appointlist}
         setAppointList={setAppointList}
@@ -174,7 +205,7 @@ const AppointmentCard = ({
         docid={docid}
         item={item}
       />
-    </div>
+    </Box>
   );
 };
 

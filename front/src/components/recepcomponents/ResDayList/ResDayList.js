@@ -103,7 +103,7 @@ const ResDayList = (props) => {
           isDisabled={isDisabled}
           placename="Patient name or id..."
         />
-        <Typography variant="h5" sx={{ color: "#d0d1cb" }}>
+        <Typography variant="h5" sx={{ color: "#d0d1cb",marginBottom:{md:'0px',xs:'5%'} }}>
           {selectedDay}
         </Typography>
         <Stack
@@ -114,6 +114,11 @@ const ResDayList = (props) => {
               md: 3,
               sm: 5,
               xs: -3,
+            },
+            marginTop:{
+              md:0,
+              xs:'3%'
+
             },
             width: { xs: "100%", sm: "auto" },
           }}
@@ -157,7 +162,7 @@ const ResDayList = (props) => {
             marginTop: { xs: "50%", sm: "20%", md: "7%" },
           }}
         >
-          <Steper search={search} items={props.filteredAppointments}></Steper>
+          {/* <Steper search={search} items={props.filteredAppointments}></Steper> */}
         </Box>
         {
           <Box
@@ -177,9 +182,10 @@ const ResDayList = (props) => {
                         .toLowerCase()
                         .includes(search.toLowerCase());
                 })
-                .map((item) => (
+                .map((item,index) => (
                   <div key={item?.id}>
                     <AppointmentCard
+                      appno={index}
                       selectedDay={selectedDay}
                       docid={props.docid}
                       appointlist={props.appointlist}
