@@ -180,8 +180,8 @@ export default function AppAddPopup({
             width: "100%",
           }}
         >
-          <IconButton onClick={handleClose}>
-            <CloseIcon />
+          <IconButton  onClick={handleClose}>
+            <CloseIcon sx={{color:"white"}} />
           </IconButton>
         </Box>
         <Box sx={{ width: { sm: "600px", xs: "280px", padding: "20px" } }}>
