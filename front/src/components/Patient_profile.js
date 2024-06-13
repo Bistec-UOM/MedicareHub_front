@@ -1,5 +1,5 @@
 import axios from 'axios'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { baseURL, endPoints } from '../Services/Doctor'
 import { Card, Toolbar, Typography } from '@mui/material'
 import { Load, SearchBarSM } from './Common'
@@ -7,6 +7,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Box } from '@mui/system'
 import { setHeaders } from '../Services/Auth'
 import PrintIcon from '@mui/icons-material/Print';
+import html2pdf from 'html2pdf.js';
 
 export default function Patient_profile() {
 
@@ -38,12 +39,27 @@ export default function Patient_profile() {
    const filteredPatient = patientList.filter(item => item.fullName.toLowerCase().includes(filter.toLowerCase()))
  
 
+   const elementRef = useRef();
+
+   const exportAsPDF = async () => {
+    const element = elementRef.current;
+    const options = {
+      margin: 0.3,
+      filename: 'Medical Report.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+    };
+
+    html2pdf().from(element).set(options).save();
+   }
+
   return (
     <div>
     <Toolbar sx={{justifyContent:'space-between',width:'70%',backgroundColor:'white',position:'absolute',top:'64px'}}>
         {mode==1?<SearchBarSM height='1px' placeholder="Search Patients" value={filter} onChange={(e)=>setFilter(e.target.value)}></SearchBarSM>:<div style={{width:'100%',display:'flex',justifyContent:'space-between'}}>
             <ArrowBackIcon sx={{cursor:'pointer'}} onClick={()=>setMode(1)}></ArrowBackIcon>
-            <PrintIcon sx={{cursor:'pointer'}}></PrintIcon>
+            <PrintIcon sx={{cursor:'pointer'}} onClick={exportAsPDF}></PrintIcon>
         </div>}
     </Toolbar>
     {mode==1?<Box sx={{pt:'70px'}}>
@@ -60,18 +76,17 @@ export default function Patient_profile() {
         <Load></Load>
     </Box>}
     </Box>:<Box sx={{pt:'64px'}}>
-        <Patient_profile_detail Pdata={selectedPatient[0  ]}></Patient_profile_detail>
+        <Patient_profile_detail Pdata={selectedPatient[0]} elementRef={elementRef}></Patient_profile_detail>
         </Box>}
     </div>
   )
 }
 
-const Patient_profile_detail = ({Pdata}) => {
+const Patient_profile_detail = ({Pdata,elementRef}) => {
 
     const [drugs,setDrugs] = useState([])
     const [reports,setReports] = useState([])
     const [loading, setLoaidng] = useState(true)
-
 
 
     useEffect(()=>{
@@ -91,7 +106,7 @@ const Patient_profile_detail = ({Pdata}) => {
     },[])
 
     return (
-        <div style={{paddingLeft:'15px',paddingRight:'15px'}}>
+        <div style={{paddingLeft:'15px',paddingRight:'15px'}} ref={elementRef}>
             <Box sx={{borderBottom:'1px solid lightGrey',mb:'20px'}}>
             <Typography sx={{fontSize:'14px'}}>Full Name : {Pdata.fullName}</Typography>
             <Typography sx={{fontSize:'14px'}}>NIC : {Pdata.nic}</Typography>
