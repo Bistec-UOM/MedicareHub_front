@@ -15,7 +15,6 @@ Clear :
 =========================================================================
 
 A. Pop up box
-    --confirmation style
     layout
     button placement
     header size/ title
@@ -27,16 +26,9 @@ B. List
     gap/ height of list
     border radius
 
-C. Custom scroll
-    some pages are not wrapped with CustomScroll
-
 E. Error handle
     when a huge description recieves as an eror
 
-F . Pharmacy has to check the prescription status before GET ()
-    After payment prescription status ---> paid
-
-G. Doctor has to get completed lab reports when getting appointment list
 
 H. when navigating on calendar doctor changes
 
@@ -45,11 +37,25 @@ I. form fields/ size/ text
 notify when a drug is not available
 notify when a lab test is not available
 
+J. Error and Warning buttons are outlined
 
-======================================================================
-==============                 Migrations        =====================
-======================================================================
+I. OTP expire
+
+K.lab template edit range
+
+L.doctor calendar page , list is a hardcode
+
+M. Chathura search bar/ button size
+
+N. Validation rules -- invalid/empty values
 
 
-3.Prescription DateTime --rename--> IssuedDate
+//To do------------------------------------
+ 0.Seen lab report
+ 1.Deleting a field
+ 2.Pharmacy service charge
+ 3.Pharmacy validation - empty fields/ existing drugs
+ 4.Every notification is shown
+
+
 
