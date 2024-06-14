@@ -13,6 +13,7 @@ import { Load } from "../../Other";
 import { baseURL, endPoints } from "../../../Services/Appointment";
 import AddIcon from "@mui/icons-material/Add";
 import { setHeaders } from "../../../Services/Auth";
+import CloseIcon from "@mui/icons-material/Close";
 //day app list page for a day
 
 const ResDayList = (props) => {
@@ -138,6 +139,7 @@ const ResDayList = (props) => {
             disabled={isDisabled}
             color="warning"
             variant="outlined"
+            endIcon={<CloseIcon></CloseIcon>}
           >
             Cancel
           </Button>

@@ -102,7 +102,8 @@ const AppointmentCard = ({
         pointerEvents: isCompletedOrCancelled ? "none" : "auto",
         height: '140px',
         marginBottom:{md:'0px',xs:'100px'},
-        marginTop:{md:'0px',xs:'15%'}
+        marginTop:{md:'0px',xs:'15%'},
+       
       }}
     >
       <Grid container spacing={2} alignItems="center">
@@ -127,7 +128,7 @@ const AppointmentCard = ({
             sx={{
               textAlign: "left",
               marginBottom: 2,
-              borderRadius: 5,
+              borderRadius: '5px',
             }}
           >
             <Stack direction={"column"}>

@@ -163,7 +163,7 @@ function MyFullCalendar({
       .toString()
       .padStart(2, "0")}${millisecondsPart}`;
     return (
-      <div>
+      <div >
         <div>{dayCell.dayNumberText} </div>
         <Box sx={{ display: getDayStatus(formattedDate) ? "none" : "flex" }}>
           <CustomizedProgressBars

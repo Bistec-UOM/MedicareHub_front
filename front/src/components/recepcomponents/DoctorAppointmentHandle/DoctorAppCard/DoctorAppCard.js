@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useState } from "react";
-import { Stack } from "@mui/material";
+import { Stack,Grid} from "@mui/material";
 import { IconButton } from "@mui/material";
 import HighlightOffRoundedIcon from "@mui/icons-material/HighlightOffRounded";
 import TaskAltRoundedIcon from "@mui/icons-material/TaskAltRounded";
@@ -17,6 +17,7 @@ import BlockRoundedIcon from "@mui/icons-material/BlockRounded";
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import DoneIcon from '@mui/icons-material/Done';
 import CloseIcon from '@mui/icons-material/Close';
+import {Avatar} from "@mui/material";
 
 const DoctorAppCard = ({
   selectedDay,
@@ -29,11 +30,48 @@ const DoctorAppCard = ({
   item,
   delcount,
   setDelcount,
+  appno
 }) => {
   const [markAsCompleted, setMarkAsCompleted] = useState(false);
   const [cancelOpen, setCancelOpen] = useState(false);
   const handleMarkAsCompelted = () => {
     setMarkAsCompleted(true);
+  };
+
+  function getStartingTime(dateTimeString) {
+    // Create a Date object from the date-time string
+    const dateTime = new Date(dateTimeString);
+    let hours = dateTime.getHours(); // Get hours
+    // Convert hours to 12-hour format
+    hours = hours % 12 || 12; // Convert 0 to 12
+    const minutes = dateTime.getMinutes(); // Get minutes
+    const amOrPm = dateTime.getHours() >= 12 ? "PM" : "AM"; // Get AM or PM
+    const timeString = `${hours}:${
+      minutes < 10 ? "0" : ""
+    }${minutes} ${amOrPm}`;
+    return timeString;
+  }
+
+  function getEndingTime(dateTimeString) {
+    const dateTime = new Date(dateTimeString);
+    dateTime.setMinutes(dateTime.getMinutes() + 20); // Add 20 minutes to the current time
+    let hours = dateTime.getHours();
+    hours = hours % 12 || 12; // Convert 0 to 12
+    const minutes = dateTime.getMinutes();
+    const amOrPm = dateTime.getHours() >= 12 ? "PM" : "AM";
+    const timeString = `${hours}:${
+      minutes < 10 ? "0" : ""
+    }${minutes} ${amOrPm}`;
+
+    return timeString;
+  }
+
+  const findOpacityStatus = (label) => {
+    if (label == "Completed" || label == "cancelled") {
+      return true;
+    } else {
+      return false;
+    }
   };
 
   const completedStatus = (item) => {
@@ -59,20 +97,37 @@ const DoctorAppCard = ({
     <div>
       <Box
         sx={{
-          width: { md: "80%", xs: "100%" },
+          width: { md: "100%", xs: "100%" },
           marginLeft: "auto",
           marginRight: "auto",
           opacity: isCompletedOrCancelled ? 0.5 : 1,
           pointerEvents: isCompletedOrCancelled ? "none" : "auto",
         }}
       >
+        <Grid container spacing={2} alignItems="center">
+        <Grid sx={{display:{md:'flex',xs:'none'}}} item md={1}>
+      <Avatar sx={{ bgcolor: 'rgb(121, 204, 190)', width: 30, height: 30 }}>
+            <Typography  sx={{
+                    opacity: findOpacityStatus(item.appointment?.status)
+                      ? 0.5
+                      : 1,
+                  }} variant="h6">{appno+1}</Typography>
+          </Avatar>
+        </Grid>
+        <Grid sx={{display:{md:'flex',xs:'none'}}} item md={3}>
+          <Typography sx={{textAlign:"left",opacity: findOpacityStatus(item.appointment?.status)
+                      ? 0.5
+                      : 1,}} variant="h6" >{getStartingTime(item.appointment?.dateTime)}-
+          {getEndingTime(item.appointment?.dateTime)}</Typography>
+        </Grid>
+        <Grid item md={8} xs>
         <Card
           sx={{
             backgroundColor: "#FFFF",
             textAlign: "left",
             marginBottom: 2,
            // border: "1px solid #3B877A",
-            borderRadius: 5,
+            borderRadius: '5px',
           }}
         >
           <Stack direction={"column"}>
@@ -127,6 +182,9 @@ const DoctorAppCard = ({
             </CardContent>
           </Stack>
         </Card>
+
+        </Grid>
+        </Grid>
       </Box>
       <MarkAsCompleted
         handleNotification={handleNotification}
