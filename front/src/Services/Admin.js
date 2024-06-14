@@ -12,6 +12,7 @@ const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/dung7ryl3/image/upload';
 const endPoints = {
     PatientList:'/api/Patient',
     StaffList:'/api/User', 
+    // getStaffById:`/api/User/`,
     
     A_patient_count:'/api/Analytic/male-female-patients-count',
     

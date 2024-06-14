@@ -23,6 +23,7 @@ import { baseURL,endPoints } from "../../../Services/Appointment";
 import { setHeaders } from "../../../Services/Auth";
 import * as signalR from '@microsoft/signalr';
 import { baseURLA,endPointsA } from "../../../Services/Admin";
+import UserPopUp from "../../Admin/DialogComponents/UserPopUp";
 
 const ResNavBar = ({ isClosing, setMobileOpen, mobileOpen }) => {
   const [profile, setProfile] = useState({Name: "Profile",Role: "Empty",Image: "",Id: ""});
@@ -198,6 +199,12 @@ if (token) {
     };
   }, [profile.Id, profile.Role]);
 
+    // ///////////////////////////// NAv bar Profile ///////////////////////////////
+    const [editOpen, setEditOpen] = useState(false);
+    const PopUp = ()=>{
+      setEditOpen(true);
+  }
+
   return (
     <AppBar
       position="fixed"
@@ -282,7 +289,7 @@ if (token) {
                 <NotificationsNoneIcon color="action" sx={{ marginRight: "10%" }} />
               )} Notification
             </MenuItem>
-            <MenuItem onClick={handleClose}>
+            <MenuItem onClick={PopUp}>
               <SettingsIcon sx={{marginRight: "10%" }} /> Settings
             </MenuItem>
             <MenuItem onClick={handleLogout}>
@@ -317,6 +324,8 @@ if (token) {
           </Popover>
         </div>
       </Toolbar>
+      <UserPopUp profile={profile} editOpen={editOpen} setEditOpen={setEditOpen}></UserPopUp>
+
     </AppBar>
   );
 };
