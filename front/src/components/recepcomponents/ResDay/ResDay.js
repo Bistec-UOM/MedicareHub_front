@@ -60,28 +60,12 @@ function ResDay() {
               <SearchBar search={search} setSearch={setSearch} mgl="10%" isDisabled={true} placename="Doctor name"></SearchBar>
             </SidebarTop>
             <SidebarList>
-            <Box sx={{overflowY:'scroll',height:'81vh'}}>
-            <Tabs
-        orientation="vertical"
-        value={selectedTab}
-        onChange={handleChanges}
-        aria-label="example vertical tabs"
-        sx={{marginTop:0}}
-      >
-         </Tabs>
-              <div style={{width:'100%',marginTop:'2%'}}>
               {Array.isArray(doctorList) && doctorList.filter((item)=>{
                   return search.toLowerCase()===''?item:item.name.toLowerCase().includes(search.toLowerCase());
               }).map((item,index)=>(
-                <div
-                key={index}
-                onClick={() => setSelectedTab(item.id)}
-              >
-                <Sideunit_Doctor selectedTab={docid} name={item.fullName} title={item.qualifications} index={item.id} key={index}></Sideunit_Doctor>
-              </div> 
+                <Sideunit_Doctor selectedTab={docid} onClick={() => setSelectedTab(item.id)}
+                name={item.fullName} title={item.qualifications} index={item.id} key={index}></Sideunit_Doctor>
               ))}
-              </div>
-              </Box> 
             </SidebarList>
            </SidebarContainer>
           </Grid>

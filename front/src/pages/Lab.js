@@ -13,6 +13,7 @@ import Accept from '../components/Lab/TestSubmit/Accept';
 import axios from 'axios';
 import { baseURL, endPoints } from '../Services/Lab';
 import { Load } from '../components/Other';
+import { setHeaders } from '../Services/Auth';
 
 export default function Lab() {
 
@@ -80,7 +81,7 @@ export default function Lab() {
       let tmp=localStorage.getItem('token')
       if(tmp==null){tmp=''}
       if(!RloadDone){
-      axios.get(baseURL+endPoints.REPORT)
+      axios.get(baseURL+endPoints.REPORT,setHeaders())
       .then((res)=>{
         setRLoad(res.data)
         setRloadDone(true)

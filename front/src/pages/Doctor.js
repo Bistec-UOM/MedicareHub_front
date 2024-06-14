@@ -27,6 +27,7 @@ import LabResult from '../components/Lab/LabResult';
 import DoctorAppCalender from '../components/recepcomponents/DoctorAppointmentHandle/DoctorAppCalender/DoctorAppCalender';
 import { setHeaders } from '../Services/Auth';
 import Patient_profile from '../components/Patient_profile';
+import theme from '../components/Style';
 
 export default function Doctor() {
   
@@ -215,7 +216,7 @@ const handleCloseConfirm = () => {setOpenConfirm(false)}
   <div>
   <Navbar></Navbar>
   <Grid container spacing={0} sx={{ height: '100vh',pt:'64px'}}>
-      <Grid item xs={3} sx={{ height: '100%', backgroundColor:'#e7fff9'}}>
+      <Grid item xs={3} sx={{ height: '100%', backgroundColor:theme.palette.custom.sideBar}}>
               <SidebarTop>
  {/*..................switch.......................... */}
               <TopUnit Mode={Mode} setMode={setMode} appointments={appointments} SwitchOnChange={() => setShowDonePatients(prev => !prev)}></TopUnit>

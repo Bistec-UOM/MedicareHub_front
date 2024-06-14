@@ -278,10 +278,6 @@ if (token) {
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
-            <MenuItem onClick={handleClose}>
-              <HelpOutlineIcon sx={{ marginRight: "10%" }} />
-              Help
-            </MenuItem>
             <MenuItem onClick={handleNotificationBell}>
             {badgeContent > 1 ? (
                 <NotificationsIcon color="action" sx={{ marginRight: "10%" }} />
@@ -290,7 +286,7 @@ if (token) {
               )} Notification
             </MenuItem>
             <MenuItem onClick={PopUp}>
-              <SettingsIcon sx={{marginRight: "10%" }} /> Settings
+              <SettingsIcon sx={{marginRight: "10%" }} /> My profile
             </MenuItem>
             <MenuItem onClick={handleLogout}>
               <LogoutIcon sx={{ marginRight: "10%" }} /> LogOut

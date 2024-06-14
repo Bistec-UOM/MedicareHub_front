@@ -18,6 +18,7 @@ import PageNotFound from "../PageNotFound/PageNotFound";
 import { baseURL,endPoints } from "../../../Services/Appointment";
 import { Load } from "../../Other";
 import { setHeaders } from "../../../Services/Auth";
+import theme from "../../Style";
 
 
 const drawerWidth = 358.4;
@@ -95,22 +96,13 @@ function ResponseAppCalender() {
     <div>
       <Toolbar />
       <Divider />
-      <Grid item xs={3} sm={1} md={3} sx={{ backgroundColor: "#DEF4F2" }}>
+      <Grid item xs={3} sm={1} md={3} sx={{ backgroundColor: theme.palette.custom.sideBar }}>
         <SidebarContainer>
           <SidebarTop>
           <SearchBar search={search} setSearch={setSearch} mgl="10%" isDisabled={false} placename="Doctor name or id..."></SearchBar>
           </SidebarTop>
-          <SidebarList sx={{ backgroundColor: "#DEF4F2" }}>
+          <SidebarList>
           {!RloadDone?<Load></Load>:''}
-            <Box sx={{ overflowY: "scroll", height: "81vh" }}>
-              <Tabs
-                orientation="vertical"
-                value={selectedTab}
-                onChange={handleChanges}
-                aria-label="example vertical tabs"
-                sx={{ marginTop: 0 }}
-              ></Tabs>
-              <div style={{ width: "100%", marginTop: "2%" }}>
                 {Array.isArray(doctorList) &&
                   doctorList
                     .filter((item) => {
@@ -121,10 +113,6 @@ function ResponseAppCalender() {
                             .includes(search.toLowerCase());
                     })
                     .map((item, index) => (
-                      <div
-                        key={index}
-                        onClick={() => setSelectedTab(item.id)}
-                      >
                         <Sideunit_Doctor
                           onClick={() => setSelectedTab(item.id)}
                           selectedTab={selectedTab}
@@ -133,10 +121,7 @@ function ResponseAppCalender() {
                           index={item.id}
                           key={index}
                         ></Sideunit_Doctor>
-                      </div>
                     ))}
-              </div>
-            </Box>
           </SidebarList>
         </SidebarContainer>
       </Grid>

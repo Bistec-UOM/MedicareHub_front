@@ -6,6 +6,7 @@ import Fieldcom from './Fieldcom';
 import { baseURL,endPoints } from '../../../../Services/Lab';
 import { Load } from '../../../Other';
 import { ConfirmPropmt } from '../../../Common';
+import { setHeaders } from '../../../../Services/Auth';
 export default function Testcom({handleClick1,handleClose,test}) {
 
   const [Fload,setFload]=useState([])//field set according to the needed test
@@ -70,7 +71,7 @@ export default function Testcom({handleClick1,handleClose,test}) {
         "servere":servere
       }
     
-    axios.post(baseURL+endPoints.RESULT,obj)
+    axios.post(baseURL+endPoints.RESULT,obj,setHeaders())
     .then((res)=>{
       setLoadingBConfirm(false)
       setOpenConfirm(false)
@@ -107,7 +108,7 @@ export default function Testcom({handleClick1,handleClose,test}) {
   }
 
   useEffect(()=>{
-    axios.get(baseURL+endPoints.TEMPLATE+`${test[0].testId}`)
+    axios.get(baseURL+endPoints.TEMPLATE+`${test[0].testId}`,setHeaders())
     .then(res=>{
       setFload(res.data)
 

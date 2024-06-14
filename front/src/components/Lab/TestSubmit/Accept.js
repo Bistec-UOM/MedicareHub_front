@@ -9,6 +9,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import LoadingButton from '@mui/lab/LoadingButton';
 import DoneIcon from '@mui/icons-material/Done';
 import theme from '../../Style';
+import { setHeaders } from '../../../Services/Auth';
 
 export default function Accept({req,reqOK,RLoad,setRLoad}) {
 
@@ -53,7 +54,7 @@ export default function Accept({req,reqOK,RLoad,setRLoad}) {
   //Set sample to accepted
   const AccIdSet=(id)=>{
     setLoadingB(true)
-    axios.post(baseURL+endPoints.SET_ACCEPT+'?id='+id)
+    axios.post(baseURL+endPoints.SET_ACCEPT+'?id='+id,setHeaders())
     .then((res)=>{
       handleClick('Sample Accepted','success')
       remTest(id)

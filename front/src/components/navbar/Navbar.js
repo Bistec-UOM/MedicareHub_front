@@ -291,10 +291,6 @@ const Navbar = () => {
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
-            <MenuItem onClick={handleClose}>
-              <HelpOutlineIcon sx={{ paddingRight: "10%" }} />
-              Help
-            </MenuItem>
             <MenuItem onClick={handleClickOpenNotify}>
             {badgeContent >= 1 ? (
                 <NotificationsIcon color="action" sx={{ paddingRight: "10%" }} />
@@ -303,7 +299,7 @@ const Navbar = () => {
               )} Notification
             </MenuItem>
             <MenuItem onClick={PopUp}>
-              <SettingsIcon sx={{ paddingRight: "10%" }} /> Settings
+              <SettingsIcon sx={{ paddingRight: "10%" }} /> My profile
             </MenuItem>
             <MenuItem onClick={handleLogout}>
               <LogoutIcon sx={{ paddingRight: "10%" }} /> LogOut

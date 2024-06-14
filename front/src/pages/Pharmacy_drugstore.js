@@ -35,6 +35,7 @@ export default function Pharmacy_drugstore() {
   const [price, setPrice] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false); // State for Snackbar visibility
   const [snackbarMessage, setSnackbarMessage] = useState(''); // State for Snackbar message
+  const [col, setCol] = useState(''); //Snack bar color
 
   const [rows, setRows] = useState([]) // fetched drug list is stored
   const [loading,setLoading] = useState(true)
@@ -62,6 +63,12 @@ export default function Pharmacy_drugstore() {
 }
 //New drug adding ==========================================>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 const handleConfirm = () => {
+  if(drug === '' || brand === '' || dosage === '' || quantity === '' || price === '') {
+    setCol('warning')
+    setSnackbarMessage('Fill all the fields')
+    setSnackbarOpen(true)
+    return
+  }
   setLoadingBAdd(true);
   const data = {
     genericN: drug,
@@ -75,11 +82,14 @@ const handleConfirm = () => {
       setLoadingBAdd(false)
       handleClose();
       getData() 
+      setCol('success')
       setSnackbarMessage('Drug added successfully')
       setSnackbarOpen(true)
     })
     .catch((error)=>{
       handleClose();
+      setCol('error')
+      setSnackbarMessage('Error occured! Try again'); // Set error message
       setLoadingBAdd(false)
       console.log(error)
     })
@@ -109,7 +119,7 @@ const handleConfirm = () => {
         elevation={6}
         variant="filled"
         onClose={handleCloseSnackbar}
-        severity="success" // Snackbar severity (success, error, warning, info)
+        severity={col} // Snackbar severity (success, error, warning, info)
       >
         {snackbarMessage}
       </MuiAlert>
@@ -126,10 +136,13 @@ const handleConfirm = () => {
         handleCloseConfirm()
         handleEditClose(); // Close the dialog
         getData(); // Refresh data after delete
+        setCol('success')
         setSnackbarMessage('Drug deleted successfully'); // Set success message
         setSnackbarOpen(true); // Show Snackbar
       })
       .catch((error) => {
+        setCol('error')
+        setSnackbarMessage('Error occured! Try again'); // Set error message
         setLoadingBConfirm(false)
         handleCloseConfirm()
         handleEditClose(); // Close the dialog
@@ -155,6 +168,7 @@ const handleConfirm = () => {
         .then((response) => {
           setLoadingBEdit(false)       
           getData(); // Refresh data after edit
+          setCol('success')
           setSnackbarMessage('Drug edited successfully'); // Set success message
           setSnackbarOpen(true); // Show Snackbar
           console.log("sent ",updatedData)
@@ -162,6 +176,8 @@ const handleConfirm = () => {
           setEditEnable(false)
         })
         .catch((error) => {
+          setCol('error')
+          setSnackbarMessage('Error occured! Try again'); // Set error message
           setLoadingBEdit(false)       
           console.log(error);
           handleEditClose();
