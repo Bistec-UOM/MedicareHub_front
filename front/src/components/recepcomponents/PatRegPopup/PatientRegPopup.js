@@ -208,7 +208,7 @@ const PatientRegpopup = ({
               Patient Registration Form
             </Typography>
             <IconButton onClick={handleAddClose} sx={{ color: "#20415C" }}>
-              <CloseIcon />
+              <CloseIcon  sx={{color:"white"}}/>
             </IconButton>
           </DialogTitle>
           <DialogContent sx={{ flex: 1, overflowY: "auto" }}>
