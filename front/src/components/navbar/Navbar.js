@@ -19,8 +19,10 @@ import { baseURL,endPoints } from "../../Services/Appointment";
 import { setHeaders } from "../../Services/Auth";
 import axios from "axios";
 import * as signalR from '@microsoft/signalr';
-import { baseURLA } from "../../Services/Admin";
+import { baseURLA, endPointsA } from "../../Services/Admin";
 import { NotificationPrompt } from "../Common";
+import EditUserDialog from "../Admin/DialogComponents/EditUserDialog";
+import UserPopUp from "../Admin/DialogComponents/UserPopUp";
 
 
 const Navbar = () => {
@@ -31,6 +33,8 @@ const Navbar = () => {
   };
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
+    // setEditOpen(false);
+
   };
   const navigate = useNavigate();
 
@@ -182,30 +186,19 @@ const Navbar = () => {
       const newConnection = new HubConnectionBuilder()
 
         .withUrl(baseURLA+'/notificationHub')
-        // .withUrl('https://mediicarehub.azurewebsites.net/notificationHub')
-
         .withAutomaticReconnect()
         .build();
 
       setConnection(newConnection);
-
       newConnection
         .start()
         .then(() => {
           console.log("Connected!");
           newConnection.invoke("Send", profile.Id, profile.role);
-          newConnection.invoke("NotiToPharmacist")
-          .then((data)=>{
-            console.log("Invoked Noti");
-            console.log("captured data: ", data);
-            })
-              .catch((error) => {
-                console.error(error);
-            });
           newConnection.on('ReceiveNotification', message => {
             console.log("inside receive side notification", message); // Log the received message
-            setNotificationMessages(notificationMessages => [...notificationMessages, message]); // Add new notification to the list
-            setBadgeContent(prevBadgeContent => prevBadgeContent + 1); // Increase badge content for new notification
+            // setNotificationMessages(notificationMessages => [...notificationMessages, message]); // Add new notification to the list
+            // setBadgeContent(prevBadgeContent => prevBadgeContent + 1); // Increase badge content for new notification
           });
 
         })
@@ -225,11 +218,15 @@ const Navbar = () => {
     }
   }, [profile]);
 
-
+  // ///////////////////////////// NAv bar Profile ///////////////////////////////
+  const [editOpen, setEditOpen] = useState(false);
+  const PopUp = ()=>{
+    setEditOpen(true);
+}
+      
   //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // +++++++++++++++++++                    DHAMMIKA                ++++++++++++++++++++++++++++++
   //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
 
   return (
     <AppBar sx={{ backgroundColor: "#f7f8f7" }} elevation={0}>
@@ -305,7 +302,7 @@ const Navbar = () => {
                 <NotificationsNoneIcon color="action" sx={{ paddingRight: "10%" }} />
               )} Notification
             </MenuItem>
-            <MenuItem onClick={handleClose}>
+            <MenuItem onClick={PopUp}>
               <SettingsIcon sx={{ paddingRight: "10%" }} /> Settings
             </MenuItem>
             <MenuItem onClick={handleLogout}>
@@ -337,6 +334,8 @@ const Navbar = () => {
         </div>
         <NotificationPrompt messageList={notificationList} handleClose={handleCloseNotify} open={openNotify}></NotificationPrompt>
       </Toolbar>
+  {/* use details */}
+ <UserPopUp profile={profile} editOpen={editOpen} setEditOpen={setEditOpen}></UserPopUp>
     </AppBar>
   );
 };
