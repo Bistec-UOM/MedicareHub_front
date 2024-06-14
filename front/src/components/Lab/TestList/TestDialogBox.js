@@ -6,6 +6,7 @@ import { baseURL,endPoints } from '../../../Services/Lab';
 import EditIcon from '@mui/icons-material/Edit';
 import DoneIcon from '@mui/icons-material/Done';
 import LoadingButton from '@mui/lab/LoadingButton';
+import { setHeaders } from '../../../Services/Auth';
 
 export default function TestDialogBox({test,setPage,setTload,handleClose,handleClick1}) {
 
@@ -70,7 +71,7 @@ export default function TestDialogBox({test,setPage,setTload,handleClose,handleC
       }
       console.log(obj)
       setLoadingB(true)
-      axios.put(baseURL+endPoints.TEST,obj)
+      axios.put(baseURL+endPoints.TEST,obj,setHeaders())
       .then(res=>{
         setLoadingB(false)
         setTload([])//make test list empty to reload again

@@ -17,7 +17,7 @@ export default function Patient_profile() {
     const [selectedPatient,setSelectedPatient] = useState()
 
   useEffect(() => {
-    axios.get(baseURL+endPoints.PROFILE)
+    axios.get(baseURL+endPoints.PROFILE,setHeaders())
     .then((res)=>{
         setLoading(false)
         setPatientList(res.data)

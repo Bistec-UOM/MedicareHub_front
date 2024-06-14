@@ -13,6 +13,7 @@ import { Load } from '../../Other';
 import AddIcon from '@mui/icons-material/Add';
 import { SearchBarLR } from '../../Common';
 import theme from '../../Style';
+import { setHeaders } from '../../../Services/Auth';
 
 export default function LabTestList({setPage,settId,Tload,setTload}) {
 
@@ -55,7 +56,7 @@ export default function LabTestList({setPage,settId,Tload,setTload}) {
     const filteredData = Tload.filter(item => item.testName.toLowerCase().includes(query.toLowerCase()))//filtered Rload data by the search
 
     useEffect(()=>{
-        axios.get(baseURL+endPoints.TEST)
+        axios.get(baseURL+endPoints.TEST,setHeaders())
         .then(res=>{
           setTload(res.data)
           setLoading(false)

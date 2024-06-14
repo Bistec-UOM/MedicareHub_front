@@ -58,7 +58,7 @@ export default function SubmitPage({setpage}) {
 
     useEffect(()=>{
       if(loadOK){
-        axios.get(baseURL+endPoints.GET_ACCEPT)
+        axios.get(baseURL+endPoints.GET_ACCEPT,setHeaders())
       .then((res)=>{
         setLoad(res.data)
         setLoadOk(false)
