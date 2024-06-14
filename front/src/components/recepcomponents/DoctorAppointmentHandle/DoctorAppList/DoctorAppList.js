@@ -24,6 +24,7 @@ import { setHeaders } from "../../../../Services/Auth";
 import * as signalR from '@microsoft/signalr';
 import { jwtDecode } from "jwt-decode";
 import CloseIcon from '@mui/icons-material/Close';
+import AppBlockingOutlinedIcon from '@mui/icons-material/AppBlockingOutlined';
 
 const DoctorAppList = (props) => {
   const [notificationOpen, setNotificationOpen] = useState(false);
@@ -37,39 +38,7 @@ const DoctorAppList = (props) => {
   const [connection, setConnection] = useState(null);
   const [messages, setMessages] = useState([]);
 
-  // useEffect(() => {
-
-  //   let userId = jwtDecode(localStorage.getItem("medicareHubToken")).Id;
-
-   
-  //   // Create a connection to the SignalR hub
-  //   const newConnection = new signalR.HubConnectionBuilder()
-  //     .withUrl(`https://localhost:7205/appointmentnotificationHub?userId=${userId}`) // Ensure this matches the hub URL in your Startup.cs
-  //     .withAutomaticReconnect()
-  //     .build();
-
-  //   // Set up the connection
-  //   setConnection(newConnection);
-  // }, []);
-
-  // useEffect(() => {
-  //   console.log("before con");
-  //   if (connection) {
-  //     // Start the connection
-  //     connection.start()
-  //       .then(result => {
-  //         console.log('Connected! helo');
-
-  //         // Set up a listener for notifications
-  //         connection.on('ReceiveNotification', message => {
-  //           console.log("inside receive notification");
-  //           setMessages(messages => [...messages, message]);
-  //           console.log("mesage",message);
-  //         });
-  //       })
-  //       .catch(e => console.log('Connection failed: ', e));
-  //   }
-  // }, [connection]);
+ 
 
   const handleNotification = (msg, type) => {
     setNotiMessage(msg);
@@ -89,18 +58,6 @@ const DoctorAppList = (props) => {
   const compSelectedDay = new Date(selectedDay); //day object of selected day for comparison of blocking functionality
 
   const [notifications, setNotifications] = useState([]);
-
-    // useEffect(() => {  //signal R connection use effect
-    //     signalRConnection.on("ReceiveNotification", (message) => {
-    //         setNotifications((prev) => [...prev, message]);
-    //     });
-
-    //     return () => {
-    //         signalRConnection.off("ReceiveNotification");
-    //     };
-    // }, []);
-
-
 
   const handleCancelAll = () => {
     setCancelAll(true);
@@ -190,6 +147,7 @@ const DoctorAppList = (props) => {
               },
             }}
             variant="contained"
+            endIcon={<AppBlockingOutlinedIcon/>}
           >
             Block
           </Button>
@@ -227,7 +185,7 @@ const DoctorAppList = (props) => {
             marginTop: { xs: "50%", sm: "20%", md: "7%" },
           }}
         >
-          <StepDoctor search={search} items={filteredAppointments}></StepDoctor>
+          {/* <StepDoctor search={search} items={filteredAppointments}></StepDoctor> */}
         </Box>
 
         {
@@ -247,9 +205,10 @@ const DoctorAppList = (props) => {
                         .toLowerCase()
                         .includes(search.toLowerCase());
                 })
-                .map((item) => (
+                .map((item,index) => (
                   <div key={item.nic}>
                     <DoctorAppCard
+                      appno={index}
                       selectedDay={selectedDay}
                       docid={props.docid}
                       appointlist={props.appointlist}

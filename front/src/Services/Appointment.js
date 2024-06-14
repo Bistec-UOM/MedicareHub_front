@@ -20,7 +20,8 @@ const endPoints = {
     UpdateStatusCompleted:'/updateStatus/',
     UnableDates:'/api/Appointment/unableDates',
     notifications:'/api/Appointment/Notifications/',
-    MarkAsSennNotification:'/api/Appointment/notifications/'
+    MarkAsSennNotification:'/api/Appointment/notifications/',
+    UnableTimeSlots:'/api/Appointment/BlockDates/'
   };
   
 export { baseURL,endPoints};

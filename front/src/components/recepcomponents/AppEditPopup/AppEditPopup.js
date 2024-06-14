@@ -14,6 +14,7 @@ import { Grid, Stack } from "@mui/material";
 import { baseURL,endPoints } from "../../../Services/Appointment";
 import { setHeaders } from "../../../Services/Auth";
 import { LoadingButton } from "@mui/lab";
+import theme from "../../Style";
 
 export default function AppEditPopup({
   delcount,
@@ -145,7 +146,7 @@ export default function AppEditPopup({
             <Box>
               <Box
                 sx={{
-                  backgroundColor: "#DEF4F2",
+                  backgroundColor: theme.palette.custom.greenH,
                   height: "40px",
                   display: "flex",
                   justifyContent: "flex-end",
@@ -153,7 +154,7 @@ export default function AppEditPopup({
                 }}
               >
                 <IconButton onClick={handleClose}>
-                  <CloseIcon />
+                  <CloseIcon sx={{color:'white'}} />
                 </IconButton>
               </Box>
               <Box></Box>
