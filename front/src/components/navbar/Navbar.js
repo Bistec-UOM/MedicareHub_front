@@ -77,7 +77,7 @@ const Navbar = () => {
 
     // Create a connection to the SignalR hub
     const newConnection = new signalR.HubConnectionBuilder()
-    .withUrl(`https://localhost:7205/appointmentnotificationHub?userId=${userId}`)
+    .withUrl(baseURL+`/appointmentnotificationHub?userId=${userId}`)
     .configureLogging(signalR.LogLevel.Information)
     .build();
     // Set up the connection
@@ -91,14 +91,14 @@ const Navbar = () => {
     // Start the connection
     AppNotificationconnection.start()
       .then(result => {
-        AppNotificationconnection.invoke("NotiToPharmacist")
+      //  AppNotificationconnection.invoke("NotiToPharmacist")
         console.log("Connection started successfully", result);
         // Set up a listener for notifications
         AppNotificationconnection.on('ReceiveNotification', message => {
           console.log('Connected! helo', AppNotificationconnection.connectionId);
           console.log("inside receive notification chathura callback", message.message); // Log the received message
-          setNotificationMessages(notificationMessages => [...notificationMessages, message]); // Add new notification to the list
-          setBadgeContent(prevBadgeContent => prevBadgeContent + 1); // Increase badge content for new notification
+          setNotificationList(notificationMessages => [...notificationMessages, message]); // Add new notification to the list
+          setBadgeContent(badgeContent+1); // Increase badge content for new notification
         });
       })
       .catch(e => console.log('Connection failed: ', e));

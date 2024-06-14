@@ -72,7 +72,7 @@ if (token) {
 
     // Create a connection to the SignalR hub
     const newConnection = new signalR.HubConnectionBuilder()
-    .withUrl(`https://localhost:7205/appointmentnotificationHub?userId=${userId}`)
+    .withUrl(baseURL+`/appointmentnotificationHub?userId=${userId}`)
     .configureLogging(signalR.LogLevel.Information)
     .build();
     // Set up the connection
