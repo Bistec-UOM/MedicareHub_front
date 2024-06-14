@@ -24,6 +24,8 @@ import { setHeaders } from "../../../Services/Auth";
 import * as signalR from '@microsoft/signalr';
 import { baseURLA,endPointsA } from "../../../Services/Admin";
 import UserPopUp from "../../Admin/DialogComponents/UserPopUp";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { NotificationPrompt } from "../../Common";
 
 const ResNavBar = ({ isClosing, setMobileOpen, mobileOpen }) => {
   const [profile, setProfile] = useState({Name: "Profile",Role: "Empty",Image: "",Id: ""});
@@ -42,6 +44,16 @@ const ResNavBar = ({ isClosing, setMobileOpen, mobileOpen }) => {
       setMobileOpen(!mobileOpen);
     }
   };
+
+  //notification prompt functions
+  const [openNotify, setOpenNotify] = useState(false)
+  const handleClickOpenNotify = (x) => {
+       setOpenNotify(true)
+       //setBadgeContent(0);
+       //axios.put(
+         //baseURL+endPoints.MarkAsSennNotification+`${userId}`+"/user/"+`${true}`,setHeaders());
+ }
+ const handleCloseNotify = () => {setOpenNotify(false)}  
 
   //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // +++++++++++++++++++                    CHATHURA                  ++++++++++++++++++++++++++++
@@ -278,7 +290,7 @@ if (token) {
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
-            <MenuItem onClick={handleNotificationBell}>
+            <MenuItem onClick={handleClickOpenNotify}>
             {badgeContent > 1 ? (
                 <NotificationsIcon color="action" sx={{ marginRight: "10%" }} />
               ) : (
@@ -286,7 +298,7 @@ if (token) {
               )} Notification
             </MenuItem>
             <MenuItem onClick={PopUp}>
-              <SettingsIcon sx={{marginRight: "10%" }} /> My profile
+              <AccountCircleIcon sx={{marginRight: "10%" }} /> My profile
             </MenuItem>
             <MenuItem onClick={handleLogout}>
               <LogoutIcon sx={{ marginRight: "10%" }} /> LogOut
@@ -319,6 +331,7 @@ if (token) {
       )}
           </Popover>
         </div>
+        <NotificationPrompt messageList={[]} handleClose={handleCloseNotify} open={openNotify}></NotificationPrompt>
       </Toolbar>
       <UserPopUp profile={profile} editOpen={editOpen} setEditOpen={setEditOpen}></UserPopUp>
 

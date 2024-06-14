@@ -14,6 +14,7 @@ import axios from 'axios';
 import { baseURL, endPoints } from '../Services/Lab';
 import { Load } from '../components/Other';
 import { setHeaders } from '../Services/Auth';
+import theme from '../components/Style';
 
 export default function Lab() {
 
@@ -127,7 +128,7 @@ export default function Lab() {
  }
 
  const drawer=(
-  <Grid  item spacing={0} style={{paddingTop:'64px',backgroundColor:'#E7FFF9',height:'100%'}}>
+  <Grid  item spacing={0} style={{paddingTop:'64px',backgroundColor:theme.palette.custom.sideBar,height:'100%'}}>
     <SidebarContainer>
       <SidebarTop>
          <LabSearch setPage={setPage} setDate={setDate} date={date} query={query} setQuery={setQuery}></LabSearch>

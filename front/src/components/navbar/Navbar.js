@@ -23,7 +23,7 @@ import { baseURLA, endPointsA } from "../../Services/Admin";
 import { NotificationPrompt } from "../Common";
 import EditUserDialog from "../Admin/DialogComponents/EditUserDialog";
 import UserPopUp from "../Admin/DialogComponents/UserPopUp";
-
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 const Navbar = () => {
   const [profile, setProfile] = useState({name: "Profile",role: "Empty",image: "",Id: ""});
@@ -299,7 +299,7 @@ const Navbar = () => {
               )} Notification
             </MenuItem>
             <MenuItem onClick={PopUp}>
-              <SettingsIcon sx={{ paddingRight: "10%" }} /> My profile
+              <AccountCircleIcon sx={{ paddingRight: "10%" }} /> My profile
             </MenuItem>
             <MenuItem onClick={handleLogout}>
               <LogoutIcon sx={{ paddingRight: "10%" }} /> LogOut

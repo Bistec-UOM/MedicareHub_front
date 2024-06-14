@@ -138,12 +138,13 @@ const SearchBarSM=({onChange,value,placeholder,height})=> {
       </div>
       <CloseIcon sx={{cursor:'pointer'}} onClick={handleClose}/>
       </DialogTitle>
-      <Box sx={{height:'300px',width:'500px',pt:'10px',pb:'5px',display:'flex',flexDirection:'column',alignItems:'center',overflowY:'scroll'}}>
+      {messageList.length===0?<Box sx={{height:'300px',width:'500px',pt:'10px',pb:'5px',display:'flex',flexDirection:'column',alignItems:'center',overflowY:'scroll'}}>
+        <Typography sx={{fontSize:'16px',color:'grey',pl:'10px',pt:'10px'}}>No new notifications</Typography>
+      </Box>: <Box sx={{height:'300px',width:'500px',pt:'10px',pb:'5px',display:'flex',flexDirection:'column',alignItems:'center',overflowY:'scroll'}}>
         {messageList.map((i)=>(
           <ListItem time={i.sendAt.slice(11,16)} date={i.sendAt.slice(0,10)} message={i.message}></ListItem>
-         
         ))}
-      </Box>
+      </Box>}
       <Box sx={{backgroundColor:'white',height:'10px',width:'100%'}}></Box>
       </Dialog>
     )
