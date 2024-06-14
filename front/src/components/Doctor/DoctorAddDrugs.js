@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Dialog from '@mui/material/Dialog';
-import { TextField } from '@mui/material';
+import { TextField, Snackbar, Alert } from '@mui/material';
 import DialogContent from '@mui/material/DialogContent';
 import CloseIcon from '@mui/icons-material/Close';
 import MenuItem from '@mui/material/MenuItem';
@@ -18,6 +18,8 @@ export default function DoctorAddDrugs(props) {
     const [unit, setUnit] = useState('mg');
     const [period, setPeriod] = useState('BD');
     const [suggestions, setSuggestions] = useState([]);
+    const [error, setError] = useState('');
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
 
 //const [pres, setPres] = useState([]);//---------------------------prescription array------------------------ 
     
@@ -60,6 +62,7 @@ export default function DoctorAddDrugs(props) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        handleAddDrug();
     };
 
     const handleClose = () => {
@@ -67,6 +70,30 @@ export default function DoctorAddDrugs(props) {
     };
 
     const handleAddDrug = () => {
+        if (!genericN && !weight) {
+            setError('Both fields are required');
+            setSnackbarOpen(true);
+            return;
+        }
+        else if (!genericN.trim() ) {
+            setError('Genaric Name is required');
+            setSnackbarOpen(true);
+            return;
+        }
+        else if (!weight.trim() ) {
+            setError('weight is a required field');
+            setSnackbarOpen(true);
+            return;
+        }
+        
+        // Check if weight is not a valid integer
+        else if (isNaN(parseInt(weight))) {
+        setError('Weight must be a valid number');
+        setSnackbarOpen(true);
+        return;
+        }
+
+        
         const newDrug = {
             genericN: genericN,
             weight: weight,
@@ -78,6 +105,7 @@ export default function DoctorAddDrugs(props) {
         setWeight('');
         setUnit('mg');
         setPeriod('BD');
+        setOpenBox(false);
        
     };
 
@@ -89,6 +117,13 @@ export default function DoctorAddDrugs(props) {
 
     const quantityOptions = ['mg', 'ml', 'g'];
     const hourOptions = ['BD', 'OD', 'TDS'];
+
+    const handleCloseSnackbar = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setSnackbarOpen(false);
+    };
 
     return (
         <div>
@@ -153,8 +188,7 @@ export default function DoctorAddDrugs(props) {
                             type="submit"
                             variant="contained"
                             size='small'
-                            sx={{ top: '0.5px' }}
-                            onClick={() => { handleAddDrug(); handleClose() }}
+                            sx={{ top: '0.5px' }}                            
                             endIcon={<AddIcon />}
                         >
                             Add
@@ -177,6 +211,16 @@ export default function DoctorAddDrugs(props) {
                     </Box>
                 ))}
             </div>
+            {/* Snackbar for error messages */}
+            <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={6000}
+                onClose={handleCloseSnackbar}
+            >
+                <Alert onClose={handleCloseSnackbar} severity="error" sx={{ width: '100%',backgroundColor:'#F0F841 ' }}>
+                    {error}
+                </Alert>
+            </Snackbar>
         </div>
     );
 }
