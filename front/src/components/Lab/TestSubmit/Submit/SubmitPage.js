@@ -10,6 +10,7 @@ import { Load } from '../../../Other';
 import ScienceIcon from '@mui/icons-material/Science';
 import { SearchBarSM } from '../../../Common';
 import theme from '../../../Style';
+import { setHeaders } from '../../../../Services/Auth';
 
 export default function SubmitPage({setpage}) {
 
