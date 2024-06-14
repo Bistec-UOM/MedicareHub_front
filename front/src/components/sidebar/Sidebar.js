@@ -1,4 +1,5 @@
 import React from 'react';
+import theme from '../Style';
 
 const SidebarContainer = ({ children }) => {
   // React.Children.map is used to iterate over children
@@ -10,7 +11,7 @@ const SidebarContainer = ({ children }) => {
         style: {
           // Add your custom styles here
           ...child.props.style,
-          backgroundColor:'#DEF4F2',
+          backgroundColor:theme.palette.custom.sideBar,
         },
         // Add any additional props as needed
       });
@@ -31,7 +32,7 @@ const SidebarTop = ({ children ,pd}) => {
         width: '100%',
         height: '80px',
         paddingBottom:pd,
-        backgroundColor:'#e7fff9',
+        backgroundColor:theme.palette.custom.sideBar,
         display:'flex',
         justifyContent:'center',
         alignItems:'center',

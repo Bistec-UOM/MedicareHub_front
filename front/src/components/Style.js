@@ -5,7 +5,10 @@ const theme = createTheme({
         custom: {
           greenH: '#04c946',
           Token : '#03ad3c',
-          greenIcon : '#04c946'
+          greenIcon : '#04c946',
+          sideBar : '#f0fff2',
+          sideBarUnitHover:'#edfcf0',
+          sideBarUnitSelected:'#04c946',
         },
       },
     components: {

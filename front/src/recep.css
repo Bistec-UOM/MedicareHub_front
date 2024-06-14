@@ -1,10 +1,7 @@
 .today-day {
     background-color: '#3B877A' !important;
   }
-  .rbc-header{
 
-  
-  }
    .rbc-header:first-child{
    color: red !important;
    }
@@ -42,7 +39,7 @@
 
 #root > div > div > div > nav > div > div > div > div.MuiGrid-root.MuiGrid-item.MuiGrid-grid-xs-3.MuiGrid-grid-sm-1.MuiGrid-grid-md-3.css-mcxjgr-MuiGrid-root > div > div:nth-child(2) > div:nth-child(2)
 {
-  background-color:#DEF4F2
+  background-color:#f0fff2
 }
 
 
@@ -54,18 +51,18 @@
 
 #root > div > div > nav > div > div > div > div.MuiGrid-root.MuiGrid-item.MuiGrid-grid-xs-3.MuiGrid-grid-sm-1.MuiGrid-grid-md-3.css-13i4rnv-MuiGrid-root
 {
-  background-color: #DEF4F2;
+  background-color: #f0fff2;
 }
 
 #root > div > div > nav > div > div
 {
-  background-color: #DEF4F2;
+  background-color: #f0fff2;
 
 }
 
 body > div.MuiDrawer-root.MuiDrawer-modal.MuiModal-root.css-hjb2rp-MuiModal-root-MuiDrawer-root > div.MuiPaper-root.MuiPaper-elevation.MuiPaper-elevation16.MuiDrawer-paper.MuiDrawer-paperAnchorLeft.css-4t3x6l-MuiPaper-root-MuiDrawer-paper > div > div.MuiGrid-root.MuiGrid-item.MuiGrid-grid-xs-3.MuiGrid-grid-sm-1.MuiGrid-grid-md-3.css-13i4rnv-MuiGrid-root > div > div:nth-child(2) > div > div:nth-child(2)
 {
-  background-color: #DEF4F2 !important; 
+  background-color: #f0fff2 !important; 
 }
 
 #root > div > div > nav > div > div > div > div.MuiGrid-root.MuiGrid-item.MuiGrid-grid-xs-3.MuiGrid-grid-sm-1.MuiGrid-grid-md-3.css-mcxjgr-MuiGrid-root > div > div:nth-child(2) > div.style
@@ -99,12 +96,6 @@ body > div.MuiDrawer-root.MuiDrawer-modal.MuiModal-root.css-hjb2rp-MuiModal-root
   background-color: rgb(165, 225, 202);
   
 }
-
-.nonblocked-date
-{
-
-}
-
 
 
 .fc-col-header-cell.fc-day-sun {
