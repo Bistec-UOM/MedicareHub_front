@@ -21,6 +21,7 @@ import IconButton from '@mui/material/IconButton';
 import { Load } from '../components/Other';
 import theme from '../components/Style';
 import MedicationIcon from '@mui/icons-material/Medication';
+import { setHeaders } from '../Services/Auth';
 
 export default function Pharmacy_drugstore() {
 
@@ -44,7 +45,7 @@ export default function Pharmacy_drugstore() {
   const [openPopup, setOpenPopup] = useState(false);
   
   const getData = () => { // get
-    axios.get(baseURL+endPoints.DRUGGET)
+    axios.get(baseURL+endPoints.DRUGGET,setHeaders())
     .then((result) => {
         const drugs = result.data.map(drug => ({
             ID: drug.id,
@@ -78,7 +79,7 @@ const handleConfirm = () => {
     avaliable: Number(quantity) + additionalQuantity, // Add additional quantity to the entered quantity
     price: price,
   };
-    axios.post(baseURL+endPoints.DRUGPOST,data)
+    axios.post(baseURL+endPoints.DRUGPOST,data,setHeaders())
     .then((result)=>{
       setLoadingBAdd(false)
       handleClose();
@@ -137,7 +138,7 @@ const handleConfirm = () => {
   const [deleteId,setdeleteId] = useState('')
   const handleDelete = () => {  
     setLoadingBConfirm(true)           
-    axios.delete(baseURL+endPoints.DRUGDELETE+`/${deleteId}`)
+    axios.delete(baseURL+endPoints.DRUGDELETE+`/${deleteId}`,setHeaders())
       .then(() => {
         setLoadingBConfirm(false)
         handleCloseConfirm()
@@ -171,7 +172,7 @@ const handleConfirm = () => {
       };
       //console.log('check this')
       //console.log('check',updatedData)
-      axios.put(baseURL+endPoints.DRUGUPDATE+`/${selectedCard.ID}`, updatedData)
+      axios.put(baseURL+endPoints.DRUGUPDATE+`/${selectedCard.ID}`, updatedData,setHeaders())
         .then((response) => {
           setLoadingBEdit(false)       
           getData(); // Refresh data after edit
