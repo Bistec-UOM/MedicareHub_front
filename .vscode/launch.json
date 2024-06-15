@@ -25,6 +25,14 @@
             "name": "Launch Chrome against localhost",
             "url": "http://localhost:3000",
             "webRoot": "${workspaceFolder}"
+        },
+        
+        {
+            "type": "msedge",
+            "request": "launch",
+            "name": "Launch edge against localhost",
+            "url": "http://localhost:3000",
+            "webRoot": "${workspaceFolder}"
         }
     ]
 }
