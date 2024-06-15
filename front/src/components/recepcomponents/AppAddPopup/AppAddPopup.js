@@ -17,6 +17,7 @@ import { setHeaders } from "../../../Services/Auth";
 import { LoadingButton } from "@mui/lab";
 import theme from "../../Style";
 import AppBlockingIcon from '@mui/icons-material/AppBlocking';
+import DoneIcon from '@mui/icons-material/Done'
 
 export default function AppAddPopup({
   filteredAppointments,
@@ -344,6 +345,7 @@ export default function AppAddPopup({
                   }}
                   variant="contained"
                   type="submit"
+                  endIcon={<DoneIcon></DoneIcon>}
                 >
                   Confirm
                 </LoadingButton>
