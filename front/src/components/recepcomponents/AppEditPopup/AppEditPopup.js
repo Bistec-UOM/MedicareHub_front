@@ -15,6 +15,7 @@ import { baseURL,endPoints } from "../../../Services/Appointment";
 import { setHeaders } from "../../../Services/Auth";
 import { LoadingButton } from "@mui/lab";
 import theme from "../../Style";
+import DoneIcon from '@mui/icons-material/Done'
 
 export default function AppEditPopup({
   delcount,
@@ -302,6 +303,7 @@ export default function AppEditPopup({
                   loading={appEditConLoading}
                   variant="contained"
                   type="submit"
+                  endIcon={<DoneIcon></DoneIcon>}
                 >
                   Confirm
                 </LoadingButton>

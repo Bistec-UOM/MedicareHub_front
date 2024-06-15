@@ -159,7 +159,7 @@ const SearchPatientPage = (props) => {
           backgroundColor: "white",
           width: { sm: "70%", xs: "90%" },
           flexWrap: "wrap-reverse",
-          paddingTop: { xs: "7px", sm: "10px" },
+          paddingTop: { xs: "7px", sm: "10px",md:'20px' },
           zIndex: 10,
         }}
       >
