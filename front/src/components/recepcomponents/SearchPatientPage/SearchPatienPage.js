@@ -282,7 +282,8 @@ const SearchPatientPage = (props) => {
           flexDirection: "row",
           width: "100%",
           maxHeight: "75vh",
-          paddingTop: "80px",
+          paddingTop: "110px",
+         
         }}
       >
         {

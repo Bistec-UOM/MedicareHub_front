@@ -28,6 +28,7 @@ import DoctorAppCalender from '../components/recepcomponents/DoctorAppointmentHa
 import { setHeaders } from '../Services/Auth';
 import Patient_profile from '../components/Patient_profile';
 import theme from '../components/Style';
+import DoctorAppList from '../components/recepcomponents/DoctorAppointmentHandle/DoctorAppList/DoctorAppList';
 
 export default function Doctor() {
   
@@ -146,6 +147,8 @@ const handleClick = () => {
 };
 
 
+
+
 const fetchData = async () => {
   try {
     const response = await axios.get(baseURL+endPoints.APPOINTMENTLIST,setHeaders()); 
@@ -211,6 +214,13 @@ const handleCloseConfirm = () => {setOpenConfirm(false)}
   },[select])
 
   const [Mode,setMode]=useState(1)//1-> original  2-> calender  3-> patient profile
+
+  useEffect(()=>
+    {
+      console.log("mod",Mode);
+    
+    },[Mode])
+    const [applistDetails,setAppListDetails]=useState(["",""])
 
  return (
   <div>
@@ -303,10 +313,13 @@ const handleCloseConfirm = () => {setOpenConfirm(false)}
      handleClose={handleCloseConfirm} loadingB={loadingBConfirm} open={openConfirm}></ConfirmPropmt>
     </Grid>:''}
     {Mode==2?<Grid item xs={9} style={{ height: '100%', overflowY: 'scroll' }}>
-            <DoctorAppCalender></DoctorAppCalender>
+            <DoctorAppCalender setAppListDetails={setAppListDetails} Mode={Mode} setMode={setMode}></DoctorAppCalender>
     </Grid>:''}
     {Mode==3?<Grid item xs={9} style={{ height: '100%', overflowY: 'scroll' }}>
             <Patient_profile></Patient_profile>
+    </Grid>:''}
+    {Mode==4?<Grid item xs={9} style={{ height: '100%', overflowY: 'scroll' }}>
+            <DoctorAppList selectedDAy={applistDetails[0]} docid={applistDetails[1]} Mode={Mode} setMode={setMode}></DoctorAppList>
     </Grid>:''}
   </Grid>
 </div>    

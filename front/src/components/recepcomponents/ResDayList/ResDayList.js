@@ -44,6 +44,8 @@ const ResDayList = (props) => {
     props.setRenderVal(true);
   };
 
+ 
+
   //useeffect for fetching the app of a day of a selected doctor
   useEffect(() => {
     document.body.style.margin = "0";

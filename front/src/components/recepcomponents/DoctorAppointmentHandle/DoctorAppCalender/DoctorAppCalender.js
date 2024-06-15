@@ -22,7 +22,7 @@ import DoctorAppList from "../DoctorAppList/DoctorAppList";
 
 
 
-const DoctorAppCalender = () => {
+const DoctorAppCalender = ({Mode,setMode,setAppListDetails}) => {
 
   const doctorId=jwtDecode(localStorage.getItem('medicareHubToken')).RoleId;
 
@@ -212,6 +212,7 @@ const DoctorAppCalender = () => {
     if (!getDayStatus(formattedDate)) {
       if (selectedMonth === currentMonth) {
         setSelectedDay(today);
+        setAppListDetails([today,doctorId])
         setListMode(true);
         /* navigate("/dappList", {
           state: {
@@ -244,7 +245,7 @@ const DoctorAppCalender = () => {
             right: "next",
           }}
         />
-      </Box>:<DoctorAppList selectedDay={selectedDay} docid={doctorId}></DoctorAppList>}
+      </Box>:<DoctorAppList Mode={Mode} setMode={setMode} selectedDAy={selectedDay} docid={doctorId}></DoctorAppList>}
       <SuccessNotification
         type={notiType}
         setNotificationOpen={setNotificationOpen}
