@@ -20,6 +20,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
 import { Load } from '../components/Other';
 import theme from '../components/Style';
+import MedicationIcon from '@mui/icons-material/Medication';
 
 export default function Pharmacy_drugstore() {
 
@@ -274,17 +275,12 @@ const handleConfirm = () => {
 {/* --------------- New drug adding popup ---------------------------------------------------- */}
 
 <Dialog open={open} onClose={handleClose}>
-        <DialogTitle
-          sx={{
-            backgroundColor: theme.palette.custom.greenH,
-            display: "flex",
-            color:'white',
-            justifyContent: "space-between",
-            paddingLeft:"200px",
-          }}
-        >
-          Add new drug
-          <CloseIcon onClick={handleClose} sx={{cursor:'pointer'}}/>
+        <DialogTitle sx={{backgroundColor:theme.palette.custom.greenH,display: "flex",justifyContent: "space-between",color:'white'}}>
+        <div style={{display:'flex',justifyContent:'start'}}>
+          <MedicationIcon></MedicationIcon>
+          <Typography sx={{fontSize:'18px',fontWeight:'medium'}}>Add drugs</Typography>
+        </div>
+        <CloseIcon onClick={handleClose} sx={{cursor:'pointer'}}/>
         </DialogTitle>
         <DialogContent>
           <TextField label="Genaric name" fullWidth sx={{ mb: 2, mt: 3 }} value={drug} onChange={(e) => setDrug(e.target.value)}  size='small'/>
@@ -329,17 +325,12 @@ const handleConfirm = () => {
 
 {/* --------------- Drug editing popup ---------------------------------------------------- */}
 <Dialog open={editOpen} onClose={handleEditClose}>
-        <DialogTitle
-          sx={{
-            backgroundColor: theme.palette.custom.greenH,
-            display: "flex",
-            justifyContent: "space-between",
-            paddingLeft:"200px",
-            color:'white'
-          }}
-        >
-          Edit drug
-          <CloseIcon onClick={handleEditClose} sx={{cursor:'pointer'}}/>
+        <DialogTitle sx={{backgroundColor:theme.palette.custom.greenH,display: "flex",justifyContent: "space-between",color:'white'}}>
+        <div style={{display:'flex',justifyContent:'start'}}>
+          <MedicationIcon></MedicationIcon>
+          <Typography sx={{fontSize:'18px',fontWeight:'medium'}}>Edit drug</Typography>
+        </div>
+        <CloseIcon onClick={handleClose} sx={{cursor:'pointer'}}/>
         </DialogTitle>
         <DialogContent>
           <TextField
