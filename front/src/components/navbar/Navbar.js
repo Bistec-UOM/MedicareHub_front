@@ -91,7 +91,7 @@ const Navbar = () => {
     // Start the connection
     AppNotificationconnection.start()
       .then(result => {
-      //  AppNotificationconnection.invoke("NotiToPharmacist")
+       AppNotificationconnection.invoke("NotiToPharmacist")
         console.log("Connection started successfully", result);
         // Set up a listener for notifications
         AppNotificationconnection.on('ReceiveNotification', message => {
