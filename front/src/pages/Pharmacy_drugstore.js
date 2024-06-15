@@ -85,20 +85,26 @@ const handleConfirm = () => {
       setCol('success')
       setSnackbarMessage('Drug added successfully')
       setSnackbarOpen(true)
+      setDrug('')
+      setBrand('')
+      setDosage('')
+      setQuantity('')
+      setDosage('')
+      setPrice('')
     })
     .catch((error)=>{
-      handleClose();
-      setCol('error')
-      setSnackbarMessage('Error occured! Try again'); // Set error message
+      if(error.hasOwnProperty('response')){
+        if(error.response.status===400){
+          setCol('warning')
+          setSnackbarMessage('Drug already exist')
+        }else{
+          setCol('error')
+          setSnackbarMessage('Error occured! Try again');
+        }
+      }
       setLoadingBAdd(false)
-      console.log(error)
+      setSnackbarOpen(true)
     })
-    setDrug('')
-    setBrand('')
-    setDosage('')
-    setQuantity('')
-    setDosage('')
-    setPrice('')
   }
 //////////////////////////////////////////////////////////////////////////////////
 
