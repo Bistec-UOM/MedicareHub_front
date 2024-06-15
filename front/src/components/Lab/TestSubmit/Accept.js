@@ -54,7 +54,7 @@ export default function Accept({req,reqOK,RLoad,setRLoad}) {
   //Set sample to accepted
   const AccIdSet=(id)=>{
     setLoadingB(true)
-    axios.post(baseURL+endPoints.SET_ACCEPT+'?id='+id,setHeaders())
+    axios.get(baseURL+endPoints.SET_ACCEPT+'?id='+id,setHeaders())
     .then((res)=>{
       handleClick('Sample Accepted','success')
       remTest(id)

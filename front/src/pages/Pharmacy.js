@@ -26,6 +26,7 @@ import { Load } from '../components/Other';
 import DoneIcon from '@mui/icons-material/Done'
 import html2pdf from 'html2pdf.js';
 import theme from '../components/Style';
+import { setHeaders } from '../Services/Auth';
 
 export default function Pharmacy() {
 
@@ -48,7 +49,7 @@ export default function Pharmacy() {
   useEffect(()=>{//initial data loading------------------------------------------------------
     document.body.style.margin = '0';
     getData();
-    axios.get(baseURL+endPoints.SERVICE)
+    axios.get(baseURL+endPoints.SERVICE,setHeaders())
     .then((res)=>{
       //console.log(res.data)
       setServiceCharge(res.data.price)
@@ -64,7 +65,7 @@ export default function Pharmacy() {
       if(genericNames.length===0) return
       console.log(genericNames)
       setLoading(true)
-      axios.post(baseURL+endPoints.MEDICINEDETAIL, genericNames)
+      axios.post(baseURL+endPoints.MEDICINEDETAIL, genericNames,setHeaders())
       .then(response => { 
         setLoading(false) 
           //attach each the drug details requested from back to the corresponding drug in prescription
@@ -100,7 +101,7 @@ export default function Pharmacy() {
 
 
   const getData = () => {//get the prescriptions list to the side bar--------------------------
-    axios.get(baseURL+endPoints.DRUGREQUEST)
+    axios.get(baseURL+endPoints.DRUGREQUEST,setHeaders())
       .then((response) => {
         setLoadingDone(true)
        SetData(response.data)
@@ -122,7 +123,7 @@ export default function Pharmacy() {
   };
 
   const serviceChargeHandle = () => {
-    axios.put(baseURL+endPoints.SERVICE,{id:0,price:serviceCharge})
+    axios.put(baseURL+endPoints.SERVICE,{id:0,price:serviceCharge},setHeaders())
     .then((res)=>{
       setMsg('Service charge updated successfully')
       setCol('success')
@@ -165,7 +166,7 @@ export default function Pharmacy() {
     let load={prescriptId:select,data:obj,total:Number(total+serviceCharge)}
     setLoadingBConfirm(true);
     console.log(JSON.stringify(load))
-   axios.post(baseURL+endPoints.ADDBILLDRUG,load)
+   axios.post(baseURL+endPoints.ADDBILLDRUG,load,setHeaders())
      .then(()=>{
       setLoadingBConfirm(false)
       handleCloseConfirm()
@@ -388,7 +389,7 @@ const exportAsPDF = async () => {
       <Typography gutterBottom  sx={{ marginLeft: '90px ', display:'inline',fontWeight:'bold',textAlign:'right',flex:2}}>{parseInt(drugBill[no].price)*parseInt(drugBill[no].Amount)}</Typography>
       
     </Box> 
-  </Box>)}else{return<Typography key={no} sx={{fontSize:'15px',pl:'20px',color:'gray'}}>Not found in store</Typography>}}):loading?<Load></Load>:select?<Typography sx={{fontSize:'15px',pl:'20px',color:'gray'}}>No issued drugs</Typography>:''}
+  </Box>)}else{return<Typography key={no} sx={{fontSize:'15px',pl:'20px',color:'gray',mt:'5px',mb:'5px'}}>Not found in store</Typography>}}):loading?<Load></Load>:select?<Typography sx={{fontSize:'15px',pl:'20px',color:'gray'}}>No issued drugs</Typography>:''}
 </div>
        ) : ''}
       {select && (    
