@@ -53,9 +53,10 @@ N. Validation rules -- invalid/empty values
 //To do------------------------------------
  0.Seen lab report
  1.Deleting a field
- 2.Pharmacy service charge
+ 2.when defaulr weight is not selected in pharmacy
  3.Pharmacy validation - empty fields/ existing drugs
  4.Every notification is shown
+
 
 
 
