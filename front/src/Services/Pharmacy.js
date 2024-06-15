@@ -15,6 +15,7 @@ const endPoints = {
     DRUGDELETE:'/api/Drugs',
     DRUGGETID:'/api/Drugs',
     DRUGUPDATE:'/api/Drugs',
-    ADDBILLDRUG:'/api/Bill/AddBillDrugs'   
+    ADDBILLDRUG:'/api/Bill/AddBillDrugs',
+    SERVICE :'/api/Drugs/servicecharge',   
   };
   export { baseURL,endPoints};
