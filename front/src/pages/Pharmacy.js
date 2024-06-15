@@ -36,12 +36,18 @@ export default function Pharmacy() {
   const selectedPrescription = select ? Data.filter(el => el.id === select) : [];
   const [drugDetail,setDrugDetail]=useState(null)//final drug data to be rendered
   const [drugBill,setDrugBill]=useState([])//final drug bill details
-  const [serviceCharge,setServiceCharge]=useState(300)
+  const [serviceCharge,setServiceCharge]=useState('')
   const [total,setTotal]=useState(0)//store the calculated total
 
   useEffect(()=>{//initial data loading------------------------------------------------------
     document.body.style.margin = '0';
     getData();
+    axios.get(baseURL+endPoints.SERVICE)
+    .then((res)=>{
+      //console.log(res.data)
+      setServiceCharge(res.data.price)
+    })
+    .catch((er)=>{console.log(er)})
    },[]) 
 
   //data loading as the prescription is selected--------------------------------
@@ -57,6 +63,7 @@ export default function Pharmacy() {
         setLoading(false) 
           //attach each the drug details requested from back to the corresponding drug in prescription
           let res=response.data
+          console.log(response.data)
           let obj={...selectedPrescription}
           obj[0].medicine.forEach((elm,ind)=>{
             elm.detail=res[elm.name]
@@ -108,6 +115,22 @@ export default function Pharmacy() {
     setOpen(false);
   };
 
+  const serviceChargeHandle = () => {
+    axios.put(baseURL+endPoints.SERVICE,{id:0,price:serviceCharge})
+    .then((res)=>{
+      setMsg('Service charge updated successfully')
+      setCol('success')
+      setOpen(false)
+      console.log(res)
+    })
+    .catch((er)=>{
+      setMsg('Error occured! Try again')
+      setCol('error')
+      setOpen(false)
+      console.log(er)
+    })
+  }
+
   //snackbar
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
@@ -130,7 +153,7 @@ export default function Pharmacy() {
     })
 
     setLoadingBConfirm(true);
-    let load={data:obj,total:total+serviceCharge}
+    let load={prescriptId:select,data:obj,total:Number(total+serviceCharge)}
     setLoadingBConfirm(true);
     console.log(JSON.stringify(load))
     axios.post(baseURL+endPoints.ADDBILLDRUG,load)
@@ -143,6 +166,7 @@ export default function Pharmacy() {
       SetData(Data.filter((el)=>el.id!==select))
       setDrugDetail(null)
       setSelect(null)
+      setTotal(0)
     })
     .catch((er)=>{
       setLoadingBConfirm(false)
@@ -206,7 +230,7 @@ useEffect(()=>{
   drugBill.forEach((el,ind)=>{
     t=t+parseInt(el.Amount)*parseInt(el.price)
   })
-  setTotal(t)
+  setTotal(Number(t))
 },[drugBill])
 
 
@@ -339,7 +363,7 @@ useEffect(()=>{
        </Box>
        <Box sx={{width:'800px',display:'flex',alignItems:'center'}}>
         <Typography sx={{fontSize:'20px',pl:'15px'}}>Total</Typography>
-        <Typography sx={{textAlign:'right',fontWeight:'bold',flex:2}}>{total+serviceCharge}</Typography>
+        <Typography sx={{textAlign:'right',fontWeight:'bold',flex:2}}>{`${Number(total+serviceCharge)}`}</Typography>
        </Box>
 
       {/* ------------------- Confirmation         ------------------------------------*/}  
@@ -351,10 +375,10 @@ useEffect(()=>{
 
        <Dialog open={open} onClose={handleClose}>
         <DialogContent>
-        <TextField label="Service Charge" size='small' variant="outlined" value={serviceCharge} />
+        <TextField type='number' label="Service Charge" size='small' variant="outlined" value={serviceCharge} onChange={(e)=>setServiceCharge(e.target.value)}/>
           <div style={{display:'flex',justifyContent:'center',paddingTop:'10px'}}>
           <Button onClick={handleClose} size='small' color='warning' variant='outlined' sx={{mr:'20px'}}>Cancel</Button>
-          <Button onClick={handleClose} size='small' variant="contained" endIcon={<DoneIcon></DoneIcon>}>Save</Button>
+          <Button onClick={serviceChargeHandle} size='small' variant="contained" endIcon={<DoneIcon></DoneIcon>}>Save</Button>
         </div>
         </DialogContent>
       </Dialog>
@@ -363,17 +387,16 @@ useEffect(()=>{
       <ConfirmPropmt action={handleConfirmAction} message="Are you sure bill is ready?"
        handleClose={handleCloseConfirm} loadingB={loadingBConfirm} open={openConfirm}></ConfirmPropmt>
 
-     
-    {/* --------------------------- Snackbar ------------------------------------------------- */}
-      <Snackbar open={snackbarOpen} autoHideDuration={2000} onClose={handleSnackbarClose}>
+      </div>
+)}
+      </Grid>:<Grid item xs={9} style={{height:'100%',overflowY:'scroll'}}><Pharmacy_drugstore></Pharmacy_drugstore></Grid>}
+
+          {/* --------------------------- Snackbar ------------------------------------------------- */}
+          <Snackbar open={snackbarOpen} autoHideDuration={2000} onClose={handleSnackbarClose}>
         <MuiAlert onClose={handleSnackbarClose} severity={col} elevation={6} variant="filled">
           {msg}
         </MuiAlert>
       </Snackbar>
-      </div>
-)}
-      </Grid>:<Grid item xs={9} style={{height:'100%',overflowY:'scroll'}}><Pharmacy_drugstore></Pharmacy_drugstore></Grid>}
-      
     </Grid>
 
   </div>
