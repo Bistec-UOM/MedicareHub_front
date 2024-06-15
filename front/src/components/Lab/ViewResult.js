@@ -7,6 +7,7 @@ import ScienceIcon from '@mui/icons-material/Science';
 import { Box } from '@mui/system';
 import axios from 'axios';
 import { baseURL,endPoints } from '../../Services/Lab';
+import { setHeaders } from '../../Services/Auth';
 
 export default function ViewResult({id}) {
 
@@ -21,7 +22,7 @@ export default function ViewResult({id}) {
   }
 
   useEffect(()=>{
-    axios.get(baseURL+endPoints.RESULT+`?Pid=${id}`)
+    axios.get(baseURL+endPoints.RESULT+`?Pid=${id}`,setHeaders())
     .then((res)=>{
       setData(res.data)
       setDone(true)

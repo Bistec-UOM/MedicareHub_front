@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {SidebarContainer,SidebarTop,SidebarList} from '../components/sidebar/Sidebar'
 import Navbar from '../components/navbar/Navbar'
 import { Grid,Snackbar,Card, Typography,Dialog,DialogContent,Button } from '@mui/material'
@@ -24,8 +24,12 @@ import AddCardIcon from '@mui/icons-material/AddCard';
 import Pharmacy_drugstore from './Pharmacy_drugstore';
 import { Load } from '../components/Other';
 import DoneIcon from '@mui/icons-material/Done'
+import html2pdf from 'html2pdf.js';
+import theme from '../components/Style';
 
 export default function Pharmacy() {
+
+  const billRef = useRef();
 
   const [loadingDone,setLoadingDone]=useState(false)
   const [store,setStore] = useState(false) //true -> in drug store
@@ -36,12 +40,20 @@ export default function Pharmacy() {
   const selectedPrescription = select ? Data.filter(el => el.id === select) : [];
   const [drugDetail,setDrugDetail]=useState(null)//final drug data to be rendered
   const [drugBill,setDrugBill]=useState([])//final drug bill details
-  const [serviceCharge,setServiceCharge]=useState(300)
+  const [serviceCharge,setServiceCharge]=useState('')
   const [total,setTotal]=useState(0)//store the calculated total
+  const [billDetail,setBillDetail]=useState([])//store the bill details to be printed
+
 
   useEffect(()=>{//initial data loading------------------------------------------------------
     document.body.style.margin = '0';
     getData();
+    axios.get(baseURL+endPoints.SERVICE)
+    .then((res)=>{
+      //console.log(res.data)
+      setServiceCharge(res.data.price)
+    })
+    .catch((er)=>{console.log(er)})
    },[]) 
 
   //data loading as the prescription is selected--------------------------------
@@ -57,6 +69,7 @@ export default function Pharmacy() {
         setLoading(false) 
           //attach each the drug details requested from back to the corresponding drug in prescription
           let res=response.data
+          console.log(response.data)
           let obj={...selectedPrescription}
           obj[0].medicine.forEach((elm,ind)=>{
             elm.detail=res[elm.name]
@@ -108,6 +121,22 @@ export default function Pharmacy() {
     setOpen(false);
   };
 
+  const serviceChargeHandle = () => {
+    axios.put(baseURL+endPoints.SERVICE,{id:0,price:serviceCharge})
+    .then((res)=>{
+      setMsg('Service charge updated successfully')
+      setCol('success')
+      setOpen(false)
+      console.log(res)
+    })
+    .catch((er)=>{
+      setMsg('Error occured! Try again')
+      setCol('error')
+      setOpen(false)
+      console.log(er)
+    })
+  }
+
   //snackbar
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
@@ -130,10 +159,10 @@ export default function Pharmacy() {
     })
 
     setLoadingBConfirm(true);
-    let load={data:obj,total:total+serviceCharge}
+    let load={prescriptId:select,data:obj,total:Number(total+serviceCharge)}
     setLoadingBConfirm(true);
     console.log(JSON.stringify(load))
-    axios.post(baseURL+endPoints.ADDBILLDRUG,load)
+/*     axios.post(baseURL+endPoints.ADDBILLDRUG,load)
     .then(()=>{
       setLoadingBConfirm(false)
       handleCloseConfirm()
@@ -143,6 +172,7 @@ export default function Pharmacy() {
       SetData(Data.filter((el)=>el.id!==select))
       setDrugDetail(null)
       setSelect(null)
+      setTotal(0)
     })
     .catch((er)=>{
       setLoadingBConfirm(false)
@@ -152,7 +182,7 @@ export default function Pharmacy() {
       setSnackbarOpen(true)
       console.log(er)
     })
-
+ */
   };
   
   //update the weight-----------------------------------------------------
@@ -206,7 +236,7 @@ useEffect(()=>{
   drugBill.forEach((el,ind)=>{
     t=t+parseInt(el.Amount)*parseInt(el.price)
   })
-  setTotal(t)
+  setTotal(Number(t))
 },[drugBill])
 
 
@@ -231,13 +261,52 @@ useEffect(()=>{
   }
   const handleCloseConfirm = () => {setOpenConfirm(false)} 
    
+//bill print------------------------------------------------------------
+
+const exportAsPDF = async () => {
+
+  setBillDetail(drugBill)
+
+  const element = billRef.current;
+  element.style.display = 'block';
+  const options = {
+    margin: 0.3,
+    filename: 'MedicareHub bill.pdf',
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2 },
+    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+  };
+
+  html2pdf().from(element).set(options).save().then(()=>{
+    element.style.display = 'none';
+  });
+ }
+
+ //date function ------
+
+ const getDate=()=>{ 
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed in JavaScript
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+ } 
+
+ const getTime=()=>{
+  const date = new Date();
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  const seconds = String(date.getSeconds()).padStart(2, '0');
+  return `${hours}:${minutes}:${seconds}`;
+ }
+
   return (
     <div>
     <Navbar></Navbar>
 
     <Grid container spacing={0} sx={{paddingTop:'64px',height:'100vh'}}>
-      <Grid item xs={3} style={{height:'100%',backgroundColor:'#E7FFF9'}}>
-        <SidebarContainer sx={{ backgroundColor:'#E7FFF9'}}>
+      <Grid item xs={3} style={{height:'100%',backgroundColor:theme.palette.custom.sideBar}}>
+        <SidebarContainer sx={{ backgroundColor:theme.palette.custom.sideBar}}>
           <SidebarTop>
           <Box sx={{width:'100%',display:'flex',justifyContent:'space-between',alignItems:'center',pr:'14px',pl:'14px'}}>
           <NotificationsIcon></NotificationsIcon>
@@ -278,9 +347,9 @@ useEffect(()=>{
   return(<Box key={no} sx={{mt:"10px"}}>
     {/*-----------------    Blue lable (prescript drug)  ----------------------------------------*/}
     <Card sx={{ backgroundColor: '#0099cc',display:'flex',flexDirection:'row', color: 'white', fontSize: '20px',width:"500px",marginLeft:"10px"}}>
-                <Typography gutterBottom variant="p" sx={{ flex:'3',marginLeft: '10px', }}>{drug.name}</Typography>
-                <Typography gutterBottom variant="p" sx={{flex:'2', marginLeft: '100px ',  }}>{drug.quantity} mg</Typography>
-                <Typography gutterBottom variant="p" sx={{ flex:'1',marginLeft: '150px', }}>{drug.hour}</Typography>
+                <Typography gutterBottom sx={{ flex:'3',marginLeft: '10px', }}>{drug.name}</Typography>
+                <Typography gutterBottom sx={{flex:'2', marginLeft: '100px ',  }}>{drug.quantity} mg</Typography>
+                <Typography gutterBottom sx={{ flex:'1',marginLeft: '150px', }}>{drug.hour}</Typography>
     </Card>   
         
     {/*-----------------    Drop down list for drug weights    ------------------------------------*/}
@@ -339,22 +408,22 @@ useEffect(()=>{
        </Box>
        <Box sx={{width:'800px',display:'flex',alignItems:'center'}}>
         <Typography sx={{fontSize:'20px',pl:'15px'}}>Total</Typography>
-        <Typography sx={{textAlign:'right',fontWeight:'bold',flex:2}}>{total+serviceCharge}</Typography>
+        <Typography sx={{textAlign:'right',fontWeight:'bold',flex:2}}>{`${Number(total+serviceCharge)}`}</Typography>
        </Box>
 
       {/* ------------------- Confirmation         ------------------------------------*/}  
       <Box style={{ textAlign: 'right', marginTop: '20px', marginBottom: '20px' }}>
-          <PrintIcon sx={{mr:'30px'}} size="small" />
+          <PrintIcon sx={{mr:'30px',cursor:'pointer'}} size="small" onClick={exportAsPDF} />
           <Button variant="contained" sx={{marginRight: '220px'}} endIcon={<DoneIcon></DoneIcon>}       onClick={handleClickOpenConfirm}>Confirm
           </Button>
       </Box>
 
        <Dialog open={open} onClose={handleClose}>
         <DialogContent>
-        <TextField label="Service Charge" size='small' variant="outlined" value={serviceCharge} />
+        <TextField type='number' label="Service Charge" size='small' variant="outlined" value={serviceCharge} onChange={(e)=>setServiceCharge(e.target.value)}/>
           <div style={{display:'flex',justifyContent:'center',paddingTop:'10px'}}>
           <Button onClick={handleClose} size='small' color='warning' variant='outlined' sx={{mr:'20px'}}>Cancel</Button>
-          <Button onClick={handleClose} size='small' variant="contained" endIcon={<DoneIcon></DoneIcon>}>Save</Button>
+          <Button onClick={serviceChargeHandle} size='small' variant="contained" endIcon={<DoneIcon></DoneIcon>}>Save</Button>
         </div>
         </DialogContent>
       </Dialog>
@@ -363,21 +432,46 @@ useEffect(()=>{
       <ConfirmPropmt action={handleConfirmAction} message="Are you sure bill is ready?"
        handleClose={handleCloseConfirm} loadingB={loadingBConfirm} open={openConfirm}></ConfirmPropmt>
 
-     
-    {/* --------------------------- Snackbar ------------------------------------------------- */}
-      <Snackbar open={snackbarOpen} autoHideDuration={2000} onClose={handleSnackbarClose}>
+      </div>
+)}
+      </Grid>:<Grid item xs={9} style={{height:'100%',overflowY:'scroll'}}><Pharmacy_drugstore></Pharmacy_drugstore></Grid>}
+
+          {/* --------------------------- Snackbar ------------------------------------------------- */}
+          <Snackbar open={snackbarOpen} autoHideDuration={2000} onClose={handleSnackbarClose}>
         <MuiAlert onClose={handleSnackbarClose} severity={col} elevation={6} variant="filled">
           {msg}
         </MuiAlert>
       </Snackbar>
-      </div>
-)}
-      </Grid>:<Grid item xs={9} style={{height:'100%',overflowY:'scroll'}}><Pharmacy_drugstore></Pharmacy_drugstore></Grid>}
-      
-    </Grid>
 
+      {/* --------------------- Printed bill ------------------------------------------ */}
+      <Box sx={{p:'5px',display:'none'}} ref={billRef}>
+        <Box sx={{borderBottom:'1px solid grey',width:'80%',mb:'20px'}}>
+          <Typography sx={{fontSize:'15px'}}>PrescriptionId : {select}</Typography>
+          <Typography sx={{fontSize:'15px'}}>Date: {getDate()} Time: {getTime()}</Typography>
+        </Box>
+        {billDetail.map((elm,ind)=>(
+          <Box sx={{backgroundColor:'lightgrey',height:'20px',display:'flex',width:'80%'}}>
+            <Typography sx={{fontSize:'15px',flex:'1'}}>{elm.DrugId}</Typography>
+            <Typography sx={{fontSize:'15px',flex:'1'}}>{elm.weight}mg</Typography>
+            <Typography sx={{fontSize:'15px',flex:'1'}}>{elm.Amount}</Typography>
+            <Typography sx={{fontSize:'15px',flex:'1'}}>Rs.{elm.price}</Typography>
+            <Typography sx={{fontSize:'15px',flex:'1',textAlign:'right'}}>{elm.Amount*elm.price}</Typography>
+          </Box>
+        ))}
+        <Box sx={{height:'20px',display:'flex',pt:'19px',borderBottom:'1px solid grey',width:'80%'}}>
+          <Typography sx={{fontSize:'15px',flex:'1'}}>Total</Typography>
+          <Typography sx={{fontSize:'15px',flex:'1',textAlign:'right'}}>{serviceCharge}</Typography>
+        </Box>
+        <Box sx={{height:'20px',display:'flex',pt:'20px',width:'80%'}}>
+          <Typography sx={{fontSize:'15px',flex:'1'}}>Service Charge</Typography>
+          <Typography sx={{fontSize:'15px',flex:'1',textAlign:'right'}}>{serviceCharge}</Typography>
+        </Box>
+        <Box sx={{height:'20px',display:'flex',pt:'5px',width:'80%'}}>
+          <Typography sx={{fontSize:'16px',flex:'1'}}>Net Amount</Typography>
+          <Typography sx={{fontSize:'16px',flex:'1',textAlign:'right'}}>{total+serviceCharge}</Typography>
+        </Box>
+      </Box>
+    </Grid>
   </div>
   )
 }
-
-

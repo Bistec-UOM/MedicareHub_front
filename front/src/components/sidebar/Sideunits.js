@@ -3,6 +3,7 @@ import Typography from '@mui/material/Typography'
 import { Chip , Box, Paper} from '@mui/material'
 import CheckIcon from '@mui/icons-material/Check';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import theme from '../Style';
 
 function Sideunit_doctor({ name, title ,selectedTab,index}) {
 
@@ -51,13 +52,13 @@ function Sideunit_doctor({ name, title ,selectedTab,index}) {
 }
 
 
-function Sideunit_Doctor({name, title ,selectedTab,index}) {
+function Sideunit_Doctor({name, title ,selectedTab,index,onClick}) {
 
   const [isSelected,setIsselected]=useState(false)
 
   const handleClick = () => {
     setIsselected(true)
-
+    onClick(index)
   };
 
   return (
@@ -69,11 +70,10 @@ function Sideunit_Doctor({name, title ,selectedTab,index}) {
       cursor: 'pointer',
       padding:'8px',
       borderRadius: '8px',
-      backgroundColor: selectedTab==index? 'rgb(121, 204, 190)' : '#ffffff',
+      backgroundColor: selectedTab==index? theme.palette.custom.greenH : '#ffffff',
       boxShadow: 2,
       "&:hover": {
-          boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
-          backgroundColor: selectedTab==index? 'rgb(121, 204, 190)' : 'rgb(231, 255, 249)'
+          backgroundColor: selectedTab==index? theme.palette.custom.greenH : theme.palette.custom.sideBarUnitHover
         }
       }}
   >
@@ -99,11 +99,10 @@ function Sideunit_Patient({id,name,status,time,selected,setSelect}) {
       cursor: 'pointer',
       padding:'8px',
       borderRadius: '8px',
-      backgroundColor: selected? 'rgb(121, 204, 190)' : '#ffffff',
+      backgroundColor: selected? theme.palette.custom.sideBarUnitSelected : '#ffffff',
       boxShadow: 2,
       "&:hover": {
-          boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
-          backgroundColor: selected? 'rgb(121, 204, 190)' : 'rgb(231, 255, 249)'
+          backgroundColor: selected? theme.palette.custom.greenH : theme.palette.custom.sideBarUnitHover
         }
       }}
     onClick={() => setSelect(id)}>
@@ -113,14 +112,15 @@ function Sideunit_Patient({id,name,status,time,selected,setSelect}) {
         <div 
           style={{
             display:'inline',
-            backgroundColor: selected?'#60a398':'#adaaaa',
-            color:'white',
+            backgroundColor: '#ffffff',
+            color:theme.palette.custom.greenH,
             paddingRight:'4px',
             paddingLeft:'4px',
             paddingTop:'2px',
             paddingBottom:'2px',
             borderRadius:'15px',
-            marginRight:'4px'
+            marginRight:'4px',
+            border: `1px solid ${theme.palette.custom.greenH}`
             }}
         >{time}</div>
 
@@ -141,10 +141,9 @@ function Sideunit_Test({id,name,load,setSelectedT,selectedT}) {
         cursor: 'pointer',
         padding:'8px',
         borderRadius: '8px',
-        backgroundColor: selectedT === id ? 'rgb(121, 204, 190)' : '#ffffff',boxShadow: 2,
+        backgroundColor: selectedT === id ? theme.palette.custom.sideBarUnitSelected : '#ffffff',
         "&:hover": {
-                  boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
-                  backgroundColor: selectedT === id ? 'rgb(121, 204, 190)' : 'rgb(231, 255, 249)'
+                  backgroundColor: selectedT === id ? theme.palette.custom.greenH : theme.palette.custom.sideBarUnitHover
               }
         }}
       onClick={() => setSelectedT(id)}
@@ -157,14 +156,15 @@ function Sideunit_Test({id,name,load,setSelectedT,selectedT}) {
               <div key={el} 
                 style={{
                   display:'inline',
-                  backgroundColor: selectedT==id?'#60a398':'#adaaaa',
-                  color:'white',
+                  backgroundColor:'#ffffff',
+                  color:theme.palette.custom.greenH,
                   paddingRight:'4px',
                   paddingLeft:'4px',
                   paddingTop:'2px',
                   paddingBottom:'2px',
                   borderRadius:'15px',
-                  marginRight:'4px'
+                  marginRight:'4px',
+                  border: `1px solid ${theme.palette.custom.greenH}`
                 }}>{el.test}</div>
               )
             })
@@ -184,10 +184,9 @@ function Sideunit_Bill({id,name,time,setSelect,selected}) {
       cursor: 'pointer',
       padding:'8px',
       borderRadius: '8px',
-      backgroundColor: selected? 'rgb(121, 204, 190)' : '#ffffff',boxShadow: 2,
+      backgroundColor: selected? theme.palette.custom.sideBarUnitSelected : '#ffffff',
       "&:hover": {
-          boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
-          backgroundColor: selected?'rgb(121, 204, 190)' : 'rgb(231, 255, 249)'
+          backgroundColor: selected?theme.palette.custom.greenH : theme.palette.custom.sideBarUnitHover
         }
       }}
     onClick={() => setSelect(id)}
@@ -197,14 +196,15 @@ function Sideunit_Bill({id,name,time,setSelect,selected}) {
     <div 
       style={{
         display:'inline',
-        backgroundColor: selected?'#60a398':'#adaaaa',
-        color:'white',
+        backgroundColor: '#ffffff',
+        color:theme.palette.custom.greenH,
         paddingRight:'4px',
         paddingLeft:'4px',
         paddingTop:'2px',
         paddingBottom:'2px',
         borderRadius:'15px',
-        marginRight:'4px'
+        marginRight:'4px',
+        border: `1px solid ${theme.palette.custom.greenH}`
         }}
     >{time}</div>
 </Paper>

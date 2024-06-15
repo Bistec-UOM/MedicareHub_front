@@ -11,6 +11,7 @@ import { baseURL,endPoints } from '../../Services/Lab';
 import LoadingButton from '@mui/lab/LoadingButton';
 import DoneIcon from '@mui/icons-material/Done'
 import { ConfirmPropmt } from '../Common';
+import { setHeaders } from '../../Services/Auth';
 
 export default function Edittemplate({setPage,tId,Tdata,setTload}) {
       
@@ -171,7 +172,7 @@ export default function Edittemplate({setPage,tId,Tdata,setTload}) {
           Fields:ld
         }
         console.log(JSON.stringify(obj))
-        axios.put(baseURL+endPoints.TEMPLATE,obj)
+        axios.put(baseURL+endPoints.TEMPLATE,obj,setHeaders())
         .then(res=>{
           seterMsg('Template edited successfuly')
           handleClick1 ('success')
@@ -188,7 +189,7 @@ export default function Edittemplate({setPage,tId,Tdata,setTload}) {
       const [loading,setLoading]=useState(true)
       useEffect(()=>{
         document.body.style.margin = '0';
-          axios.get(baseURL+endPoints.TEMPLATE+`${tId}`)
+          axios.get(baseURL+endPoints.TEMPLATE+`${tId}`,setHeaders())
           .then(res=>{
             let obj=res.data
             obj.map((el,ind)=>{el.stat="exist"})

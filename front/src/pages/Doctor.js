@@ -9,7 +9,7 @@ import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
 import UpdateIcon from '@mui/icons-material/Update';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-import ScienceIcon from '@mui/icons-material/Science';
+import ScienceOutlinedIcon from '@mui/icons-material/ScienceOutlined';
 import PatientsRecords from '../components/Doctor/PatientsRecords';
 import DoctorAddDrugs from '../components/Doctor/DoctorAddDrugs';
 import '../components/CustomScroll.css'
@@ -27,6 +27,8 @@ import LabResult from '../components/Lab/LabResult';
 import DoctorAppCalender from '../components/recepcomponents/DoctorAppointmentHandle/DoctorAppCalender/DoctorAppCalender';
 import { setHeaders } from '../Services/Auth';
 import Patient_profile from '../components/Patient_profile';
+import theme from '../components/Style';
+import DoctorAppList from '../components/recepcomponents/DoctorAppointmentHandle/DoctorAppList/DoctorAppList';
 
 export default function Doctor() {
   
@@ -145,6 +147,8 @@ const handleClick = () => {
 };
 
 
+
+
 const fetchData = async () => {
   try {
     const response = await axios.get(baseURL+endPoints.APPOINTMENTLIST,setHeaders()); 
@@ -211,11 +215,18 @@ const handleCloseConfirm = () => {setOpenConfirm(false)}
 
   const [Mode,setMode]=useState(1)//1-> original  2-> calender  3-> patient profile
 
+  useEffect(()=>
+    {
+      console.log("mod",Mode);
+    
+    },[Mode])
+    const [applistDetails,setAppListDetails]=useState(["",""])
+
  return (
   <div>
   <Navbar></Navbar>
   <Grid container spacing={0} sx={{ height: '100vh',pt:'64px'}}>
-      <Grid item xs={3} sx={{ height: '100%', backgroundColor:'#e7fff9'}}>
+      <Grid item xs={3} sx={{ height: '100%', backgroundColor:theme.palette.custom.sideBar}}>
               <SidebarTop>
  {/*..................switch.......................... */}
               <TopUnit Mode={Mode} setMode={setMode} appointments={appointments} SwitchOnChange={() => setShowDonePatients(prev => !prev)}></TopUnit>
@@ -252,7 +263,7 @@ const handleCloseConfirm = () => {setOpenConfirm(false)}
                     <Typography sx={{display:'inline',fontSize:'15px',fontStyle:'italic',color:'lightgrey'}}>Checking records...</Typography>
                     <CircularProgress size={20}/>
                   </div>:''}
-                  {available.lab?<ScienceIcon sx={{position:'fixed',top:'75px',right:'60px',zIndex:'40',cursor:'pointer'}} onClick={handleAddIconClick2}></ScienceIcon>:''}
+                  {available.lab?<ScienceOutlinedIcon sx={{position:'fixed',top:'75px',right:'60px',zIndex:'40',cursor:'pointer'}} onClick={handleAddIconClick2}></ScienceOutlinedIcon>:''}
                   {available.rec?<UpdateIcon sx={{position:'fixed',top:'75px',right:'20px',zIndex:'40',cursor:'pointer'}} onClick={handleAddIconClick}></UpdateIcon> :''}
                   {available.rec?<PatientsRecords openPopup={openPopup} setOpenPopup={setOpenPopup}   selectedPatientId={selectedAppointment[0].patient.id} records={records} lbAnalytics={lbAnalytics} drgAnalytics={drgAnalytics}/>:''}
                   <LabResult openPopup2={openPopup2} setOpenPopup2={setOpenPopup2} data={labReport}></LabResult>
@@ -265,7 +276,7 @@ const handleCloseConfirm = () => {setOpenConfirm(false)}
 {/*........................Lab Request..............................................*/}
                 
                  <LabRequest openpopBox={openpopBox} setOpenpopBox={setOpenpopBox} rep={rep} setrep={setrep} labtestlist={labtestlist}/>
-                 <ScienceIcon sx={{ color: '#33cc33', marginLeft: '87%', fontSize: '30px', cursor: 'pointer' }} onClick={() =>handleAddButtonClick(selectedAppointment)} />
+                 <ScienceOutlinedIcon sx={{ color: '#33cc33', marginLeft: '87%', fontSize: '30px', cursor: 'pointer' }} onClick={() =>handleAddButtonClick(selectedAppointment)} />
 
 {/*.................patient extra details ............................................*/}
                      <Box
@@ -302,10 +313,13 @@ const handleCloseConfirm = () => {setOpenConfirm(false)}
      handleClose={handleCloseConfirm} loadingB={loadingBConfirm} open={openConfirm}></ConfirmPropmt>
     </Grid>:''}
     {Mode==2?<Grid item xs={9} style={{ height: '100%', overflowY: 'scroll' }}>
-            <DoctorAppCalender></DoctorAppCalender>
+            <DoctorAppCalender setAppListDetails={setAppListDetails} Mode={Mode} setMode={setMode}></DoctorAppCalender>
     </Grid>:''}
     {Mode==3?<Grid item xs={9} style={{ height: '100%', overflowY: 'scroll' }}>
             <Patient_profile></Patient_profile>
+    </Grid>:''}
+    {Mode==4?<Grid item xs={9} style={{ height: '100%', overflowY: 'scroll' }}>
+            <DoctorAppList selectedDAy={applistDetails[0]} docid={applistDetails[1]} Mode={Mode} setMode={setMode}></DoctorAppList>
     </Grid>:''}
   </Grid>
 </div>    

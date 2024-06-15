@@ -17,6 +17,7 @@ import NotificationComponentlk from "./components/Admin/PageComponents/notify";
 import Login from "./components/Admin/PageComponents/login";
 import { ThemeProvider } from "@mui/material";
 import theme from "./components/Style";
+import Test from "./pages/Test";
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
         <Route path="lab/view" element={<ViewResult id={4}></ViewResult>}></Route>
         <Route path="admin/final" element={<NotificationComponentlk/>}></Route>
         <Route path="admin/test" element={<Login/>}></Route>
+        <Route path="/test" element={<Test></Test>}></Route>
         
         </Routes>
         </BrowserRouter>

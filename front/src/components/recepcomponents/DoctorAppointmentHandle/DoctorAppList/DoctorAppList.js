@@ -7,6 +7,7 @@ import {
   Container,
   Box,
   Hidden,
+  IconButton,
 } from "@mui/material";
 import SearchBar from "../../Searchbar/Searchbar";
 import StepDoctor from "../SetperDoctor/SteperDoctor";
@@ -24,8 +25,10 @@ import { setHeaders } from "../../../../Services/Auth";
 import * as signalR from '@microsoft/signalr';
 import { jwtDecode } from "jwt-decode";
 import CloseIcon from '@mui/icons-material/Close';
+import AppBlockingOutlinedIcon from '@mui/icons-material/AppBlockingOutlined';
+import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined';
 
-const DoctorAppList = (props) => {
+const DoctorAppList = ({Mode,setMode,selectedDAy,docid}) => {
   const [notificationOpen, setNotificationOpen] = useState(false);
   const [notiMessage, setNotiMessage] = useState("");
   const [notiType, setNotiType] = useState("success");
@@ -37,39 +40,7 @@ const DoctorAppList = (props) => {
   const [connection, setConnection] = useState(null);
   const [messages, setMessages] = useState([]);
 
-  // useEffect(() => {
-
-  //   let userId = jwtDecode(localStorage.getItem("medicareHubToken")).Id;
-
-   
-  //   // Create a connection to the SignalR hub
-  //   const newConnection = new signalR.HubConnectionBuilder()
-  //     .withUrl(`https://localhost:7205/appointmentnotificationHub?userId=${userId}`) // Ensure this matches the hub URL in your Startup.cs
-  //     .withAutomaticReconnect()
-  //     .build();
-
-  //   // Set up the connection
-  //   setConnection(newConnection);
-  // }, []);
-
-  // useEffect(() => {
-  //   console.log("before con");
-  //   if (connection) {
-  //     // Start the connection
-  //     connection.start()
-  //       .then(result => {
-  //         console.log('Connected! helo');
-
-  //         // Set up a listener for notifications
-  //         connection.on('ReceiveNotification', message => {
-  //           console.log("inside receive notification");
-  //           setMessages(messages => [...messages, message]);
-  //           console.log("mesage",message);
-  //         });
-  //       })
-  //       .catch(e => console.log('Connection failed: ', e));
-  //   }
-  // }, [connection]);
+ 
 
   const handleNotification = (msg, type) => {
     setNotiMessage(msg);
@@ -83,24 +54,12 @@ const DoctorAppList = (props) => {
   const [isDisabledCancel, setIsDisabledCancel] = useState(true); //variable for disabling the cancel button
   const [isDisabledBlock, setIsDisabledBlock] = useState(true); //variable for disabling block button
   const [timeSelection,setTimeSelection]=useState(false);  //variable for time selection popup
-  const [selectedDay, setSelectedDay] = useState(props.selectedDay);
+  const [selectedDay, setSelectedDay] = useState(selectedDAy);
   const [cancelAll, setCancelAll] = useState(false); //var for all app cancel popup
   const today = new Date();
   const compSelectedDay = new Date(selectedDay); //day object of selected day for comparison of blocking functionality
 
   const [notifications, setNotifications] = useState([]);
-
-    // useEffect(() => {  //signal R connection use effect
-    //     signalRConnection.on("ReceiveNotification", (message) => {
-    //         setNotifications((prev) => [...prev, message]);
-    //     });
-
-    //     return () => {
-    //         signalRConnection.off("ReceiveNotification");
-    //     };
-    // }, []);
-
-
 
   const handleCancelAll = () => {
     setCancelAll(true);
@@ -113,15 +72,24 @@ const DoctorAppList = (props) => {
   var location = useLocation();
   var loc = location.state;
 
+  const handleBackButton=()=>
+    {
+      setMode(2);
+      //console.log("setmod",Mode);
+
+    }
+
+  
   useEffect(() => {
     //for fethcing the app of a day
+    setMode(4);
     document.body.style.margin = "0";
-    console.log("props",props.docid)
+    console.log("props",docid)
     console.log("messages",messages);
 
     axios
       .get(
-        baseURL+endPoints.AppDay+`${props.docid}`+"/day/"+`${selectedDay}`,setHeaders()
+        baseURL+endPoints.AppDay+`${docid}`+"/day/"+`${selectedDay}`,setHeaders()
       )
       .then((response) => {
         const responseData = response.data;
@@ -141,7 +109,7 @@ const DoctorAppList = (props) => {
         handleNotification(err.response.data,"error");
         setRloadDone(true);
       });
-  }, [props.docid, selectedDay, delcount]); // Ensure dependencies are included in the dependency array
+  }, [docid, selectedDay, delcount]); // Ensure dependencies are included in the dependency array
   return (
     <Box sx={{ height: "100%" }}>
       <Box
@@ -153,14 +121,15 @@ const DoctorAppList = (props) => {
           backgroundColor: "white",
           width: { sm: "70%", xs: "90%" },
           flexWrap: "wrap-reverse",
-          paddingTop: { xs: "7px", sm: "10px" },
+          paddingTop: { xs: "7px", sm: "10px",md:'20px'},
           zIndex: 10,
         }}
       >
+       <ArrowBackOutlinedIcon sx={{paddingBottom:'40px'}} onClick={handleBackButton}></ArrowBackOutlinedIcon>
         <SearchBar
           search={search}
           setSearch={setSearch}
-          mgl="20%"
+         // mgl="20%"
           isDisabled={isDisabledCancel}
           placename="Patient name or id..."
         />
@@ -174,6 +143,10 @@ const DoctorAppList = (props) => {
               sm: 5,
               xs: -3,
             },
+            marginTop:{
+              md:0,
+              xs:'3%'
+            },
             width: { xs: "100%", sm: "auto" },
           }}
           spacing={2}
@@ -182,14 +155,9 @@ const DoctorAppList = (props) => {
           <Button
             onClick={handleBlockDay}
             disabled={isDisabledBlock}
-            sx={{
-              backgroundColor: "#F44336",
-              fontWeight: 25,
-              "&:hover": {
-                backgroundColor: "#F34436", // Set hover background color to be the same
-              },
-            }}
-            variant="contained"
+            color="warning"
+            variant="outlined"
+            endIcon={<AppBlockingOutlinedIcon/>}
           >
             Block
           </Button>
@@ -227,12 +195,12 @@ const DoctorAppList = (props) => {
             marginTop: { xs: "50%", sm: "20%", md: "7%" },
           }}
         >
-          <StepDoctor search={search} items={filteredAppointments}></StepDoctor>
+          {/* <StepDoctor search={search} items={filteredAppointments}></StepDoctor> */}
         </Box>
 
         {
           <Box
-            sx={{ width: "70%", marginTop: { xs: "40%", sm: "20%", md: "7%" } }}
+            sx={{ width: "70%", marginTop: { xs: "40%", sm: "20%", md: "9%" } }}
           >
              {!RloadDone?<Load></Load>:''}
             {Array.isArray(filteredAppointments) &&
@@ -247,13 +215,12 @@ const DoctorAppList = (props) => {
                         .toLowerCase()
                         .includes(search.toLowerCase());
                 })
-                .map((item) => (
+                .map((item,index) => (
                   <div key={item.nic}>
                     <DoctorAppCard
+                      appno={index}
                       selectedDay={selectedDay}
-                      docid={props.docid}
-                      appointlist={props.appointlist}
-                      setAppointList={props.setAppointList}
+                      docid={docid}
                       handleNotification={handleNotification}
                       delcount={delcount}
                       setDelcount={setDelcount}
@@ -271,7 +238,7 @@ const DoctorAppList = (props) => {
       </div>
       <DayBlockPopup
         selectedDay={selectedDay}
-        doctorId={props.docid}
+        doctorId={docid}
         docDayBlockPopup={docDayBlockPopup}
         setDocDayBlockPopup={setDocDayBlockPopup}
         handleNotification={handleNotification}
@@ -282,7 +249,7 @@ const DoctorAppList = (props) => {
         timeSelection={timeSelection}
         setTimeSelection={setTimeSelection}
         selectedDay={selectedDay}
-        doctorId={props.docid}
+        doctorId={docid}
         docDayBlockPopup={docDayBlockPopup}
         setDocDayBlockPopup={setDocDayBlockPopup}
         blockSelectionPopup={blockSelectionPopup}
@@ -293,7 +260,7 @@ const DoctorAppList = (props) => {
         timeSelection={timeSelection}
         setTimeSelection={setTimeSelection}
         selectedDay={selectedDay}
-        doctorId={props.docid}
+        doctorId={docid}
         blockSelectionPopup={blockSelectionPopup}
         setBlockSelectionPopup={setBlockSelectionPopup}
         handleNotification={handleNotification}
@@ -302,7 +269,7 @@ const DoctorAppList = (props) => {
         selectedDay={selectedDay}
         delcount={delcount}
         setDelcount={setDelcount}
-        docid={props.docid}
+        docid={docid}
         handleNotification={handleNotification}
         isDisabledCancel={isDisabledCancel}
         setIsDisabledCancel={setIsDisabledCancel}

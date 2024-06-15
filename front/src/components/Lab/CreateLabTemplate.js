@@ -10,6 +10,7 @@ import axios from 'axios'
 import { baseURL,endPoints } from '../../Services/Lab';
 import { ConfirmPropmt } from '../Common';
 import theme from '../Style';
+import { setHeaders } from '../../Services/Auth';
 
 export default function CreateLabTemplate({setPage,setTload}) {
 
@@ -176,7 +177,7 @@ const createTemplate=()=>{
           reportFields:ar
         }
         console.log(T)
-        axios.post(baseURL+endPoints.TEMPLATE,T)
+        axios.post(baseURL+endPoints.TEMPLATE,T,setHeaders())
         .then(res=>{
           seterMsg('Template added successfuly')
           handleClick1 ('success')

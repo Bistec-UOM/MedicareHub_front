@@ -41,6 +41,7 @@ const PatientDetailCard = ({
           width: { md: "80%", xs: "100%" },
           marginLeft: "auto",
           marginRight: "auto",
+          marginTop:{md:'0',xs:'20%'}
         }}
       >
         <Card
@@ -49,7 +50,7 @@ const PatientDetailCard = ({
             textAlign: "left",
             marginBottom: 2,
            // border: "1px solid #3B877A",
-            borderRadius: 5,
+            borderRadius: '5px',
           }}
         >
           <Stack direction={"column"}>
