@@ -150,7 +150,10 @@ export default function Pharmacy() {
   const handleConfirmAction = () => {
     let objunit={}
     let obj=[]
-    drugBill.forEach((el)=>{
+    let tmpDrugBill=[...drugBill]
+    console.log(tmpDrugBill)
+    tmpDrugBill=tmpDrugBill.filter((el)=>el.DrugId!=="")
+    tmpDrugBill.forEach((el)=>{
       objunit.drugID=el.DrugId
       objunit.prescriptionID=el.PrescriptionId
       objunit.amount=el.Amount
@@ -162,8 +165,8 @@ export default function Pharmacy() {
     let load={prescriptId:select,data:obj,total:Number(total+serviceCharge)}
     setLoadingBConfirm(true);
     console.log(JSON.stringify(load))
-/*     axios.post(baseURL+endPoints.ADDBILLDRUG,load)
-    .then(()=>{
+   axios.post(baseURL+endPoints.ADDBILLDRUG,load)
+     .then(()=>{
       setLoadingBConfirm(false)
       handleCloseConfirm()
       setMsg('Bill is uploaded successfully')
@@ -182,7 +185,7 @@ export default function Pharmacy() {
       setSnackbarOpen(true)
       console.log(er)
     })
- */
+
   };
   
   //update the weight-----------------------------------------------------
@@ -385,7 +388,7 @@ const exportAsPDF = async () => {
       <Typography gutterBottom  sx={{ marginLeft: '90px ', display:'inline',fontWeight:'bold',textAlign:'right',flex:2}}>{parseInt(drugBill[no].price)*parseInt(drugBill[no].Amount)}</Typography>
       
     </Box> 
-  </Box>)}else{return<Typography sx={{fontSize:'15px',pl:'20px',color:'gray'}}>Not found in store</Typography>}}):loading?<Load></Load>:select?<Typography sx={{fontSize:'15px',pl:'20px',color:'gray'}}>No issued drugs</Typography>:''}
+  </Box>)}else{return<Typography key={no} sx={{fontSize:'15px',pl:'20px',color:'gray'}}>Not found in store</Typography>}}):loading?<Load></Load>:select?<Typography sx={{fontSize:'15px',pl:'20px',color:'gray'}}>No issued drugs</Typography>:''}
 </div>
        ) : ''}
       {select && (    
