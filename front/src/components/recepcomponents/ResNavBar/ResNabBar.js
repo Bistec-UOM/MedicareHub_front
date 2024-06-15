@@ -24,6 +24,7 @@ import { setHeaders } from "../../../Services/Auth";
 import * as signalR from '@microsoft/signalr';
 import { baseURLA,endPointsA } from "../../../Services/Admin";
 import UserPopUp from "../../Admin/DialogComponents/UserPopUp";
+import { NotificationPrompt } from "../../Common";
 
 const ResNavBar = ({ isClosing, setMobileOpen, mobileOpen }) => {
   const [profile, setProfile] = useState({Name: "Profile",Role: "Empty",Image: "",Id: ""});
@@ -42,6 +43,16 @@ const ResNavBar = ({ isClosing, setMobileOpen, mobileOpen }) => {
       setMobileOpen(!mobileOpen);
     }
   };
+
+   //notification prompt functions
+   const [openNotify, setOpenNotify] = useState(false)
+   const handleClickOpenNotify = (x) => {
+        setOpenNotify(true)
+        setBadgeContent(0);
+        axios.put(
+          baseURL+endPoints.MarkAsSennNotification+`${userId}`+"/user/"+`${true}`,setHeaders());
+  }
+  const handleCloseNotify = () => {setOpenNotify(false)} 
 
   //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // +++++++++++++++++++                    CHATHURA                  ++++++++++++++++++++++++++++
@@ -79,21 +90,26 @@ if (token) {
     setAppNotiConnection(newConnection);
   }, []);
 
-  useEffect(() => {  //use effect for receiving real time notification
-    console.log("before con");
+  useEffect(() => {  //use effect for real time notification
+    console.log("before con", AppNotificationconnection);
     if (AppNotificationconnection) {
+      console.log("Attempting to start connection...");
       // Start the connection
       AppNotificationconnection.start()
         .then(result => {
-          console.log('Connected! helo');
+        //  AppNotificationconnection.invoke("NotiToPharmacist")
+          console.log("Connection started successfully", result);
           // Set up a listener for notifications
           AppNotificationconnection.on('ReceiveNotification', message => {
-            console.log("inside receive side notification",message); //adding new real time notitication to the notification messages list
-            setNotificationMessages(notificationMessages => [...notificationMessages, message]);
-            setBadgeContent(prevBadgeContent => prevBadgeContent + 1);  //increase badge content for new real time notification
+            console.log('Connected! helo', AppNotificationconnection.connectionId);
+            console.log("inside receive notification chathura callback", message.message); // Log the received message
+            setNotificationList(notificationMessages => [...notificationMessages, message]); // Add new notification to the list
+            setBadgeContent(badgeContent+1); // Increase badge content for new notification
           });
         })
         .catch(e => console.log('Connection failed: ', e));
+    } else {
+      console.log("AppNotificationconnection is null or undefined.");
     }
   }, [AppNotificationconnection]);
 
@@ -123,12 +139,13 @@ if (token) {
   }, []);
 
   useEffect(() => {  // Extract only  messages from notificationList and set notificationMessages 
-      const messages = notificationList.map((notification) => notification.message);
-      const unseenNotifications = notificationList.filter(notification => notification.seen===false);
-      setBadgeContent(unseenNotifications.length);
-      setNotificationMessages(messages);
-  
-  }, [notificationList]);
+    console.log("notilist",notificationList);
+    const messages = notificationList.map((notification) => notification.message);
+    const unseenNotifications = notificationList.filter(notification => notification.seen===false);
+    setBadgeContent(unseenNotifications.length);
+    setNotificationMessages(messages);
+
+}, [notificationList]);
 
 
   //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -278,7 +295,7 @@ if (token) {
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
-            <MenuItem onClick={handleNotificationBell}>
+            <MenuItem onClick={handleClickOpenNotify}>
             {badgeContent > 1 ? (
                 <NotificationsIcon color="action" sx={{ marginRight: "10%" }} />
               ) : (
@@ -318,6 +335,7 @@ if (token) {
         </List>
       )}
           </Popover>
+          <NotificationPrompt messageList={notificationList} handleClose={handleCloseNotify} open={openNotify}></NotificationPrompt>
         </div>
       </Toolbar>
       <UserPopUp profile={profile} editOpen={editOpen} setEditOpen={setEditOpen}></UserPopUp>
