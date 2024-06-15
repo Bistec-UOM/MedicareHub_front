@@ -11,7 +11,7 @@ const endPoints = {
     TEST:'/api/Test',
     TEMPLATE:'/api/Test/Template',
     REPORT:'/api/Values/ReportRequest',
-    SET_ACCEPT:'/api/Values/Accept',
+    SET_ACCEPT:'/api/Values/SetAccept',
     GET_ACCEPT:'/api/Values/Accept',
     RESULT:'/api/Values/Result',
     ANALYTIC:'/api/DoctorAnalytic',
