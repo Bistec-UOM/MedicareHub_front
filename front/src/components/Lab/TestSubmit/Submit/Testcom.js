@@ -148,9 +148,11 @@ export default function Testcom({handleClick1,handleClose,test}) {
       
       <Box sx={{height:'300px',overflowY:'scroll'}}>
         {
-          !loading ? Fload.map((el,indx)=>{
+          !loading ? Fload.length>0? Fload.map((el,indx)=>{
             return <Fieldcom field={el.fieldname} unit={el.unit} value={el.value} status={el.status} indx={indx} min={el.minRef}  max={el.maxRef} enterData={enterData}></Fieldcom>
-          }) :<Load></Load>
+          }):<div style={{height:'100%',width:'100%',display:'flex',flexDirection:'column',justifyContent:'center',alignItems:'center'}}>
+            <Typography sx={{fontSize:'15px',color:'grey'}}>No template</Typography>
+          </div> :<Load></Load>
         }
       </Box>
     <Box 
