@@ -43,6 +43,10 @@ export default function Pharmacy_drugstore() {
   const [loading,setLoading] = useState(true)
   const [additionalQuantity, setAdditionalQuantity] = useState(0); // New state for additional quantity
   const [openPopup, setOpenPopup] = useState(false);
+
+  const openPopUphandle = () => {
+    if(editEnable){setOpenPopup(true)}
+  }
   
   const getData = () => { // get
     axios.get(baseURL+endPoints.DRUGGET,setHeaders())
@@ -167,11 +171,12 @@ const handleConfirm = () => {
         genericN: selectedCard.drug,
         brandN: selectedCard.brand,
         weight: selectedCard.dosage,
-        avaliable: selectedCard.quantity,
+        avaliable: selectedCard.quantity+additionalQuantity,
         price: selectedCard.price
       };
+      setAdditionalQuantity(0)
       //console.log('check this')
-      //console.log('check',updatedData)
+      console.log('check',updatedData)
       axios.put(baseURL+endPoints.DRUGUPDATE+`/${selectedCard.ID}`, updatedData,setHeaders())
         .then((response) => {
           setLoadingBEdit(false)       
@@ -191,6 +196,7 @@ const handleConfirm = () => {
           handleEditClose();
           setEditEnable(false)
         });
+        setAdditionalQuantity(0)
     }else{
       setEditEnable(true)
     }
@@ -331,7 +337,7 @@ const handleConfirm = () => {
           <MedicationIcon></MedicationIcon>
           <Typography sx={{fontSize:'18px',fontWeight:'medium'}}>Edit drug</Typography>
         </div>
-        <CloseIcon onClick={handleClose} sx={{cursor:'pointer'}}/>
+        <CloseIcon onClick={handleEditClose} sx={{cursor:'pointer'}}/>
         </DialogTitle>
         <DialogContent>
           <TextField
@@ -386,7 +392,7 @@ const handleConfirm = () => {
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
-                <IconButton onClick={() => setOpenPopup(true)}>
+                <IconButton onClick={() => openPopUphandle()}>
                   <AddIcon />
                 </IconButton>
               </InputAdornment>
