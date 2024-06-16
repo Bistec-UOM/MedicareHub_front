@@ -51,8 +51,11 @@ export default function Accept({req,reqOK,RLoad,setRLoad}) {
 
   const [loadingB, setLoadingB] = useState(false)//Loading button states
 
+  const [acceptedId,setAcceptedId]=useState('')//Accepted sample id
+
   //Set sample to accepted
   const AccIdSet=(id)=>{
+    setAcceptedId(id)
     setLoadingB(true)
     axios.get(baseURL+endPoints.SET_ACCEPT+'?id='+id,setHeaders())
     .then((res)=>{
@@ -113,7 +116,7 @@ export default function Accept({req,reqOK,RLoad,setRLoad}) {
                 <LoadingButton           
                   size="small"
                   endIcon={<DoneIcon/>}
-                  loading={loadingB}
+                  loading={loadingB&&acceptedId===i.repId}
                   loadingPosition="end"
                   variant="contained" onClick={()=>AccIdSet(i.repId)} 
                   sx={{ml:'5px'}}
