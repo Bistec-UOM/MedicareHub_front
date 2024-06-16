@@ -129,6 +129,8 @@ const SearchBarSM=({onChange,value,placeholder,height})=> {
  */
 
   const NotificationPrompt=({messageList,handleClose,open})=>{
+    console.log(messageList)
+    const List = messageList.sort((a, b) => b.id - a.id);
     return(
       <Dialog open={open} onClose={handleClose}>
       <DialogTitle sx={{backgroundColor:theme.palette.custom.greenH,display: "flex",justifyContent: "space-between",color:'white'}}>
@@ -138,7 +140,7 @@ const SearchBarSM=({onChange,value,placeholder,height})=> {
       </div>
       <CloseIcon sx={{cursor:'pointer'}} onClick={handleClose}/>
       </DialogTitle>
-      {messageList.length===0?<Box sx={{height:'300px',width:'500px',pt:'10px',pb:'5px',display:'flex',flexDirection:'column',alignItems:'center',overflowY:'scroll'}}>
+      {List.length===0?<Box sx={{height:'300px',width:'500px',pt:'10px',pb:'5px',display:'flex',flexDirection:'column',alignItems:'center',overflowY:'scroll'}}>
         <Typography sx={{fontSize:'16px',color:'grey',pl:'10px',pt:'10px'}}>No new notifications</Typography>
       </Box>: <Box sx={{height:'300px',width:'500px',pt:'10px',pb:'5px',display:'flex',flexDirection:'column',alignItems:'center',overflowY:'scroll'}}>
         {messageList.map((i)=>(
