@@ -84,28 +84,26 @@ const Navbar = () => {
     setAppNotiConnection(newConnection);
   }, []);
 
- useEffect(() => {  //use effect for real time notification
-  console.log("before con", AppNotificationconnection);
-  if (AppNotificationconnection) {
-    console.log("Attempting to start connection...");
-    // Start the connection
-    AppNotificationconnection.start()
-      .then(result => {
-       AppNotificationconnection.invoke("NotiToPharmacist")
-        console.log("Connection started successfully", result);
-        // Set up a listener for notifications
-        AppNotificationconnection.on('ReceiveNotification', message => {
-          console.log('Connected! helo', AppNotificationconnection.connectionId);
-          console.log("inside receive notification chathura callback", message.message); // Log the received message
-          setNotificationList(notificationMessages => [...notificationMessages, message]); // Add new notification to the list
-          setBadgeContent(badgeContent+1); // Increase badge content for new notification
-        });
-      })
-      .catch(e => console.log('Connection failed: ', e));
-  } else {
-    console.log("AppNotificationconnection is null or undefined.");
-  }
-}, [AppNotificationconnection]);
+
+  useEffect(() => {
+    if (AppNotificationconnection) {
+      AppNotificationconnection.start()
+        .then(() => {
+          console.log("Notification sent to pharmacist");
+          AppNotificationconnection.on('ReceiveNotification', (message) => {
+            console.log('Notification received:', message);
+            setNotificationList(notificationMessages => [...notificationMessages, message]);
+            setBadgeContent(badgeContent => badgeContent + 1);
+          });
+        })
+        .then(() => {
+          console.log("Connection started successfully");
+          AppNotificationconnection.invoke("NotiToPharmacist");
+        })
+        .catch(e => console.log('Connection failed: ', e));
+    }
+  }, [AppNotificationconnection]);
+  
 
 
   const handleClosePopOver = () => {
