@@ -129,6 +129,7 @@ const DoctorAppList = ({Mode,setMode,selectedDAy,docid}) => {
         <SearchBar
           search={search}
           setSearch={setSearch}
+          height="10px"
          // mgl="20%"
           isDisabled={isDisabledCancel}
           placename="Patient name or id..."

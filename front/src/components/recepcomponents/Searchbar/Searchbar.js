@@ -53,7 +53,7 @@ return (
       sx={{
           p:2.3,display: "flex",
           alignItems: "center",
-          height:'20px',
+          height:props.height?props.height:'20px',
           width: "210px",
           borderRadius: "8px",
           boxShadow: 1
