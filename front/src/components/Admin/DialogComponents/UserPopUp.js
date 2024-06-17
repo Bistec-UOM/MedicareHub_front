@@ -4,6 +4,7 @@ import axios from 'axios';
 import EditUserDialog from './EditUserDialog';
 import SuccessNotification from '../../recepcomponents/SnackBar/SuccessNotification';
 import UserPopupDislog from './UserPopupDislog';
+import { baseURL, endPoints } from '../../../Services/Admin';
 
 const UserPopUp = ({profile,editOpen,setEditOpen}) => {
      ///////////////////////////// NAv bar Profile ///////////////////////////////
@@ -105,7 +106,7 @@ const [isDisabled, setIsDisabled] = useState(true);
   useEffect(() => {
     if (editOpen) {
       setIsDisabled(true);
-      axios.get(`https://localhost:7205/api/User/${profile.Id}`)
+      axios.get(baseURL+endPoints.StaffList+`/${profile.Id}`)
         .then((response) => {
           setStaffData(response.data);
           setFormData({

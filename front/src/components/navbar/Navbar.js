@@ -135,7 +135,7 @@ const Navbar = () => {
       console.log("notilist",notificationList);
       const messages = notificationList.map((notification) => notification.message);
       const unseenNotifications = notificationList.filter(notification => notification.seen===false);
-      setBadgeContent(unseenNotifications.length);
+      setBadgeContent(unseenNotifications.length>=1?1:0);
       setNotificationMessages(messages);
   
   }, [notificationList]);
