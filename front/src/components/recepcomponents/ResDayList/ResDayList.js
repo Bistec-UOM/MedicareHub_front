@@ -86,7 +86,9 @@ const ResDayList = (props) => {
   }, [props.docid, selectedDay, delcount]); // Ensure dependencies are included in the dependency array
 
   return (
+  
     <Box sx={{ height: "100%" }}>
+      {console.log("props.filteredAppointments",props.filteredAppointments)}
       <Box
         sx={{
           display: "flex",
