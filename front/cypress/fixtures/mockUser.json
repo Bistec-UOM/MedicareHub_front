@@ -1,0 +1,17 @@
+{
+    "id": 1,
+    "name": "John Doe",
+    "fullName": "Johnathan Doe",
+    "nic": "123456789V",
+    "address": "123 Main St",
+    "contactNumber": "123-456-7890",
+    "email": "john.doe@example.com",
+    "dob": "1990-01-01",
+    "gender": "Male",
+    "role": "Admin",
+    "qualifications": "BSc Computer Science",
+    "password": "password123",
+    "imageUrl": "http://example.com/image.jpg",
+    "isDeleted": false
+  }
+  
