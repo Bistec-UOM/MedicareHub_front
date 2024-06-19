@@ -47,6 +47,43 @@ const ResDayList = (props) => {
  
 
   //useeffect for fetching the app of a day of a selected doctor
+  useEffect(() => {
+    document.body.style.margin = "0";
+    axios
+      .get(
+        baseURL +
+          endPoints.AppDay +
+          `${props.docid}` +
+          "/day/" +
+          `${selectedDay}`,
+          setHeaders()
+      )
+      .then((response) => {
+        const responseData = response.data;
+        setIsDisabled(responseData.length === 0); // Update isDisabled based on the fetched appointments
+        const sortedAppointments = responseData
+          .slice()
+          .sort(
+            (a, b) =>
+              new Date(a.appointment.dateTime) -
+              new Date(b.appointment.dateTime)
+          ); //this is used for sorting appointments based on their arrival time
+        props.setFilteredAppointments(sortedAppointments);
+        setRloadDone(true);
+        props.setDayAppTotal(sortedAppointments.length);
+        if (sortedAppointments.length >= 10) {
+          //blocked more than 10 appointments for a day
+          setAddDisabled(true);
+        } else {
+          setAddDisabled(false);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching appointments:", error);
+        setEpage(true);
+        setRloadDone(true);
+      });
+  }, [props.docid, selectedDay, delcount]); // Ensure dependencies are included in the dependency array
 
   return (
   
