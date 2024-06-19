@@ -93,7 +93,7 @@ const Navbar = () => {
           AppNotificationconnection.on('ReceiveNotification', (message) => {
             console.log('Notification received:', message);
             setNotificationList(notificationMessages => [...notificationMessages, message]);
-            setBadgeContent(badgeContent => badgeContent + 1);
+            setBadgeContent(1);
           });
         })
         .then(() => {
@@ -132,6 +132,7 @@ const Navbar = () => {
   }, []);
 
   useEffect(() => {  // Extract only  messages from notificationList and set notificationMessages 
+      setBadgeContent(0)
       console.log("notilist",notificationList);
       const messages = notificationList.map((notification) => notification.message);
       const unseenNotifications = notificationList.filter(notification => notification.seen===false);
@@ -196,7 +197,7 @@ const Navbar = () => {
           newConnection.on('ReceiveNotification', message => {
             console.log("inside receive side notification", message); // Log the received message
             // setNotificationMessages(notificationMessages => [...notificationMessages, message]); // Add new notification to the list
-            // setBadgeContent(prevBadgeContent => prevBadgeContent + 1); // Increase badge content for new notification
+             setBadgeContent(1); // Increase badge content for new notification
           });
 
         })
