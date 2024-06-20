@@ -322,6 +322,7 @@ const PatientRegpopup = ({
             >
               Send
             </LoadingButton>
+           
           </Box>
         </form>
       </Dialog>
