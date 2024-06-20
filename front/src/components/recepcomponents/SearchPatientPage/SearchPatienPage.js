@@ -331,6 +331,9 @@ const SearchPatientPage = (props) => {
           activeId={activeId}
           apopen={apopen}
           setApopen={setApopen}
+          unableTimeSlots={unableTimeSlots}
+          setUnableTimeSlots={setUnableTimeSlots}
+
         />
         <PatientRegpopup
           patientCount={patientCount}
