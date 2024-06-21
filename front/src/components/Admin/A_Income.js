@@ -9,6 +9,7 @@ import axios from 'axios';
 import IncomeOfDay from './AnalyticsComponents.js/IncomeOfDay';
 import SuccessNotification from '../recepcomponents/SnackBar/SuccessNotification';
 import { baseURL, endPoints } from '../../Services/Admin';
+import { setHeaders } from '../../Services/Auth';
 
 const AIncome = () => {
   const [notificationOpen, setNotificationOpen] = useState(false);
@@ -19,7 +20,7 @@ const AIncome = () => {
   const [TimeGap, setTimeGap] = useState(new Date());
 
   useEffect(() => {
-    axios.get(baseURL + endPoints.A_income)
+    axios.get(baseURL + endPoints.A_income,setHeaders())
       .then(response => {
         console.log(response.data);
         setPdata(response.data);

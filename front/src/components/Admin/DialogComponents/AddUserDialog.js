@@ -14,6 +14,7 @@ import { useEffect } from "react";
 import LoadingButton from "@mui/lab/LoadingButton";
 import AddIcon from '@mui/icons-material/Add';
 import theme from "../../Style";
+import { setHeaders } from "../../../Services/Auth";
 
 const AddUserDialog = ({open,handleClose,handleInputChange,formErrors,Type,formData,row2,pData,setFormErrors,Role,settypenoti,setNotiMessage,setNotificationOpen,forceUpdate,setOpen}) => {
   const [loadingB, setLoadingB] = useState(false);
@@ -122,7 +123,7 @@ const AddUserDialog = ({open,handleClose,handleInputChange,formErrors,Type,formD
     temp.role = Role;
     console.log(temp.role);
     axios
-      .post(baseURL + endPoints.StaffList, temp)
+      .post(baseURL + endPoints.StaffList, temp,setHeaders())
       .then((res) => {
         console.log("success");
         settypenoti("success");

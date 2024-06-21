@@ -6,6 +6,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import DoneIcon from '@mui/icons-material/Done';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { useState } from 'react';
+import { setHeaders } from '../../../Services/Auth';
 
 const UserAddToList = ({ RestoreOpen,forceUpdate, selectedUser, handleRestoreOpen, handleRestoreClose, RestoreClose }) => {
     const [loadingB, setloadingB] = useState(false);
@@ -14,7 +15,7 @@ const UserAddToList = ({ RestoreOpen,forceUpdate, selectedUser, handleRestoreOpe
         setloadingB(true);
         selectedUser.isDeleted = false;
     
-        axios.put(baseURL + endPoints.StaffList + `/${selectedUser.id}`, selectedUser)
+        axios.put(baseURL + endPoints.StaffList + `/${selectedUser.id}`, selectedUser,setHeaders())
             .then((res) => {
                 handleRestoreClose();
                 forceUpdate((prevCount) => prevCount + 1); // Trigger a re-render

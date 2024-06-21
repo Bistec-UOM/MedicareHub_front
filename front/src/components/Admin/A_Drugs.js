@@ -6,6 +6,7 @@ import { baseURL, endPoints } from "../../Services/Admin";
 import SearchGraph from "./AnalyticsComponents.js/SearchGraph";
 import ExportDefaultToolbar from "./AnalyticsComponents.js/DrugTable";
 import ToolbarGrid from "./AnalyticsComponents.js/DrugTable";
+import { setHeaders } from "../../Services/Auth";
 
 const ADrugs = () => {
   //notifications
@@ -17,7 +18,7 @@ const ADrugs = () => {
   const [rows, setrows] = useState([]);
   useEffect(() => {
     axios
-      .get(baseURL + endPoints.A_DrugUsage)
+      .get(baseURL + endPoints.A_DrugUsage,setHeaders())
       .then((response) => {
         console.log(response.data);
         setPdata(response.data);
@@ -34,7 +35,7 @@ const ADrugs = () => {
       });
 
     axios
-      .get(baseURL + endPoints.A_DrugAvailable)
+      .get(baseURL + endPoints.A_DrugAvailable,setHeaders())
       .then((res) => {
         console.log(res.data);
         setrows(res.data);

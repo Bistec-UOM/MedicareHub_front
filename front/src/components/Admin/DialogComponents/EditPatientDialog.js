@@ -22,6 +22,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import LoadingButton from "@mui/lab/LoadingButton";
 import AddIcon from '@mui/icons-material/Add';
 import theme from "../../Style";
+import { setHeaders } from "../../../Services/Auth";
 
 const EditPatientDialog = ({ editOpen, handleEditClose, formFields, formErrors, isDisabled, formData, setFormData, handleInputChange, deletePopUp, handleEditClick,rows,setFormErrors,pData,settype,setNotiMessage,setNotificationOpen,setShowPatient,forceUpdate,setEditOpen,setIsDisabled}) => {
 
@@ -107,7 +108,7 @@ const EditPatientDialog = ({ editOpen, handleEditClose, formFields, formErrors, 
     
     console.log(pData)
             // Assuming you have an API endpoint for updating a patient
-            axios.put(baseURL+endPoints.PatientList+ `/${pData.id}` , pData)
+            axios.put(baseURL+endPoints.PatientList+ `/${pData.id}` , pData,setHeaders())
             .then(response => {
               settype('success')
               setNotiMessage("Patient Edited successfully");

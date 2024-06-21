@@ -5,6 +5,7 @@ import EditUserDialog from './EditUserDialog';
 import SuccessNotification from '../../recepcomponents/SnackBar/SuccessNotification';
 import UserPopupDislog from './UserPopupDislog';
 import { baseURL, endPoints } from '../../../Services/Admin';
+import { setHeaders } from '../../../Services/Auth';
 
 const UserPopUp = ({profile,editOpen,setEditOpen}) => {
      ///////////////////////////// NAv bar Profile ///////////////////////////////
@@ -106,9 +107,10 @@ const [isDisabled, setIsDisabled] = useState(true);
   useEffect(() => {
     if (editOpen) {
       setIsDisabled(true);
-      axios.get(baseURL+endPoints.StaffList+`/${profile.Id}`)
+      axios.get(baseURL+endPoints.StaffList+`/${profile.Id}`,setHeaders())
         .then((response) => {
           setStaffData(response.data);
+          console.log("data is ",response.data);
           setFormData({
             ...formData,
             id: response.data.id,
