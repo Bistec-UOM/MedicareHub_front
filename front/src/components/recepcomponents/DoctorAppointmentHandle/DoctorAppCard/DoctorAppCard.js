@@ -115,7 +115,7 @@ const DoctorAppCard = ({
           </Avatar>
         </Grid>
         <Grid sx={{display:{md:'flex',xs:'none'}}} item md={3}>
-          <Typography sx={{textAlign:"left",opacity: findOpacityStatus(item.appointment?.status)
+          <Typography sx={{fontSize:'18px',color:"rgb(114, 114, 114)",textAlign:"left",opacity: findOpacityStatus(item.appointment?.status)
                       ? 0.5
                       : 1,}} variant="h6" >{getStartingTime(item.appointment?.dateTime)}-
           {getEndingTime(item.appointment?.dateTime)}</Typography>

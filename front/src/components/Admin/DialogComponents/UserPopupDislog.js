@@ -17,6 +17,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import LoadingButton from "@mui/lab/LoadingButton";
 import theme from "../../Style";
 import UserPopUp from "./UserPopUp";
+import { setHeaders } from "../../../Services/Auth";
 
 const UserPopupDislog = ({editOpen,handleEditClose,fields,formErrors,formData,isDisabled,setFormData,handleInputChange,deletePopUp,handleEditClick,row2,setFormErrors,pData,settypenoti,setNotiMessage,setNotificationOpen,setIsDisabled,setEditOpen,forceUpdate}) => {
   const [loadingB, setloadingB] = useState(false);
@@ -126,7 +127,7 @@ const UserPopupDislog = ({editOpen,handleEditClose,fields,formErrors,formData,is
 
       // Assuming you have an API endpoint for updating a patient
       axios
-        .put(baseURL + endPoints.StaffList + `/${pData.id}`, pData)
+        .put(baseURL + endPoints.StaffList + `/${pData.id}`, pData,setHeaders())
         .then((response) => {
         //   settypenoti("success");
         //   setNotiMessage("Member Edited successfully");

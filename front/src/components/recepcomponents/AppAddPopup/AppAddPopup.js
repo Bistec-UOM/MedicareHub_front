@@ -7,17 +7,14 @@ import { IconButton, Typography } from "@mui/material";
 import { useState } from "react";
 import { useEffect } from "react";
 import dayjs from "dayjs";
-import Button from "@mui/material/Button";
 import { Box } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { Grid, Stack } from "@mui/material";
-import { Load } from "../../Other";
-import { baseURL,endPoints } from "../../../Services/Appointment";
+import { baseURL, endPoints } from "../../../Services/Appointment";
 import { setHeaders } from "../../../Services/Auth";
 import { LoadingButton } from "@mui/lab";
 import theme from "../../Style";
-import AppBlockingIcon from '@mui/icons-material/AppBlocking';
-import DoneIcon from '@mui/icons-material/Done'
+import DoneIcon from "@mui/icons-material/Done";
 
 export default function AppAddPopup({
   filteredAppointments,
@@ -35,9 +32,14 @@ export default function AppAddPopup({
   activeD,
   dayAppTotal,
   setDayAppTotal,
+  unableTimeSlots,
+  setUnableTimeSlots
 }) {
-  const [RloadDone,setRloadDone]=useState(true)  //state for app add loading 
-  const [selectedTime, setSelectedTime] = useState(dayjs("2022-04-17T08:30")); //default selected date and time of the date picker
+  
+  const minTime = dayjs(selectedDay).set("hour", 8).set("minute", 55); // 9:00 AM
+  const maxTime = dayjs(selectedDay).set("hour", 17).set("minute", 0); // 5:00 PM
+  const [RloadDone, setRloadDone] = useState(true); //state for app add loading
+  const [selectedTime, setSelectedTime] = useState(dayjs(selectedDay).hour(9).minute(0).second(0)); //default selected date and time of the date picker
   const [confirmDisabled, setConfirmDisabled] = useState(false); //var for confirm disabled for app limiting func
   const [appTime, setAppTime] = useState({
     //var for selected appointment time
@@ -46,7 +48,7 @@ export default function AppAddPopup({
     ampm: " ",
   });
   const [activeData, setActiveData] = useState({}); //for storing the selected patient object
-  const [appConfirmLoading,setAppConfirmLoading]=useState(false);//var for loading prop of appconfirm button
+  const [appConfirmLoading, setAppConfirmLoading] = useState(false); //var for loading prop of appconfirm button
   function formatAMPM(date) {
     var hours = dayjs(date).get("hour");
     var minutes = dayjs(date).get("minute");
@@ -71,14 +73,23 @@ export default function AppAddPopup({
     date.setHours(hours, timeObject.minutes, 0, 0);
     return date;
   }
-  useEffect(() => {
-    if (dayAppTotal >= 10) {
-      //disabling confirm button from adding more than 10 appointments for a day
+  useEffect(() => {  //check selected time is blocked or not in the valid range
+    if(unableTimeSlots.length!=0 &&(selectedTime.isAfter(unableTimeSlots[0].startTime) && selectedTime.isBefore(unableTimeSlots[0].endTime)))
+    {
+    
+      handleNotification("Time slot has been blocked!. Select another time slot","error");
       setConfirmDisabled(true);
-    } else {
+      return;
+
+    }
+    else{
       setConfirmDisabled(false);
     }
-  });
+    const isTimeInvalid = !(selectedTime.isAfter(minTime) && selectedTime.isBefore(maxTime));
+    const disableButton = isTimeInvalid || dayAppTotal >= 10;
+    setConfirmDisabled(disableButton);
+    console.log("una",unableTimeSlots)
+  },[selectedTime,dayAppTotal]);
   const handleClose = () => {
     setApopen(false);
   };
@@ -88,8 +99,8 @@ export default function AppAddPopup({
     setAppConfirmLoading(true);
     event.preventDefault();
     var finalTime = getRealTime(appTime);
-    var date = finalTime;//time object for scheduled appointment time
-    const createdDay=new Date(); //current time of appointment making time
+    var date = finalTime; //time object for scheduled appointment time
+    const createdDay = new Date(); //current time of appointment making time
     //format the time to string form
     const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1)
       .toString()
@@ -101,62 +112,75 @@ export default function AppAddPopup({
       .toString()
       .padStart(2, "0")}.${date.getMilliseconds().toString().padStart(3, "0")}`;
 
-     
-
-      const formattedCreatedDate = `${createdDay.getFullYear()}-${(createdDay.getMonth() + 1)
-        .toString()
-        .padStart(2, "0")}-${createdDay.getDate().toString().padStart(2, "0")}T${createdDay
-        .getHours()
-        .toString()
-        .padStart(2, "0")}:${createdDay.getMinutes().toString().padStart(2, "0")}:${createdDay
-        .getSeconds()
-        .toString()
-        .padStart(2, "0")}.${createdDay.getMilliseconds().toString().padStart(3, "0")}`;
-
-
+    const formattedCreatedDate = `${createdDay.getFullYear()}-${(
+      createdDay.getMonth() + 1
+    )
+      .toString()
+      .padStart(2, "0")}-${createdDay
+      .getDate()
+      .toString()
+      .padStart(2, "0")}T${createdDay
+      .getHours()
+      .toString()
+      .padStart(2, "0")}:${createdDay
+      .getMinutes()
+      .toString()
+      .padStart(2, "0")}:${createdDay
+      .getSeconds()
+      .toString()
+      .padStart(2, "0")}.${createdDay
+      .getMilliseconds()
+      .toString()
+      .padStart(3, "0")}`;
 
     let obj = {
       id: 0,
       dateTime: formattedDate,
       status: "new",
       patientId: activeData.id,
-      createdAt:formattedCreatedDate,
+      createdAt: formattedCreatedDate,
       doctorId: docid,
       recepId: 1,
     };
     try {
       var response = await axios.post(
-        baseURL+endPoints.Appoinment,
-        obj,setHeaders()
+        baseURL + endPoints.Appoinment,
+        obj,
+        setHeaders()
       );
-      if (response.data == 0) { //check already appointments
+      if (response.data == 0) {
+        //check already appointments
         setAppConfirmLoading(false);
         setRloadDone(true);
         setApopen(false);
         setDayAppTotal(dayAppTotal + 1);
         handleNotification("Appointment Added succesfully!", "success");
-      } else if(response.data==1) {
+      } else if (response.data == 1) {
         setAppConfirmLoading(false);
         setRloadDone(true);
-        handleNotification("You have already an appointment on that time !. Select another time slot","error");
-      }
-      else if(response.data==3)
-      {
+        handleNotification(
+          "You have already an appointment on that time !. Select another time slot",
+          "error"
+        );
+      } else if (response.data == 3) {
         setAppConfirmLoading(false);
         setRloadDone(true);
-        handleNotification("Time slot has been blocked!. Select another time slot","error");
-
-      }
-      else{
+        handleNotification(
+          "Time slot has been blocked!. Select another time slot",
+          "error"
+        );
+      } else {
         setAppConfirmLoading(false);
         setRloadDone(true);
-        handleNotification("Time slot has been already booked!. Select another time slot","error");
-
+        handleNotification(
+          "Time slot has been already booked!. Select another time slot",
+          "error"
+        );
       }
     } catch (err) {
       setAppConfirmLoading(false);
-     // handleNotification(err.response.data,"error");  //handling api request error
-     handleNotification("Network Error Occured!","error");
+      // handleNotification(err.response.data,"error");  //handling api request error
+      handleNotification("Network Error Occured!", "error");
     }
   }
   useEffect(() => {
@@ -174,6 +198,7 @@ export default function AppAddPopup({
     <React.Fragment>
       <Dialog open={apopen} onClose={handleClose}>
         <Box
+       
           sx={{
             backgroundColor: theme.palette.custom.greenH,
             height: "40px",
@@ -182,8 +207,8 @@ export default function AppAddPopup({
             width: "100%",
           }}
         >
-          <IconButton  onClick={handleClose}>
-            <CloseIcon sx={{color:"white"}} />
+          <IconButton onClick={handleClose}>
+            <CloseIcon sx={{ color: "white" }} />
           </IconButton>
         </Box>
         <Box sx={{ width: { sm: "600px", xs: "280px", padding: "20px" } }}>
@@ -215,7 +240,6 @@ export default function AppAddPopup({
                         },
                       }}
                     >
-                      
                       <Stack
                         direction={"column"}
                         sx={{ height: { xs: "100px", md: "100%" } }}
@@ -334,8 +358,11 @@ export default function AppAddPopup({
                   selectedTime={selectedTime}
                   setSelectedTime={setSelectedTime}
                   label="Select your time"
+                  minTime={minTime}
+                  maxTime={maxTime}
+                  
                 />
-                
+
                 <LoadingButton
                   disabled={confirmDisabled}
                   loading={appConfirmLoading}

@@ -7,6 +7,7 @@ import TotalPatientCount from "./AnalyticsComponents.js/TotalPatientCount";
 import SuccessNotification from "../recepcomponents/SnackBar/SuccessNotification";
 import YoutubeSearchedForIcon from "@mui/icons-material/YoutubeSearchedFor";
 import { baseURL, endPoints } from "../../Services/Admin";
+import { setHeaders } from "../../Services/Auth";
 
 const APatient = () => {
   const [notificationOpen, setNotificationOpen] = useState(false);
@@ -17,7 +18,7 @@ const APatient = () => {
 
   useEffect(() => {
     axios
-      .get(baseURL + endPoints.A_patient_count)
+      .get(baseURL + endPoints.A_patient_count,setHeaders())
       .then((response) => {
         // console.log("data is ");
         // console.log(response.data);

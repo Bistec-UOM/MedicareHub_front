@@ -117,7 +117,7 @@ const AppointmentCard = ({
           </Avatar>
         </Grid>
         <Grid sx={{display:{md:'flex',xs:'none'}}} item md={3}>
-          <Typography sx={{textAlign:"left",opacity: findOpacityStatus(item.appointment?.status)
+          <Typography sx={{fontSize:'18px',color:"rgb(114, 114, 114)",textAlign:"left",opacity: findOpacityStatus(item.appointment?.status)
                       ? 0.5
                       : 1,}} variant="h6" >{getStartingTime(item.appointment?.dateTime)}-
           {getEndingTime(item.appointment?.dateTime)}</Typography>
@@ -157,7 +157,7 @@ const AppointmentCard = ({
                   </Grid>
                   <Grid item xs={12} sm={2}>
                     <Typography
-                      sx={{ display: { xs: "flex", sm: "flex", md: "none" } }}
+                      sx={{ display: { xs: "flex", sm: "flex", md: "none",color:"rgb(114, 114, 114)" } }}
                       variant="body2"
                       color="text.secondary"
                     >

@@ -13,6 +13,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import AddIcon from "@mui/icons-material/Add";
 import { useState } from "react";
 import theme from "../../Style";
+import { setHeaders } from "../../../Services/Auth";
 
 const AddPatientDialog = ({open,rows,handleAddClose,handleInputChange,formErrors,formData,setFormErrors,settype,setNotiMessage,setNotificationOpen,setOpen,forceUpdate,}) => {
   const [loadingB, setLoadingB] = useState(false);
@@ -124,7 +125,7 @@ const AddPatientDialog = ({open,rows,handleAddClose,handleInputChange,formErrors
 
     // Send POST request to add new data
     axios
-      .post(baseURL + endPoints.PatientList, newData)
+      .post(baseURL + endPoints.PatientList, newData,setHeaders())
       .then((response) => {
         settype("success");
         setNotiMessage("Patient Added successfully");
