@@ -32,7 +32,7 @@ function Patient() {
 
   useEffect(() => {
     axios
-      .get(baseURL + endPoints.PatientList)
+      .get(baseURL + endPoints.PatientList,setHeaders())
       .then((response) => {
         const apiData = response.data.map((data, index) =>
           createData(
@@ -107,7 +107,7 @@ function Patient() {
   const handleRemove = () => {
     setLoadingB(true)
     axios
-      .delete(baseURL + endPoints.PatientList + `/${pData.id}`)
+      .delete(baseURL + endPoints.PatientList + `/${pData.id}`,setHeaders())
       .then((res) => {
         settype("success");
         setNotiMessage("Patient removed successfully");

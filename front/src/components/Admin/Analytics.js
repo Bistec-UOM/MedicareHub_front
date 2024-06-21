@@ -76,12 +76,12 @@ export default function Analysis() {
     alignItems: "center",
     justifyContent: "center",
     backgroundColor:
-      selectedNavItem === text ? "rgb(121, 204, 190)" : "white",
+      selectedNavItem === text ? "rgb(9, 214, 54)" : "white",
     boxShadow: 3,
     borderRadius: "10px",
     ":hover": {
       backgroundColor:
-        selectedNavItem === text? "rgb(121, 204, 190)": "rgb(235, 235, 235)",
+        selectedNavItem === text? "rgb(9, 214, 54)": "rgb(235, 235, 235)",
     },
     transform: "scale(0.9)", // Add this line to reduce the size to 90%
   }}

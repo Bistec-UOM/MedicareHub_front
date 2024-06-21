@@ -12,6 +12,7 @@ import StyledBadge from "./PageComponents/Avatar";
 import { HubConnectionBuilder } from '@microsoft/signalr';
 import AddIcon from '@mui/icons-material/Add';
 import UserAddToList from "./DialogComponents/UserAddToList";
+import { setHeaders } from "../../Services/Auth";
 
 export default function Staff() {
   const [notificationOpen, setNotificationOpen] = useState(false);
@@ -115,7 +116,7 @@ export default function Staff() {
   useEffect(() => {
     const timer = setTimeout(() => {
       axios
-        .get(baseURL + endPoints.StaffList)
+        .get(baseURL + endPoints.StaffList,setHeaders())
         .then((res) => {
           console.log(res.data);
           setStaffData(res.data);
@@ -283,7 +284,7 @@ const handleRestoreClose = () => {
 
     setLoadingB(true)
     axios
-    .delete(baseURL + endPoints.StaffList + `/${formData.id}`)
+    .delete(baseURL + endPoints.StaffList + `/${formData.id}`,setHeaders())
     .then((res) => {
       settypenoti("success");
       setNotiMessage("Staff Member removed successfully");
@@ -303,7 +304,7 @@ const handleRestoreClose = () => {
     console.log(formData.isDeleted);
 
     axios
-    .put(baseURL + endPoints.StaffList + `/${formData.id}`, formData)
+    .put(baseURL + endPoints.StaffList + `/${formData.id}`, formData,setHeaders())
     .then((res) => {
       console.log(res.data);
       forceUpdate((prevCount) => prevCount + 1); // Trigger a re-render

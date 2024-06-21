@@ -16,6 +16,7 @@ import { Button } from "@mui/material";
 import { baseURL, endPoints } from "../../Services/Admin";
 import SearchGraph from "./AnalyticsComponents.js/SearchGraph";
 import LoadingButton from "@mui/lab/LoadingButton";
+import { setHeaders } from "../../Services/Auth";
 
 const AOther = () => {
   const [notificationOpen, setNotificationOpen] = useState(false);
@@ -48,7 +49,7 @@ const AOther = () => {
     if (year != "" && month != "") {
       console.log(year, month);
       axios
-        .get(baseURL + endPoints.A_Attendance + `${year}-${month}`)
+        .get(baseURL + endPoints.A_Attendance + `${year}-${month}`,setHeaders())
         .then((response) => {
           console.log(response.data);
           setRows(response.data);
@@ -75,7 +76,7 @@ const AOther = () => {
 
   useEffect(() => {
     axios
-      .get(baseURL + endPoints.A_LabReports)
+      .get(baseURL + endPoints.A_LabReports,setHeaders())
       .then((response) => {
         console.log(response.data);
         setLabReports(response.data);
