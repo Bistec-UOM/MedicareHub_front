@@ -16,6 +16,7 @@ import DoneIcon from '@mui/icons-material/Done';
 import DeleteIcon from "@mui/icons-material/Delete";
 import LoadingButton from "@mui/lab/LoadingButton";
 import theme from "../../Style";
+import { setHeaders } from "../../../Services/Auth";
 
 const EditUserDialog = ({editOpen,handleEditClose,fields,formErrors,formData,isDisabled,setFormData,handleInputChange,deletePopUp,handleEditClick,row2,setFormErrors,pData,settypenoti,setNotiMessage,setNotificationOpen,setIsDisabled,setEditOpen,forceUpdate}) => {
   const [loadingB, setloadingB] = useState(false);
@@ -125,7 +126,7 @@ const EditUserDialog = ({editOpen,handleEditClose,fields,formErrors,formData,isD
 
       // Assuming you have an API endpoint for updating a patient
       axios
-        .put(baseURL + endPoints.StaffList + `/${pData.id}`, pData)
+        .put(baseURL + endPoints.StaffList + `/${pData.id}`, pData,setHeaders())
         .then((response) => {
           settypenoti("success");
           setNotiMessage("Member Edited successfully");

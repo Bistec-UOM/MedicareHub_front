@@ -57,7 +57,7 @@ export default function Stest() {
               <ListItemButton
                 sx={{
                   backgroundColor:
-                    selectedNavItem === text ? "rgb(121, 204, 190)" : "white",
+                    selectedNavItem === text ? "rgb(9, 214, 54)" : "white",
                   m: 0.4,
                   height:'6vh',
                   borderRadius: 2,
@@ -65,7 +65,7 @@ export default function Stest() {
                   "&:hover": {
                     backgroundColor:
                       selectedNavItem === text
-                        ? "rgb(121, 204, 190)"
+                        ? "rgb(9, 214, 54)"
                         : "rgb(235, 235, 235)", // Change this to the color you want on hover
                   },
                 }}
