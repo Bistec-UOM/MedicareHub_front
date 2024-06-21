@@ -7,6 +7,7 @@ import { Stack } from "@mui/material";
 import { IconButton } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { useEffect } from "react";
+import AnalyticsOutlinedIcon from "@mui/icons-material/AnalyticsOutlined";
 
 const PatientDetailCard = ({
   appAddPopupCount,
@@ -17,31 +18,45 @@ const PatientDetailCard = ({
   setApopen,
   filteredAppointments,
   docid,
-  handleNotification
+  handleNotification,
+  showAnalysis,
+  setShowAnalysis,
+  setAnalysisPatient
 }) => {
+
+  const handleAnalysisPage=()=>
+    {
+      setAnalysisPatient(item);
+      setShowAnalysis(true);
+
+    }
+ 
+
   const handleAppAddPopup = () => {
-    var patEligibility =filteredAppointments.find(obj=>obj.patient.id===item.id);
+    var patEligibility = filteredAppointments.find(
+      (obj) => obj.patient.id === item.id
+    );
     if (patEligibility) {
-      handleNotification("You Already have an appointment","error");
-      
+      handleNotification("You Already have an appointment", "error");
     } else {
       setAppAddPopupCount(appAddPopupCount + 1);
       setApopen(true);
       setActiveId(item.id);
     }
   };
+
   useEffect(() => {
     setActiveId(item.nic);
   }, []);
 
   return (
     <div>
-      <Box
+       <Box
         sx={{
           width: { md: "80%", xs: "100%" },
           marginLeft: "auto",
           marginRight: "auto",
-          marginTop:{md:'0',xs:'20%'}
+          marginTop: { md: "0", xs: "20%" },
         }}
       >
         <Card
@@ -49,19 +64,21 @@ const PatientDetailCard = ({
             backgroundColor: "#FFFF",
             textAlign: "left",
             marginBottom: 2,
-           // border: "1px solid #3B877A",
-            borderRadius: '5px',
+            // border: "1px solid #3B877A",
+            borderRadius: "5px",
           }}
         >
           <Stack direction={"column"}>
             <CardContent>
-              
               <Stack
                 direction={"row"}
                 sx={{ justifyContent: "space-between", alignItem: "center" }}
               >
                 <Typography variant="h5">{item.fullName}</Typography>
                 <Box>
+                  <IconButton onClick={handleAnalysisPage}>
+                    <AnalyticsOutlinedIcon sx={{ color: "#3B877A" }} />
+                  </IconButton>
                   <IconButton onClick={handleAppAddPopup}>
                     <AddIcon sx={{ color: "#F66444" }} />
                   </IconButton>

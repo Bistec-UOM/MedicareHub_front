@@ -13,6 +13,10 @@ import { setHeaders } from "../../../Services/Auth";
 import AddIcon from "@mui/icons-material/Add";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import { Typography } from "@mui/material";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import { IconButton } from "@mui/material";
+import PatientAppointmentAnalysis from "../PatientAppointmentAnalysis/PatientAppointmentAnalysis";
 import AppBlockingIcon from "@mui/icons-material/AppBlocking";
 import {
   Popover,
@@ -36,6 +40,25 @@ const SearchPatientPage = (props) => {
   const [activeId, setActiveId] = useState(""); //var for selected patient id
   const [RloadDone, setRloadDone] = useState(false); //state for patientList loading
   const [unableTimeSlots, setUnableTimeSlots] = useState([]); //var for fetching unable date's time slots
+
+
+
+
+
+   /////----Analysis page//////
+   
+   const [analysisPatient,setAnalysisPatient]=useState(null)
+   const [showAnalysis, setShowAnalysis] = useState(false);
+   const handleAnalysisPage = () => {
+     setShowAnalysis(true);
+   };
+ 
+   const handleBackToDetails=()=>
+     {
+       setShowAnalysis(false);
+     }
+ 
+   /////////////////////////
 
   var location = useLocation();
   var loc = location.state;
@@ -149,7 +172,8 @@ const SearchPatientPage = (props) => {
   }, []);
 
   return (
-    <Box sx={{ height: "100%" }}>
+    <div>
+    {!showAnalysis?(<Box sx={{ height: "100%" }}>
       <Box
         sx={{
           display: "flex",
@@ -299,8 +323,11 @@ const SearchPatientPage = (props) => {
                         .includes(search.toLowerCase());
                 })
                 .map((item) => (
-                  <div key={item.nic + item.fullName}>
+                  <div key={item.id}>
                     <PatientDetailCard
+                      setAnalysisPatient={setAnalysisPatient}
+                      showAnalysis={showAnalysis}
+                      setShowAnalysis={setShowAnalysis}
                       appAddPopupCount={appAddPopupCount}
                       setAppAddPopupCount={setAppAddPopupCount}
                       setActiveId={setActiveId}
@@ -351,7 +378,9 @@ const SearchPatientPage = (props) => {
         notiMessage={notiMessage}
         notificationOpen={notificationOpen}
       />
-    </Box>
+    </Box>):(<PatientAppointmentAnalysis analysisPatient={analysisPatient} selectedDay={props.selectedDay} showAnalysis={showAnalysis} setShowAnalysis={setShowAnalysis}></PatientAppointmentAnalysis>)}
+    </div>
+    
   );
 };
 
