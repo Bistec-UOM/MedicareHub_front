@@ -26,8 +26,9 @@ export default function BasicTimePicker({ selectedTime, setSelectedTime, label,m
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <DemoContainer components={["TimePicker"]}>
+      <DemoContainer  data-testid="timesetclick" components={["TimePicker"]}>
         <TimePicker
+          data-testid="timeset"
           views={["hours", "minutes"]}
           format="hh:mm"
           value={selectedTime}

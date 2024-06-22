@@ -74,12 +74,12 @@ const PatientDetailCard = ({
                 direction={"row"}
                 sx={{ justifyContent: "space-between", alignItem: "center" }}
               >
-                <Typography variant="h5">{item.fullName}</Typography>
+                <Typography data-testid="patientname" variant="h5">{item.fullName}</Typography>
                 <Box>
-                  <IconButton onClick={handleAnalysisPage}>
+                  <IconButton data-testid="analysis-icon" onClick={handleAnalysisPage}>
                     <AnalyticsOutlinedIcon sx={{ color: "#3B877A" }} />
                   </IconButton>
-                  <IconButton onClick={handleAppAddPopup}>
+                  <IconButton id="add-appointment" onClick={handleAppAddPopup}>
                     <AddIcon sx={{ color: "#F66444" }} />
                   </IconButton>
                 </Box>
@@ -91,7 +91,7 @@ const PatientDetailCard = ({
                   flexDirection: { xs: "column", sm: "column", md: "row" },
                 }}
               >
-                <Typography variant="body2" color="text.secondary">
+                <Typography data-testid="patientaddress" variant="body2" color="text.secondary">
                   {item.address}
                 </Typography>
                 <Typography color="text.secondary">{item.nic}</Typography>

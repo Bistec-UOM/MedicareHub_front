@@ -215,6 +215,7 @@ const SearchPatientPage = (props) => {
           direction="row"
         >
           <Button
+            data-testid="newbutton"
             onClick={handleRegOpen}
             sx={{
               fontWeight: 25,
@@ -242,6 +243,7 @@ const SearchPatientPage = (props) => {
             Back To List
           </Button>
           <Button
+            data-testid="unavailabletimes"
             sx={{
               fontWeight: 25,
               whiteSpace: "nowrap",
@@ -283,20 +285,22 @@ const SearchPatientPage = (props) => {
                 <Typography>Unavailable Time Slots</Typography>
               </div>
             </Box>
+            <div data-testid="unabletimeParent">
             {unableTimeSlots.map((day, index) => (
-        <ListItem key={index} sx={{ textAlign: 'center', justifyContent: 'center' }}>
+        <ListItem   key={index} sx={{ textAlign: 'center', justifyContent: 'center' }}>
           <ListItemIcon sx={{ minWidth: 'auto', marginRight: '8px' }}>
             <CircleIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText
+          <ListItemText 
             primary={
-              <Box sx={{ textAlign: 'center' }}>
+              <Box data-testid="timeslotdisplay" sx={{ textAlign: 'center' }}>
                 {day.startTime.slice(11, 16)} - {day.endTime.slice(11, 16)}
               </Box>
             }
           />
         </ListItem>
       ))}
+      </div>
           </Popover>
         </Stack>
       </Box>
@@ -311,7 +315,7 @@ const SearchPatientPage = (props) => {
         }}
       >
         {
-          <Box sx={{ width: "80%", marginTop: { xs: "20%", sm: "0%" } }}>
+          <Box data-testid="patientlist" sx={{ width: "80%", marginTop: { xs: "20%", sm: "0%" } }}>
             {!RloadDone ? <Load></Load> : ""}
             {Array.isArray(patientList) &&
               patientList

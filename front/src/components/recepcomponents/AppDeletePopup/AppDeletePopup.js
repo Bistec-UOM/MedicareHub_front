@@ -54,6 +54,7 @@ export default function AppDeletePopup({appointlist,setAppointList,handleNotific
     <div style={{width:'100%',height:'60px',display:'flex',justifyContent:'center',alignItems:'center'}}>
       <Button variant='outlined' sx={{mr:'40px'}} size='small' endIcon={<CloseIcon></CloseIcon>} onClick={handleClose} >No</Button>
       <LoadingButton 
+        data-testid="confirmdelete"
         variant='contained' 
         size='small' 
         endIcon={<DoneIcon></DoneIcon>}           
