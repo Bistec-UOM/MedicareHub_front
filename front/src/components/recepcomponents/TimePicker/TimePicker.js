@@ -5,9 +5,10 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import dayjs from "dayjs";
 
-export default function BasicTimePicker({ selectedTime, setSelectedTime, label }) {
+export default function BasicTimePicker({ selectedTime, setSelectedTime, label,minTime,maxTime}) {
   const saveTime = (time) => {
     setSelectedTime(time);
+   
   };
 
   // Function to check if a specific time should be disabled
@@ -25,8 +26,9 @@ export default function BasicTimePicker({ selectedTime, setSelectedTime, label }
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <DemoContainer components={["TimePicker"]}>
+      <DemoContainer  data-testid="timesetclick" components={["TimePicker"]}>
         <TimePicker
+          data-testid="timeset"
           views={["hours", "minutes"]}
           format="hh:mm"
           value={selectedTime}
@@ -34,7 +36,8 @@ export default function BasicTimePicker({ selectedTime, setSelectedTime, label }
             saveTime(newValue);
           }}
           label={label}
-          shouldDisableTime={shouldDisableTime} // Pass the function to disable specific time period
+          minTime={minTime} // 9:00 AM
+          maxTime={maxTime} // 5:00 PM
         />
       </DemoContainer>
     </LocalizationProvider>

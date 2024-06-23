@@ -21,7 +21,10 @@ const endPoints = {
     UnableDates:'/api/Appointment/unableDates',
     notifications:'/api/Appointment/Notifications/',
     MarkAsSennNotification:'/api/Appointment/notifications/',
-    UnableTimeSlots:'/api/Appointment/BlockDates/'
+    UnableTimeSlots:'/api/Appointment/BlockDates/',
+    UnblockDay:'/api/Appointment/Unblock/',
+    PreviousAppointments:'/api/Appointment/PreviousAppointments/'
+    
   };
   
 export { baseURL,endPoints};

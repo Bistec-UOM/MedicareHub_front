@@ -281,6 +281,7 @@ export default function Log() {
             data-testid="username"
           />
           <TextField
+            test
             size="small"
             sx={{ mt: "5px", mb: "10px" }}
             id="2"
@@ -300,6 +301,7 @@ export default function Log() {
             }}
           >
             <LoadingButton
+              id="logbutton"
               size="small"
               endIcon={<LoginIcon />}
               loading={loadingB}

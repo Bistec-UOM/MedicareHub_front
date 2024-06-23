@@ -132,6 +132,7 @@ const ResDayList = (props) => {
           direction="row"
         >
           <Button
+           data-testid="addbutton"
             endIcon={<AddIcon />}
             onClick={handleAppAd}
             disabled={addDisabled}
@@ -140,6 +141,7 @@ const ResDayList = (props) => {
             Add
           </Button>
           <Button
+            data-testid="canceltest"
             onClick={handleDeleteAll}
             disabled={isDisabled}
             color="warning"
@@ -173,6 +175,7 @@ const ResDayList = (props) => {
         </Box>
         {
           <Box
+            data-testid="applist"
             sx={{ width: "70%", marginTop: { xs: "40%", sm: "20%", md: "7%" } }}
           >
             {!RloadDone ? <Load></Load> : ""}

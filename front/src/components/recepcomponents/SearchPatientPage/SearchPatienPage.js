@@ -13,6 +13,10 @@ import { setHeaders } from "../../../Services/Auth";
 import AddIcon from "@mui/icons-material/Add";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import { Typography } from "@mui/material";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import { IconButton } from "@mui/material";
+import PatientAppointmentAnalysis from "../PatientAppointmentAnalysis/PatientAppointmentAnalysis";
 import AppBlockingIcon from "@mui/icons-material/AppBlocking";
 import {
   Popover,
@@ -36,6 +40,25 @@ const SearchPatientPage = (props) => {
   const [activeId, setActiveId] = useState(""); //var for selected patient id
   const [RloadDone, setRloadDone] = useState(false); //state for patientList loading
   const [unableTimeSlots, setUnableTimeSlots] = useState([]); //var for fetching unable date's time slots
+
+
+
+
+
+   /////----Analysis page//////
+   
+   const [analysisPatient,setAnalysisPatient]=useState(null)
+   const [showAnalysis, setShowAnalysis] = useState(false);
+   const handleAnalysisPage = () => {
+     setShowAnalysis(true);
+   };
+ 
+   const handleBackToDetails=()=>
+     {
+       setShowAnalysis(false);
+     }
+ 
+   /////////////////////////
 
   var location = useLocation();
   var loc = location.state;
@@ -149,7 +172,8 @@ const SearchPatientPage = (props) => {
   }, []);
 
   return (
-    <Box sx={{ height: "100%" }}>
+    <div>
+    {!showAnalysis?(<Box sx={{ height: "100%" }}>
       <Box
         sx={{
           display: "flex",
@@ -191,6 +215,7 @@ const SearchPatientPage = (props) => {
           direction="row"
         >
           <Button
+            data-testid="newbutton"
             onClick={handleRegOpen}
             sx={{
               fontWeight: 25,
@@ -218,6 +243,7 @@ const SearchPatientPage = (props) => {
             Back To List
           </Button>
           <Button
+            data-testid="unavailabletimes"
             sx={{
               fontWeight: 25,
               whiteSpace: "nowrap",
@@ -259,20 +285,22 @@ const SearchPatientPage = (props) => {
                 <Typography>Unavailable Time Slots</Typography>
               </div>
             </Box>
+            <div data-testid="unabletimeParent">
             {unableTimeSlots.map((day, index) => (
-        <ListItem key={index} sx={{ textAlign: 'center', justifyContent: 'center' }}>
+        <ListItem   key={index} sx={{ textAlign: 'center', justifyContent: 'center' }}>
           <ListItemIcon sx={{ minWidth: 'auto', marginRight: '8px' }}>
             <CircleIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText
+          <ListItemText 
             primary={
-              <Box sx={{ textAlign: 'center' }}>
+              <Box data-testid="timeslotdisplay" sx={{ textAlign: 'center' }}>
                 {day.startTime.slice(11, 16)} - {day.endTime.slice(11, 16)}
               </Box>
             }
           />
         </ListItem>
       ))}
+      </div>
           </Popover>
         </Stack>
       </Box>
@@ -287,7 +315,7 @@ const SearchPatientPage = (props) => {
         }}
       >
         {
-          <Box sx={{ width: "80%", marginTop: { xs: "20%", sm: "0%" } }}>
+          <Box data-testid="patientlist" sx={{ width: "80%", marginTop: { xs: "20%", sm: "0%" } }}>
             {!RloadDone ? <Load></Load> : ""}
             {Array.isArray(patientList) &&
               patientList
@@ -299,8 +327,11 @@ const SearchPatientPage = (props) => {
                         .includes(search.toLowerCase());
                 })
                 .map((item) => (
-                  <div key={item.nic + item.fullName}>
+                  <div key={item.id}>
                     <PatientDetailCard
+                      setAnalysisPatient={setAnalysisPatient}
+                      showAnalysis={showAnalysis}
+                      setShowAnalysis={setShowAnalysis}
                       appAddPopupCount={appAddPopupCount}
                       setAppAddPopupCount={setAppAddPopupCount}
                       setActiveId={setActiveId}
@@ -331,6 +362,9 @@ const SearchPatientPage = (props) => {
           activeId={activeId}
           apopen={apopen}
           setApopen={setApopen}
+          unableTimeSlots={unableTimeSlots}
+          setUnableTimeSlots={setUnableTimeSlots}
+
         />
         <PatientRegpopup
           patientCount={patientCount}
@@ -348,7 +382,9 @@ const SearchPatientPage = (props) => {
         notiMessage={notiMessage}
         notificationOpen={notificationOpen}
       />
-    </Box>
+    </Box>):(<PatientAppointmentAnalysis analysisPatient={analysisPatient} selectedDay={props.selectedDay} showAnalysis={showAnalysis} setShowAnalysis={setShowAnalysis}></PatientAppointmentAnalysis>)}
+    </div>
+    
   );
 };
 

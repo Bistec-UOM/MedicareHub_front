@@ -1,0 +1,90 @@
+[
+    {
+        "appointment": {
+            "id": 699,
+            "dateTime": "2024-06-30T11:25:00",
+            "status": "new",
+            "patientId": 17,
+            "createdAt": "2024-06-22T11:37:26.008",
+            "doctorId": 1,
+            "recepId": 1
+        },
+        "patient": {
+            "id": 17,
+            "nic": "321987654V",
+            "name": "David White",
+            "fullName": "David Christopher White",
+            "dob": "1991-01-20T00:00:00",
+            "contactNumber": "0789012345",
+            "address": "753 Pine St, Kilinochchi",
+            "email": "davidwhite@example.com",
+            "gender": "Male"
+        }
+    },
+    {
+        "appointment": {
+            "id": 702,
+            "dateTime": "2024-06-30T09:45:00",
+            "status": "new",
+            "patientId": 27,
+            "createdAt": "2024-06-22T11:39:55.819",
+            "doctorId": 1,
+            "recepId": 1
+        },
+        "patient": {
+            "id": 27,
+            "nic": "321987654V",
+            "name": "Matthew Hill",
+            "fullName": "Matthew Owen Hill",
+            "dob": "1987-09-30T00:00:00",
+            "contactNumber": "0789012345",
+            "address": "753 Elm St, Kandy",
+            "email": "matthewhill@example.com",
+            "gender": "Male"
+        }
+    },
+    {
+        "appointment": {
+            "id": 703,
+            "dateTime": "2024-06-30T10:45:00",
+            "status": "new",
+            "patientId": 30,
+            "createdAt": "2024-06-22T11:40:07.844",
+            "doctorId": 1,
+            "recepId": 1
+        },
+        "patient": {
+            "id": 30,
+            "nic": "678912345V",
+            "name": "Penelope White",
+            "fullName": "Penelope Claire White",
+            "dob": "1986-07-15T00:00:00",
+            "contactNumber": "0790123456",
+            "address": "357 Cedar St, Badulla",
+            "email": "penelopewhite@example.com",
+            "gender": "Female"
+        }
+    },
+    {
+        "appointment": {
+            "id": 704,
+            "dateTime": "2024-06-30T11:50:00",
+            "status": "new",
+            "patientId": 35,
+            "createdAt": "2024-06-22T11:40:19.992",
+            "doctorId": 1,
+            "recepId": 1
+        },
+        "patient": {
+            "id": 35,
+            "nic": "123456789V",
+            "name": "Ryan Lee",
+            "fullName": "Ryan James Lee",
+            "dob": "1991-11-30T00:00:00",
+            "contactNumber": "0723456789",
+            "address": "357 Cedar St, Colombo",
+            "email": "ryanlee@example.com",
+            "gender": "Male"
+        }
+    }
+]
