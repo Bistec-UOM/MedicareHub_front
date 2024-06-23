@@ -354,6 +354,7 @@ export default function AppAddPopup({
                 }}
               >
                 <BasicTimePicker
+                  data-testid="basictimepicker"
                   sx={{ overflow: { xs: "hidden" } }}
                   selectedTime={selectedTime}
                   setSelectedTime={setSelectedTime}
@@ -364,6 +365,7 @@ export default function AppAddPopup({
                 />
 
                 <LoadingButton
+                  data-testid="save-appointment"
                   disabled={confirmDisabled}
                   loading={appConfirmLoading}
                   size="small"

@@ -202,7 +202,7 @@ function MyFullCalendar({
 
   return (
     <div className="App">
-      <Box sx={{ overflowY: "hidden" }}>
+      <Box data-testid="testcalendar" sx={{ overflowY: "hidden" }}>
         <FullCalendar
           plugins={[dayGridPlugin, interactionPlugin]}
           initialView="dayGridMonth"

@@ -1,0 +1,34 @@
+[
+    {
+        "id": 1,
+        "nic": "1234526789V",
+        "name": "John Doe",
+        "fullName": "John William Doe",
+        "dob": "1993-01-16T07:47:50.4462437",
+        "contactNumber": "0711345678",
+        "address": "13 Main St, Colombo",
+        "email": "johndoe@example.com",
+        "gender": "Male"
+    },
+    {
+        "id": 3,
+        "nic": "987654321V",
+        "name": "Jane Smith",
+        "fullName": "Jane Marie Smith",
+        "dob": "1985-12-20T00:00:00",
+        "contactNumber": "0776543210",
+        "address": "456 Oak St, Kandy",
+        "email": "janesmith@example.com",
+        "gender": "Female"
+    },
+    {
+        "id": 4,
+        "nic": "45678913V",
+        "name": "David Brown",
+        "fullName": "David Andrew Brown",
+        "dob": "1999-07-24T18:00:00",
+        "contactNumber": "0765432100",
+        "address": "789 Elm St, Galle",
+        "email": "davidbrown@example.com",
+        "gender": "Male"
+    }]
