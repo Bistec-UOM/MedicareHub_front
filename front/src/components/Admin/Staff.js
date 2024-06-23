@@ -418,7 +418,6 @@ const handleRestoreClose = () => {
               {rolefild}
             </Typography>
             <Button
-              data-testId={`add-${rolefild}`}
               variant="contained"
               size="small"
               endIcon={<AddIcon/>}
@@ -426,6 +425,7 @@ const handleRestoreClose = () => {
                 fontWeight: "bolder",
               }}
               onClick={() => handleAddClickOpen(rolefild)}
+              data-testId="add-button"
             >
               Add
             </Button>

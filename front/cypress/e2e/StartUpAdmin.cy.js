@@ -16,6 +16,9 @@ describe('Admin Component', () => {
     cy.url({ timeout: 10000 }).should('include', '/admin');
   });
 
+
+
+
   it('should navigate to Patient section when the patient button is clicked', () => {
     cy.get('[data-testid="nav-item-patient"]').click();
     cy.get('[data-testid="A_Patient"]').should('be.visible');
@@ -41,12 +44,19 @@ describe('Admin Component', () => {
       cy.get('[data-testId="nav-Staff"]').first().click();
       cy.get('[data-testId="staff-section"]').should('be.visible');
       // cy.get('[data-testId="add-Doctor"]').click();
-
+      cy.get('[data-testId="add-button"]').click();
+      // Check if the AddUserDialog popup is visible
+      // cy.get('.MuiDialog-root').should('be.visible');
     });
+
+    // it('should open the AddUserDialog popup when the Add button is clicked', () => {
+    //   // Find the "Add" button by its data-testid attribute and click it
+    // });
 
     it('should naviagte on left navigation to patient section',()=>{
       cy.get('[data-testId="nav-Patient"]').first().click();
       cy.get('[data-testId="patient-section"]').should('be.visible');
     });
+    
 
  });
