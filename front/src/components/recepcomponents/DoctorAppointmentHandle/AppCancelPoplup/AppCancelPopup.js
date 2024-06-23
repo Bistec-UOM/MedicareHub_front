@@ -64,11 +64,12 @@ export default function AppCancelPopup({
     <Dialog open={cancelOpen} onClose={handleClose}>
     <div style={{display:'flex',alignItems:'start',margin:'8px',paddingBottom:'5px',borderBottom:'1px solid lightgrey'}}>
       <WarningIcon color='warning' sx={{mr:'10px'}}></WarningIcon>
-      <Typography> Are you sure you want to cancel the appointment?</Typography>
+      <Typography data-testid="canceltext"> Are you sure you want to cancel the appointment?</Typography>
     </div>
     <div style={{width:'100%',height:'60px',display:'flex',justifyContent:'center',alignItems:'center'}}>
       <Button variant='outlined' sx={{mr:'40px'}} size='small' endIcon={<CloseIcon></CloseIcon>} onClick={handleClose} >No</Button>
       <LoadingButton 
+        data-testid="cancelconfirm"
         variant='contained' 
         size='small' 
         endIcon={<DoneIcon></DoneIcon>}           

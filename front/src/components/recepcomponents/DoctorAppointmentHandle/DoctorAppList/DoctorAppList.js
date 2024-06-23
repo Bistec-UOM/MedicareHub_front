@@ -106,7 +106,7 @@ const DoctorAppList = ({Mode,setMode,selectedDAy,docid}) => {
         setRloadDone(true);
       })
       .catch((err) => {
-        handleNotification(err.response.data,"error");
+        handleNotification("Network Error occured!","error");
         setRloadDone(true);
       });
   }, [docid, selectedDay, delcount]); // Ensure dependencies are included in the dependency array
@@ -127,6 +127,7 @@ const DoctorAppList = ({Mode,setMode,selectedDAy,docid}) => {
       >
        <ArrowBackOutlinedIcon sx={{paddingBottom:'40px'}} onClick={handleBackButton}></ArrowBackOutlinedIcon>
         <SearchBar
+          id="doctorappsearch"
           search={search}
           setSearch={setSearch}
           height="10px"
@@ -154,6 +155,7 @@ const DoctorAppList = ({Mode,setMode,selectedDAy,docid}) => {
           direction="row"
         >
           <Button
+            data-testid="blockbutton"
             onClick={handleBlockDay}
             disabled={isDisabledBlock}
             color="warning"
@@ -163,6 +165,7 @@ const DoctorAppList = ({Mode,setMode,selectedDAy,docid}) => {
             Block
           </Button>
           <Button
+            data-testid="cancelbutton"
             onClick={handleCancelAll}
             disabled={isDisabledCancel}
             sx={{
@@ -200,7 +203,7 @@ const DoctorAppList = ({Mode,setMode,selectedDAy,docid}) => {
         </Box>
 
         {
-          <Box
+          <Box data-testid="doctorapplist"
             sx={{ width: "70%", marginTop: { xs: "40%", sm: "20%", md: "9%" } }}
           >
              {!RloadDone?<Load></Load>:''}
@@ -280,6 +283,7 @@ const DoctorAppList = ({Mode,setMode,selectedDAy,docid}) => {
         setCancelAll={setCancelAll}
       />
       <SuccessNotification
+        id="doctorappnotification"
         type={notiType}
         setNotificationOpen={setNotificationOpen}
         notiMessage={notiMessage}

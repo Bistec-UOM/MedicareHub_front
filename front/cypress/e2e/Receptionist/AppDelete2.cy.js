@@ -5,8 +5,7 @@ describe('DELETE appointment test', () => {
         statusCode:200
       }).as('deleteItem');
   
-      // Visit the page where the delete action can be performed
-      // Visit the page containing the form
+    
       cy.visit('http://localhost:3000');
   
       
@@ -15,7 +14,7 @@ describe('DELETE appointment test', () => {
       cy.get('button[id="logbutton"]').should('be.visible').click();
       cy.wait(5000); 
 
-       //click the data
+       //click the date
        cy.get('a[aria-label="June 29, 2024"]').click();
 
        cy.get('button[data-testid="deletebutton"]').first().click({ force: true }); 
@@ -26,14 +25,8 @@ describe('DELETE appointment test', () => {
         cy.wait('@deleteItem').then((interception) => {
         // Assert that the DELETE request was successful (status code 200 or 204)
         expect(interception.response.statusCode).to.be.oneOf([200, 204]);
-  
-        // Optionally, validate the response body if needed
-        // expect(interception.response.body).to.deep.equal({ message: 'Item deleted successfully' });
+
       });
-  
-      // Optionally, assert that the deleted item is no longer visible in the UI
-      // This depends on how your UI updates after a successful deletion
-      // cy.get('.item').should('not.contain', 'Deleted Item Name');
     });
   });
   

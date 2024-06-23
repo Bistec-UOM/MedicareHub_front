@@ -136,8 +136,9 @@ const DoctorAppCard = ({
                 direction={"row"}
                 sx={{ justifyContent: "space-between", alignItem: "center" }}
               >
-                <Typography variant="h5">{item.patient?.fullName}</Typography>
+                <Typography data-testid="dappointment-name" variant="h5">{item.patient?.fullName}</Typography>
                 <Typography
+                 data-testid="dappointment-no"
                   variant="body2"
                   color="text.secondary"
                   sx={{ textAlign: "center" }}
@@ -160,11 +161,11 @@ const DoctorAppCard = ({
                   <div></div>
                 ) : (
                   <Box>
-                    <IconButton onClick={handleMarkAsCompelted}>
+                    <IconButton data-testid="doneicon" onClick={handleMarkAsCompelted}>
                       <DoneIcon color="success" />
                     </IconButton>
 
-                    <IconButton onClick={handleCancelAppointment}>
+                    <IconButton data-testid="cancelicon" onClick={handleCancelAppointment}>
                       <CloseIcon
                         sx={{ marginLeft: "auto", color: "#E60000" }}
                       />

@@ -102,14 +102,15 @@ const SearchPatientPage = (props) => {
           setHeaders()
         );
         if (!response.ok) {
-          throw new Error("Network response was not ok");
+          handleNotification("Network Error Occured!", "error");
+          setRloadDone(true);
         }
         const responseData = await response.json();
         setPatientList(responseData);
         setRloadDone(true);
       } catch (err) {
         if (err.hasOwnProperty("response")) {
-          handleNotification("Network Error Occured!", "error");
+         // handleNotification("Network Error Occured!", "error");
           setRloadDone(true);
         } else {
           console.log(err);
@@ -154,14 +155,15 @@ const SearchPatientPage = (props) => {
           setHeaders()
         );
         if (!response.ok) {
-          throw new Error("Network response was not ok");
+          handleNotification("Network Error Occured!", "error");
+          setRloadDone(true);
         }
         const responseData = await response.json();
         setUnableTimeSlots(responseData);
         console.log("untime", responseData);
       } catch (err) {
         if (err.hasOwnProperty("response")) {
-          handleNotification("Network Error occured", "error");
+         // handleNotification("Network Error occured", "error");
           setRloadDone(true);
         } else {
           console.log(err);
@@ -188,6 +190,7 @@ const SearchPatientPage = (props) => {
         }}
       >
         <SearchBar
+          id="patientsearch"
           search={search}
           setSearch={setSearch}
           mgl="20%"
@@ -377,6 +380,7 @@ const SearchPatientPage = (props) => {
         ></PatientRegpopup>
       </div>
       <SuccessNotification
+        id="searchpatientpagenotification"
         type={notiType}
         setNotificationOpen={setNotificationOpen}
         notiMessage={notiMessage}

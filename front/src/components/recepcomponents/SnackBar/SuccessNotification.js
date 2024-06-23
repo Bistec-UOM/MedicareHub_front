@@ -3,7 +3,7 @@ import Button from '@mui/material/Button';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 
-export default function SuccessNotification({setNotificationOpen,notiMessage,notificationOpen,type}) {
+export default function SuccessNotification({id,setNotificationOpen,notiMessage,notificationOpen,type}) {
   
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -16,7 +16,7 @@ export default function SuccessNotification({setNotificationOpen,notiMessage,not
   return (
     <div>
      
-      <Snackbar open={notificationOpen} autoHideDuration={6000} onClose={handleClose}>
+      <Snackbar id={id} open={notificationOpen} autoHideDuration={6000} onClose={handleClose}>
         <Alert
           onClose={handleClose}
           severity={type}
