@@ -1,0 +1,68 @@
+[
+    {
+        "appointment": {
+            "id": 416,
+            "dateTime": "2024-06-20T08:30:00",
+            "status": "paid",
+            "patientId": 4,
+            "createdAt": "2024-05-31T13:37:50.64",
+            "doctorId": 1,
+            "recepId": 1
+        },
+        "patient": {
+            "id": 4,
+            "nic": "45678913V",
+            "name": "David Brown",
+            "fullName": "David Andrew Brown",
+            "dob": "1999-07-24T18:00:00",
+            "contactNumber": "0765432100",
+            "address": "789 Elm St, Galle",
+            "email": "davidbrown@example.com",
+            "gender": "Male"
+        }
+    },
+    {
+        "appointment": {
+            "id": 417,
+            "dateTime": "2024-06-20T09:30:00",
+            "status": "paid",
+            "patientId": 14,
+            "createdAt": "2024-05-31T13:38:40.791",
+            "doctorId": 1,
+            "recepId": 1
+        },
+        "patient": {
+            "id": 14,
+            "nic": "992941465v",
+            "name": "Sophia Garcia",
+            "fullName": "Sophia Grace Garcia",
+            "dob": "1985-09-05T00:00:00",
+            "contactNumber": "07654321091",
+            "address": "951 Spruce St, Puttalam,11",
+            "email": "sophiagarcia@example.com",
+            "gender": "Female"
+        }
+    },
+    {
+        "appointment": {
+            "id": 678,
+            "dateTime": "2024-06-20T09:09:24.943",
+            "status": "new",
+            "patientId": 10,
+            "createdAt": "2024-06-19T13:20:56.641",
+            "doctorId": 1,
+            "recepId": 1
+        },
+        "patient": {
+            "id": 10,
+            "nic": "678912345V",
+            "name": "Emma Davis",
+            "fullName": "Emma Elizabeth Davis",
+            "dob": "1994-08-25T00:00:00",
+            "contactNumber": "0778901234",
+            "address": "852 Oak St, Polonnaruwa",
+            "email": "emmadavis@example.com",
+            "gender": "Female"
+        }
+    }
+]

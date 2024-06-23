@@ -121,7 +121,7 @@ export default function BlockTimeSelectionPopup({
         <Box sx={{ width: { xs: "100%", sm: "450px" }, height: "230px" }}>
         <div style={{display:'flex',alignItems:'start',margin:'8px',paddingBottom:'5px',borderBottom:'1px solid lightgrey'}}>
       <MoreTimeIcon color='warning' sx={{mr:'10px'}}></MoreTimeIcon>
-      <Typography> Select the Time Period</Typography>
+      <Typography data-testid="timeperiodtext"> Select the Time Period</Typography>
     </div>
           {/* <Box>
             <Box
@@ -188,6 +188,7 @@ export default function BlockTimeSelectionPopup({
         No
       </Button>
       <LoadingButton
+        data-testid="timeconfirm"
         loading={timeBlockLoading}
         onClick={handleSubmit}
         sx={{

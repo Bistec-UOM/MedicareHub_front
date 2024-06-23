@@ -79,7 +79,7 @@ const ResDayList = (props) => {
         }
       })
       .catch((error) => {
-        console.error("Error fetching appointments:", error);
+        handleNotification("Error fetching appointments:", "error");
         setEpage(true);
         setRloadDone(true);
       });
@@ -103,6 +103,7 @@ const ResDayList = (props) => {
         }}
       >
         <SearchBar
+          id="appointmentsearch"
           search={search}
           setSearch={setSearch}
           // mgl="-120%"
@@ -226,6 +227,7 @@ const ResDayList = (props) => {
         setDopen={setDopen}
       />
       <SuccessNotification
+        id="resdaylistnotification"
         type={notiType}
         setNotificationOpen={setNotificationOpen}
         notiMessage={notiMessage}

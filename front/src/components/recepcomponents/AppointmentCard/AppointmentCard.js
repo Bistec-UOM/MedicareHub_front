@@ -149,7 +149,7 @@ const AppointmentCard = ({
                     </Stack>
                   </Grid>
                   <Grid item xs={12} sm={4}>
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography data-testid="appointment-address" variant="body2" color="text.secondary">
                       {item.patient?.address}
                     </Typography>
                     <Typography data-testid="appointment-no" variant="body2" color="text.secondary">
@@ -172,7 +172,7 @@ const AppointmentCard = ({
                         <IconButton data-testid="deletebutton"  onClick={handleDeleteAppointment}>
                           <DeleteIcon  sx={{ color: "#E60000" }} />
                         </IconButton>
-                        <IconButton onClick={handleEditAppointment}>
+                        <IconButton data-testid="editbutton"  onClick={handleEditAppointment}>
                           <EditIcon sx={{ color: "#F66444" }} />
                         </IconButton>
                       </Box>

@@ -5,10 +5,17 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import PatientAnalysis from "../PatientAnalysis/PatientAnalysis";
 import { baseURL, endPoints } from "../../../Services/Appointment";
 import { setHeaders } from "../../../Services/Auth";
+import SuccessNotification from "../SnackBar/SuccessNotification";
+
 
 const PatientAppointmentAnalysis = ({ analysisPatient, selectedDay, showAnalysis, setShowAnalysis }) => {
   const [previousApps, setPreviousApps] = useState([]);
   const [analysisLoad, setAnalysisLoad] = useState(false);
+
+  const [notificationOpen, setNotificationOpen] = useState(false);
+  const [notiMessage, setNotiMessage] = useState("");
+  const [notiType, setNotiType] = useState("success");
+  const [patientCount, setPatientCount] = useState(0); //use for pa
 
   var comCount = 0; 
   var showOffCount = 0;
@@ -22,7 +29,7 @@ const PatientAppointmentAnalysis = ({ analysisPatient, selectedDay, showAnalysis
         console.log("resprevi", response.data);
       })
       .catch((error) => {
-        console.error("Error fetching previous appointments:", error);
+        handleNotification("Network Error Occured!", "error");
         setAnalysisLoad(true);
       });
   }, [analysisPatient.id]);
@@ -61,6 +68,12 @@ const PatientAppointmentAnalysis = ({ analysisPatient, selectedDay, showAnalysis
     setShowAnalysis(false);
   };
 
+  const handleNotification = (msg, type) => {
+    setNotiMessage(msg);
+    setNotificationOpen(true);
+    setNotiType(type);
+  };
+
   const chartData = prepareChartData(previousApps);
 
   return (
@@ -97,6 +110,13 @@ const PatientAppointmentAnalysis = ({ analysisPatient, selectedDay, showAnalysis
         </Box>
       </Box>
       <PatientAnalysis comCount={comCount} showOffCount={showOffCount} analysisPatient={analysisPatient} analysisLoad={analysisLoad} data={chartData}></PatientAnalysis>
+      <SuccessNotification
+        id="analysisnotification"
+        type={notiType}
+        setNotificationOpen={setNotificationOpen}
+        notiMessage={notiMessage}
+        notificationOpen={notificationOpen}
+      />
     </Box>
   );
 };

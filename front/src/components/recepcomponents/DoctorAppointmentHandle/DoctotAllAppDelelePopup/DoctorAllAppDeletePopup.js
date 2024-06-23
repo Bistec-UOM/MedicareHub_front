@@ -66,11 +66,12 @@ export default function DoctorAllAppDeletePopup({
     <Dialog open={cancelAll} onClose={handleClose}>
     <div style={{display:'flex',alignItems:'start',margin:'8px',paddingBottom:'5px',borderBottom:'1px solid lightgrey'}}>
       <WarningIcon color='warning' sx={{mr:'10px'}}></WarningIcon>
-      <Typography> Are you sure the entire list to be Canceled?</Typography>
+      <Typography data-testid="allappcanceltext"> Are you sure the entire list to be Canceled?</Typography>
     </div>
     <div style={{width:'100%',height:'60px',display:'flex',justifyContent:'center',alignItems:'center'}}>
       <Button variant='outlined' sx={{mr:'40px'}} size='small' endIcon={<CloseIcon></CloseIcon>} onClick={handleClose} >No</Button>
       <LoadingButton 
+        data-testid="allcancelconfirm"
         variant='contained' 
         size='small' 
         endIcon={<DoneIcon></DoneIcon>}           
