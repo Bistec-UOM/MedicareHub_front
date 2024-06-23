@@ -173,7 +173,7 @@ const APatient = () => {
 
   return (
     <div>
-      <Grid container spacing={3}>
+      <Grid data-testid="A_Patient" container spacing={3}>
         <Grid item sm={4} xs={12}>
           <TotalPatientCount count={todaysData}></TotalPatientCount>
         </Grid>

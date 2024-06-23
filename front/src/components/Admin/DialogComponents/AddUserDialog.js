@@ -160,7 +160,7 @@ const AddUserDialog = ({open,handleClose,handleInputChange,formErrors,Type,formD
   };
   return (
     <>
-      <Dialog sx={{width: {md:'39.5vw',sm:"100%"},margin:"auto"}} open={open} onClose={handleClose}>
+      <Dialog data-testId="staff-Add" sx={{width: {md:'39.5vw',sm:"100%"},margin:"auto"}} open={open} onClose={handleClose}>
         <DialogTitle
           sx={{
             // backgroundColor:""

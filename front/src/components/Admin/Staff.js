@@ -418,6 +418,7 @@ const handleRestoreClose = () => {
               {rolefild}
             </Typography>
             <Button
+              data-testId={`add-${rolefild}`}
               variant="contained"
               size="small"
               endIcon={<AddIcon/>}
@@ -523,6 +524,7 @@ const handleRestoreClose = () => {
 
 {/* deleted section */}
 <Paper
+data-testId="staff-section"
             sx={{
               mt: 2,
               m: 1,
