@@ -1,5 +1,5 @@
-describe('ResDayList Component', () => {
-    it('should display appointments and render correctly', () => {  //check the applist renders correctly with correct data
+describe('ResDayList appointment fething failed', () => {
+    it('should display appointments rendering failed error', () => {  //check the applist renders correctly with correct data
         cy.visit('http://localhost:3000');
   
         

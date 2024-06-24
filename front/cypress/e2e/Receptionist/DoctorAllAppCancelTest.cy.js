@@ -1,5 +1,5 @@
 describe('Doctor all day app cancel  ', () => {
-    it('should block a day', () => {  //check the applist renders correctly with correct data
+    it('shuould cancel all appointments of that day', () => {  //check the applist renders correctly with correct data
         cy.visit('http://localhost:3000');
   
         

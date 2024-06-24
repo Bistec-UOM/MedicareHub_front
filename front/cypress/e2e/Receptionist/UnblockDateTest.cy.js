@@ -1,5 +1,5 @@
-describe('Doctor day block click  ', () => {
-    it('should display a day block alert', () => {  //check the applist renders correctly with correct data
+describe('Doctor day unblock ', () => {
+    it('should display day unblock succesful', () => {  //check the applist renders correctly with correct data
         cy.visit('http://localhost:3000');
   
         

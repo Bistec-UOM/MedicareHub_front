@@ -1,5 +1,5 @@
-describe('Doctor day appointment  Cancel', () => {
-    it('should mark as cancel day appointment', () => {  //check the applist renders correctly with correct data
+describe('Doctor day appointment  Cancel failed', () => {
+    it('should display an error popup', () => {  //check the applist renders correctly with correct data
         cy.visit('http://localhost:3000');
   
         
@@ -43,10 +43,7 @@ describe('Doctor day appointment  Cancel', () => {
             expect(interception.response.statusCode).to.equal(500);
           });
 
-          cy.get('[id="doctorappnotification"]').should('contain',"Network Error Occured!");
-
-
-          
+          cy.get('[id="doctorappnotification"]').should('contain',"Network Error Occured!");  
       
       });
   });
