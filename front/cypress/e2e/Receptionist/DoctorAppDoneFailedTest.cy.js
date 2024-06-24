@@ -1,5 +1,5 @@
-describe('Doctor day appointment  Done', () => {
-    it('should mark as done day appointment', () => {  //check the applist renders correctly with correct data
+describe('Doctor day appointment  Done failed', () => {
+    it('should display an error popup', () => {  //check the applist renders correctly with correct data
         cy.visit('http://localhost:3000');
   
         

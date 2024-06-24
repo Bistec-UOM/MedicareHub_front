@@ -1,5 +1,5 @@
-describe('Doctor all day app cancel  ', () => {
-    it('should block a day', () => {  //check the applist renders correctly with correct data
+describe('Doctor all day app cancel  failed ', () => {
+    it('should display an error popup', () => {  //check the applist renders correctly with correct data
         cy.visit('http://localhost:3000');
   
         

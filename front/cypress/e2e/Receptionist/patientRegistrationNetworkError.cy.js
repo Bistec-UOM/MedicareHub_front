@@ -1,5 +1,5 @@
-describe('Patient register', () => {
-    it('should create a new patient and return the mock data', () => {
+describe('Patient register failed', () => {
+    it('should display an error popup', () => {
       cy.fixture('Newpatient').then((newUser) => {
         // Intercept the POST request to the /api/users endpoint
         // and respond with the mock data from the fixture

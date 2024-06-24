@@ -26,12 +26,6 @@ describe('New appointment Adding Failed', () => {
         
         //click add icon of first patient
         cy.get('button[id="add-appointment"]').first().click(); 
-
-        
-
-
-
-       
   
         // Submit the form
         cy.get('[data-testid="save-appointment"]').click();

@@ -1,5 +1,5 @@
-describe('Doctor day appointment list list', () => {
-    it('should display day appointments and render correctly', () => {  //check the applist renders correctly with correct data
+describe('Doctor day appointment list fetching failed', () => {
+    it('should display an error of fetching', () => {  //check the applist renders correctly with correct data
         cy.visit('http://localhost:3000');
   
         

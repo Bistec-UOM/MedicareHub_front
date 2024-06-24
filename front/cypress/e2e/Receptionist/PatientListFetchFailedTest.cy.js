@@ -1,5 +1,5 @@
-describe('Resday list patient list Component', () => {
-    it('should display patient list and render correctly', () => {  //check the applist renders correctly with correct data
+describe('Resday list patient list fetching failed', () => {
+    it('should display an error popup', () => {  //check the applist renders correctly with correct data
         cy.visit('http://localhost:3000');
   
         
