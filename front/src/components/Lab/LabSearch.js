@@ -30,7 +30,7 @@ export default function LabSearch({setPage,setDate,query,setQuery}) {
   return (
       <div style={{display:'flex',justifyContent:'space-between'}}>
 
-      <ViewListIcon sx={{cursor:'pointer',ml:'10px'}} onClick={()=>setPage(5)}></ViewListIcon>
+      <ViewListIcon id="viewaccept" sx={{cursor:'pointer',ml:'10px'}} onClick={()=>setPage(5)}></ViewListIcon>
 
       <div style={{display:'flex',flexDirection:'column',alignItems:'center'}}>
     
@@ -45,7 +45,7 @@ export default function LabSearch({setPage,setDate,query,setQuery}) {
      <SearchBarSM value={query}  onChange={(e)=>setQuery(e.target.value)} placeholder="Search patients"></SearchBarSM>
      </div>
 
-     <ScienceIcon sx={{cursor:'pointer',mr:'10px'}} onClick={()=>setPage(2)}></ScienceIcon>
+     <ScienceIcon id="labtests" sx={{cursor:'pointer',mr:'10px'}} onClick={()=>setPage(2)}></ScienceIcon>
 
     </div>
   )
