@@ -117,6 +117,8 @@ const handleClick = () => {
     labs: rep,  // lab test array: from Labrequest component
     description: description
   }
+  // Add console log here to identify the appointment ID
+  console.log("Appointment ID:", obj.id);
   axios.post(baseURL+endPoints.PRESCRIPTION, obj,setHeaders())
   .then(response => {
     setLoadingBConfirm(false)
