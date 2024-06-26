@@ -18,6 +18,7 @@ import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import DoneIcon from '@mui/icons-material/Done';
 import CloseIcon from '@mui/icons-material/Close';
 import {Avatar} from "@mui/material";
+import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
 
 const DoctorAppCard = ({
   selectedDay,
@@ -67,7 +68,7 @@ const DoctorAppCard = ({
   }
 
   const findOpacityStatus = (label) => {
-    if (label == "Completed" || label == "cancelled") {
+    if (label == "Completed" || label == "cancelled" || label=="noshow") {
       return true;
     } else {
       return false;
@@ -84,6 +85,13 @@ const DoctorAppCard = ({
       return <> <CloseIcon color="warning" sx={{ display:{xs:'none',md:'flex'},fontSize: "38px" }} />
        <Typography variant="p"  sx={{display:{xs:'flex',md:'none'}}}>Cancelled</Typography></>
     }
+    else if(item.appointment.status=="noshow")
+      {
+        return<> <ErrorOutlineOutlinedIcon color="gray" sx={{ display:{xs:'none',md:'flex'},fontSize: "38px" }} />
+        <Typography variant="p"  sx={{display:{xs:'flex',md:'none'}}}>No-Show</Typography>
+ 
+       </>
+      }
   };
 
   const handleCancelAppointment = () => {
@@ -92,7 +100,8 @@ const DoctorAppCard = ({
 
   const isCompletedOrCancelled =
     item.appointment?.status === "Completed" ||
-    item.appointment?.status === "cancelled";
+    item.appointment?.status === "cancelled"  ||
+    item.appointment?.status==="noshow";
   return (
     <div>
       <Box
