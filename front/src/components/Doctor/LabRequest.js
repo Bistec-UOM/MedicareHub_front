@@ -1,8 +1,8 @@
 import React , { useState } from 'react';
-import { TextField, Button, IconButton, Dialog } from '@mui/material';
+import { TextField, Button, IconButton, Dialog , Snackbar, Alert} from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import { Grid, Typography,Card } from '@mui/material';
+import {Typography } from '@mui/material';
 import DialogContent from '@mui/material/DialogContent';
 import Autocomplete from '@mui/material/Autocomplete';
 import { Box } from '@mui/system';
@@ -13,6 +13,8 @@ export default function LabRequest(props) {
   //const [rep, setrep] = useState([]);
   const [name, setName] = useState('');
   const [selectedLabTestName, setSelectedLabTestName] = useState(null);//hold the selected labtest name
+  const [error, setError] = useState('');
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
  
 /*   const Labs = [ 
   { TestId: 1, labTestName: 'Full Blood Count' },
@@ -33,9 +35,17 @@ export default function LabRequest(props) {
   const handleSubmit = (e) => {
       e.preventDefault();
     };
+    
  
   const handleAddLabRequest = () => {
+    if (!selectedLabTestName) {
+      setError('Lab Test Name is required');
+      setSnackbarOpen(true);
+      return;
+    }
+
     const selectedLabTest = Labs.find(test => test.labTestName === selectedLabTestName); 
+    
      const newRep = {
       DateTime:null, // Placeholder for date and time
       testId: selectedLabTest ? selectedLabTest.testId : null,
@@ -45,6 +55,8 @@ export default function LabRequest(props) {
     setrep([...rep, newRep]);
     setName('');
     // setOpen(true)
+    handleClose();
+    setSelectedLabTestName('');
     
 };
 
@@ -53,7 +65,12 @@ const handleDeleteLabRequest = (index) => {
   updatedrep.splice(index, 1);
   setrep(updatedrep);
 };
-
+const handleCloseSnackbar = (event, reason) => {
+  if (reason === 'clickaway') {
+      return;
+  }
+  setSnackbarOpen(false);
+};
   return (
 <div>
 <Dialog open={openpopBox}>
@@ -83,7 +100,7 @@ const handleDeleteLabRequest = (index) => {
           )}
           /> 
         <Button size='small' variant="contained" sx={{ top: '0.1px',marginRight: '30px'}} 
-         onClick={() => {handleAddLabRequest(); handleClose()}} endIcon={<AddIcon></AddIcon>}> Add </Button>        
+         onClick={() => {handleAddLabRequest(); }} endIcon={<AddIcon></AddIcon>}> Add </Button>        
       </form>  
       <IconButton
               sx={{ position: 'absolute', top:'5px',right:'5px'}}
@@ -106,7 +123,17 @@ const handleDeleteLabRequest = (index) => {
             </Box>
         </Box>
       ))}
-      </div>        
+      </div> 
+      {/* Snackbar for error messages */}
+      <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={6000}
+                onClose={handleCloseSnackbar}
+            >
+                <Alert onClose={handleCloseSnackbar} severity="error" sx={{ width: '100%',backgroundColor:'#F0F841 ' }}>
+                    {error}
+                </Alert>
+            </Snackbar>       
       </div>   
   );
 }

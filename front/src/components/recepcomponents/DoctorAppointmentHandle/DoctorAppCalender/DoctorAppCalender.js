@@ -274,8 +274,9 @@ const [unblockCount,setUnblockCount]=useState(0);  //var for fetching new block 
 
   return (
     <div>
-      {!listMode?<Box sx={{ overflowY: "hidden" }}>
+      {!listMode?<Box id="doccalendar" sx={{ overflowY: "hidden" }}>
         <FullCalendar
+           
           plugins={[dayGridPlugin, interactionPlugin]}
           initialView="dayGridMonth"
           eventContent={renderEventContent}
@@ -292,6 +293,7 @@ const [unblockCount,setUnblockCount]=useState(0);  //var for fetching new block 
         />
       </Box>:<DoctorAppList Mode={Mode} setMode={setMode} selectedDAy={selectedDay} docid={doctorId}></DoctorAppList>}
       <SuccessNotification
+        id="calendarnotification"
         type={notiType}
         setNotificationOpen={setNotificationOpen}
         notiMessage={notiMessage}
@@ -300,11 +302,12 @@ const [unblockCount,setUnblockCount]=useState(0);  //var for fetching new block 
        <Dialog open={unblockOpen} onClose={handleClose}>
     <div style={{display:'flex',alignItems:'start',margin:'8px',paddingBottom:'5px',borderBottom:'1px solid lightgrey'}}>
       <WarningIcon color='warning' sx={{mr:'10px'}}></WarningIcon>
-      <Typography> If you want you can Unblock the day?</Typography>
+      <Typography data-testid="unblocktext"> If you want you can Unblock the day?</Typography>
     </div>
     <div style={{width:'100%',height:'60px',display:'flex',justifyContent:'center',alignItems:'center'}}>
       <Button variant='outlined' sx={{mr:'40px'}} size='small' endIcon={<CloseIcon></CloseIcon>} onClick={handleClose} >No</Button>
       <LoadingButton 
+        data-testid="unblockconfirm"
         variant='contained' 
         size='small' 
         endIcon={<DoneIcon></DoneIcon>}           

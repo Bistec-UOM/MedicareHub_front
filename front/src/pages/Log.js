@@ -500,6 +500,7 @@ export default function Log() {
         onClose={handleClose}
       >
         <Alert
+          id="alert"
           onClose={handleClose}
           severity={col}
           variant="filled"

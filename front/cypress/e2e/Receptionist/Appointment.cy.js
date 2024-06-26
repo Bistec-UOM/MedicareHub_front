@@ -1,4 +1,4 @@
-describe('Appointment Handling', () => {
+describe('Appointment initial page', () => {
     it('renders the calender componenet', () => {  //check the calendar renders succesfully
       cy.visit('http://localhost:3000/')
 

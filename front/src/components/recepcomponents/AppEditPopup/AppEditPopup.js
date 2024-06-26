@@ -300,6 +300,7 @@ export default function AppEditPopup({
                   setSelectedTime={setSelectedTime}
                 />
                 <LoadingButton
+                  data-testid="editconfirm"
                   loading={appEditConLoading}
                   variant="contained"
                   type="submit"

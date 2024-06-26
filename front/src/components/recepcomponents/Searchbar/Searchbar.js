@@ -59,7 +59,7 @@ return (
           boxShadow: 1
           }}
   >
-  <InputBase disabled={props.isDisabled} type="text" className="form-control" sx={{ flex: 1 }} placeholder={props.placename} value={props.search}  onChange={handleSearch}/>
+  <InputBase id={props.id} disabled={props.isDisabled} type="text" className="form-control" sx={{ flex: 1 }} placeholder={props.placename} value={props.search}  onChange={handleSearch}/>
   <Divider sx={{ height: 20,position:'relative',left:'10px'}} orientation="vertical" />
   <IconButton type="button"  aria-label="search">
     <SearchIcon sx={{position:'relative',left:'10px'}}/>

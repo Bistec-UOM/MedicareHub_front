@@ -95,7 +95,8 @@ export default function TestDialogBox({test,setPage,setTload,handleClose,handleC
         <div style={{paddingTop:'10px',display:'flex',flexDirection:'row-reverse',alignItems:'center'}} >
           
           
-          <LoadingButton           
+          <LoadingButton   
+            id="labTestEdit"        
             size="small"
             loading={loadingB}
             loadingPosition="end"
@@ -105,7 +106,7 @@ export default function TestDialogBox({test,setPage,setTload,handleClose,handleC
             endIcon={isDisabled?<EditIcon></EditIcon>:<DoneIcon></DoneIcon>}
           >{isDisabled?'Edit':'OK'}</LoadingButton>
           {
-            isDisabled===false?<Button variant='outlined' sx={{ml:'20px'}} endIcon={<DashboardCustomizeIcon></DashboardCustomizeIcon>}  onClick={()=>setPage(4)}></Button>:''
+            isDisabled===false?<Button id="templEdit" variant='outlined' sx={{ml:'20px'}} endIcon={<DashboardCustomizeIcon></DashboardCustomizeIcon>}  onClick={()=>setPage(4)}></Button>:''
           }
         </div>
     </div>

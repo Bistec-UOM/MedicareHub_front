@@ -31,7 +31,7 @@ export default function TopUnit({setMode,Mode,appointments,SwitchOnChange}) {
     <div style={{position:'relative',width:'100%'}}>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
 
-        {Mode!=2?<EventIcon sx={{ cursor: 'pointer',ml:'10px' }} onClick={()=>setMode(2)} />:<ListAltIcon sx={{ cursor: 'pointer',ml:'10px' }} onClick={()=>setMode(1)}></ListAltIcon>} 
+        {Mode!=2?<EventIcon data-testid="calendarevent" sx={{ cursor: 'pointer',ml:'10px' }} onClick={()=>setMode(2)} />:<ListAltIcon sx={{ cursor: 'pointer',ml:'10px' }} onClick={()=>setMode(1)}></ListAltIcon>} 
 
         <Typography sx={{ fontSize:'14px'}}>{formattedDate}</Typography>
 

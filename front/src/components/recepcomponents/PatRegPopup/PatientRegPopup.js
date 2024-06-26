@@ -166,20 +166,21 @@ const PatientRegpopup = ({
         );
         setRegLoading(false);
         setPatientCount(patientCount + 1);
+        setName("");
+        setAge(0);
+        setAddress("");
+        setNic("");
+        setEmail("");
+        setPhone("");
+        setDob(null);
+        handleNotification("A new patient registered successfully!", "success");
         setRegopen(false);
-        handleNotification("Patient Registered successfully!", "success");
       } catch (err) {
         handleNotification("Network Error Occurred!", "error");
       }
-      setName("");
-      setAge(0);
-      setAddress("");
-      setNic("");
-      setEmail("");
-      setPhone("");
-      setDob(null);
-      handleNotification("A new patient registered successfully!", "success");
-      setRegopen(false);
+      finally{
+        setRegopen(false);
+      }
     } else {
       setRegLoading(false);
     }
