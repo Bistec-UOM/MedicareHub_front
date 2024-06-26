@@ -17,6 +17,7 @@ import {Avatar} from "@mui/material";
 import { BoltRounded } from "@mui/icons-material";
 import DoneIcon from '@mui/icons-material/Done';
 import CloseIcon from '@mui/icons-material/Close';
+import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
 
 
 const AppointmentCard = ({
@@ -36,7 +37,8 @@ const AppointmentCard = ({
   const [appEditOpen, setAppEditOpen] = useState(false); //var for appEdit open popup
   const isCompletedOrCancelled =
     item.appointment?.status === "Completed" ||
-    item.appointment?.status === "cancelled";
+    item.appointment?.status === "cancelled" || 
+    item.appointment?.status ==="noshow";
   const handleEditAppointment = () => {
     setAppEditOpen(true);
   };
@@ -66,6 +68,13 @@ const AppointmentCard = ({
 
       </>
     }
+    else if(item.appointment.status=="noshow")
+      {
+        return<> <ErrorOutlineOutlinedIcon color="gray" sx={{ display:{xs:'none',md:'flex'},fontSize: "38px" }} />
+        <Typography variant="p"  sx={{display:{xs:'flex',md:'none'}}}>No-Show</Typography>
+ 
+       </>
+      }
   };
 
   function getEndingTime(dateTimeString) {
@@ -86,7 +95,7 @@ const AppointmentCard = ({
   };
 
   const findOpacityStatus = (label) => {
-    if (label == "Completed" || label == "cancelled") {
+    if (label == "Completed" || label == "cancelled" || label=="noshow") {
       return true;
     } else {
       return false;

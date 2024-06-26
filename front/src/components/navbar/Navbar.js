@@ -24,10 +24,24 @@ import { NotificationPrompt } from "../Common";
 import EditUserDialog from "../Admin/DialogComponents/EditUserDialog";
 import UserPopUp from "../Admin/DialogComponents/UserPopUp";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import SuccessNotification from "../recepcomponents/SnackBar/SuccessNotification";
 
 const Navbar = () => {
   const [profile, setProfile] = useState({name: "Profile",role: "Empty",image: "",Id: ""});
   const [anchorEl, setAnchorEl] = useState(null);
+
+  const [notificationOpen, setNotificationOpen] = useState(false);
+  const [notiMessage, setNotiMessage] = useState("");
+  const [notiType, setNotiType] = useState("success");
+
+  const handleNotification = (msg, type) => {
+    setNotiMessage(msg);
+    setNotificationOpen(true);
+    setNotiType(type);
+  };
+
+
+
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -127,7 +141,7 @@ const Navbar = () => {
         setNotificationList(response.data);
       })
       .catch((error) => {
-        console.error("Error fetching disabled dates:", error);
+        handleNotification("Error fetching notifications","error");
       });
   }, []);
 
@@ -331,6 +345,13 @@ const Navbar = () => {
       </Toolbar>
   {/* use details */}
  <UserPopUp profile={profile} editOpen={editOpen} setEditOpen={setEditOpen}></UserPopUp>
+ <SuccessNotification
+        id="doctorappnotification"
+        type={notiType}
+        setNotificationOpen={setNotificationOpen}
+        notiMessage={notiMessage}
+        notificationOpen={notificationOpen}
+      />
     </AppBar>
   );
 };

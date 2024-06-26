@@ -50,7 +50,7 @@ const PatientAppointmentAnalysis = ({ analysisPatient, selectedDay, showAnalysis
       if (status === "paid" || status === "completed") {
         dataMap[doctorName].completedAppointments += 1;
         comCount += 1;
-      } else if (status === "new") {
+      } else if (status === "noshow") {
         dataMap[doctorName].noShows += 1;
         showOffCount += 1;
       }
