@@ -269,6 +269,7 @@ function Patient() {
             <Button
               variant="contained"
               size="small"
+              data-testId="patient-add-button"
               endIcon={<AddIcon/>}
               sx={{
                 width: "9vh",

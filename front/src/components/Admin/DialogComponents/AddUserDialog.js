@@ -181,6 +181,7 @@ const AddUserDialog = ({open,handleClose,handleInputChange,formErrors,Type,formD
           />
           {/* Add form fields or other content here */}
           <TextField
+            data-testid="staff-Add-fullName"
             required
             label="Full Name"
             size="small"
@@ -192,6 +193,7 @@ const AddUserDialog = ({open,handleClose,handleInputChange,formErrors,Type,formD
           />
           <TextField
             required
+            data-testid="staff-Add-name"
             label="Usual Name"
             size="small"
             sx={{ mb: 1,width:{xs:"100%",sm:"auto"} }}
@@ -200,6 +202,7 @@ const AddUserDialog = ({open,handleClose,handleInputChange,formErrors,Type,formD
             helperText={formErrors.name}
           />
           <TextField
+          data-testid="staff-Add-nic"
             required
             label="NIC"
             size="small"
@@ -209,6 +212,7 @@ const AddUserDialog = ({open,handleClose,handleInputChange,formErrors,Type,formD
             helperText={formErrors.nic}
           />
           <TextField
+          data-testid="staff-Add-address"
             required
             label="Address"
             size="small"
@@ -219,6 +223,7 @@ const AddUserDialog = ({open,handleClose,handleInputChange,formErrors,Type,formD
             helperText={formErrors.address}
           />
           <TextField
+          data-testid="staff-Add-phone"
             required
             label="Contact Number"
             size="small"
@@ -228,6 +233,7 @@ const AddUserDialog = ({open,handleClose,handleInputChange,formErrors,Type,formD
             helperText={formErrors.contactNumber}
           />
           <TextField
+          data-testid="staff-Add-qualifications"
             required
             label="qualifications"
             size="small"
@@ -240,6 +246,7 @@ const AddUserDialog = ({open,handleClose,handleInputChange,formErrors,Type,formD
           />
           <TextField
             required
+            data-testid="staff-Add-email"
             label="E-mail"
             size="small"
             sx={{ mb: 1,width:{xs:"100%",sm:"auto"} }}
@@ -248,6 +255,7 @@ const AddUserDialog = ({open,handleClose,handleInputChange,formErrors,Type,formD
             helperText={formErrors.email}
           />
           <TextField
+            data-testid="staff-Add-password"
             required
             label="Password"
             size="small"
@@ -260,6 +268,7 @@ const AddUserDialog = ({open,handleClose,handleInputChange,formErrors,Type,formD
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DemoContainer components={["DateField"]}>
                 <DateField
+                data-testid="staff-Add-dateOfBirth"
                   label="Date Of Birth"
                   size="small"
                   style={{ width: "200px",width:{xs:"100%",sm:"auto"} }}
@@ -278,6 +287,7 @@ const AddUserDialog = ({open,handleClose,handleInputChange,formErrors,Type,formD
               >
                 <InputLabel sx={{top:'-1vh',marginLeft:".9vw"}} id="demo-simple-select-label">Gender</InputLabel>
                 <Select
+                  data-testid="staff-Add-gender"
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   size="small"
@@ -308,6 +318,7 @@ const AddUserDialog = ({open,handleClose,handleInputChange,formErrors,Type,formD
             Add
             </Button> */}
           <LoadingButton 
+          data-testid="staff-Add-submit"
             sx={{ m: 2 }}
             variant='contained' 
             size='small' 

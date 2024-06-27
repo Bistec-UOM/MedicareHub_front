@@ -166,7 +166,7 @@ const AddPatientDialog = ({open,rows,handleAddClose,handleInputChange,formErrors
           required
           label="Full Name"
           fullWidth
-
+          data-testid="patient-Add-fullName"
           sx={{ mb: 1, mt: 3 }}
           onChange={(e) => handleInputChange("fullName", e.target.value)}
           size="small"
@@ -177,6 +177,7 @@ const AddPatientDialog = ({open,rows,handleAddClose,handleInputChange,formErrors
         <TextField
           required
           size="small"
+          data-testid="patient-Add-name"
           label="Name"
           sx={{
             mb: 1,
@@ -190,6 +191,7 @@ const AddPatientDialog = ({open,rows,handleAddClose,handleInputChange,formErrors
           helperText={formErrors.name}
         />
         <TextField
+          data-testid="patient-Add-address"
           required
           label="Address"
           size="small"
@@ -200,6 +202,7 @@ const AddPatientDialog = ({open,rows,handleAddClose,handleInputChange,formErrors
           helperText={formErrors.address}
         />
         <TextField
+          data-testid="patient-Add-nic"
           required
           size="small"
           label="NIC"
@@ -213,6 +216,7 @@ const AddPatientDialog = ({open,rows,handleAddClose,handleInputChange,formErrors
           helperText={formErrors.nic}
         />
         <TextField
+          data-testid="patient-Add-phone"
           required
           size="small"
           label="Contact Number"
@@ -226,6 +230,7 @@ const AddPatientDialog = ({open,rows,handleAddClose,handleInputChange,formErrors
           helperText={formErrors.contactNumber}
         />
         <TextField
+          data-testid="patient-Add-email"
           required
           size="small"
           label="E-mail"
@@ -239,6 +244,7 @@ const AddPatientDialog = ({open,rows,handleAddClose,handleInputChange,formErrors
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DemoContainer components={["DateField"]}>
               <DateField
+                data-testid="patient-Add-dateOfBirth"
                 label="Date Of Birth"
                 value={formData.dob ? dayjs(formData.dob) : null}
                 onChange={(newValue) => handleInputChange("dob", newValue)}
@@ -254,6 +260,7 @@ const AddPatientDialog = ({open,rows,handleAddClose,handleInputChange,formErrors
           <FormControl sx={{ marginLeft: {sm:"25px",xs:"10px"}, marginTop: "8px" }}>
             <InputLabel sx={{top:'-1vh',marginLeft:".9vw"}} id="demo-simple-select-label">Gender *</InputLabel>
             <Select
+              data-testid="patient-Add-gender"
               size="small"
               required
               sx={{ width: {md:"210px",xs:"69vw"},marginLeft:{md:'.9vw',xs:"-10px"} }}
@@ -282,15 +289,17 @@ const AddPatientDialog = ({open,rows,handleAddClose,handleInputChange,formErrors
           Add
         </Button> */}
 
-<LoadingButton 
+          <LoadingButton 
+            data-testid="patient-Add-submit"
             sx={{ m: 2 }}
             variant='contained' 
             size='small' 
             endIcon={<AddIcon/>}           
             loading={loadingB}
             loadingPosition="end"
-            onClick={handleAddSaveClose}
-          >Add</LoadingButton>
+            onClick={handleAddSaveClose}>
+              Add
+          </LoadingButton>
       </DialogActions>
     </Dialog>
   );
