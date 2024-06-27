@@ -100,7 +100,7 @@ const PatientAppointmentAnalysis = ({ analysisPatient, selectedDay, showAnalysis
         <Box sx={{ display: 'flex', justifyContent: 'flex-end', flexGrow: 1 }}>
           <Button
             onClick={handleBackToList}
-            sx={{ fontWeight: 25, whiteSpace: "nowrap" }}
+            sx={{ fontWeight: 25, whiteSpace: "nowrap",marginRight:{xs:5,md:'0'} }}
             color="warning"
             variant="outlined"
             startIcon={<ArrowBackIosNewIcon sx={{ display: { md: "flex", xs: "none" } }} />}

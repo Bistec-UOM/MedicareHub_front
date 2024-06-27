@@ -45,9 +45,24 @@ const ResDayList = (props) => {
   };
 
  
+  function formatCurrentDate() {
+    const date = new Date();
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return date.toLocaleDateString('en-US', options);
+}
+
+ 
 
   //useeffect for fetching the app of a day of a selected doctor
   useEffect(() => {
+    const tod=new Date(selectedDay); //selected day from date object
+    var d=new Date();
+    const dateWithoutTime = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    if(tod<dateWithoutTime)
+      {
+        setAddDisabled(true);
+      }
+
     document.body.style.margin = "0";
     axios
       .get(
@@ -74,7 +89,7 @@ const ResDayList = (props) => {
         if (sortedAppointments.length >= 10) {
           //blocked more than 10 appointments for a day
           setAddDisabled(true);
-        } else {
+        } else if(tod>=new Date() && sortedAppointments.lenght<10) {
           setAddDisabled(false);
         }
       })

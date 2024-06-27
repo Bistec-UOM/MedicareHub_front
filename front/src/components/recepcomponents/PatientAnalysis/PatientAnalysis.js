@@ -27,12 +27,12 @@ const DoctorAppointmentStackedBarChart = ({comCount,showOffCount,analysisLoad, d
        
        
       </ResponsiveContainer>
-      {!analysisLoad?'':<Box sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'row', gap: 10 }}>
-      <Paper data-testid="chart-component" style={{ textAlign: 'center', height: '20vh', padding: '10px' }}>
+      {!analysisLoad?'':<Box sx={{ display: 'flex', justifyContent: 'center', flexDirection: {xs:'column',md:'row'}, gap: 10 }}>
+      <Paper data-testid="chart-component" sx={{ textAlign: 'center', height: {md:'20vh',xs:'30vh'}, padding: '10px' }}>
         <Typography data-testid="completedappointments" fontSize={30} sx={{color:'gray'}}>Completed Appointments</Typography>
         <Typography fontSize={50} sx={{color:'gray'}}>{comCount}</Typography>
       </Paper>
-      <Paper style={{ textAlign: 'center', height: '20vh', padding: '10px' }}>
+      <Paper sx={{ textAlign: 'center', height: {md:'20vh',xs:'30vh'}, padding: '10px' }}>
         <Typography fontSize={30} sx={{color:'gray'}}>No-show Appointments</Typography>
         <Typography fontSize={50} sx={{color:'gray'}}>{showOffCount}</Typography>
       </Paper>

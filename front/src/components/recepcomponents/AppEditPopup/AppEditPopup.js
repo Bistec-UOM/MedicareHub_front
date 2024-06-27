@@ -35,7 +35,9 @@ export default function AppEditPopup({
   activeD,
   item,
 }) {
-  const [selectedTime, setSelectedTime] = useState(dayjs("2022-04-17T08:30"));
+  const minTime = dayjs(selectedDay).set("hour", 8).set("minute", 55); // 9:00 AM
+  const maxTime = dayjs(selectedDay).set("hour", 17).set("minute", 0); // 5:00 PM
+  const [selectedTime, setSelectedTime] = useState(dayjs(dayjs(selectedDay).hour(9).minute(0).second(0)));
   const [appTime, setAppTime] = useState({
     hours: " ",
     minutes: " ",
@@ -298,6 +300,8 @@ export default function AppEditPopup({
                   sx={{ overflow: { xs: "hidden" } }}
                   selectedTime={selectedTime}
                   setSelectedTime={setSelectedTime}
+                  minTime={minTime}
+                  maxTime={maxTime}
                 />
                 <LoadingButton
                   data-testid="editconfirm"
