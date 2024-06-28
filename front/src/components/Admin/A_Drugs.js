@@ -161,7 +161,7 @@ const ADrugs = () => {
   };
   return (
     <div>
-      <Grid container spacing={3}>
+      <Grid data-testid="A_Drugs" container spacing={3}>
         <Grid item xs={12} sm={6} md={4}>
           <Paper
             style={{ textAlign: "center", height: "35vh", paddingTop: "6%" }}

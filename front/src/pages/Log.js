@@ -278,6 +278,7 @@ export default function Log() {
             autoComplete="current-password"
             onChange={(e) => setUser(e.target.value)}
             value={user}
+            data-testid="username"
           />
           <TextField
             test
@@ -289,6 +290,7 @@ export default function Log() {
             autoComplete="current-password"
             onChange={(e) => setPassword(e.target.value)}
             value={password}
+            data-testid="password"
           />
 
           <div
@@ -307,6 +309,7 @@ export default function Log() {
               variant="contained"
               onClick={setData}
               sx={{ ml: "5px"}}
+              data-testid="login-button"
             >
               Log
             </LoadingButton>

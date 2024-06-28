@@ -1,0 +1,13 @@
+[
+    {
+        "id": 1,
+        "nic": "1234526789V",
+        "name": "John Doe",
+        "fullName": "John William Doe",
+        "dob": "1993-01-16T07:47:50.4462437",
+        "contactNumber": "0711345678",
+        "address": "13 Main St, Colombo",
+        "email": "johndoe@example.com",
+        "gender": "Male"
+    }
+]

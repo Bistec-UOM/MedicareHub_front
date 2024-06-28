@@ -1,11 +1,10 @@
 import * as React from "react";
 import Dialog from "@mui/material/Dialog";
 import axios from "axios";
-import { IconButton, Typography, Stack } from "@mui/material";
+import { Typography } from "@mui/material";
 import Button from "@mui/material/Button";
 import { Box } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import ErrorIcon from "@mui/icons-material/Error";
 import BasicTimePicker from "../../TimePicker/TimePicker";
 import MoreTimeIcon from "@mui/icons-material/MoreTime";
 import { useState } from "react";
@@ -13,8 +12,6 @@ import dayjs from "dayjs";
 import { baseURL, endPoints } from "../../../../Services/Appointment";
 import { setHeaders } from "../../../../Services/Auth";
 import { LoadingButton } from "@mui/lab";
-import WarningIcon from '@mui/icons-material/Warning';
-import theme from "../../../Style";
 
 //dayTime block popup
 
@@ -38,10 +35,14 @@ export default function BlockTimeSelectionPopup({
     setTimeSelection(false);
   };
 
-  const minTime = dayjs(selectedDay).set("hour", 8).set("minute", 55); // 9:00 AM
-  const maxTime = dayjs(selectedDay).set("hour", 17).set("minute", 0); // 5:00 PM
-  const [startTime, setStartTime] = useState(dayjs(selectedDay).hour(9).minute(0).second(0)); //starttime of blocked time period
-  const [endTime, setEndTime] = useState(dayjs(selectedDay).hour(10).minute(0).second(0)); //endtime of blocked time period
+  const minTime = dayjs(selectedDay).set("hour", 8).set("minute", 55); // 9:00 AM minimum available time
+  const maxTime = dayjs(selectedDay).set("hour", 17).set("minute", 0); // 5:00 PM  maximum available time
+  const [startTime, setStartTime] = useState(
+    dayjs(selectedDay).hour(9).minute(0).second(0)
+  ); //starttime of blocked time period
+  const [endTime, setEndTime] = useState(
+    dayjs(selectedDay).hour(10).minute(0).second(0)
+  ); //endtime of blocked time period
   const [timeBlockLoading, setTimeBlockLoading] = useState(false); //var for loaing prop of confirm button
 
   //addig blocked date and doctor id to the table
@@ -121,37 +122,21 @@ export default function BlockTimeSelectionPopup({
     <React.Fragment>
       <Dialog open={timeSelection} onClose={handleClose}>
         <Box sx={{ width: { xs: "100%", sm: "450px" }, height: "230px" }}>
-        <div style={{display:'flex',alignItems:'start',margin:'8px',paddingBottom:'5px',borderBottom:'1px solid lightgrey'}}>
-      <MoreTimeIcon color='warning' sx={{mr:'10px'}}></MoreTimeIcon>
-      <Typography data-testid="timeperiodtext"> Select the Time Period</Typography>
-    </div>
-          {/* <Box>
-            <Box
-              sx={{
-                //backgroundColor: theme.palette.custom.greenH,
-                height: "40px",
-                display: "flex",
-                justifyContent: "flex-end",
-                width: "100%",
-              }}
-            >
-            </Box>
-          </Box>
-          <Box
-            sx={{
+          <div
+            style={{
               display: "flex",
-              flexDirection: "row",
-              alignItem: "center",
-              margin: "3%",
+              alignItems: "start",
+              margin: "8px",
+              paddingBottom: "5px",
+              borderBottom: "1px solid lightgrey",
             }}
           >
-            <MoreTimeIcon
-              sx={{ color: "orange", marginRight: "2%", fontSize: "2rem" }}
-            />
-            <Typography sx={{ marginTop: "1%", color: "#000000" }}>
-              Select the Time Period?
+            <MoreTimeIcon color="warning" sx={{ mr: "10px" }}></MoreTimeIcon>
+            <Typography data-testid="timeperiodtext">
+              {" "}
+              Select the Time Period
             </Typography>
-          </Box> */}
+          </div>
           <Box
             sx={{
               display: "flex",
@@ -176,36 +161,36 @@ export default function BlockTimeSelectionPopup({
               minTime={minTime}
               maxTime={maxTime}
             ></BasicTimePicker>
-             <Box
-      sx={{
-        display: "flex",
-        justifyContent: "space-between", // Distribute space between the buttons
-        alignItems: "center", // Align items vertically centered
-        marginTop: "2%", // Add margin to the top if needed
-      }}
-    >
-      <Button
-        variant="outlined"
-        sx={{ width: "90px" }}
-        size="small"
-        endIcon={<CloseIcon />}
-        onClick={handleClose}
-      >
-        No
-      </Button>
-      <LoadingButton
-        data-testid="timeconfirm"
-        loading={timeBlockLoading}
-        onClick={handleSubmit}
-        sx={{
-          width: "90px",
-        }}
-        variant="contained"
-        type="submit"
-      >
-        Confirm
-      </LoadingButton>
-    </Box>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between", // Distribute space between the buttons
+                alignItems: "center", // Align items vertically centered
+                marginTop: "2%", // Add margin to the top if needed
+              }}
+            >
+              <Button
+                variant="outlined"
+                sx={{ width: "90px" }}
+                size="small"
+                endIcon={<CloseIcon />}
+                onClick={handleClose}
+              >
+                No
+              </Button>
+              <LoadingButton
+                data-testid="timeconfirm"
+                loading={timeBlockLoading}
+                onClick={handleSubmit}
+                sx={{
+                  width: "90px",
+                }}
+                variant="contained"
+                type="submit"
+              >
+                Confirm
+              </LoadingButton>
+            </Box>
           </Box>
         </Box>
       </Dialog>
