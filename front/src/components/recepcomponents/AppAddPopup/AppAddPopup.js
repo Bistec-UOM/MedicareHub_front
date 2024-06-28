@@ -33,13 +33,14 @@ export default function AppAddPopup({
   dayAppTotal,
   setDayAppTotal,
   unableTimeSlots,
-  setUnableTimeSlots
+  setUnableTimeSlots,
 }) {
-  
-  const minTime = dayjs(selectedDay).set("hour", 8).set("minute", 55); // 9:00 AM
-  const maxTime = dayjs(selectedDay).set("hour", 17).set("minute", 0); // 5:00 PM
+  const minTime = dayjs(selectedDay).set("hour", 8).set("minute", 55); // 9:00 AM  minimum available time
+  const maxTime = dayjs(selectedDay).set("hour", 17).set("minute", 0); // 5:00 PM  maximum available time
   const [RloadDone, setRloadDone] = useState(true); //state for app add loading
-  const [selectedTime, setSelectedTime] = useState(dayjs(selectedDay).hour(9).minute(0).second(0)); //default selected date and time of the date picker
+  const [selectedTime, setSelectedTime] = useState(
+    dayjs(selectedDay).hour(9).minute(0).second(0)
+  ); //default selected date and time of the date picker
   const [confirmDisabled, setConfirmDisabled] = useState(false); //var for confirm disabled for app limiting func
   const [appTime, setAppTime] = useState({
     //var for selected appointment time
@@ -73,23 +74,29 @@ export default function AppAddPopup({
     date.setHours(hours, timeObject.minutes, 0, 0);
     return date;
   }
-  useEffect(() => {  //check selected time is blocked or not in the valid range
-    if(unableTimeSlots.length!=0 &&(selectedTime.isAfter(unableTimeSlots[0].startTime) && selectedTime.isBefore(unableTimeSlots[0].endTime)))
-    {
-    
-      handleNotification("Time slot has been blocked!. Select another time slot","error");
+  useEffect(() => {
+    //check selected time is blocked or not in the valid range
+    if (
+      unableTimeSlots.length != 0 &&
+      selectedTime.isAfter(unableTimeSlots[0].startTime) &&
+      selectedTime.isBefore(unableTimeSlots[0].endTime)
+    ) {
+      handleNotification(
+        "Time slot has been blocked!. Select another time slot",
+        "error"
+      );
       setConfirmDisabled(true);
       return;
-
-    }
-    else{
+    } else {
       setConfirmDisabled(false);
     }
-    const isTimeInvalid = !(selectedTime.isAfter(minTime) && selectedTime.isBefore(maxTime));
+    const isTimeInvalid = !(
+      selectedTime.isAfter(minTime) && selectedTime.isBefore(maxTime)
+    );
     const disableButton = isTimeInvalid || dayAppTotal >= 10;
     setConfirmDisabled(disableButton);
-    console.log("una",unableTimeSlots)
-  },[selectedTime,dayAppTotal]);
+    console.log("una", unableTimeSlots);
+  }, [selectedTime, dayAppTotal]);
   const handleClose = () => {
     setApopen(false);
   };
@@ -198,7 +205,6 @@ export default function AppAddPopup({
     <React.Fragment>
       <Dialog open={apopen} onClose={handleClose}>
         <Box
-       
           sx={{
             backgroundColor: theme.palette.custom.greenH,
             height: "40px",
@@ -361,7 +367,6 @@ export default function AppAddPopup({
                   label="Select your time"
                   minTime={minTime}
                   maxTime={maxTime}
-                  
                 />
 
                 <LoadingButton

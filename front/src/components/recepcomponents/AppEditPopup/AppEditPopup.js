@@ -7,15 +7,14 @@ import { IconButton, Typography } from "@mui/material";
 import { useState } from "react";
 import { useEffect } from "react";
 import dayjs from "dayjs";
-import Button from "@mui/material/Button";
 import { Box } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { Grid, Stack } from "@mui/material";
-import { baseURL,endPoints } from "../../../Services/Appointment";
+import { baseURL, endPoints } from "../../../Services/Appointment";
 import { setHeaders } from "../../../Services/Auth";
 import { LoadingButton } from "@mui/lab";
 import theme from "../../Style";
-import DoneIcon from '@mui/icons-material/Done'
+import DoneIcon from "@mui/icons-material/Done";
 
 export default function AppEditPopup({
   delcount,
@@ -35,16 +34,18 @@ export default function AppEditPopup({
   activeD,
   item,
 }) {
-  const minTime = dayjs(selectedDay).set("hour", 8).set("minute", 55); // 9:00 AM
-  const maxTime = dayjs(selectedDay).set("hour", 17).set("minute", 0); // 5:00 PM
-  const [selectedTime, setSelectedTime] = useState(dayjs(dayjs(selectedDay).hour(9).minute(0).second(0)));
+  const minTime = dayjs(selectedDay).set("hour", 8).set("minute", 55); // 9:00 AM  minimum available time
+  const maxTime = dayjs(selectedDay).set("hour", 17).set("minute", 0); // 5:00 PM  maximum available time
+  const [selectedTime, setSelectedTime] = useState(
+    dayjs(dayjs(selectedDay).hour(9).minute(0).second(0))
+  ); //set the default selected time as 9:00 AM
   const [appTime, setAppTime] = useState({
     hours: " ",
     minutes: " ",
     ampm: " ",
   });
   const [activeData, setActiveData] = useState({});
-  const [appEditConLoading,setAppEditConLoading]=useState(false) //var for loading prop of app edit confirm button
+  const [appEditConLoading, setAppEditConLoading] = useState(false); //var for loading prop of app edit confirm button
 
   function formatAMPM(date) {
     //this function for display the selected date using am and pm,not used 24 based hours
@@ -89,43 +90,39 @@ export default function AppEditPopup({
       .toString()
       .padStart(2, "0")}.${date.getMilliseconds().toString().padStart(3, "0")}`;
     try {
-        var response = await axios.put(
-          baseURL+endPoints.Appoinment+`${item.appointment.id}`,
-          {
-            id: item.appointment.id,
-            Datetime: formattedDate,
-            status: item.appointment.status,
-            patientId: item.appointment.patientId,
-            doctorId: item.appointment.doctorId,
-            recepId: item.appointment.recepId,
-          },setHeaders()
+      var response = await axios.put(
+        baseURL + endPoints.Appoinment + `${item.appointment.id}`,
+        {
+          id: item.appointment.id,
+          Datetime: formattedDate,
+          status: item.appointment.status,
+          patientId: item.appointment.patientId,
+          doctorId: item.appointment.doctorId,
+          recepId: item.appointment.recepId,
+        },
+        setHeaders()
       );
       if (response.data == 0) {
         setAppEditConLoading(false);
         setDelcount(delcount + 1);
         setAppEditOpen(false);
         handleNotification("Appointment Edited succesfully!", "success");
-      }
-      else if (response.data == 2) {
+      } else if (response.data == 2) {
         setAppEditConLoading(false);
         handleNotification(
           "Time slot has been blocked. Select another time slot",
           "error"
         );
-      }
-       
-      else if (response.data == 1) {
+      } else if (response.data == 1) {
         setAppEditConLoading(false);
         handleNotification(
           "Time slot has been already booked!. Select another time slot",
           "error"
         );
-       
       }
-      
     } catch (err) {
       setAppEditConLoading(false);
-      handleNotification("Network Error Occured!","error");
+      handleNotification("Network Error Occured!", "error");
     }
   }
 
@@ -157,7 +154,7 @@ export default function AppEditPopup({
                 }}
               >
                 <IconButton onClick={handleClose}>
-                  <CloseIcon sx={{color:'white'}} />
+                  <CloseIcon sx={{ color: "white" }} />
                 </IconButton>
               </Box>
               <Box></Box>

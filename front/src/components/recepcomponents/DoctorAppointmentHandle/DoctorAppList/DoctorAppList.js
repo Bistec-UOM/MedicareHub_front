@@ -4,13 +4,11 @@ import {
   Stack,
   Typography,
   Button,
-  Container,
   Box,
   Hidden,
   IconButton,
 } from "@mui/material";
 import SearchBar from "../../Searchbar/Searchbar";
-import StepDoctor from "../SetperDoctor/SteperDoctor";
 import "../../../../recep.css";
 import SuccessNotification from "../../SnackBar/SuccessNotification";
 import axios from "axios";
@@ -18,29 +16,24 @@ import DoctorAppCard from "../DoctorAppCard/DoctorAppCard";
 import DoctorAllAppDeletePopup from "../DoctotAllAppDelelePopup/DoctorAllAppDeletePopup";
 import DayBlockPopup from "../DayBlockPopup/DayBlockPopup";
 import { Load } from "../../../Other";
-import { baseURL,endPoints } from "../../../../Services/Appointment";
+import { baseURL, endPoints } from "../../../../Services/Appointment";
 import BlockSelectionPopup from "../BlockSelectionPopup/BlockSelectionPopup";
 import BlockTimeSelectionPopup from "../BlockTimeSelectionPopup/BlockTImeSelectionPopup";
 import { setHeaders } from "../../../../Services/Auth";
-import * as signalR from '@microsoft/signalr';
-import { jwtDecode } from "jwt-decode";
-import CloseIcon from '@mui/icons-material/Close';
-import AppBlockingOutlinedIcon from '@mui/icons-material/AppBlockingOutlined';
-import ArrowBackOutlinedIcon from '@mui/icons-material/ArrowBackOutlined';
+import CloseIcon from "@mui/icons-material/Close";
+import AppBlockingOutlinedIcon from "@mui/icons-material/AppBlockingOutlined";
+import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
 
-const DoctorAppList = ({Mode,setMode,selectedDAy,docid}) => {
+const DoctorAppList = ({ Mode, setMode, selectedDAy, docid }) => {
   const [notificationOpen, setNotificationOpen] = useState(false);
   const [notiMessage, setNotiMessage] = useState("");
   const [notiType, setNotiType] = useState("success");
   const [blockSelectionPopup, setBlockSelectionPopup] = useState(false); //var for doc blockSelection  block popup
   const [docDayBlockPopup, setDocDayBlockPopup] = useState(false); //var for doc day  block popup
-  const [RloadDone,setRloadDone]=useState(false)  //state for doctorapplist loading 
-
+  const [RloadDone, setRloadDone] = useState(false); //state for doctorapplist loading
 
   const [connection, setConnection] = useState(null);
   const [messages, setMessages] = useState([]);
-
- 
 
   const handleNotification = (msg, type) => {
     setNotiMessage(msg);
@@ -53,11 +46,12 @@ const DoctorAppList = ({Mode,setMode,selectedDAy,docid}) => {
   const [delcount, setDelcount] = useState(0);
   const [isDisabledCancel, setIsDisabledCancel] = useState(true); //variable for disabling the cancel button
   const [isDisabledBlock, setIsDisabledBlock] = useState(true); //variable for disabling block button
-  const [timeSelection,setTimeSelection]=useState(false);  //variable for time selection popup
+  const [timeSelection, setTimeSelection] = useState(false); //variable for time selection popup
   const [selectedDay, setSelectedDay] = useState(selectedDAy);
   const [cancelAll, setCancelAll] = useState(false); //var for all app cancel popup
   const today = new Date();
   const compSelectedDay = new Date(selectedDay); //day object of selected day for comparison of blocking functionality
+  const [cancelDisabled,setCancelDisabled]=useState(false);
 
   const [notifications, setNotifications] = useState([]);
 
@@ -72,28 +66,33 @@ const DoctorAppList = ({Mode,setMode,selectedDAy,docid}) => {
   var location = useLocation();
   var loc = location.state;
 
-  const handleBackButton=()=>
-    {
-      setMode(2);
-      //console.log("setmod",Mode);
+  const handleBackButton = () => {
+    setMode(2);
+    //console.log("setmod",Mode);
+  };
 
-    }
-
-  
   useEffect(() => {
     //for fethcing the app of a day
     setMode(4);
+    const tod = new Date(compSelectedDay); //selected day from date object
+    var d = new Date();
+    const dateWithoutTime = new Date(
+      d.getFullYear(),
+      d.getMonth(),
+      d.getDate()
+    );
     document.body.style.margin = "0";
-    console.log("props",docid)
-    console.log("messages",messages);
+    console.log("props", docid);
+    console.log("messages", messages);
 
     axios
       .get(
-        baseURL+endPoints.AppDay+`${docid}`+"/day/"+`${selectedDay}`,setHeaders()
+        baseURL + endPoints.AppDay + `${docid}` + "/day/" + `${selectedDay}`,
+        setHeaders()
       )
       .then((response) => {
         const responseData = response.data;
-        setIsDisabledCancel(responseData.length === 0); // Update isDisabled based on the fetched appointments
+        setIsDisabledCancel(responseData.length === 0 || dateWithoutTime > tod); // Update isDisabled based on the fetched appointments
         setIsDisabledBlock(responseData.length != 0 || today > compSelectedDay);
         const sortedAppointments = responseData
           .slice()
@@ -106,7 +105,7 @@ const DoctorAppList = ({Mode,setMode,selectedDAy,docid}) => {
         setRloadDone(true);
       })
       .catch((err) => {
-        handleNotification("Network Error occured!","error");
+        handleNotification("Network Error occured!", "error");
         setRloadDone(true);
       });
   }, [docid, selectedDay, delcount]); // Ensure dependencies are included in the dependency array
@@ -121,21 +120,26 @@ const DoctorAppList = ({Mode,setMode,selectedDAy,docid}) => {
           backgroundColor: "white",
           width: { sm: "70%", xs: "90%" },
           flexWrap: "wrap-reverse",
-          paddingTop: { xs: "7px", sm: "10px",md:'20px'},
+          paddingTop: { xs: "7px", sm: "10px", md: "20px" },
           zIndex: 10,
         }}
       >
-       <ArrowBackOutlinedIcon sx={{paddingBottom:'40px'}} onClick={handleBackButton}></ArrowBackOutlinedIcon>
+        <ArrowBackOutlinedIcon
+          sx={{ paddingBottom: "40px" }}
+          onClick={handleBackButton}
+        ></ArrowBackOutlinedIcon>
         <SearchBar
           id="doctorappsearch"
           search={search}
           setSearch={setSearch}
           height="10px"
-         // mgl="20%"
+          // mgl="20%"
           isDisabled={isDisabledCancel}
           placename="Patient name or id..."
         />
-          <Typography variant="h5" sx={{ color: "#d0d1cb" }}>{selectedDay}</Typography>
+        <Typography variant="h5" sx={{ color: "#d0d1cb" }}>
+          {selectedDay}
+        </Typography>
         <Stack
           sx={{
             justifyContent: "flex-end",
@@ -145,9 +149,9 @@ const DoctorAppList = ({Mode,setMode,selectedDAy,docid}) => {
               sm: 5,
               xs: -3,
             },
-            marginTop:{
-              md:0,
-              xs:'3%'
+            marginTop: {
+              md: 0,
+              xs: "3%",
             },
             width: { xs: "100%", sm: "auto" },
           }}
@@ -160,7 +164,7 @@ const DoctorAppList = ({Mode,setMode,selectedDAy,docid}) => {
             disabled={isDisabledBlock}
             color="warning"
             variant="outlined"
-            endIcon={<AppBlockingOutlinedIcon/>}
+            endIcon={<AppBlockingOutlinedIcon />}
           >
             Block
           </Button>
@@ -174,7 +178,6 @@ const DoctorAppList = ({Mode,setMode,selectedDAy,docid}) => {
             variant="outlined"
             color="warning"
             endIcon={<CloseIcon></CloseIcon>}
-
           >
             Cancel
           </Button>
@@ -203,10 +206,11 @@ const DoctorAppList = ({Mode,setMode,selectedDAy,docid}) => {
         </Box>
 
         {
-          <Box data-testid="doctorapplist"
+          <Box
+            data-testid="doctorapplist"
             sx={{ width: "70%", marginTop: { xs: "40%", sm: "20%", md: "9%" } }}
           >
-             {!RloadDone?<Load></Load>:''}
+            {!RloadDone ? <Load></Load> : ""}
             {Array.isArray(filteredAppointments) &&
               filteredAppointments
                 .sort((a, b) => {
@@ -219,7 +223,7 @@ const DoctorAppList = ({Mode,setMode,selectedDAy,docid}) => {
                         .toLowerCase()
                         .includes(search.toLowerCase());
                 })
-                .map((item,index) => (
+                .map((item, index) => (
                   <div key={item.nic}>
                     <DoctorAppCard
                       appno={index}
@@ -233,11 +237,8 @@ const DoctorAppList = ({Mode,setMode,selectedDAy,docid}) => {
                       item={item}
                     />
                   </div>
-                  
-                ))}     
-                
+                ))}
           </Box>
-        
         }
       </div>
       <DayBlockPopup
@@ -249,7 +250,7 @@ const DoctorAppList = ({Mode,setMode,selectedDAy,docid}) => {
         blockSelectionPopup={blockSelectionPopup}
         setBlockSelectionPopup={setBlockSelectionPopup}
       />
-       <BlockSelectionPopup
+      <BlockSelectionPopup
         timeSelection={timeSelection}
         setTimeSelection={setTimeSelection}
         selectedDay={selectedDay}

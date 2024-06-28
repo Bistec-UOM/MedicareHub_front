@@ -7,22 +7,29 @@ import { baseURL, endPoints } from "../../../Services/Appointment";
 import { setHeaders } from "../../../Services/Auth";
 import SuccessNotification from "../SnackBar/SuccessNotification";
 
+const PatientAppointmentAnalysis = ({
+  analysisPatient,
+  selectedDay,
+  showAnalysis,
+  setShowAnalysis,
+}) => {
+  const [previousApps, setPreviousApps] = useState([]); //previous appointments list
+  const [analysisLoad, setAnalysisLoad] = useState(false); //var for analysis render loading
 
-const PatientAppointmentAnalysis = ({ analysisPatient, selectedDay, showAnalysis, setShowAnalysis }) => {
-  const [previousApps, setPreviousApps] = useState([]);
-  const [analysisLoad, setAnalysisLoad] = useState(false);
+  const [notificationOpen, setNotificationOpen] = useState(false); //var for notification popup
+  const [notiMessage, setNotiMessage] = useState(""); //var for notification message
+  const [notiType, setNotiType] = useState("success"); //var for notification type
+  const [patientCount, setPatientCount] = useState(0);
 
-  const [notificationOpen, setNotificationOpen] = useState(false);
-  const [notiMessage, setNotiMessage] = useState("");
-  const [notiType, setNotiType] = useState("success");
-  const [patientCount, setPatientCount] = useState(0); //use for pa
-
-  var comCount = 0; 
+  var comCount = 0;
   var showOffCount = 0;
 
-  useEffect(() => {  
+  useEffect(() => {
     axios
-      .get(baseURL + endPoints.PreviousAppointments + `${analysisPatient.id}`, setHeaders())
+      .get(
+        baseURL + endPoints.PreviousAppointments + `${analysisPatient.id}`,
+        setHeaders()
+      )
       .then((response) => {
         setPreviousApps(response.data);
         setAnalysisLoad(true);
@@ -35,6 +42,7 @@ const PatientAppointmentAnalysis = ({ analysisPatient, selectedDay, showAnalysis
   }, [analysisPatient.id]);
 
   const prepareChartData = (appointments) => {
+    //data formatting for barchart
     const dataMap = {};
 
     appointments.forEach(({ appointment, doctor }) => {
@@ -42,7 +50,12 @@ const PatientAppointmentAnalysis = ({ analysisPatient, selectedDay, showAnalysis
       const doctorName = doctor.name;
 
       if (!dataMap[doctorName]) {
-        dataMap[doctorName] = { doctor: doctorName, totalAppointments: 0, completedAppointments: 0, noShows: 0 };
+        dataMap[doctorName] = {
+          doctor: doctorName,
+          totalAppointments: 0,
+          completedAppointments: 0,
+          noShows: 0,
+        };
       }
 
       dataMap[doctorName].totalAppointments += 1;
@@ -56,12 +69,14 @@ const PatientAppointmentAnalysis = ({ analysisPatient, selectedDay, showAnalysis
       }
     });
 
-    return Object.values(dataMap).map(({ doctor, totalAppointments, completedAppointments, noShows }) => ({
-      doctor,
-      totalAppointments,
-      completedAppointments,
-      noShows,
-    }));
+    return Object.values(dataMap).map(
+      ({ doctor, totalAppointments, completedAppointments, noShows }) => ({
+        doctor,
+        totalAppointments,
+        completedAppointments,
+        noShows,
+      })
+    );
   };
 
   const handleBackToList = () => {
@@ -97,19 +112,33 @@ const PatientAppointmentAnalysis = ({ analysisPatient, selectedDay, showAnalysis
         >
           {selectedDay}
         </Typography>
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end', flexGrow: 1 }}>
+        <Box sx={{ display: "flex", justifyContent: "flex-end", flexGrow: 1 }}>
           <Button
             onClick={handleBackToList}
-            sx={{ fontWeight: 25, whiteSpace: "nowrap",marginRight:{xs:5,md:'0'} }}
+            sx={{
+              fontWeight: 25,
+              whiteSpace: "nowrap",
+              marginRight: { xs: 5, md: "0" },
+            }}
             color="warning"
             variant="outlined"
-            startIcon={<ArrowBackIosNewIcon sx={{ display: { md: "flex", xs: "none" } }} />}
+            startIcon={
+              <ArrowBackIosNewIcon
+                sx={{ display: { md: "flex", xs: "none" } }}
+              />
+            }
           >
             Back To List
           </Button>
         </Box>
       </Box>
-      <PatientAnalysis comCount={comCount} showOffCount={showOffCount} analysisPatient={analysisPatient} analysisLoad={analysisLoad} data={chartData}></PatientAnalysis>
+      <PatientAnalysis
+        comCount={comCount}
+        showOffCount={showOffCount}
+        analysisPatient={analysisPatient}
+        analysisLoad={analysisLoad}
+        data={chartData}
+      ></PatientAnalysis>
       <SuccessNotification
         id="analysisnotification"
         type={notiType}
