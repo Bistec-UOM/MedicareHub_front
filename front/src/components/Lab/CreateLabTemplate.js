@@ -2,48 +2,65 @@ import React, { useEffect, useRef, useState } from 'react'
 import {Button ,Paper, TextField, Toolbar, Typography,Box, Dialog, Snackbar, Alert} from "@mui/material"
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
-import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import axios from 'axios'
 import { baseURL,endPoints } from '../../Services/Lab';
 import { ConfirmPropmt } from '../Common';
 import theme from '../Style';
+import EditIcon from '@mui/icons-material/Edit';
 import { setHeaders } from '../../Services/Auth';
-import DehazeIcon from '@mui/icons-material/Dehaze';
 
 export default function CreateLabTemplate({setPage,setTload}) {
 
+  const dummy=[{fieldname:'field1',index:0,minRef:0,maxRef:10,unit:'u1',ID:1},{fieldname:'field2',index:1,minRef:0,maxRef:10,unit:'u1',ID:2},{fieldname:'field3',index:2,minRef:0,maxRef:10,unit:'u1',ID:3},{fieldname:'field4',index:3,minRef:0,maxRef:10,unit:'u1',ID:4},{fieldname:'field5',index:4,minRef:0,maxRef:10,unit:'u1',ID:5}]
+
   const contref=useRef(null)//ref to template container
-  const [active,setActive]=useState(false)
-  const [IDindx,setIDindx]=useState(1)//next available ID
+  const [active,setActive]=useState(false)//if an element is being dragged
+  const [IDindx,setIDindx]=useState(6)//next available ID (ID counter)
   const [activeID,setActiveID]=useState(null)//index of active ID
-  const [yCoordinate, setYCoordinate] = useState(0);//initial y coord for container
+  const [emptyIndex,setEmptyIndex]=useState(null)//index of empty element 
+  const [cont, setcont] = useState({top:0,bottom:0,left:0,right:0});//initial y coord for container
   const [yVal,setYVal]=useState(0)//y value of the dragged element
+  const [mouseY, setMouseY] = useState(0);//mouse y coord
 
   const handleActiveTrue=(e,ind)=>{//drag and drop
     setActive(true)
     setActiveID(e)
-    setYVal(yCoordinate+(ind*30))
+    //setYVal(cont.top+(ind*30))
+    //adding an empty element
+    setEmptyIndex(ind)
+    let data_set={
+      fieldname:'empty',index:'',minRef:0,maxRef:10,unit:'empty',ID:null
+    }
+    let newItems = [...testField];
+    newItems.splice(ind, 0, data_set);
+    setTestField(newItems)
   }
 
-  const handleActiveFalse=(e)=>{//drag and drop
-    setActive(false)
-    setActiveID(null)
+  const handleActiveFalse=(ind)=>{
+    if(activeID!=null){
+      setActive(false)
+      setActiveID(null)
+      //deleteing empty element
+      let newItems = [...testField];
+      newItems.splice(emptyIndex, 1);
+      let temp=newItems.splice(ind,1)
+      newItems.splice(emptyIndex, 0, temp[0]);
+      setTestField(newItems);
+      setEmptyIndex(null)
+    }
   }
 
-    useEffect(()=>{
-        document.body.style.margin = '0';
-        if (contref.current) {
-          const rect = contref.current.getBoundingClientRect();
-          setYCoordinate(rect.top);
-        }
-       },[])
+  const handleLeave = (event) => {
+    handleActiveFalse(activeID)
+  }
+
+
       
       //Field values--------------------------------------------------------------
       const [testData,setTestData]=useState({name:'',provider:'',price:0})
-      const [testField,setTestField]=useState([])
+      const [testField,setTestField]=useState(dummy)
       const [fieldName,setFieldName]=useState('')
       const [refMin,setRefMin]=useState()
       const [refMax,setRefMax]=useState()
@@ -91,8 +108,8 @@ export default function CreateLabTemplate({setPage,setTload}) {
         setIDindx(IDindx+1)
       }
     
-      const deleteTestField=(f)=>{
-        setTestField(testField.filter((x)=>{return x.field!=f}))
+      const deleteTestField=(ID)=>{
+        setTestField(testField.filter((x)=>{return x.ID!=ID}))
       }
 
       //Edit fields---------------------------------------------------------------
@@ -166,6 +183,43 @@ export default function CreateLabTemplate({setPage,setTload}) {
         }
       }
 
+      useEffect(()=>{
+        document.body.style.margin = '0';
+        if (contref.current) {
+          const rect = contref.current.getBoundingClientRect();
+          setcont({top:rect.top,bottom:rect.bottom,left:rect.left,right:rect.right});
+        }
+
+        //tracking mouse position
+        const handleMouseMove = (event) => {
+          setMouseY(event.clientY);
+          if(activeID!=null){    
+            let gap=cont.bottom-cont.top
+            let len=testField.length
+            let h=gap/len
+            let newInd=Math.floor((event.clientY-cont.top)/h)
+            console.log(newInd);
+
+            //Moving position
+            let updatedArray = [...testField];
+            //let index = updatedArray.findIndex(item => item.ID === activeID);
+
+            const [element1] = updatedArray.splice(emptyIndex, 1); //move empty element
+            updatedArray.splice(newInd, 0, element1);
+
+            setTestField(updatedArray);
+            setEmptyIndex(newInd)
+            //moving active element
+          }
+        };
+
+
+        window.addEventListener('mousemove', handleMouseMove);
+            return () => {
+          window.removeEventListener('mousemove', handleMouseMove);
+        };
+       },[testField,activeID,emptyIndex])
+
       //Finalizing---------------------------------------------------------------
 
       function extractLastParenthesisContent(str) {
@@ -200,7 +254,7 @@ const createTemplate=()=>{
           provider:testData.provider,
           reportFields:ar
         }
-        console.log(T)
+        //console.log(T)
         axios.post(baseURL+endPoints.TEMPLATE,T,setHeaders())
         .then(res=>{
           seterMsg('Template added successfuly')
@@ -331,21 +385,33 @@ const createTemplate=()=>{
             </Button>
         </Toolbar>
 
-        <Box sx={{display:'flex',flexDirection:'column',alignItems:'center', paddingTop:{xs:'80px',sm:'80px'}}}>
+        <Box sx={{display:'flex',flexDirection:'column',alignItems:'center', paddingTop:{xs:'80px',sm:'80px'}}} >
 
            {/*--------------------------------------------------------------------------------------*/}
            {/*---------- Printed lab sheet----------------------------------------------------------*/}
            {/*--------------------------------------------------------------------------------------*/}
          
-         <Box ref={contref} sx={{backgroundColor:'yellow',width:'80%'}}>
+         <Box ref={contref} sx={{backgroundColor:'yellow',width:'80%',p:'5px'}} onMouseLeave={handleLeave}>
          {
                    testField.map((elm,indx)=>{
                        return(
-                       <Box sx={{display:'flex',justifyContent:'space-between',alignItems:'center',width:{xs:'90%',sm:elm.ID==activeID?'50%':'80%'},height:elm.ID==activeID?'40px':'30px',borderBottom:'1px solid #0488b0',mt:'5px',backgroundColor:'lightblue',position:elm.ID==activeID?'fixed':'',top:elm.ID==activeID?`${yVal}px`:'',cursor:'pointer'}}
-                       onMouseDown={()=>handleActiveTrue(elm.ID,indx)} onMouseUp={()=>handleActiveFalse(elm.ID)}
+                       <Box 
+                        sx={{
+                          display:'flex',justifyContent:'space-between',alignItems:'center',
+                          width:activeID==elm.ID?'55%':'100%',
+                          height:elm.ID==activeID?'45px':'30px',
+                          borderBottom:'1px solid #0488b0',mt:'5px',
+                          backgroundColor:'lightblue',
+                          position:elm.ID==activeID?'fixed':'',
+                          top:elm.ID==activeID?`${mouseY-20}px`:'',
+                          cursor:'pointer'
+                        }}
                        >
-                           <Box sx={{width:{xs:'40%',sm:'45%'},height:'100%'}}>
-                             <Typography sx={{fontSize:'16px',cursor:'pointer'}} onDoubleClick={()=>setEditModeData(indx)}>{elm.fieldname}</Typography>
+                           <Box sx={{width:{xs:'40%',sm:'45%'},height:'100%'}} 
+                              onMouseDown={elm.ID!==null?()=>handleActiveTrue(elm.ID,indx):undefined} 
+                              onMouseUp={elm.ID!==null?()=>handleActiveFalse(indx):undefined}
+                            >
+                             <Typography sx={{fontSize:'16px',cursor:'pointer'}}>{elm.fieldname}</Typography>
                            </Box>
                            <Box sx={{width:{xs:'10%',sm:'15%'},height:'100%'}}>
                              <Typography sx={{fontSize:'16px',textAlign:'right'}}>{elm.minRef}</Typography>
@@ -358,11 +424,11 @@ const createTemplate=()=>{
                            </Box>
                            {/* nav icons & close icon*/}
                            <Box sx={{width:{xs:'10%',sm:'5%'},height:'100%',display:'flex',justifyContent:'flex-end',ml:'5px'}}>
-                             <DehazeIcon sx={{cursor:'pointer'}}></DehazeIcon>
+                             <EditIcon sx={{cursor:'pointer'}}></EditIcon>
                            </Box>
      
                            <Box style={{width:'5%',height:'100%'}}>
-                              <HighlightOffIcon color='error'fontSize='small' sx={{cursor:'pointer'}} onDoubleClick={()=>deleteTestField(elm.field)} ></HighlightOffIcon>
+                              <HighlightOffIcon color='error'fontSize='small' sx={{cursor:'pointer'}} onDoubleClick={()=>deleteTestField(elm.ID)} ></HighlightOffIcon>
                            </Box>
                            
                        </Box>
