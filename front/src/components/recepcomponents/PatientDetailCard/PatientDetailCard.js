@@ -21,18 +21,15 @@ const PatientDetailCard = ({
   handleNotification,
   showAnalysis,
   setShowAnalysis,
-  setAnalysisPatient
+  setAnalysisPatient,
 }) => {
-
-  const handleAnalysisPage=()=>
-    {
-      setAnalysisPatient(item);
-      setShowAnalysis(true);
-
-    }
- 
+  const handleAnalysisPage = () => {
+    setAnalysisPatient(item);
+    setShowAnalysis(true);
+  };
 
   const handleAppAddPopup = () => {
+    //check already have appointments
     var patEligibility = filteredAppointments.find(
       (obj) => obj.patient.id === item.id
     );
@@ -51,7 +48,7 @@ const PatientDetailCard = ({
 
   return (
     <div>
-       <Box
+      <Box
         sx={{
           width: { md: "80%", xs: "100%" },
           marginLeft: "auto",
@@ -74,9 +71,14 @@ const PatientDetailCard = ({
                 direction={"row"}
                 sx={{ justifyContent: "space-between", alignItem: "center" }}
               >
-                <Typography data-testid="patientname" variant="h5">{item.fullName}</Typography>
+                <Typography data-testid="patientname" variant="h5">
+                  {item.fullName}
+                </Typography>
                 <Box>
-                  <IconButton data-testid="analysis-icon" onClick={handleAnalysisPage}>
+                  <IconButton
+                    data-testid="analysis-icon"
+                    onClick={handleAnalysisPage}
+                  >
                     <AnalyticsOutlinedIcon sx={{ color: "#3B877A" }} />
                   </IconButton>
                   <IconButton id="add-appointment" onClick={handleAppAddPopup}>
@@ -91,7 +93,11 @@ const PatientDetailCard = ({
                   flexDirection: { xs: "column", sm: "column", md: "row" },
                 }}
               >
-                <Typography data-testid="patientaddress" variant="body2" color="text.secondary">
+                <Typography
+                  data-testid="patientaddress"
+                  variant="body2"
+                  color="text.secondary"
+                >
                   {item.address}
                 </Typography>
                 <Typography color="text.secondary">{item.nic}</Typography>

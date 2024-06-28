@@ -10,7 +10,7 @@ import {
   Select,
   MenuItem,
   IconButton,
-  Box
+  Box,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import dayjs from "dayjs";
@@ -23,9 +23,7 @@ import { baseURL, endPoints } from "../../../Services/Appointment";
 import { setHeaders } from "../../../Services/Auth";
 import theme from "../../../components/Style";
 import { LoadingButton } from "@mui/lab";
-import Style from '../../Style';
-import DoneIcon from '@mui/icons-material/Done'; 
-import SendIcon from '@mui/icons-material/Send'
+import SendIcon from "@mui/icons-material/Send";
 
 const PatientRegpopup = ({
   handleNotification,
@@ -36,6 +34,7 @@ const PatientRegpopup = ({
   patientCount,
   setPatientCount,
 }) => {
+  //states for patient details
   const [name, setName] = useState("");
   const [nic, setNic] = useState("");
   const [address, setAddress] = useState("");
@@ -147,7 +146,13 @@ const PatientRegpopup = ({
     setRegLoading(true);
     e.preventDefault();
     const agenumber = Number(age);
-    if (!nameError && !nicError && !ageError && agenumber !== 0 && !phoneError) {
+    if (
+      !nameError &&
+      !nicError &&
+      !ageError &&
+      agenumber !== 0 &&
+      !phoneError
+    ) {
       let obj = {
         Id: 0,
         NIC: nic,
@@ -160,10 +165,7 @@ const PatientRegpopup = ({
         Gender: gender,
       };
       try {
-        await axios.post(
-          baseURL + endPoints.PatientList,
-          obj, setHeaders()
-        );
+        await axios.post(baseURL + endPoints.PatientList, obj, setHeaders());
         setRegLoading(false);
         setPatientCount(patientCount + 1);
         setName("");
@@ -177,8 +179,7 @@ const PatientRegpopup = ({
         setRegopen(false);
       } catch (err) {
         handleNotification("Network Error Occurred!", "error");
-      }
-      finally{
+      } finally {
         setRegopen(false);
       }
     } else {
@@ -199,7 +200,6 @@ const PatientRegpopup = ({
               position: "sticky",
               top: 0,
               zIndex: 1100,
-             
             }}
           >
             <Typography
@@ -209,7 +209,7 @@ const PatientRegpopup = ({
               Patient Registration Form
             </Typography>
             <IconButton onClick={handleAddClose} sx={{ color: "#20415C" }}>
-              <CloseIcon  sx={{color:"white"}}/>
+              <CloseIcon sx={{ color: "white" }} />
             </IconButton>
           </DialogTitle>
           <DialogContent sx={{ flex: 1, overflowY: "auto" }}>
@@ -223,8 +223,8 @@ const PatientRegpopup = ({
                 nameDisplayError === 1
                   ? "Name is too short!"
                   : nameDisplayError === 2
-                    ? "Invalid Name!"
-                    : ""
+                  ? "Invalid Name!"
+                  : ""
               }
               fullWidth
               margin="dense"
@@ -303,7 +303,7 @@ const PatientRegpopup = ({
               sx={{ width: "15vh", ml: { sm: 4, xs: 0 } }}
             >
               <InputLabel id="gender-label">Gender</InputLabel>
-              <Select 
+              <Select
                 data-testid="gender"
                 size="small"
                 labelId="gender-label"
@@ -321,7 +321,7 @@ const PatientRegpopup = ({
             sx={{ display: "flex", justifyContent: "flex-end", marginTop: 0 }}
           >
             <LoadingButton
-             data-testid="sendbutton"
+              data-testid="sendbutton"
               loading={regLoading}
               sx={{
                 margin: "2%",
@@ -332,7 +332,6 @@ const PatientRegpopup = ({
             >
               Send
             </LoadingButton>
-           
           </Box>
         </form>
       </Dialog>

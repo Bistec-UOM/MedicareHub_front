@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { useNavigate } from "react-router-dom";
@@ -15,27 +14,24 @@ import { useEffect } from "react";
 import interactionPlugin from "@fullcalendar/interaction";
 import "../../../../recep.css";
 import CustomizedProgressBars from "../../CustomProgressBar/CustomProgressBar";
-import { baseURL,endPoints } from "../../../../Services/Appointment";
+import { baseURL, endPoints } from "../../../../Services/Appointment";
 import { setHeaders } from "../../../../Services/Auth";
 import { jwtDecode } from "jwt-decode";
 import DoctorAppList from "../DoctorAppList/DoctorAppList";
-import DoneIcon from '@mui/icons-material/Done'
-import WarningIcon from '@mui/icons-material/Warning';
-import LoadingButton from '@mui/lab/LoadingButton';
+import DoneIcon from "@mui/icons-material/Done";
+import WarningIcon from "@mui/icons-material/Warning";
+import LoadingButton from "@mui/lab/LoadingButton";
 import Dialog from "@mui/material/Dialog";
 import Button from "@mui/material/Button";
 
-
-
-const DoctorAppCalender = ({Mode,setMode,setAppListDetails}) => {
-
-  const doctorId=jwtDecode(localStorage.getItem('medicareHubToken')).RoleId;
+const DoctorAppCalender = ({ Mode, setMode, setAppListDetails }) => {
+  const doctorId = jwtDecode(localStorage.getItem("medicareHubToken")).RoleId;
 
   const [doctorList, setDoctorList] = useState([]);
   const [doctorAppDeleteOpen, setDoctorAppDeleteOpen] = useState(false); //state variable for popup of the doctor appointment cancellation
-  const [notificationOpen, setNotificationOpen] = useState(false);
-  const [notiMessage, setNotiMessage] = useState("");
-  const [notiType, setNotiType] = useState("success");
+  const [notificationOpen, setNotificationOpen] = useState(false); //state for notification popup open
+  const [notiMessage, setNotiMessage] = useState(""); //state for notification message
+  const [notiType, setNotiType] = useState("success"); //state for notification type
   const currentDate = new Date();
   const firstDayOfMonth = new Date(
     currentDate.getFullYear(),
@@ -57,50 +53,56 @@ const DoctorAppCalender = ({Mode,setMode,setAppListDetails}) => {
 
   let newselectedDay;
   let today;
-//------unblock popup------
-const [blockConLoading,setBlockConLoading]=useState(false);  //var for loading prop of block confirm button
-const [unblockOpen,setUnblockOpen]=useState(false); // var for unblock popup open
-const [unblockedObject,setUnblockObjec]=useState(null); // var unblock date object
-const [unblockCount,setUnblockCount]=useState(0);  //var for fetching new block dates
-
-
+  //------unblock popup------
+  const [blockConLoading, setBlockConLoading] = useState(false); //var for loading prop of block confirm button
+  const [unblockOpen, setUnblockOpen] = useState(false); // var for unblock popup open
+  const [unblockedObject, setUnblockObjec] = useState(null); // var unblock date object
+  const [unblockCount, setUnblockCount] = useState(0); //var for fetching new block dates
 
   const handleClose = () => {
     setUnblockOpen(false);
   };
 
-  const handleUnblock=()=>
-    {
-      setBlockConLoading(true);
-      axios.delete(baseURL+endPoints.UnblockDay+`${unblockedObject.id}`,setHeaders())
-    .then(response => {
-      setBlockConLoading(false);
-      setUnblockCount(unblockCount+1);  //for fetching the newly updated block dates
-      setUnblockOpen(false);
-      handleNotification("Day Unblocked Succesfully","success");
-    })
-    .catch(error => {
-      setBlockConLoading(false);
-      handleNotification("Network error! Please check your internet connection.", "error");
-    }
-  )
-
-
-    }
-//--------------------------------unblock popup----------------
+  const handleUnblock = () => {
+    setBlockConLoading(true);
+    axios
+      .delete(
+        baseURL + endPoints.UnblockDay + `${unblockedObject.id}`,
+        setHeaders()
+      )
+      .then((response) => {
+        setBlockConLoading(false);
+        setUnblockCount(unblockCount + 1); //for fetching the newly updated block dates
+        setUnblockOpen(false);
+        handleNotification("Day Unblocked Succesfully", "success");
+      })
+      .catch((error) => {
+        setBlockConLoading(false);
+        handleNotification(
+          "Network error! Please check your internet connection.",
+          "error"
+        );
+      });
+  };
+  //--------------------------------unblock popup----------------
 
   useEffect(() =>
     //for fetching the appoinments of the month for a doctor
     {
       axios
         .get(
-         baseURL+endPoints.AppDay+`${doctorId}`+"/month/"+`${pasMonth}`,setHeaders()
+          baseURL +
+            endPoints.AppDay +
+            `${doctorId}` +
+            "/month/" +
+            `${pasMonth}`,
+          setHeaders()
         )
         .then((response) => {
           setDayAppCount(response.data);
         })
         .catch((err) => {
-          handleNotification("Network error occured1!","error");
+          handleNotification("Network error occured1!", "error");
         });
     }, [doctorId, pasMonth]);
 
@@ -108,16 +110,16 @@ const [unblockCount,setUnblockCount]=useState(0);  //var for fetching new block 
     //for fetching the disable dates
     {
       axios
-       // .get(`https://localhost:7205/api/Appointment/BlockedDates/${doctorId}`)
-        .get(baseURL+endPoints.BlockedDates+`${doctorId}`)
+        // .get(`https://localhost:7205/api/Appointment/BlockedDates/${doctorId}`)
+        .get(baseURL + endPoints.BlockedDates + `${doctorId}`)
         .then((response) => {
           setDisabledDates(response.data);
-          console.log("disdate",response.data);
+          console.log("disdate", response.data);
         })
         .catch((err) => {
-          handleNotification("Network error occured!","error");
+          handleNotification("Network error occured!", "error");
         });
-    }, [doctorId,unblockCount]);
+    }, [doctorId, unblockCount]);
   function getDayAppCount(day) {
     var total = 0;
     const newDay = parseInt(day, 10);
@@ -155,7 +157,7 @@ const [unblockCount,setUnblockCount]=useState(0);  //var for fetching new block 
       .getSeconds()
       .toString()
       .padStart(2, "0")}${millisecondsPart}`;
-    
+
     return (
       <div>
         <div>{dayCell.dayNumberText} </div>
@@ -192,8 +194,6 @@ const [unblockCount,setUnblockCount]=useState(0);  //var for fetching new block 
     setNotiType(type);
   };
 
-  
-
   const getDayCellClassNames = (arg) => {
     const date = new Date(arg.date);
     const milliseconds = date.getMilliseconds();
@@ -209,7 +209,6 @@ const [unblockCount,setUnblockCount]=useState(0);  //var for fetching new block 
       .toString()
       .padStart(2, "0")}${millisecondsPart}`;
     if (getDayStatus(formattedDate)) {
-
       return "blocked-date";
     } else {
       return "nonblocked-date";
@@ -222,8 +221,8 @@ const [unblockCount,setUnblockCount]=useState(0);  //var for fetching new block 
     end: moment().endOf("month"),
   });
 
-  const [listMode,setListMode]=useState(false);
-  const [selectedDay,setSelectedDay]=useState("")
+  const [listMode, setListMode] = useState(false);
+  const [selectedDay, setSelectedDay] = useState("");
 
   const handleDateClick = (arg) => {
     const selectedDate = moment(arg.dateStr);
@@ -232,7 +231,7 @@ const [unblockCount,setUnblockCount]=useState(0);  //var for fetching new block 
     const selectedMonth = selectedDate.month();
     const currentMonth = displayedDate.getMonth();
     const date = new Date(arg.date);
-    console.log("date",date);
+    console.log("date", date);
     const milliseconds = date.getMilliseconds();
     const millisecondsPart =
       milliseconds === 0 ? "" : `.${milliseconds.toString().padStart(3, "0")}`;
@@ -248,7 +247,7 @@ const [unblockCount,setUnblockCount]=useState(0);  //var for fetching new block 
     if (!getDayStatus(formattedDate)) {
       if (selectedMonth === currentMonth) {
         setSelectedDay(today);
-        setAppListDetails([today,doctorId])
+        setAppListDetails([today, doctorId]);
         setListMode(true);
         /* navigate("/dappList", {
           state: {
@@ -259,39 +258,46 @@ const [unblockCount,setUnblockCount]=useState(0);  //var for fetching new block 
         }); */
       }
     } else {
-      const today=new Date();
+      const today = new Date();
       handleNotification("This date has been blocked!", "error");
-      if(selectedDate>today)
-        {
-          var disabledObject=disabledDates.find((item)=>item.date==formattedDate);
-          setUnblockObjec(disabledObject);
-          setUnblockOpen(true);
-
-        }
-     
+      if (selectedDate > today) {
+        var disabledObject = disabledDates.find(
+          (item) => item.date == formattedDate
+        );
+        setUnblockObjec(disabledObject);
+        setUnblockOpen(true);
+      }
     }
   };
 
   return (
     <div>
-      {!listMode?<Box id="doccalendar" sx={{ overflowY: "hidden" }}>
-        <FullCalendar
-           
-          plugins={[dayGridPlugin, interactionPlugin]}
-          initialView="dayGridMonth"
-          eventContent={renderEventContent}
-          dayCellContent={renderDayCellContent}
-          dateClick={handleDateClick}
-          datesSet={handleDatesSet}
-          selectable={false}
-          dayCellClassNames={getDayCellClassNames}
-          headerToolbar={{
-            left: "prev",
-            center: "title",
-            right: "next",
-          }}
-        />
-      </Box>:<DoctorAppList Mode={Mode} setMode={setMode} selectedDAy={selectedDay} docid={doctorId}></DoctorAppList>}
+      {!listMode ? (
+        <Box id="doccalendar" sx={{ overflowY: "hidden" }}>
+          <FullCalendar
+            plugins={[dayGridPlugin, interactionPlugin]}
+            initialView="dayGridMonth"
+            eventContent={renderEventContent}
+            dayCellContent={renderDayCellContent}
+            dateClick={handleDateClick}
+            datesSet={handleDatesSet}
+            selectable={false}
+            dayCellClassNames={getDayCellClassNames}
+            headerToolbar={{
+              left: "prev",
+              center: "title",
+              right: "next",
+            }}
+          />
+        </Box>
+      ) : (
+        <DoctorAppList
+          Mode={Mode}
+          setMode={setMode}
+          selectedDAy={selectedDay}
+          docid={doctorId}
+        ></DoctorAppList>
+      )}
       <SuccessNotification
         id="calendarnotification"
         type={notiType}
@@ -299,24 +305,53 @@ const [unblockCount,setUnblockCount]=useState(0);  //var for fetching new block 
         notiMessage={notiMessage}
         notificationOpen={notificationOpen}
       />
-       <Dialog open={unblockOpen} onClose={handleClose}>
-    <div style={{display:'flex',alignItems:'start',margin:'8px',paddingBottom:'5px',borderBottom:'1px solid lightgrey'}}>
-      <WarningIcon color='warning' sx={{mr:'10px'}}></WarningIcon>
-      <Typography data-testid="unblocktext"> If you want you can Unblock the day?</Typography>
-    </div>
-    <div style={{width:'100%',height:'60px',display:'flex',justifyContent:'center',alignItems:'center'}}>
-      <Button variant='outlined' sx={{mr:'40px'}} size='small' endIcon={<CloseIcon></CloseIcon>} onClick={handleClose} >No</Button>
-      <LoadingButton 
-        data-testid="unblockconfirm"
-        variant='contained' 
-        size='small' 
-        endIcon={<DoneIcon></DoneIcon>}           
-        loading={blockConLoading}
-        loadingPosition="end"
-        onClick={handleUnblock}
-      >Yes</LoadingButton>
-    </div>
-  </Dialog>
+      <Dialog open={unblockOpen} onClose={handleClose}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "start",
+            margin: "8px",
+            paddingBottom: "5px",
+            borderBottom: "1px solid lightgrey",
+          }}
+        >
+          <WarningIcon color="warning" sx={{ mr: "10px" }}></WarningIcon>
+          <Typography data-testid="unblocktext">
+            {" "}
+            If you want you can Unblock the day?
+          </Typography>
+        </div>
+        <div
+          style={{
+            width: "100%",
+            height: "60px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Button
+            variant="outlined"
+            sx={{ mr: "40px" }}
+            size="small"
+            endIcon={<CloseIcon></CloseIcon>}
+            onClick={handleClose}
+          >
+            No
+          </Button>
+          <LoadingButton
+            data-testid="unblockconfirm"
+            variant="contained"
+            size="small"
+            endIcon={<DoneIcon></DoneIcon>}
+            loading={blockConLoading}
+            loadingPosition="end"
+            onClick={handleUnblock}
+          >
+            Yes
+          </LoadingButton>
+        </div>
+      </Dialog>
     </div>
   );
 };
