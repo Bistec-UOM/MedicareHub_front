@@ -38,8 +38,10 @@ export default function BlockTimeSelectionPopup({
     setTimeSelection(false);
   };
 
-  const [startTime, setStartTime] = useState(new dayjs(selectedDay)); //starttime of blocked time period
-  const [endTime, setEndTime] = useState(new dayjs(selectedDay)); //endtime of blocked time period
+  const minTime = dayjs(selectedDay).set("hour", 8).set("minute", 55); // 9:00 AM
+  const maxTime = dayjs(selectedDay).set("hour", 17).set("minute", 0); // 5:00 PM
+  const [startTime, setStartTime] = useState(dayjs(selectedDay).hour(9).minute(0).second(0)); //starttime of blocked time period
+  const [endTime, setEndTime] = useState(dayjs(selectedDay).hour(10).minute(0).second(0)); //endtime of blocked time period
   const [timeBlockLoading, setTimeBlockLoading] = useState(false); //var for loaing prop of confirm button
 
   //addig blocked date and doctor id to the table
@@ -164,11 +166,15 @@ export default function BlockTimeSelectionPopup({
               selectedTime={startTime}
               setSelectedTime={setStartTime}
               label="StartTime"
+              minTime={minTime}
+              maxTime={maxTime}
             ></BasicTimePicker>
             <BasicTimePicker
               selectedTime={endTime}
               setSelectedTime={setEndTime}
               label="EndTIme"
+              minTime={minTime}
+              maxTime={maxTime}
             ></BasicTimePicker>
              <Box
       sx={{
