@@ -269,6 +269,7 @@ function Patient() {
             <Button
               variant="contained"
               size="small"
+              data-testId="patient-add-button"
               endIcon={<AddIcon/>}
               sx={{
                 width: "9vh",
@@ -328,6 +329,7 @@ function Patient() {
                 .sort((a, b) => a.fullName.localeCompare(b.fullName))
                 .map((row) => (
                   <Paper
+                  data-testId="patient-section"
                     key={row.Id}
                     sx={{
                       cursor: "pointer",

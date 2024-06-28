@@ -425,6 +425,7 @@ const handleRestoreClose = () => {
                 fontWeight: "bolder",
               }}
               onClick={() => handleAddClickOpen(rolefild)}
+              data-testId="add-button"
             >
               Add
             </Button>
@@ -523,6 +524,7 @@ const handleRestoreClose = () => {
 
 {/* deleted section */}
 <Paper
+data-testId="staff-section"
             sx={{
               mt: 2,
               m: 1,

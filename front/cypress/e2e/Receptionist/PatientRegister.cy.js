@@ -34,14 +34,9 @@ describe('Patient register', () => {
 
         cy.get('[data-testid="age"] input').type(24);
 
-
         cy.get('[data-testid="gender"]').click();
         cy.get('li[data-value="Male"]').click();  //select male from drop down
 
-
-
-       
-  
         // Submit the form
         cy.get('[data-testid="sendbutton"]').click();
   
