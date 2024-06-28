@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {Button ,Paper, TextField, Toolbar, Typography,Box, Dialog, Snackbar, Alert} from "@mui/material"
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
@@ -11,12 +11,34 @@ import { baseURL,endPoints } from '../../Services/Lab';
 import { ConfirmPropmt } from '../Common';
 import theme from '../Style';
 import { setHeaders } from '../../Services/Auth';
+import DehazeIcon from '@mui/icons-material/Dehaze';
 
 export default function CreateLabTemplate({setPage,setTload}) {
 
+  const contref=useRef(null)//ref to template container
+  const [active,setActive]=useState(false)
+  const [IDindx,setIDindx]=useState(1)//next available ID
+  const [activeID,setActiveID]=useState(null)//index of active ID
+  const [yCoordinate, setYCoordinate] = useState(0);//initial y coord for container
+  const [yVal,setYVal]=useState(0)//y value of the dragged element
+
+  const handleActiveTrue=(e,ind)=>{//drag and drop
+    setActive(true)
+    setActiveID(e)
+    setYVal(yCoordinate+(ind*30))
+  }
+
+  const handleActiveFalse=(e)=>{//drag and drop
+    setActive(false)
+    setActiveID(null)
+  }
+
     useEffect(()=>{
         document.body.style.margin = '0';
-        
+        if (contref.current) {
+          const rect = contref.current.getBoundingClientRect();
+          setYCoordinate(rect.top);
+        }
        },[])
       
       //Field values--------------------------------------------------------------
@@ -26,6 +48,7 @@ export default function CreateLabTemplate({setPage,setTload}) {
       const [refMin,setRefMin]=useState()
       const [refMax,setRefMax]=useState()
       const [unit,setUnit]=useState()
+      const [ID,setID]=useState()
 
       const validate=()=>{
         if(fieldName==''){
@@ -58,13 +81,14 @@ export default function CreateLabTemplate({setPage,setTload}) {
           return
         }
         let data_set={
-         fieldname:fieldName,index:'',minRef:refMin,maxRef:refMax,unit:unit
+         fieldname:fieldName,index:'',minRef:refMin,maxRef:refMax,unit:unit,ID:IDindx
         }
         setTestField([...testField,data_set])
         setFieldName('')
         setRefMin('')
         setRefMax('')
         setUnit('')
+        setIDindx(IDindx+1)
       }
     
       const deleteTestField=(f)=>{
@@ -313,10 +337,13 @@ const createTemplate=()=>{
            {/*---------- Printed lab sheet----------------------------------------------------------*/}
            {/*--------------------------------------------------------------------------------------*/}
          
-               {
+         <Box ref={contref} sx={{backgroundColor:'yellow',width:'80%'}}>
+         {
                    testField.map((elm,indx)=>{
                        return(
-                       <Box sx={{display:'flex',justifyContent:'space-between',alignItems:'center',width:{xs:'90%',sm:'80%'},height:'30px',borderBottom:'1px solid #0488b0',mt:'5px'}}>
+                       <Box sx={{display:'flex',justifyContent:'space-between',alignItems:'center',width:{xs:'90%',sm:elm.ID==activeID?'50%':'80%'},height:elm.ID==activeID?'40px':'30px',borderBottom:'1px solid #0488b0',mt:'5px',backgroundColor:'lightblue',position:elm.ID==activeID?'fixed':'',top:elm.ID==activeID?`${yVal}px`:'',cursor:'pointer'}}
+                       onMouseDown={()=>handleActiveTrue(elm.ID,indx)} onMouseUp={()=>handleActiveFalse(elm.ID)}
+                       >
                            <Box sx={{width:{xs:'40%',sm:'45%'},height:'100%'}}>
                              <Typography sx={{fontSize:'16px',cursor:'pointer'}} onDoubleClick={()=>setEditModeData(indx)}>{elm.fieldname}</Typography>
                            </Box>
@@ -331,9 +358,7 @@ const createTemplate=()=>{
                            </Box>
                            {/* nav icons & close icon*/}
                            <Box sx={{width:{xs:'10%',sm:'5%'},height:'100%',display:'flex',justifyContent:'flex-end',ml:'5px'}}>
-                             {indx!=0 ? <KeyboardDoubleArrowUpIcon fontSize='small' style={{cursor:'pointer'}} onClick={()=>{swapElement(indx,indx-1)}}></KeyboardDoubleArrowUpIcon>: ''}
-     
-                             {indx==(testField.length-1) ? '' : <KeyboardDoubleArrowDownIcon fontSize='small' style={{cursor:'pointer'}} onClick={()=>{swapElement(indx,indx+1)}}></KeyboardDoubleArrowDownIcon>}
+                             <DehazeIcon sx={{cursor:'pointer'}}></DehazeIcon>
                            </Box>
      
                            <Box style={{width:'5%',height:'100%'}}>
@@ -344,6 +369,8 @@ const createTemplate=()=>{
                        )
                })
            }
+         </Box>
+
     
            {/* ----------------------------------------------------------------------------------- */}
            {/* ------------------------Add Field-------------------------------------------------- */}
