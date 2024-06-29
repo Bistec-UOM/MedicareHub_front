@@ -23,6 +23,17 @@ import { setHeaders } from "../../../../Services/Auth";
 import CloseIcon from "@mui/icons-material/Close";
 import AppBlockingOutlinedIcon from "@mui/icons-material/AppBlockingOutlined";
 import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
+import DeleteIcon from "@mui/icons-material/Delete";
+import {
+  Popover,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+} from "@mui/material";
+import CircleIcon from "@mui/icons-material/Circle";
+import AppBlockingIcon from "@mui/icons-material/AppBlocking";
+import UnavailableTimeDeletePopup from "../UnavailableTimeSlotDeletePopup/UnavailableTimeDeletePopup";
 
 const DoctorAppList = ({ Mode, setMode, selectedDAy, docid }) => {
   const [notificationOpen, setNotificationOpen] = useState(false);
@@ -34,6 +45,8 @@ const DoctorAppList = ({ Mode, setMode, selectedDAy, docid }) => {
 
   const [connection, setConnection] = useState(null);
   const [messages, setMessages] = useState([]);
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleNotification = (msg, type) => {
     setNotiMessage(msg);
@@ -51,7 +64,12 @@ const DoctorAppList = ({ Mode, setMode, selectedDAy, docid }) => {
   const [cancelAll, setCancelAll] = useState(false); //var for all app cancel popup
   const today = new Date();
   const compSelectedDay = new Date(selectedDay); //day object of selected day for comparison of blocking functionality
-  const [cancelDisabled,setCancelDisabled]=useState(false);
+  const [cancelDisabled, setCancelDisabled] = useState(false);
+  const [unavialbleDisabled, setUnavailableDisabled] = useState(false); //variable for disabling unavailable time button
+  const [unableTimeSlots, setUnableTimeSlots] = useState([]); //var for fetching unable date's time slots
+  const [unTimeOpen,setUnTimeOpen]=useState(false);  //var for open unavailable time slot open popup
+  const [unDelCount,setUnDelCount]=useState(0);  //var for fetching new unavailable time slot after deleting
+  
 
   const [notifications, setNotifications] = useState([]);
 
@@ -63,6 +81,18 @@ const DoctorAppList = ({ Mode, setMode, selectedDAy, docid }) => {
     setBlockSelectionPopup(true);
   };
 
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleDeletePopup=()=>
+    {
+      setUnTimeOpen(true);
+    }
+
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popover" : undefined;
+
   var location = useLocation();
   var loc = location.state;
 
@@ -70,6 +100,12 @@ const DoctorAppList = ({ Mode, setMode, selectedDAy, docid }) => {
     setMode(2);
     //console.log("setmod",Mode);
   };
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleUnavailableTimeDelete = (item) => {};
 
   useEffect(() => {
     //for fethcing the app of a day
@@ -109,6 +145,60 @@ const DoctorAppList = ({ Mode, setMode, selectedDAy, docid }) => {
         setRloadDone(true);
       });
   }, [docid, selectedDay, delcount]); // Ensure dependencies are included in the dependency array
+
+  //use effect for fetching the unavailable time slots
+  useEffect(() => {
+    const reqDate = new Date(selectedDay);
+    const formattedReqDate = `${reqDate.getFullYear()}-${(
+      reqDate.getMonth() + 1
+    )
+      .toString()
+      .padStart(2, "0")}-${reqDate
+      .getDate()
+      .toString()
+      .padStart(2, "0")}T${reqDate
+      .getHours()
+      .toString()
+      .padStart(2, "0")}:${reqDate
+      .getMinutes()
+      .toString()
+      .padStart(2, "0")}:${reqDate
+      .getSeconds()
+      .toString()
+      .padStart(2, "0")}.${reqDate
+      .getMilliseconds()
+      .toString()
+      .padStart(3, "0")}`;
+
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          baseURL +
+            endPoints.UnableTimeSlots +
+            `${docid}` +
+            "/date/" +
+            `${formattedReqDate}`,
+          setHeaders()
+        );
+        if (!response.ok) {
+          handleNotification("Network Error Occured!", "error");
+          setRloadDone(true);
+        }
+        const responseData = await response.json();
+        setUnableTimeSlots(responseData);
+        console.log("untime", responseData);
+      } catch (err) {
+        if (err.hasOwnProperty("response")) {
+          // handleNotification("Network Error occured", "error");
+          setRloadDone(true);
+        } else {
+          console.log(err);
+        }
+      }
+    };
+    fetchData();
+  }, [unDelCount]);
+
   return (
     <Box sx={{ height: "100%" }}>
       <Box
@@ -181,6 +271,77 @@ const DoctorAppList = ({ Mode, setMode, selectedDAy, docid }) => {
           >
             Cancel
           </Button>
+          <Button
+            data-testid="cancelbutton"
+            onClick={handleClick}
+            disabled={unavialbleDisabled}
+            sx={{
+              fontWeight: 25,
+            }}
+            variant="outlined"
+            color="warning"
+          >
+            Unavailable-Time
+          </Button>
+          <Popover
+            open={open}
+            anchorEl={anchorEl}
+            onClose={handleClose}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "left",
+            }}
+          >
+            <Box sx={{ width: { xs: "100%", sm: "260px" } }}>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "start",
+                  margin: "8px",
+                  paddingBottom: "5px",
+                  borderBottom: "1px solid lightgrey",
+                }}
+              >
+                <AppBlockingIcon
+                  color="warning"
+                  sx={{ mr: "10px" }}
+                ></AppBlockingIcon>
+                <Typography>Unavailable Time Slots</Typography>
+              </div>
+            </Box>
+            <div data-testid="unabletimeParent">
+              {unableTimeSlots.map((day, index) => (
+                <ListItem
+                  key={index}
+                  sx={{ textAlign: "center", justifyContent: "center" }}
+                >
+                  <ListItemIcon sx={{ minWidth: "auto", marginRight: "8px" }}>
+                    <CircleIcon fontSize="small" />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary={
+                      <Box
+                        data-testid="timeslotdisplay"
+                        sx={{ textAlign: "center" }}
+                      >
+                        {day.startTime.slice(11, 16)} -{" "}
+                        {day.endTime.slice(11, 16)}
+                      </Box>
+                    }
+                  />
+                  <IconButton
+                    data-testid="deletebutton"
+                    onClick={handleDeletePopup}
+                  >
+                    <DeleteIcon sx={{ color: "#E60000" }} />
+                  </IconButton>
+                  <UnavailableTimeDeletePopup handleNotification={handleNotification} item={day}  unTimeOpen={unTimeOpen} setUnTimeOpen={setUnTimeOpen} unDelCount={unDelCount} setUnDelCount={setUnDelCount}/>
+
+                </ListItem>
+              ))}
+
+            </div>
+          </Popover>
         </Stack>
       </Box>
       <div
@@ -262,6 +423,8 @@ const DoctorAppList = ({ Mode, setMode, selectedDAy, docid }) => {
         handleNotification={handleNotification}
       />
       <BlockTimeSelectionPopup
+        unDelCount={unDelCount}
+        setUnDelCount={setUnDelCount}
         timeSelection={timeSelection}
         setTimeSelection={setTimeSelection}
         selectedDay={selectedDay}
@@ -283,6 +446,7 @@ const DoctorAppList = ({ Mode, setMode, selectedDAy, docid }) => {
         cancelAll={cancelAll}
         setCancelAll={setCancelAll}
       />
+
       <SuccessNotification
         id="doctorappnotification"
         type={notiType}

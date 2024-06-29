@@ -30,6 +30,8 @@ export default function BlockTimeSelectionPopup({
   setFilteredAppointments,
   isDisabled,
   setIsDisabled,
+  unDelCount,
+  setUnDelCount
 }) {
   const handleClose = () => {
     setTimeSelection(false);
@@ -111,7 +113,9 @@ export default function BlockTimeSelectionPopup({
       await axios.post(baseURL + endPoints.UnableDates, obj, setHeaders());
       setTimeBlockLoading(false);
       handleNotification("Time Blocked succesfully!", "success");
+      setUnDelCount(unDelCount+1); 
       setTimeSelection(false);
+
     } catch (err) {
       setTimeBlockLoading(false);
       handleNotification("Network Error Occured!", "error");
