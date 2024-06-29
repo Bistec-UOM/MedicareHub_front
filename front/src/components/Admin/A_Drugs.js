@@ -167,7 +167,7 @@ const ADrugs = () => {
             style={{ textAlign: "center", height: "35vh", paddingTop: "6%" }}
           >
             <Typography sx={{ textAlign: "center", fontWeight: "bolder", fontSize: "20px" }} fontSize={25}>Most Used Drug(last 30 days)</Typography>
-            <Typography fontSize={30} sx={{ marginTop: 8 ,fontWeight: "bolder",color:"rgb(105, 116, 119)"}}>
+            <Typography fontSize={"4vh"} sx={{ marginTop: 8 ,fontWeight: "bolder",color:"rgb(105, 116, 119)"}}>
               {loading ? "Loading..." : mostUsedDrug}
             </Typography>
           </Paper>

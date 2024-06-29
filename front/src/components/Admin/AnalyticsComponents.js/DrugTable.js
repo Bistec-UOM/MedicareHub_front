@@ -37,16 +37,16 @@ export default function ExportDefaultToolbar({ data }) {
   }, []);
 
   return (
-    <div >
-      <DataGrid
-        sx={{ height: 600,width:'80vw',textAlign:'center' }}
-        rows={rows}
-        columns={columns}
-        loading={loading}
-        components={{
-          Toolbar: GridToolbar,
-        }}
-      />
-    </div>
+<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+  <DataGrid
+    sx={{ height: 600, width: '80vw', textAlign: 'center' }}
+    rows={rows}
+    columns={columns}
+    loading={loading}
+    components={{
+      Toolbar: GridToolbar,
+    }}
+  />
+</div>
   );
 }
