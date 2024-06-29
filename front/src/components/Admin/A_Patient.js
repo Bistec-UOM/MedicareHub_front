@@ -168,8 +168,50 @@ const APatient = () => {
 
   const dataForChart = filteredData1.map((data) => ({
     totalPatients: totalperday[data.datefor], // Add total patients for the corresponding day
-    datefor: data.datefor,
+    datefor: new Date(data.datefor).toLocaleDateString(),
   }));
+  const CustomTooltip = ({ active, payload, label }) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="custom-tooltip" style={{
+          width: "150px",
+          textAlign:"left",
+          paddingLeft: "20px",
+          backgroundColor: "white",
+          borderRadius: "5px",
+          borderStyle: "solid",
+          borderWidth: "1px",
+          borderColor: "rgb(174, 192, 190)" // You can change the color as needed
+        }}>
+          <p className="label">{`${new Date(label).toLocaleDateString()}`}</p>
+          <p className="intro" style={{color:'rgb(9, 214, 54)'}}>{`Patients: ${payload[0].value}`}</p>
+        </div>
+      );
+    }
+    return null;
+  };
+  const CustomTooltipGrouped = ({ active, payload, label }) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="custom-tooltip" style={{
+          width: "150px",
+          textAlign:"left",
+          paddingLeft: "20px",
+          backgroundColor: "white",
+          borderRadius: "5px",
+          borderStyle: "solid",
+          borderWidth: "1px",
+          borderColor: "rgb(174, 192, 190)" // You can change the color as needed
+        }}>
+          <p className="label">{`${new Date(label).toLocaleDateString()}`}</p>
+          <p className="intro" style={{color:'blue'}}>{`Male: ${payload[0].value}`}</p>
+          <p className="intro" style={{color:'rgb(9, 214, 54)'}}>{`Female: ${payload[1].value}`}</p>
+        </div>
+      );
+    }
+    return null;
+  };
+  
 
   return (
     <div>
@@ -179,7 +221,7 @@ const APatient = () => {
         </Grid>
         <Grid item sm={8} xs={12}>
           <Paper sx={{ padding: "10px",height:{xs:'40vh',sm:'70vh'} }}>
-            <Typography fontSize={20} sx={{ textAlign: "center" }}>
+            <Typography fontSize={20} sx={{ textAlign: "center", fontWeight: "bolder", fontSize: "20px" }}>
               Patient count within a time period
             </Typography>
             <ResponsiveContainer aspect={2} style={{ textAlign: "right" }}>
@@ -215,17 +257,17 @@ const APatient = () => {
                     offset={4}
                   />
                 </YAxis>
-                <Tooltip />
+                <Tooltip content={<CustomTooltip/>}/>
                 <Line
                   dataKey="totalPatients"
-                  fill="#f4acb7"
+                  fill="rgb(9, 214, 54)"
                   name="Total Patients"
-                  stroke="rgb(244, 172, 183)"
+                  stroke="rgb(9, 214, 54)"
                   activeDot={{ r: 6 }}
                   type="monotone"
                   isAnimationActive={true} // Enable animation
                 />
-              </LineChart>
+              </LineChart >
             </ResponsiveContainer>
           </Paper>
         </Grid>
@@ -240,9 +282,9 @@ const APatient = () => {
         >
           <Typography
             fontSize={20}
-            sx={{ textAlign: "center", margin: "20px" }}
+            sx={{ textAlign: "center", fontWeight: "bolder", fontSize: "20px" ,marginBottom:'20px'}}
           >
-            Patient count within today
+            Patient count by age group
           </Typography>
           <ResponsiveContainer width="90%" height={400}>
             <FormControl sx={{ width:{xs:'40%',sm:'20%'}, marginRight: "2vw" }}>
@@ -280,15 +322,15 @@ const APatient = () => {
             >
               <XAxis dataKey="datefor" tickFormatter={tickFormatter} />
               <YAxis />
-              <Tooltip />
+              <Tooltip content={<CustomTooltipGrouped/>}/>
               <Legend />
               <Bar
                 dataKey={Agemale}
                 name={Agemale}
-                fill="#8884d8"
+                fill="blue"
                 background={{ fill: "#eee" }}
               />
-              <Bar dataKey={Agefemale} fill="#82ca9d" name={Agefemale} />
+              <Bar dataKey={Agefemale} fill="rgb(9, 214, 54)" name={Agefemale} />
             </BarChart>
           </ResponsiveContainer>
         </Paper>
