@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Grid, Paper, Typography } from '@mui/material';
+import { Grid, Paper, Typography, backdropClasses } from '@mui/material';
 import { ResponsiveContainer, AreaChart, XAxis, YAxis, Label, Area, Tooltip } from 'recharts';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -91,7 +91,26 @@ const AIncome = () => {
   const handleChange = (event) => {
     setValue(event.target.value);
   };
-
+  const CustomTooltip = ({ active, payload, label }) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="custom-tooltip" style={{
+          width: "150px",
+          textAlign:"left",
+          paddingLeft: "20px",
+          backgroundColor: "white",
+          borderRadius: "5px",
+          borderStyle: "solid",
+          borderWidth: "1px",
+          borderColor: "rgb(174, 192, 190)" // You can change the color as needed
+        }}>
+          <p className="label">{`${new Date(label).toLocaleDateString()}`}</p>
+          <p className="intro" style={{color:'rgb(9, 214, 54)'}}>{`Income: ${payload[0].value}`}</p>
+        </div>
+      );
+    }
+    return null;
+  };
   return (
     <div>
       <Grid container spacing={3} sx={{ flexDirection: { xs: 'column', sm: 'row' } }}>
@@ -100,7 +119,7 @@ const AIncome = () => {
         </Grid>
         <Grid item xs={12} sm={8} style={{ textAlign: 'right' }}>
           <Paper sx={{ padding: '10px' }}>
-            <Typography fontSize={25} sx={{ textAlign: 'center' }}>Income</Typography>
+            <Typography fontSize={25} sx={{ textAlign: "center", fontWeight: "bolder", fontSize: "30px" }}>Income</Typography>
             <FormControl sx={{ width: { xs: '40%', sm: '20%' } }}>
               <InputLabel>Gap</InputLabel>
               <Select
@@ -129,8 +148,8 @@ const AIncome = () => {
                 <YAxis>
                   <Label value="Income" angle={-90} position="insideLeft" offset={1} />
                 </YAxis>
-                <Tooltip />
-                <Area type="monotone" name='Income' dataKey="income" activeDot={{ r: 6 }} stroke="rgb(121, 204, 190)" fill="rgb(121, 204, 190)" />
+                <Tooltip content={<CustomTooltip />}/>
+                <Area type="monotone" name='Income' dataKey="income" activeDot={{ r: 6 }} stroke="rgb(9, 214, 54)" fill="rgb(9, 214, 54)" />
               </AreaChart>
             </ResponsiveContainer>
           </Paper>
