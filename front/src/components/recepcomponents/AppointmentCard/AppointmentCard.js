@@ -37,7 +37,8 @@ const AppointmentCard = ({
   const isCompletedOrCancelled =
     item.appointment?.status === "Completed" ||
     item.appointment?.status === "cancelled" ||
-    item.appointment?.status === "noshow";
+    item.appointment?.status === "noshow" ||
+    item.appointment.status === "paid";
   const handleEditAppointment = () => {
     setAppEditOpen(true);
   };
@@ -57,7 +58,7 @@ const AppointmentCard = ({
   }
   const completedStatus = (item) => {
     //return the status of the appointment
-    if (item.appointment.status == "Completed") {
+    if (item.appointment.status == "Completed" || item.appointment.status == "paid") {
       return (
         <>
           <DoneIcon
@@ -116,7 +117,7 @@ const AppointmentCard = ({
   };
 
   const findOpacityStatus = (label) => {
-    if (label == "Completed" || label == "cancelled" || label == "noshow") {
+    if (label == "Completed" || label == "cancelled" || label == "noshow" || label=="paid") {
       return true;
     } else {
       return false;

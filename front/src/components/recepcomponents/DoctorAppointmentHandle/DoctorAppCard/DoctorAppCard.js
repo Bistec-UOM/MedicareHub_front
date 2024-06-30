@@ -61,7 +61,7 @@ const DoctorAppCard = ({
   }
 
   const findOpacityStatus = (label) => {
-    if (label == "Completed" || label == "cancelled" || label == "noshow") {
+    if (label == "Completed" || label == "cancelled" || label == "noshow" || label=="paid") {
       return true;
     } else {
       return false;
@@ -69,7 +69,7 @@ const DoctorAppCard = ({
   };
 
   const completedStatus = (item) => {
-    if (item.appointment.status == "Completed") {
+    if (item.appointment.status == "Completed" || item.appointment.status == "paid") {
       return (
         <>
           <DoneIcon
@@ -117,7 +117,9 @@ const DoctorAppCard = ({
   const isCompletedOrCancelled =
     item.appointment?.status === "Completed" ||
     item.appointment?.status === "cancelled" ||
-    item.appointment?.status === "noshow";
+    item.appointment?.status === "noshow" ||
+    item.appointment?.status === "paid"
+    ;
   return (
     <div>
       <Box
