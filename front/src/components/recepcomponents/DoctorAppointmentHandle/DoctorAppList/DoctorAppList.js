@@ -130,6 +130,7 @@ const DoctorAppList = ({ Mode, setMode, selectedDAy, docid }) => {
         const responseData = response.data;
         setIsDisabledCancel(responseData.length === 0 || dateWithoutTime > tod); // Update isDisabled based on the fetched appointments
         setIsDisabledBlock(responseData.length != 0 || today > compSelectedDay);
+        setUnavailableDisabled(dateWithoutTime > tod);
         const sortedAppointments = responseData
           .slice()
           .sort(
