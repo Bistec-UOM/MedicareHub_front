@@ -291,10 +291,10 @@ const ResNavBar = ({ isClosing, setMobileOpen, mobileOpen }) => {
           style={{ display: "flex", alignItems: "center", marginLeft: "2%" }}
         >
           <div style={{ display: "flex", flexDirection: "column" }}>
-            <Typography color="#030303">{profile.Name}</Typography>
+            <Typography sx={{display:{xs:"none",sm:"block"}}} color="#030303">{profile.Name}</Typography>
             <Typography
               color="#AFADAD"
-              sx={{ fontSize: "12px", textAlign: "right" }}
+              sx={{ fontSize: "12px", textAlign: "right" ,display:{xs:"none",sm:"block"}}}
             >
               {profile.Role}
             </Typography>

@@ -39,7 +39,7 @@ export default function Stest() {
     setIsClosing(false);
   };
   const [selectedItem, setSelectedItem] = useState(null);
-  const [selectedNavItem, setSelectedNavItem] = React.useState("Analysis");
+  const [selectedNavItem, setSelectedNavItem] = React.useState("Staff");
 
   const handleNavigationItemClick = (text) => {
     setSelectedItem(text);
@@ -52,7 +52,7 @@ export default function Stest() {
       <Divider />
       <Box>
         <List>
-          {["Analysis", "Staff", "Patient"].map((text, index) => (
+          {[ "Staff", "Patient","Analysis"].map((text, index) => (
             <ListItem key={text} disablePadding>
               <ListItemButton
               data-testId = {`nav-${text}`}
@@ -73,9 +73,9 @@ export default function Stest() {
                 onClick={() => handleNavigationItemClick(text)}
               >
                 <ListItemIcon>
-                  {index === 1 ? <PersonIcon /> : null}
-                  {index === 2 ? <AccessibleIcon /> : null}
-                  {index === 0 ? <AddchartIcon /> : null}
+                  {index === 0 ? <PersonIcon /> : null}
+                  {index === 1 ? <AccessibleIcon /> : null}
+                  {index === 2 ? <AddchartIcon /> : null}
                 </ListItemIcon>
                 <ListItemText primary={text} />
               </ListItemButton>
