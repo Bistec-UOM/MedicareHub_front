@@ -137,7 +137,7 @@ const AOther = () => {
           .filter((type) => type.name === selectedLabReport.name)
           .map((type) => ({
             ...type,
-            date: data.date,
+            date: data.date.split("T")[0],
           }))
       )
     : [];

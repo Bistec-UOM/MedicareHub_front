@@ -103,9 +103,8 @@ const ADrugs = () => {
           .filter((drug) => drug.name === selectedDrug.name)
           .map((drug) => ({
             ...drug,
-            datefor: new Date(data.datefor).toISOString().split('T')[0],
-      }))
-      )
+            datefor: data.datefor.split("T")[0],
+      })))
     : [];
   const drugconter = filter30Data.flatMap((data) => data.drugType);
   useEffect(() => {
