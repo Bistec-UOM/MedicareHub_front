@@ -313,7 +313,7 @@ const exportAsPDF = async () => {
         <SidebarContainer sx={{ backgroundColor:theme.palette.custom.sideBar}}>
           <SidebarTop>
           <Box sx={{width:'100%',display:'flex',justifyContent:'space-between',alignItems:'center',pr:'14px',pl:'14px'}}>
-          <NotificationsIcon></NotificationsIcon>
+          <NotificationsIcon sx={{color:theme.palette.custom.sideBar}}></NotificationsIcon>
           <Typography sx={{ fontSize:'14px'}}>{formattedDate}</Typography>
           {store? <AddCardIcon sx={{cursor:'pointer'}} onClick={()=>setStore(false)}></AddCardIcon>:
           <StoreIcon sx={{cursor:'pointer'}} onClick={()=>setStore(true)}></StoreIcon>}
