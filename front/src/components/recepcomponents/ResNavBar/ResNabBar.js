@@ -191,22 +191,9 @@ const ResNavBar = ({ isClosing, setMobileOpen, mobileOpen }) => {
 
   const handleLogout = () => {
     //AUTH-----------------------------------------------------
-    if (connection) {
-      connection
-        .invoke("ManualDisconnect", profile.Id) //------------------
-        .then(() => connection.stop()) //  LOOGOUT
-        .then(() => {
-          //------------------
-          deleteLog();
-          handleClose();
-          navigate("/");
-        })
-        .catch((err) => console.error("Error while disconnecting:", err));
-    } else {
       deleteLog();
       handleClose();
       navigate("/");
-    }
   };
 
   useEffect(() => {
