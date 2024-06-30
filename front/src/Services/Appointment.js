@@ -23,7 +23,9 @@ const endPoints = {
     MarkAsSennNotification:'/api/Appointment/notifications/',
     UnableTimeSlots:'/api/Appointment/BlockDates/',
     UnblockDay:'/api/Appointment/Unblock/',
-    PreviousAppointments:'/api/Appointment/PreviousAppointments/'
+    PreviousAppointments:'/api/Appointment/PreviousAppointments/',
+    UnblockTime:'/api/Appointment/UnblockTime/',
+
     
   };
   

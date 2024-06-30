@@ -31,10 +31,31 @@ const SearchGraph = ({
   graph,
   topic
 }) => {
+
+  const CustomTooltip = ({ active, payload, label }) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="custom-tooltip" style={{
+          width: "150px",
+          textAlign:"left",
+          paddingLeft: "20px",
+          backgroundColor: "white",
+          borderRadius: "5px",
+          borderStyle: "solid",
+          borderWidth: "1px",
+          borderColor: "rgb(174, 192, 190)" // You can change the color as needed
+        }}>
+          <p className="label">{`${new Date(label).toLocaleDateString()}`}</p>
+          <p className="intro" style={{color:'rgb(9, 214, 54)'}}>{`Count : ${payload[0].value}`}</p>
+        </div>
+      );
+    }
+    return null;
+  };
   return (
     <div>
-      <Paper sx={{ width: { xs: "90vw", sm: "90%" } }}>
-        <Typography fontSize={25} sx={{textAlign:'center'}}>{topic}</Typography>          
+      <Paper sx={{ width: { xs: "90vw", sm: "100%" } }}>
+        <Typography fontSize={25} sx={{ textAlign: "center", fontWeight: "bolder", fontSize: "20px" }}>{topic}</Typography>          
         <Box
           sx={{
             display: "flex",
@@ -113,12 +134,12 @@ const SearchGraph = ({
                 offset={2}
               />
             </YAxis>
-            <Tooltip />
+            <Tooltip content={CustomTooltip}/>
             <Area
               dataKey={graph.y}
               name="Used Amount"
-              stroke="rgb(121, 204, 190)"
-              fill="rgb(121, 204, 190)"
+              stroke="rgb(9, 214, 54)"
+              fill="rgb(9, 214, 54)"
               activeDot={{ r: 6 }}
               type="monotone"
             />
