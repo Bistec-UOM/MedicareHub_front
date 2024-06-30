@@ -170,19 +170,18 @@ const Navbar = () => {
       .catch((error) => {
         handleNotification("Error fetching notifications", "error");
       });
-  }, []);
+  }, [openNotify]);
 
   useEffect(() => {
     // Extract only  messages from notificationList and set notificationMessages
-    setBadgeContent(0);
-    console.log("notilist", notificationList);
-    const messages = notificationList.map(
+    setBadgeContent(notificationList.filter((notification) => notification.seen === false).length);
+    console.log("notilist", notificationList.filter((notification) => notification.seen === false).length);    const messages = notificationList.map(
       (notification) => notification.message
     );
     const unseenNotifications = notificationList.filter(
       (notification) => notification.seen === false
     );
-    setBadgeContent(unseenNotifications.length >= 1 ? 1 : 0);
+    // setBadgeContent(unseenNotifications.length >= 1 ? 1 : 0);
     setNotificationMessages(messages);
   }, [notificationList]);
 
