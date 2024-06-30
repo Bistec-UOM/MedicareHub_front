@@ -108,6 +108,7 @@ const SearchGraph = ({
               size="small"
               onChange={handleChange}
             >
+              <MenuItem value={"week"}>Last week</MenuItem>
               <MenuItem value={"month"}>Last Month</MenuItem>
               <MenuItem value={"year"}>Last Year</MenuItem>
               <MenuItem value={"5"}>Last 5 Year</MenuItem>
