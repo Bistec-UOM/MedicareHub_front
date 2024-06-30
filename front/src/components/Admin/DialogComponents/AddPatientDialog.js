@@ -107,6 +107,7 @@ const AddPatientDialog = ({open,rows,handleAddClose,handleInputChange,formErrors
     // If any duplicates are found, set form errors and return
     if (!isValid) {
       setFormErrors(errors);
+      setLoadingB(false);
       return;
     }
 
@@ -143,6 +144,8 @@ const AddPatientDialog = ({open,rows,handleAddClose,handleInputChange,formErrors
           setNotificationOpen(true);
         } else {
           console.error(error);
+          setLoadingB(false);
+
         }
       });
   };
