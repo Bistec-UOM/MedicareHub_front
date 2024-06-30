@@ -49,13 +49,16 @@ M. Chathura search bar/ button size
 
 N. Validation rules -- invalid/empty values
 
+O. notification list sorts
 
 //To do------------------------------------
- 0.Seen lab report
  1.Deleting a field
  2.when defaulr weight is not selected in pharmacy
- 3.Pharmacy validation - empty fields/ existing drugs
- 4.Every notification is shown
+ 5.Paharmacy notification userId is hardcoded
+ 6.New appointment notification is recieved for everyday
+ 7.pharmacy notification number
+ 8.Notification sort
+
 
 
 

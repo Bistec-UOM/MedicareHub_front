@@ -531,8 +531,8 @@ const Doctor_analytics = ({lbAnalytics,drgAnalytics}) => {
 
 return(
 done?<Box sx={{width:'100%'}}>
-    {/*------------ drugs graph -------------------------------------------------------*/}
-    <Box sx={{display:'flex',justifyContent:'space-between',alignItems:'center',pl:'10px',pr:'10px'}}>
+  {data.length>0?
+      <Box sx={{display:'flex',justifyContent:'space-between',alignItems:'center',pl:'10px',pr:'10px'}}>
       <Paper sx={{p:'5px',borderRadius:'0',maxWidth:'150px',maxHeight:'280px',overflowY:'scroll'}}>
         <Typography sx={{fontSize:'14px',color:'grey',fontWeight:'bold'}}>Drugs</Typography>
         <Divider></Divider>
@@ -569,54 +569,58 @@ done?<Box sx={{width:'100%'}}>
         </LineChart>
     </ResponsiveContainer>
     </Box>
+  :<Typography sx={{color:'grey',p:'10px',fontSize:'15px'}}>No drug history</Typography>}
+    {/*------------ drugs graph -------------------------------------------------------*/}
 
 
     {/*------------ Lab reports graph -------------------------------------------------------*/}
-    <Box sx={{display:'flex',justifyContent:'space-between',alignItems:'center',pl:'10px',pr:'10px'}}>
-    <Paper sx={{p:'5px',borderRadius:'0',maxWidth:'150px',maxHeight:'280px',overflowY:'scroll'}}>
-        <Typography sx={{fontSize:'14px',color:'grey',fontWeight:'bold'}}>Lab Reports</Typography>
-        <Divider></Divider>
-        <FormGroup >
-        {fieldNames.map((el)=>{
-        return(
-        Object.values(el)[0].map((elm,inx)=>{
-        return(
-          <div>
-          {inx==0?<Typography sx={{fontSize:'15px',mt:'8px'}}>{Object.keys(el)[0]}</Typography>:''}
-          <FormControlLabel
-          key={elm}
-          control={<Checkbox size='small' sx={{ml:'10px',height:'22px'}} style={{ color: col2[elm]}} checked={selectedLab.includes(elm)} onChange={() => handleLabToggle(elm)}/>}
-          label={<Typography sx={{fontSize:'12px'}}>{elm}</Typography>}
-        />
-        </div>
-        )
-      }))
-    })}
-        </FormGroup>
-      </Paper>
-      
-    <ResponsiveContainer width={700} height={260}>
-      <LineChart
-        data={data2}
-        margin={{
-          top: 20,
-          right: 30,
-          left: 20,
-          bottom: 10,
-        }}
-      >
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis 
-          dataKey="date"
-        />
-        <Tooltip content={<CustomTooltip />} />
-        <YAxis />
-        {selectedLab.map((el) => (
-          <Line key={el} type="stepAfter" dataKey={el} stroke={col2[el]} activeDot={{ r: 8 }} />
-        ))}      
-        </LineChart>
-    </ResponsiveContainer>
-    </Box>
+    {data2.length>0?
+        <Box sx={{display:'flex',justifyContent:'space-between',alignItems:'center',pl:'10px',pr:'10px'}}>
+        <Paper sx={{p:'5px',borderRadius:'0',maxWidth:'150px',maxHeight:'280px',overflowY:'scroll'}}>
+            <Typography sx={{fontSize:'14px',color:'grey',fontWeight:'bold'}}>Lab Reports</Typography>
+            <Divider></Divider>
+            <FormGroup >
+            {fieldNames.map((el)=>{
+            return(
+            Object.values(el)[0].map((elm,inx)=>{
+            return(
+              <div>
+              {inx==0?<Typography sx={{fontSize:'15px',mt:'8px'}}>{Object.keys(el)[0]}</Typography>:''}
+              <FormControlLabel
+              key={elm}
+              control={<Checkbox size='small' sx={{ml:'10px',height:'22px'}} style={{ color: col2[elm]}} checked={selectedLab.includes(elm)} onChange={() => handleLabToggle(elm)}/>}
+              label={<Typography sx={{fontSize:'12px'}}>{elm}</Typography>}
+            />
+            </div>
+            )
+          }))
+        })}
+            </FormGroup>
+          </Paper>
+          
+        <ResponsiveContainer width={700} height={260}>
+          <LineChart
+            data={data2}
+            margin={{
+              top: 20,
+              right: 30,
+              left: 20,
+              bottom: 10,
+            }}
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis 
+              dataKey="date"
+            />
+            <Tooltip content={<CustomTooltip />} />
+            <YAxis />
+            {selectedLab.map((el) => (
+              <Line key={el} type="stepAfter" dataKey={el} stroke={col2[el]} activeDot={{ r: 8 }} />
+            ))}      
+            </LineChart>
+        </ResponsiveContainer>
+        </Box>:<Typography sx={{color:'grey',p:'10px',fontSize:'15px'}}>No lab history</Typography>}
+
 
 
 </Box>:<Load></Load>
