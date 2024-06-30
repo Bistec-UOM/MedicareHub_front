@@ -130,6 +130,8 @@ const SearchBarSM=({onChange,value,placeholder,height})=> {
 
   const NotificationPrompt=({messageList,handleClose,open})=>{
     console.log(messageList)
+    messageList=messageList.filter(u=>u.seen===false)
+
     const List = messageList.sort((a, b) => b.id - a.id);
     return(
       <Dialog open={open} onClose={handleClose}>
