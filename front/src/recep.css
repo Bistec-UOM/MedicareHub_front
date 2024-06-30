@@ -93,7 +93,7 @@ body > div.MuiDrawer-root.MuiDrawer-modal.MuiModal-root.css-hjb2rp-MuiModal-root
 .blocked-date {
   pointer-events: none;
   opacity: 0.3; 
-  background-color: rgb(165, 225, 202);
+  background-color: rgba(233, 67, 67, 0.703);
   
 }
 
@@ -132,6 +132,12 @@ body > div.MuiDrawer-root.MuiDrawer-modal.MuiModal-root.css-hjb2rp-MuiModal-root
   justify-content: center;
   align-items: center;
 }
+
+.fc .fc-daygrid-day.fc-day-today {
+  background-color: rgba(28, 218, 47, 0.43);
+}
+
+
 
 
 
