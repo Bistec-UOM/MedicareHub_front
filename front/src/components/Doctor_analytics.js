@@ -531,7 +531,7 @@ const Doctor_analytics = ({lbAnalytics,drgAnalytics}) => {
 
 return(
 done?<Box sx={{width:'100%'}}>
-  {drugs.length>0?
+  {data.length>0?
       <Box sx={{display:'flex',justifyContent:'space-between',alignItems:'center',pl:'10px',pr:'10px'}}>
       <Paper sx={{p:'5px',borderRadius:'0',maxWidth:'150px',maxHeight:'280px',overflowY:'scroll'}}>
         <Typography sx={{fontSize:'14px',color:'grey',fontWeight:'bold'}}>Drugs</Typography>
@@ -569,7 +569,7 @@ done?<Box sx={{width:'100%'}}>
         </LineChart>
     </ResponsiveContainer>
     </Box>
-  :<Typography sx={{color:'grey',p:'10px',fontSize}}>No drug history</Typography>}
+  :<Typography sx={{color:'grey',p:'10px',fontSize:'15px'}}>No drug history</Typography>}
     {/*------------ drugs graph -------------------------------------------------------*/}
 
 
@@ -619,7 +619,7 @@ done?<Box sx={{width:'100%'}}>
             ))}      
             </LineChart>
         </ResponsiveContainer>
-        </Box>:<Typography sx={{color:'grey',p:'10px',fontSize}}>No lab history</Typography>}
+        </Box>:<Typography sx={{color:'grey',p:'10px',fontSize:'15px'}}>No lab history</Typography>}
 
 
 
