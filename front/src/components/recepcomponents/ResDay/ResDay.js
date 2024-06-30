@@ -59,7 +59,7 @@ function ResDay() {
             <SearchBar
               search={search}
               setSearch={setSearch}
-              mgl="10%"
+             // mgl="10%"
               isDisabled={true}
               placename="Doctor name"
             ></SearchBar>

@@ -112,7 +112,7 @@ const ResDayList = (props) => {
           id="appointmentsearch"
           search={search}
           setSearch={setSearch}
-          // mgl="-120%"
+           mgl="30px"
           isDisabled={isDisabled}
           placename="Patient name or id..."
         />
@@ -146,6 +146,7 @@ const ResDayList = (props) => {
             onClick={handleAppAd}
             disabled={addDisabled}
             variant="contained"
+            
           >
             Add
           </Button>
