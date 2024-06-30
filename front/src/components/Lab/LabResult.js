@@ -37,6 +37,7 @@ export default function LabResult({data,openPopup2,setOpenPopup2}) {
         data.forEach((el)=>{
           arr.push(el.reportId)
         })
+        console.log(arr);
         axios.post(baseURL+endPoints.MARK,arr,setHeaders())
         .then((res)=>console.log(res))
         .catch((err)=>console.log(err))
