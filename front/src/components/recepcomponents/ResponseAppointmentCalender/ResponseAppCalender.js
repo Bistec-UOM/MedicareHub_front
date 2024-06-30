@@ -10,31 +10,26 @@ import { SidebarContainer } from "../../sidebar/Sidebar";
 import { SidebarTop, SidebarList } from "../../sidebar/Sidebar";
 import SearchBar from "../Searchbar/Searchbar";
 import { useEffect } from "react";
-import { Tabs } from "@mui/material";
 import { Sideunit_Doctor } from "../../sidebar/Sideunits";
 import ResNavBar from "../ResNavBar/ResNabBar";
 import MyFullCalendar from "../MyFullCalendar/MyFullCalendar";
-import PageNotFound from "../PageNotFound/PageNotFound";
-import { baseURL,endPoints } from "../../../Services/Appointment";
+import { baseURL, endPoints } from "../../../Services/Appointment";
 import { Load } from "../../Other";
 import { setHeaders } from "../../../Services/Auth";
 import theme from "../../Style";
 
-
 const drawerWidth = 358.4;
 
 function ResponseAppCalender() {
+  const [notificationOpen, setNotificationOpen] = useState(false); //var for open of noti popup
+  const [notiMessage, setNotiMessage] = useState(""); //var for notification message
+  const [notiType, setNotiType] = useState("success"); //var for notification type
 
-  const [notificationOpen,setNotificationOpen]=useState(false);
-  const [notiMessage,setNotiMessage]=useState("");
-  const [notiType,setNotiType]=useState("success")
-
-  const handleNotification=(msg,type)=>
-  {  
-     setNotiMessage(msg);
-     setNotificationOpen(true);
-     setNotiType(type);
-  }
+  const handleNotification = (msg, type) => {
+    setNotiMessage(msg);
+    setNotificationOpen(true);
+    setNotiType(type);
+  };
 
   useEffect(() => {
     document.body.style.margin = "0";
@@ -42,35 +37,32 @@ function ResponseAppCalender() {
 
   const [doctorList, setDoctorList] = useState([]); //doctor list of sidebar
   const [doctorCount, setDoctorCount] = useState(1);
-  const [epage,setEpage]=useState(false);  //state for errorpage
+  const [epage, setEpage] = useState(false); //state for errorpage
 
-  useEffect(() => {  //fetching doctors list
+  useEffect(() => {
+    //fetching doctors list
     const fetchData = async () => {
       try {
-      //  const response = await fetch("https://localhost:7205/api/Appointment/doctors");
-        const response = await fetch(baseURL+endPoints.DoctorsList,setHeaders());
+        //  const response = await fetch("https://localhost:7205/api/Appointment/doctors");
+        const response = await fetch(
+          baseURL + endPoints.DoctorsList,
+          setHeaders()
+        );
         const responseData = await response.json();
         setDoctorCount((prevCount) => prevCount + 1);
         setDoctorList(responseData.result);
-        setRloadDone(true)
+        setRloadDone(true);
         setSelectedTab(responseData.result[0].id);
-       
       } catch (error) {
-
-        if(error.hasOwnProperty('response'))
-        {
+        if (error.hasOwnProperty("response")) {
           setRloadDone(true);
-          handleNotification(error.response.data,"error");
-
-        }
-        else{
+          handleNotification(error.response.data, "error");
+        } else {
           console.log(error);
         }
-        
-        
       }
     };
-  
+
     fetchData();
   }, []);
   const handleChanges = (event, newValue) => {
@@ -78,9 +70,9 @@ function ResponseAppCalender() {
   };
 
   const [mobileOpen, setMobileOpen] = React.useState(false); //variable for mobile screen drawer open
-  const [isClosing, setIsClosing] = React.useState(false);  //variable for mobile view navbar open
+  const [isClosing, setIsClosing] = React.useState(false); //variable for mobile view navbar open
   const [selectedTab, setSelectedTab] = useState(0);
-  const [RloadDone,setRloadDone]=useState(false)  //state for doctorlist loading 
+  const [RloadDone, setRloadDone] = useState(false); //state for doctorlist loading
 
   const handleDrawerClose = () => {
     setIsClosing(true);
@@ -96,32 +88,42 @@ function ResponseAppCalender() {
     <div>
       <Toolbar />
       <Divider />
-      <Grid item xs={3} sm={1} md={3} sx={{ backgroundColor: theme.palette.custom.sideBar }}>
+      <Grid
+        item
+        xs={3}
+        sm={1}
+        md={3}
+        sx={{ backgroundColor: theme.palette.custom.sideBar }}
+      >
         <SidebarContainer>
           <SidebarTop>
-          <SearchBar search={search} setSearch={setSearch} mgl="10%" isDisabled={false} placename="Doctor name or id..."></SearchBar>
+            <SearchBar
+              search={search}
+              setSearch={setSearch}
+              mgl="10%"
+              isDisabled={false}
+              placename="Doctor name or id..."
+            ></SearchBar>
           </SidebarTop>
           <SidebarList>
-          {!RloadDone?<Load></Load>:''}
-                {Array.isArray(doctorList) &&
-                  doctorList
-                    .filter((item) => {
-                      return search.toLowerCase() === ""
-                        ? item
-                        : item.name
-                            .toLowerCase()
-                            .includes(search.toLowerCase());
-                    })
-                    .map((item, index) => (
-                        <Sideunit_Doctor
-                          onClick={() => setSelectedTab(item.id)}
-                          selectedTab={selectedTab}
-                          name={item.fullName}
-                          title={item.qualifications}
-                          index={item.id}
-                          key={index}
-                        ></Sideunit_Doctor>
-                    ))}
+            {!RloadDone ? <Load></Load> : ""}
+            {Array.isArray(doctorList) &&
+              doctorList
+                .filter((item) => {
+                  return search.toLowerCase() === ""
+                    ? item
+                    : item.name.toLowerCase().includes(search.toLowerCase());
+                })
+                .map((item, index) => (
+                  <Sideunit_Doctor
+                    onClick={() => setSelectedTab(item.id)}
+                    selectedTab={selectedTab}
+                    name={item.fullName}
+                    title={item.qualifications}
+                    index={item.id}
+                    key={index}
+                  ></Sideunit_Doctor>
+                ))}
           </SidebarList>
         </SidebarContainer>
       </Grid>
@@ -201,7 +203,12 @@ function ResponseAppCalender() {
           sm={11}
           md={9}
         >
-          <MyFullCalendar doctorsList={doctorList} epage={epage} setEpage={setEpage} doctorId={selectedTab} />
+          <MyFullCalendar
+            doctorsList={doctorList}
+            epage={epage}
+            setEpage={setEpage}
+            doctorId={selectedTab}
+          />
         </Grid>
       </Box>
     </Box>

@@ -278,8 +278,10 @@ export default function Log() {
             autoComplete="current-password"
             onChange={(e) => setUser(e.target.value)}
             value={user}
+            data-testid="username"
           />
           <TextField
+            test
             size="small"
             sx={{ mt: "5px", mb: "10px" }}
             id="2"
@@ -288,6 +290,7 @@ export default function Log() {
             autoComplete="current-password"
             onChange={(e) => setPassword(e.target.value)}
             value={password}
+            data-testid="password"
           />
 
           <div
@@ -298,6 +301,7 @@ export default function Log() {
             }}
           >
             <LoadingButton
+              id="logbutton"
               size="small"
               endIcon={<LoginIcon />}
               loading={loadingB}
@@ -305,6 +309,7 @@ export default function Log() {
               variant="contained"
               onClick={setData}
               sx={{ ml: "5px"}}
+              data-testid="login-button"
             >
               Log
             </LoadingButton>
@@ -495,6 +500,7 @@ export default function Log() {
         onClose={handleClose}
       >
         <Alert
+          id="alert"
           onClose={handleClose}
           severity={col}
           variant="filled"

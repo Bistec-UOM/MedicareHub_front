@@ -1,11 +1,9 @@
 import * as React from "react";
 import Dialog from "@mui/material/Dialog";
 import axios from "axios";
-import { IconButton,Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import Button from "@mui/material/Button";
-import { Box } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import ErrorIcon from "@mui/icons-material/Error";
 import { baseURL,endPoints } from "../../../Services/Appointment";
 import { setHeaders } from "../../../Services/Auth";
 import DoneIcon from '@mui/icons-material/Done'
@@ -19,7 +17,7 @@ export default function AppDeletePopup({appointlist,setAppointList,handleNotific
 
 
   const [delConLoading,setDelConLoading]=useState(false);  //var for loading prop of delete confirm button
-  const handleRealDelete=(item)=>
+  const handleRealDelete=(item)=> //for real deleting of an appointment from table
   {
     setDelConLoading(true);
     axios.delete(baseURL+endPoints.Appoinment+`${item.appointment.id}`,setHeaders())
@@ -54,6 +52,7 @@ export default function AppDeletePopup({appointlist,setAppointList,handleNotific
     <div style={{width:'100%',height:'60px',display:'flex',justifyContent:'center',alignItems:'center'}}>
       <Button variant='outlined' sx={{mr:'40px'}} size='small' endIcon={<CloseIcon></CloseIcon>} onClick={handleClose} >No</Button>
       <LoadingButton 
+        data-testid="confirmdelete"
         variant='contained' 
         size='small' 
         endIcon={<DoneIcon></DoneIcon>}           
@@ -64,50 +63,4 @@ export default function AppDeletePopup({appointlist,setAppointList,handleNotific
     </div>
   </Dialog>
   )
-//   return (
-//     <React.Fragment>
-//       <Dialog open={daopen} onClose={handleClose}>
-//         <Box sx={{ width: {xs:"100%",sm:"500px"}, height: "150px" }}>
-//           <Box>
-//             <Box
-//               sx={{
-//                 backgroundColor: "#DEF4F2",
-//                 height: "40px",
-//                 display: "flex",
-//                 justifyContent: "flex-end",
-//                 width: "100%",
-//               }}
-//             >
-//               <IconButton onClick={handleClose}>
-//                 <CloseIcon />
-//               </IconButton>
-//             </Box>
-//           </Box>
-//           <Box  sx={{display:'flex',flexDirection:'row' ,alignItem: "center", margin: "3%" }}>
-//             <ErrorIcon
-//               sx={{ color: "red", marginRight: "2%",fontSize:'2rem' }}
-//             />
-//             <Typography  sx={{ marginTop:'1%',color:'#000000' }}>
-//               Are you sure you want to delete the appointment?
-//             </Typography>
-//           </Box>
-//           <Box sx={{display:'flex',justifyContent:'flex-end',paddingRight:'5%'}}>
-//             <Button onClick={()=>handleRealDelete(item)}
-//               sx={{
-//                 backgroundColor: "#F44336", 
-//                 "&:hover": {
-//                   backgroundColor: "#F44336", 
-//                 },
-//                 marginLeft: "20px",
-//               }}
-//               variant="contained"
-//               type="submit"
-//             >
-//               Confirm
-//             </Button>
-//           </Box>
-//         </Box>
-//       </Dialog>
-//     </React.Fragment>
-//   );
   }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { Stack, Button, Container, Box } from "@mui/material";
+import { Stack, Button, Box } from "@mui/material";
 import SearchBar from "../Searchbar/Searchbar";
 import SuccessNotification from "../SnackBar/SuccessNotification";
 import AppAddPopup from "../AppAddPopup/AppAddPopup";
@@ -13,6 +13,7 @@ import { setHeaders } from "../../../Services/Auth";
 import AddIcon from "@mui/icons-material/Add";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import { Typography } from "@mui/material";
+import PatientAppointmentAnalysis from "../PatientAppointmentAnalysis/PatientAppointmentAnalysis";
 import AppBlockingIcon from "@mui/icons-material/AppBlocking";
 import {
   Popover,
@@ -24,9 +25,9 @@ import {
 import CircleIcon from "@mui/icons-material/Circle";
 
 const SearchPatientPage = (props) => {
-  const [notificationOpen, setNotificationOpen] = useState(false);
-  const [notiMessage, setNotiMessage] = useState("");
-  const [notiType, setNotiType] = useState("success");
+  const [notificationOpen, setNotificationOpen] = useState(false); //var for notification popup open
+  const [notiMessage, setNotiMessage] = useState(""); //var for notification popup message
+  const [notiType, setNotiType] = useState("success"); //var for notification popup type
   const [patientCount, setPatientCount] = useState(0); //use for patient rendering useffect
   const [search, setSearch] = useState("");
   const [appAddPopupCount, setAppAddPopupCount] = useState(0);
@@ -36,6 +37,20 @@ const SearchPatientPage = (props) => {
   const [activeId, setActiveId] = useState(""); //var for selected patient id
   const [RloadDone, setRloadDone] = useState(false); //state for patientList loading
   const [unableTimeSlots, setUnableTimeSlots] = useState([]); //var for fetching unable date's time slots
+
+  /////----Analysis page//////
+
+  const [analysisPatient, setAnalysisPatient] = useState(null);
+  const [showAnalysis, setShowAnalysis] = useState(false);
+  const handleAnalysisPage = () => {
+    setShowAnalysis(true);
+  };
+
+  const handleBackToDetails = () => {
+    setShowAnalysis(false);
+  };
+
+  /////////////////////////
 
   var location = useLocation();
   var loc = location.state;
@@ -54,8 +69,6 @@ const SearchPatientPage = (props) => {
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
   //--------popover------//
-
-
 
   const handleNotification = (msg, type) => {
     setNotiMessage(msg);
@@ -79,14 +92,15 @@ const SearchPatientPage = (props) => {
           setHeaders()
         );
         if (!response.ok) {
-          throw new Error("Network response was not ok");
+          handleNotification("Network Error Occured!", "error");
+          setRloadDone(true);
         }
         const responseData = await response.json();
         setPatientList(responseData);
         setRloadDone(true);
       } catch (err) {
         if (err.hasOwnProperty("response")) {
-          handleNotification("Network Error Occured!", "error");
+          // handleNotification("Network Error Occured!", "error");
           setRloadDone(true);
         } else {
           console.log(err);
@@ -131,14 +145,15 @@ const SearchPatientPage = (props) => {
           setHeaders()
         );
         if (!response.ok) {
-          throw new Error("Network response was not ok");
+          handleNotification("Network Error Occured!", "error");
+          setRloadDone(true);
         }
         const responseData = await response.json();
         setUnableTimeSlots(responseData);
         console.log("untime", responseData);
       } catch (err) {
         if (err.hasOwnProperty("response")) {
-          handleNotification("Network Error occured", "error");
+          // handleNotification("Network Error occured", "error");
           setRloadDone(true);
         } else {
           console.log(err);
@@ -149,209 +164,239 @@ const SearchPatientPage = (props) => {
   }, []);
 
   return (
-    <Box sx={{ height: "100%" }}>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItem: "center",
-          position: "fixed",
-          backgroundColor: "white",
-          width: { sm: "70%", xs: "90%" },
-          flexWrap: "wrap-reverse",
-          paddingTop: { xs: "7px", sm: "10px",md:'20px' },
-          zIndex: 10,
-        }}
-      >
-        <SearchBar
-          search={search}
-          setSearch={setSearch}
-          mgl="20%"
-          isDisabled={false}
-          placename="Patient name or id..."
-        />
-        <Typography
-          variant="h5"
-          sx={{ color: "#d0d1cb", marginBottom: { md: "0px", xs: "5%" } }}
-        >
-          {props.selectedDay}
-        </Typography>
-        <Stack
-          sx={{
-            justifyContent: "flex-end",
-            marginBottom: 3,
-            width: { xs: "100%", sm: "auto" },
-            marginRight: { xs: "0", sm: "5%", md: "5%" },
-            marginTop: {
-              md: 0,
-              xs: "3%",
-            },
-          }}
-          spacing={2}
-          direction="row"
-        >
-          <Button
-            onClick={handleRegOpen}
+    <div>
+      {!showAnalysis ? (
+        <Box sx={{ height: "100%" }}>
+          <Box
             sx={{
-              fontWeight: 25,
-            }}
-            variant="contained"
-            endIcon={<AddIcon></AddIcon>}
-          >
-            New
-          </Button>
-          <Button
-            onClick={handleBackToList}
-            // disabled={isDisabled}
-            sx={{
-              fontWeight: 25,
-              whiteSpace: "nowrap",
-            }}
-            color="warning"
-            variant="outlined"
-            startIcon={
-              <ArrowBackIosNewIcon
-                sx={{ display: { md: "flex", xs: "none" } }}
-              ></ArrowBackIosNewIcon>
-            }
-          >
-            Back To List
-          </Button>
-          <Button
-            sx={{
-              fontWeight: 25,
-              whiteSpace: "nowrap",
-            }}
-            color="warning"
-            endIcon={
-              <AppBlockingIcon
-                sx={{ display: { md: "flex", xs: "none" } }}
-              ></AppBlockingIcon>
-            }
-            variant="outlined"
-            onClick={handleClick}
-          >
-            Unavailable
-          </Button>
-          <Popover
-            open={open}
-            anchorEl={anchorEl}
-            onClose={handleClose}
-            anchorOrigin={{
-              vertical: "bottom",
-              horizontal: "left",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItem: "center",
+              position: "fixed",
+              backgroundColor: "white",
+              width: { sm: "70%", xs: "90%" },
+              flexWrap: "wrap-reverse",
+              paddingTop: { xs: "7px", sm: "10px", md: "20px" },
+              zIndex: 10,
             }}
           >
-            <Box sx={{ width: { xs: "100%", sm: "260px" } }}>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "start",
-                  margin: "8px",
-                  paddingBottom: "5px",
-                  borderBottom: "1px solid lightgrey",
+            <SearchBar
+              id="patientsearch"
+              search={search}
+              setSearch={setSearch}
+              mgl="20%"
+              isDisabled={false}
+              placename="Patient name or id..."
+            />
+            <Typography
+              variant="h5"
+              sx={{ color: "#d0d1cb", marginBottom: { md: "0px", xs: "5%" } }}
+            >
+              {props.selectedDay}
+            </Typography>
+            <Stack
+              sx={{
+                justifyContent: "flex-end",
+                marginBottom: 3,
+                width: { xs: "100%", sm: "auto" },
+                marginRight: { xs: "0", sm: "5%", md: "5%" },
+                marginTop: {
+                  md: 0,
+                  xs: "3%",
+                },
+              }}
+              spacing={2}
+              direction="row"
+            >
+              <Button
+                data-testid="newbutton"
+                onClick={handleRegOpen}
+                sx={{
+                  fontWeight: 25,
+                }}
+                variant="contained"
+                endIcon={<AddIcon></AddIcon>}
+              >
+                New
+              </Button>
+              <Button
+                onClick={handleBackToList}
+                // disabled={isDisabled}
+                sx={{
+                  fontWeight: 25,
+                  whiteSpace: "nowrap",
+                }}
+                color="warning"
+                variant="outlined"
+                startIcon={
+                  <ArrowBackIosNewIcon
+                    sx={{ display: { md: "flex", xs: "none" } }}
+                  ></ArrowBackIosNewIcon>
+                }
+              >
+                Back To List
+              </Button>
+              <Button
+                data-testid="unavailabletimes"
+                sx={{
+                  fontWeight: 25,
+                  whiteSpace: "nowrap",
+                }}
+                color="warning"
+                endIcon={
+                  <AppBlockingIcon
+                    sx={{ display: { md: "flex", xs: "none" } }}
+                  ></AppBlockingIcon>
+                }
+                variant="outlined"
+                onClick={handleClick}
+              >
+                Unavailable
+              </Button>
+              <Popover
+                open={open}
+                anchorEl={anchorEl}
+                onClose={handleClose}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "left",
                 }}
               >
-                <AppBlockingIcon
-                  color="warning"
-                  sx={{ mr: "10px" }}
-                ></AppBlockingIcon>
-                <Typography>Unavailable Time Slots</Typography>
-              </div>
-            </Box>
-            {unableTimeSlots.map((day, index) => (
-        <ListItem key={index} sx={{ textAlign: 'center', justifyContent: 'center' }}>
-          <ListItemIcon sx={{ minWidth: 'auto', marginRight: '8px' }}>
-            <CircleIcon fontSize="small" />
-          </ListItemIcon>
-          <ListItemText
-            primary={
-              <Box sx={{ textAlign: 'center' }}>
-                {day.startTime.slice(11, 16)} - {day.endTime.slice(11, 16)}
+                <Box sx={{ width: { xs: "100%", sm: "260px" } }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "start",
+                      margin: "8px",
+                      paddingBottom: "5px",
+                      borderBottom: "1px solid lightgrey",
+                    }}
+                  >
+                    <AppBlockingIcon
+                      color="warning"
+                      sx={{ mr: "10px" }}
+                    ></AppBlockingIcon>
+                    <Typography>Unavailable Time Slots</Typography>
+                  </div>
+                </Box>
+                <div data-testid="unabletimeParent">
+                  {unableTimeSlots.map((day, index) => (
+                    <ListItem
+                      key={index}
+                      sx={{ textAlign: "center", justifyContent: "center" }}
+                    >
+                      <ListItemIcon
+                        sx={{ minWidth: "auto", marginRight: "8px" }}
+                      >
+                        <CircleIcon fontSize="small" />
+                      </ListItemIcon>
+                      <ListItemText
+                        primary={
+                          <Box
+                            data-testid="timeslotdisplay"
+                            sx={{ textAlign: "center" }}
+                          >
+                            {day.startTime.slice(11, 16)} -{" "}
+                            {day.endTime.slice(11, 16)}
+                          </Box>
+                        }
+                      />
+                    </ListItem>
+                  ))}
+                </div>
+              </Popover>
+            </Stack>
+          </Box>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              width: "100%",
+              maxHeight: "75vh",
+              paddingTop: "110px",
+            }}
+          >
+            {
+              <Box
+                data-testid="patientlist"
+                sx={{ width: "80%", marginTop: { xs: "20%", sm: "0%" } }}
+              >
+                {!RloadDone ? <Load></Load> : ""}
+                {Array.isArray(patientList) &&
+                  patientList
+                    .filter((item) => {
+                      return search.toLowerCase() === ""
+                        ? item
+                        : item.fullName
+                            .toLowerCase()
+                            .includes(search.toLowerCase());
+                    })
+                    .map((item) => (
+                      <div key={item.id}>
+                        <PatientDetailCard
+                          setAnalysisPatient={setAnalysisPatient}
+                          showAnalysis={showAnalysis}
+                          setShowAnalysis={setShowAnalysis}
+                          appAddPopupCount={appAddPopupCount}
+                          setAppAddPopupCount={setAppAddPopupCount}
+                          setActiveId={setActiveId}
+                          apopen={apopen}
+                          setApopen={setApopen}
+                          item={item}
+                          filteredAppointments={props.filteredAppointments}
+                          docid={props.docid}
+                          handleNotification={handleNotification}
+                        />
+                      </div>
+                    ))}
               </Box>
             }
+            <AppAddPopup
+              dayAppTotal={props.dayAppTotal}
+              setDayAppTotal={props.setDayAppTotal}
+              filteredAppointments={props.filteredAppointments}
+              setFilteredAppointments={props.setFilteredAppointments}
+              selectedDay={props.selectedDay}
+              handleNotification={handleNotification}
+              docid={props.docid}
+              appointmentList={props.appointlist}
+              setAppointmentList={props.setAppointmentList}
+              appAddPopupCount={appAddPopupCount}
+              setAppAddPopupCount={setAppAddPopupCount}
+              patientList={patientList}
+              activeId={activeId}
+              apopen={apopen}
+              setApopen={setApopen}
+              unableTimeSlots={unableTimeSlots}
+              setUnableTimeSlots={setUnableTimeSlots}
+            />
+            <PatientRegpopup
+              patientCount={patientCount}
+              setPatientCount={setPatientCount}
+              handleNotification={handleNotification}
+              patientList={patientList}
+              setPatientList={setPatientList}
+              regopen={regopen}
+              setRegopen={setRegopen}
+            ></PatientRegpopup>
+          </div>
+          <SuccessNotification
+            id="searchpatientpagenotification"
+            type={notiType}
+            setNotificationOpen={setNotificationOpen}
+            notiMessage={notiMessage}
+            notificationOpen={notificationOpen}
           />
-        </ListItem>
-      ))}
-          </Popover>
-        </Stack>
-      </Box>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          width: "100%",
-          maxHeight: "75vh",
-          paddingTop: "110px",
-         
-        }}
-      >
-        {
-          <Box sx={{ width: "80%", marginTop: { xs: "20%", sm: "0%" } }}>
-            {!RloadDone ? <Load></Load> : ""}
-            {Array.isArray(patientList) &&
-              patientList
-                .filter((item) => {
-                  return search.toLowerCase() === ""
-                    ? item
-                    : item.fullName
-                        .toLowerCase()
-                        .includes(search.toLowerCase());
-                })
-                .map((item) => (
-                  <div key={item.nic + item.fullName}>
-                    <PatientDetailCard
-                      appAddPopupCount={appAddPopupCount}
-                      setAppAddPopupCount={setAppAddPopupCount}
-                      setActiveId={setActiveId}
-                      apopen={apopen}
-                      setApopen={setApopen}
-                      item={item}
-                      filteredAppointments={props.filteredAppointments}
-                      docid={props.docid}
-                      handleNotification={handleNotification}
-                    />
-                  </div>
-                ))}
-          </Box>
-        }
-        <AppAddPopup
-          dayAppTotal={props.dayAppTotal}
-          setDayAppTotal={props.setDayAppTotal}
-          filteredAppointments={props.filteredAppointments}
-          setFilteredAppointments={props.setFilteredAppointments}
+        </Box>
+      ) : (
+        <PatientAppointmentAnalysis
+          analysisPatient={analysisPatient}
           selectedDay={props.selectedDay}
-          handleNotification={handleNotification}
-          docid={props.docid}
-          appointmentList={props.appointlist}
-          setAppointmentList={props.setAppointmentList}
-          appAddPopupCount={appAddPopupCount}
-          setAppAddPopupCount={setAppAddPopupCount}
-          patientList={patientList}
-          activeId={activeId}
-          apopen={apopen}
-          setApopen={setApopen}
-          unableTimeSlots={unableTimeSlots}
-          setUnableTimeSlots={setUnableTimeSlots}
-
-        />
-        <PatientRegpopup
-          patientCount={patientCount}
-          setPatientCount={setPatientCount}
-          handleNotification={handleNotification}
-          patientList={patientList}
-          setPatientList={setPatientList}
-          regopen={regopen}
-          setRegopen={setRegopen}
-        ></PatientRegpopup>
-      </div>
-      <SuccessNotification
-        type={notiType}
-        setNotificationOpen={setNotificationOpen}
-        notiMessage={notiMessage}
-        notificationOpen={notificationOpen}
-      />
-    </Box>
+          showAnalysis={showAnalysis}
+          setShowAnalysis={setShowAnalysis}
+        ></PatientAppointmentAnalysis>
+      )}
+    </div>
   );
 };
 

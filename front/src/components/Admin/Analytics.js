@@ -35,6 +35,7 @@ export default function Analysis() {
     <div>
       <Box sx={{ display: "flex", alignItems: "center" }}>
         <Typography
+          data-testId = "staff-section"
           sx={{
             color: "rgb(105, 116, 115)",
             textAlign: "center",
@@ -72,6 +73,7 @@ export default function Analysis() {
                 sx={{ width: { sm: "10vw", xs: "20vw" }, zIndex: 1 }}
               >
 <ListItemButton
+ data-testid={`nav-item-${text}`}
   sx={{
     alignItems: "center",
     justifyContent: "center",

@@ -55,6 +55,7 @@ export default function Stest() {
           {["Analysis", "Staff", "Patient"].map((text, index) => (
             <ListItem key={text} disablePadding>
               <ListItemButton
+              data-testId = {`nav-${text}`}
                 sx={{
                   backgroundColor:
                     selectedNavItem === text ? "rgb(9, 214, 54)" : "white",

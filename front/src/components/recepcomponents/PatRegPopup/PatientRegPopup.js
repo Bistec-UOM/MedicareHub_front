@@ -10,7 +10,7 @@ import {
   Select,
   MenuItem,
   IconButton,
-  Box
+  Box,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import dayjs from "dayjs";
@@ -23,9 +23,7 @@ import { baseURL, endPoints } from "../../../Services/Appointment";
 import { setHeaders } from "../../../Services/Auth";
 import theme from "../../../components/Style";
 import { LoadingButton } from "@mui/lab";
-import Style from '../../Style';
-import DoneIcon from '@mui/icons-material/Done'; 
-import SendIcon from '@mui/icons-material/Send'
+import SendIcon from "@mui/icons-material/Send";
 
 const PatientRegpopup = ({
   handleNotification,
@@ -36,6 +34,7 @@ const PatientRegpopup = ({
   patientCount,
   setPatientCount,
 }) => {
+  //states for patient details
   const [name, setName] = useState("");
   const [nic, setNic] = useState("");
   const [address, setAddress] = useState("");
@@ -147,7 +146,13 @@ const PatientRegpopup = ({
     setRegLoading(true);
     e.preventDefault();
     const agenumber = Number(age);
-    if (!nameError && !nicError && !ageError && agenumber !== 0 && !phoneError) {
+    if (
+      !nameError &&
+      !nicError &&
+      !ageError &&
+      agenumber !== 0 &&
+      !phoneError
+    ) {
       let obj = {
         Id: 0,
         NIC: nic,
@@ -160,26 +165,23 @@ const PatientRegpopup = ({
         Gender: gender,
       };
       try {
-        await axios.post(
-          baseURL + endPoints.PatientList,
-          obj, setHeaders()
-        );
+        await axios.post(baseURL + endPoints.PatientList, obj, setHeaders());
         setRegLoading(false);
         setPatientCount(patientCount + 1);
+        setName("");
+        setAge(0);
+        setAddress("");
+        setNic("");
+        setEmail("");
+        setPhone("");
+        setDob(null);
+        handleNotification("A new patient registered successfully!", "success");
         setRegopen(false);
-        handleNotification("Patient Registered successfully!", "success");
       } catch (err) {
         handleNotification("Network Error Occurred!", "error");
+      } finally {
+        setRegopen(false);
       }
-      setName("");
-      setAge(0);
-      setAddress("");
-      setNic("");
-      setEmail("");
-      setPhone("");
-      setDob(null);
-      handleNotification("A new patient registered successfully!", "success");
-      setRegopen(false);
     } else {
       setRegLoading(false);
     }
@@ -198,7 +200,6 @@ const PatientRegpopup = ({
               position: "sticky",
               top: 0,
               zIndex: 1100,
-             
             }}
           >
             <Typography
@@ -208,11 +209,12 @@ const PatientRegpopup = ({
               Patient Registration Form
             </Typography>
             <IconButton onClick={handleAddClose} sx={{ color: "#20415C" }}>
-              <CloseIcon  sx={{color:"white"}}/>
+              <CloseIcon sx={{ color: "white" }} />
             </IconButton>
           </DialogTitle>
           <DialogContent sx={{ flex: 1, overflowY: "auto" }}>
             <TextField
+              data-testid="fullname"
               size="small"
               error={nameError}
               required
@@ -221,8 +223,8 @@ const PatientRegpopup = ({
                 nameDisplayError === 1
                   ? "Name is too short!"
                   : nameDisplayError === 2
-                    ? "Invalid Name!"
-                    : ""
+                  ? "Invalid Name!"
+                  : ""
               }
               fullWidth
               margin="dense"
@@ -231,6 +233,7 @@ const PatientRegpopup = ({
               sx={{ marginTop: "3%" }}
             />
             <TextField
+              data-testid="nic"
               size="small"
               label="NIC"
               margin="normal"
@@ -240,6 +243,7 @@ const PatientRegpopup = ({
               onChange={handleNicError}
             />
             <TextField
+              data-testid="address"
               size="small"
               label="Address"
               fullWidth
@@ -249,6 +253,7 @@ const PatientRegpopup = ({
               onChange={handleAddress}
             />
             <TextField
+              data-testid="phone"
               size="small"
               type="text"
               label="Contact Number"
@@ -262,6 +267,7 @@ const PatientRegpopup = ({
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DemoContainer components={["DateField"]}>
                 <DateField
+                  data-testid="birthday"
                   size="small"
                   label="Date Of Birth"
                   value={dob ? dayjs(dob) : null}
@@ -272,6 +278,7 @@ const PatientRegpopup = ({
               </DemoContainer>
             </LocalizationProvider>
             <TextField
+              data-testid="email"
               size="small"
               type="email"
               label="Email Address"
@@ -281,6 +288,7 @@ const PatientRegpopup = ({
               onChange={handleEmail}
             />
             <TextField
+              data-testid="age"
               size="small"
               type="number"
               label="Age"
@@ -296,6 +304,7 @@ const PatientRegpopup = ({
             >
               <InputLabel id="gender-label">Gender</InputLabel>
               <Select
+                data-testid="gender"
                 size="small"
                 labelId="gender-label"
                 id="gender"
@@ -312,6 +321,7 @@ const PatientRegpopup = ({
             sx={{ display: "flex", justifyContent: "flex-end", marginTop: 0 }}
           >
             <LoadingButton
+              data-testid="sendbutton"
               loading={regLoading}
               sx={{
                 margin: "2%",
@@ -322,7 +332,6 @@ const PatientRegpopup = ({
             >
               Send
             </LoadingButton>
-           
           </Box>
         </form>
       </Dialog>

@@ -3,12 +3,10 @@ import { useLocation } from "react-router-dom";
 import { Stack, Button, Box, Typography } from "@mui/material";
 import AppointmentCard from "../AppointmentCard/AppointmentCard";
 import SearchBar from "../Searchbar/Searchbar";
-import Steper from "../Setper/Steper";
 import AllAppDeletePopup from "../AllAppDeletePopup/AllAppDeletePopup";
 import "../../../recep.css";
 import SuccessNotification from "../SnackBar/SuccessNotification";
 import axios from "axios";
-import PageNotFound from "../PageNotFound/PageNotFound";
 import { Load } from "../../Other";
 import { baseURL, endPoints } from "../../../Services/Appointment";
 import AddIcon from "@mui/icons-material/Add";
@@ -44,10 +42,19 @@ const ResDayList = (props) => {
     props.setRenderVal(true);
   };
 
- 
-
   //useeffect for fetching the app of a day of a selected doctor
   useEffect(() => {
+    const tod = new Date(selectedDay); //selected day from date object
+    var d = new Date();
+    const dateWithoutTime = new Date(
+      d.getFullYear(),
+      d.getMonth(),
+      d.getDate()
+    );
+    if (tod < dateWithoutTime) {
+      setAddDisabled(true);
+    }
+
     document.body.style.margin = "0";
     axios
       .get(
@@ -56,11 +63,11 @@ const ResDayList = (props) => {
           `${props.docid}` +
           "/day/" +
           `${selectedDay}`,
-          setHeaders()
+        setHeaders()
       )
       .then((response) => {
         const responseData = response.data;
-        setIsDisabled(responseData.length === 0); // Update isDisabled based on the fetched appointments
+        setIsDisabled(responseData.length === 0 || tod < dateWithoutTime); // Update isDisabled based on the fetched appointments
         const sortedAppointments = responseData
           .slice()
           .sort(
@@ -74,21 +81,20 @@ const ResDayList = (props) => {
         if (sortedAppointments.length >= 10) {
           //blocked more than 10 appointments for a day
           setAddDisabled(true);
-        } else {
+        } else if (tod >= new Date() && sortedAppointments.lenght < 10) {
           setAddDisabled(false);
         }
       })
       .catch((error) => {
-        console.error("Error fetching appointments:", error);
+        handleNotification("Error fetching appointments:", "error");
         setEpage(true);
         setRloadDone(true);
       });
   }, [props.docid, selectedDay, delcount]); // Ensure dependencies are included in the dependency array
 
   return (
-  
     <Box sx={{ height: "100%" }}>
-      {console.log("props.filteredAppointments",props.filteredAppointments)}
+      {console.log("props.filteredAppointments", props.filteredAppointments)}
       <Box
         sx={{
           display: "flex",
@@ -98,18 +104,22 @@ const ResDayList = (props) => {
           backgroundColor: "white",
           width: { sm: "70%", xs: "90%" },
           flexWrap: "wrap-reverse",
-          paddingTop: { xs: "7px", sm: "10px",md:'20px' },
+          paddingTop: { xs: "7px", sm: "10px", md: "20px" },
           zIndex: 10,
         }}
       >
         <SearchBar
+          id="appointmentsearch"
           search={search}
           setSearch={setSearch}
           // mgl="-120%"
           isDisabled={isDisabled}
           placename="Patient name or id..."
         />
-        <Typography variant="h5" sx={{ color: "#d0d1cb",marginBottom:{md:'0px',xs:'5%'} }}>
+        <Typography
+          variant="h5"
+          sx={{ color: "#d0d1cb", marginBottom: { md: "0px", xs: "5%" } }}
+        >
           {selectedDay}
         </Typography>
         <Stack
@@ -121,10 +131,9 @@ const ResDayList = (props) => {
               sm: 5,
               xs: -3,
             },
-            marginTop:{
-              md:0,
-              xs:'3%'
-
+            marginTop: {
+              md: 0,
+              xs: "3%",
             },
             width: { xs: "100%", sm: "auto" },
           }}
@@ -132,6 +141,7 @@ const ResDayList = (props) => {
           direction="row"
         >
           <Button
+            data-testid="addbutton"
             endIcon={<AddIcon />}
             onClick={handleAppAd}
             disabled={addDisabled}
@@ -140,6 +150,7 @@ const ResDayList = (props) => {
             Add
           </Button>
           <Button
+            data-testid="canceltest"
             onClick={handleDeleteAll}
             disabled={isDisabled}
             color="warning"
@@ -173,6 +184,7 @@ const ResDayList = (props) => {
         </Box>
         {
           <Box
+            data-testid="applist"
             sx={{ width: "70%", marginTop: { xs: "40%", sm: "20%", md: "7%" } }}
           >
             {!RloadDone ? <Load></Load> : ""}
@@ -189,7 +201,7 @@ const ResDayList = (props) => {
                         .toLowerCase()
                         .includes(search.toLowerCase());
                 })
-                .map((item,index) => (
+                .map((item, index) => (
                   <div key={item?.id}>
                     <AppointmentCard
                       appno={index}
@@ -223,6 +235,7 @@ const ResDayList = (props) => {
         setDopen={setDopen}
       />
       <SuccessNotification
+        id="resdaylistnotification"
         type={notiType}
         setNotificationOpen={setNotificationOpen}
         notiMessage={notiMessage}

@@ -161,6 +161,7 @@ const AOther = () => {
   return (
     <div>
       <Typography
+        data-testid="A_Other"
         sx={{ textAlign: "center", fontWeight: "bolder", fontSize: "20px" }}
       >
         Attendance of Staff
@@ -170,7 +171,7 @@ const AOther = () => {
           <Box display="flex" justifyContent="center" alignItems="center">
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DateField
-                label="Enter Date"
+                label="Select Month"
                 format="YYYY-MM"
                 size="small"
                 value={date}

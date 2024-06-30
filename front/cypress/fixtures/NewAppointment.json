@@ -1,0 +1,9 @@
+{
+    "id": 1111,
+    "dateTime": "2024-06-30T09:00:00",
+    "status": "new",
+    "patientId": 1,
+    "createdAt": "2024-06-22T00:00:00",
+    "doctorId": 1,
+    "recepId": 1
+}

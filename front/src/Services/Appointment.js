@@ -22,7 +22,10 @@ const endPoints = {
     notifications:'/api/Appointment/Notifications/',
     MarkAsSennNotification:'/api/Appointment/notifications/',
     UnableTimeSlots:'/api/Appointment/BlockDates/',
-    UnblockDay:'/api/Appointment/Unblock/'
+    UnblockDay:'/api/Appointment/Unblock/',
+    PreviousAppointments:'/api/Appointment/PreviousAppointments/',
+    UnblockTime:'/api/Appointment/UnblockTime/',
+
     
   };
   
