@@ -43,7 +43,6 @@ function ResponseAppCalender() {
     //fetching doctors list
     const fetchData = async () => {
       try {
-        //  const response = await fetch("https://localhost:7205/api/Appointment/doctors");
         const response = await fetch(
           baseURL + endPoints.DoctorsList,
           setHeaders()
@@ -100,7 +99,7 @@ function ResponseAppCalender() {
             <SearchBar
               search={search}
               setSearch={setSearch}
-              mgl="10%"
+              //mgl="10%"
               isDisabled={false}
               placename="Doctor name or id..."
             ></SearchBar>

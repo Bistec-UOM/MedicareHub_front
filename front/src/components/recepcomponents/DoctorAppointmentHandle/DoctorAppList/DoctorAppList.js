@@ -224,7 +224,7 @@ const DoctorAppList = ({ Mode, setMode, selectedDAy, docid }) => {
           search={search}
           setSearch={setSearch}
           height="10px"
-          // mgl="20%"
+           mgl="30px"
           isDisabled={isDisabledCancel}
           placename="Patient name or id..."
         />
@@ -255,12 +255,14 @@ const DoctorAppList = ({ Mode, setMode, selectedDAy, docid }) => {
             disabled={isDisabledBlock}
             color="warning"
             variant="outlined"
+            size="small"
             endIcon={<AppBlockingOutlinedIcon />}
           >
             Block
           </Button>
           <Button
             data-testid="cancelbutton"
+             size="small"
             onClick={handleCancelAll}
             disabled={isDisabledCancel}
             sx={{
@@ -275,6 +277,7 @@ const DoctorAppList = ({ Mode, setMode, selectedDAy, docid }) => {
           <Button
             data-testid="cancelbutton"
             onClick={handleClick}
+             size="small"
             disabled={unavialbleDisabled}
             sx={{
               fontWeight: 25,
