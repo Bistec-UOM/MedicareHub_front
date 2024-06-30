@@ -171,6 +171,7 @@ const AddUserDialog = ({open,handleClose,handleInputChange,formErrors,Type,formD
           }}
         >
           <Typography style={{ textAlign: "center" }}>{Type}</Typography>
+
           <CloseIcon onClick={handleClose} sx={{ cursor: "pointer" }} />
         </DialogTitle>
         <DialogContent>

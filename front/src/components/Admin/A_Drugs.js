@@ -60,7 +60,7 @@ const ADrugs = () => {
   const currentDate = new Date();
 
   const [selectedDrug, setSelectedDrug] = useState(null);
-  const [Value, setValue] = React.useState("month"); // Initialize Value state with 'day'
+  const [Value, setValue] = React.useState("week"); // Initialize Value state with 'day'
   const selectDrugType = (value) => {
     setSelectedDrug(value);
   };
@@ -72,7 +72,10 @@ const ADrugs = () => {
   const handleChange = (event) => {
     setValue(event.target.value);
     const newDate = new Date(currentDate);
-    if (event.target.value === "month") {
+    if(event.target.value === "week") {
+      newDate.setDate(currentDate.getDate() - 7);
+    }
+    else if (event.target.value === "month") {
       newDate.setMonth(currentDate.getMonth() - 1);
     } else if (event.target.value === "year") {
       newDate.setFullYear(currentDate.getFullYear() - 1);

@@ -176,7 +176,7 @@ const handleDropBoxClose = () => {
           justifyContent: "space-between",
         }}
       >
-        Edit User
+        User ({formData.id})
         <CloseIcon onClick={handleEditClose} sx={{ cursor: "pointer" }} />
       </DialogTitle>
       <DialogContent >
