@@ -272,10 +272,10 @@ function Patient() {
               data-testId="patient-add-button"
               endIcon={<AddIcon/>}
               sx={{
-                width: "9vh",
-                height: "4.7vh",
+                // width: "9vh",
+                // height: "4.7vh",
                 fontWeight: "bolder",
-                // marginLeft: { xs: "20px" },
+                marginLeft: { xs: "30px",sm:"0px" },
               }}
               onClick={handleAddOpen}
             >
@@ -322,7 +322,7 @@ function Patient() {
             forceUpdate={forceUpdate}
           ></AddPatientDialog>
         </Grid>
-        <Grid sx={{ marginTop: 22 }}>
+        <Grid sx={{ marginTop: {xs:12,sm:22} }}>
           {records.sort((a, b) => a.fullName.localeCompare(b.fullName)).length >
           0
             ? records
