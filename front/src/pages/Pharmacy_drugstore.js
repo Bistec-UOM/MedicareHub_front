@@ -319,9 +319,9 @@ const handleConfirm = () => {
     >
     <Typography sx={{flex:3,ml:'20px'}}>{row.drug}</Typography>
     <Typography sx={{flex:3}}>{row.brand}</Typography>
-    <Typography sx={{flex:1}}>{row.dosage}</Typography>
+    <Typography sx={{flex:1}}>{row.dosage}mg</Typography>
     <Typography sx={{flex:1}}>{row.quantity}</Typography>
-    <Typography sx={{flex:1}}>{row.price}</Typography>
+    <Typography sx={{flex:1}}>Rs.{row.price}</Typography>
 </Card>
   ))
 :<Load></Load>}
