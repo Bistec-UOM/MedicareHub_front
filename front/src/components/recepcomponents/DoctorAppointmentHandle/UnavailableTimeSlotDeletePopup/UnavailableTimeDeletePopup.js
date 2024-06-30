@@ -16,14 +16,14 @@ export default function UnavailableTimeDeletePopup({handleNotification,item,unDe
   
 
 
-  const [delConLoading,setDelConLoading]=useState(false);  //var for loading prop of delete confirm button
-  const handleRealDelete=(item)=> //for real deleting of an appointment from table
+  const [delConLoading,setDelConLoading]=useState(false);  //var for loading prop of remove confirm button
+  const handleRealDelete=(item)=> //for real deleting of an unavailable date from table
   {
     setDelConLoading(true);
     axios.delete(baseURL+endPoints.UnblockTime+`${item.id}`,setHeaders())
   .then(response => {
     setDelConLoading(false);
-    setUnDelCount(unDelCount+1);  //for fetching the newly updated app list
+    setUnDelCount(unDelCount+1);  //for fetching the newly updated unavailable time slot list
     setUnTimeOpen(false);
     handleNotification("Unavailable Time Slot Removed succesfully!","success");
   })
