@@ -194,22 +194,9 @@ const Navbar = () => {
 
   const handleLogout = () => {
     //AUTH----------------------------------
-    if (connection) {
-      connection //---------------------
-        .invoke("ManualDisconnect", profile.Id) //   LOGOUT
-        .then(() => connection.stop()) //---------------------
-        .then(() => {
-          deleteLog();
-          handleClose();
-          navigate("/");
-        })
-        .catch((err) => console.error("Error while disconnecting:", err));
-    } else {
-      console.log("not connected to disconnect");
       deleteLog();
       handleClose();
       navigate("/");
-    }
   };
 
   useEffect(() => {
