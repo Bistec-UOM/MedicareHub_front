@@ -21,7 +21,7 @@ return (
           width: "210px",
           borderRadius: "8px",
           boxShadow: 1,
-          marginBottom:props.mgl?props.mgl:'0',
+         
           }}
   >
   <InputBase id={props.id} disabled={props.isDisabled} type="text" className="form-control" sx={{ flex: 1 }} placeholder={props.placename} value={props.search}  onChange={handleSearch}/>
