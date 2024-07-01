@@ -12,6 +12,7 @@ import DoneIcon from "@mui/icons-material/Done";
 import CloseIcon from "@mui/icons-material/Close";
 import { Avatar } from "@mui/material";
 import ErrorOutlineOutlinedIcon from "@mui/icons-material/ErrorOutlineOutlined";
+import { useEffect } from "react";
 
 const DoctorAppCard = ({
   selectedDay,
@@ -28,6 +29,7 @@ const DoctorAppCard = ({
 }) => {
   const [markAsCompleted, setMarkAsCompleted] = useState(false);
   const [cancelOpen, setCancelOpen] = useState(false);
+  const [appDoneDisabled,setAppDoneDisabled]=useState(false);
   const handleMarkAsCompelted = () => {
     setMarkAsCompleted(true);
   };
@@ -60,7 +62,20 @@ const DoctorAppCard = ({
     return timeString;
   }
 
+  useEffect(() => {
+    const tod = new Date(selectedDay); //selected day from date object
+    var d = new Date();
+    const dateWithoutTime = new Date(
+      d.getFullYear(),
+      d.getMonth(),
+      d.getDate()
+    );
+    setAppDoneDisabled(dateWithoutTime < tod);
+  }, []);
+
   const findOpacityStatus = (label) => {
+   
+
     if (label == "Completed" || label == "cancelled" || label == "noshow" || label=="paid") {
       return true;
     } else {
@@ -209,6 +224,7 @@ const DoctorAppCard = ({
                     ) : (
                       <Box>
                         <IconButton
+                          disabled={appDoneDisabled}
                           data-testid="doneicon"
                           onClick={handleMarkAsCompelted}
                         >
