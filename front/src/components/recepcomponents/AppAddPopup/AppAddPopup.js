@@ -36,7 +36,7 @@ export default function AppAddPopup({
   setUnableTimeSlots,
 }) {
   const minTime = dayjs(selectedDay).set("hour", 8).set("minute", 55); // 9:00 AM  minimum available time
-  const maxTime = dayjs(selectedDay).set("hour", 17).set("minute", 0); // 5:00 PM  maximum available time
+  const maxTime = dayjs(selectedDay).set("hour", 19).set("minute", 0); // 5:00 PM  maximum available time
   const [RloadDone, setRloadDone] = useState(true); //state for app add loading
   const [selectedTime, setSelectedTime] = useState(
     dayjs(selectedDay).hour(9).minute(0).second(0)

@@ -204,19 +204,22 @@ const DoctorAppList = ({ Mode, setMode, selectedDAy, docid }) => {
     <Box sx={{ height: "100%" }}>
       <Box
         sx={{
+         
           display: "flex",
           justifyContent: "space-between",
-          alignItem: "center",
+          alignItems: "center",
           position: "fixed",
-          backgroundColor: "white",
+         // backgroundColor: "yellow",
           width: { sm: "70%", xs: "90%" },
           flexWrap: "wrap-reverse",
-          paddingTop: { xs: "7px", sm: "10px", md: "20px" },
+          paddingTop: { xs: "7px", sm: "10px" },
           zIndex: 10,
+          height:'50px',
+          top:'64px'
         }}
       >
         <ArrowBackOutlinedIcon
-          sx={{ paddingBottom: "40px" }}
+          sx={{}}
           onClick={handleBackButton}
         ></ArrowBackOutlinedIcon>
         <SearchBar
@@ -224,7 +227,7 @@ const DoctorAppList = ({ Mode, setMode, selectedDAy, docid }) => {
           search={search}
           setSearch={setSearch}
           height="10px"
-           mgl="30px"
+          // mgl="30px"
           isDisabled={isDisabledCancel}
           placename="Patient name or id..."
         />
@@ -234,7 +237,6 @@ const DoctorAppList = ({ Mode, setMode, selectedDAy, docid }) => {
         <Stack
           sx={{
             justifyContent: "flex-end",
-            marginBottom: 3,
             marginRight: {
               md: 3,
               sm: 5,
