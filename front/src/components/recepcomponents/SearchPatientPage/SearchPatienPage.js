@@ -171,7 +171,7 @@ const SearchPatientPage = (props) => {
             sx={{
               display: "flex",
               justifyContent: "space-between",
-              alignItem: "center",
+              alignItems: "center",
               position: "fixed",
               backgroundColor: "white",
               width: { sm: "70%", xs: "90%" },
@@ -184,7 +184,7 @@ const SearchPatientPage = (props) => {
               id="patientsearch"
               search={search}
               setSearch={setSearch}
-              mgl="20%"
+              mgl="30px"
               isDisabled={false}
               placename="Patient name or id..."
             />

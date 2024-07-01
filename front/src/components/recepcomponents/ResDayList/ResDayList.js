@@ -12,6 +12,8 @@ import { baseURL, endPoints } from "../../../Services/Appointment";
 import AddIcon from "@mui/icons-material/Add";
 import { setHeaders } from "../../../Services/Auth";
 import CloseIcon from "@mui/icons-material/Close";
+import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
+import { useNavigate } from "react-router-dom";
 
 //day app list page for a day
 
@@ -41,6 +43,11 @@ const ResDayList = (props) => {
   const handleAppAd = () => {
     props.setRenderVal(true);
   };
+  const handleBackButton = () => {
+    navigate("/res");
+  };
+
+  const navigate = useNavigate();
 
   //useeffect for fetching the app of a day of a selected doctor
   useEffect(() => {
@@ -99,7 +106,7 @@ const ResDayList = (props) => {
         sx={{
           display: "flex",
           justifyContent: "space-between",
-          alignItem: "center",
+          alignItems: "center",
           position: "fixed",
           backgroundColor: "white",
           width: { sm: "70%", xs: "90%" },
