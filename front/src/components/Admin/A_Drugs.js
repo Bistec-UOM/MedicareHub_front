@@ -66,7 +66,7 @@ const ADrugs = () => {
   };
   // const currentDate = new Date();
   const initialTimeGap = new Date();
-  initialTimeGap.setDate(currentDate.getDate() - 30);
+  initialTimeGap.setDate(currentDate.getDate() - 7);
   const [TimeGap, setTimeGap] = React.useState(initialTimeGap);
 
   const handleChange = (event) => {

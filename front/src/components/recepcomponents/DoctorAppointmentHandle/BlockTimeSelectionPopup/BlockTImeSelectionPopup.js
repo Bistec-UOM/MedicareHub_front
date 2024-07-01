@@ -25,6 +25,7 @@ export default function BlockTimeSelectionPopup({
   docDayBlockPopup,
   timeSelection,
   setTimeSelection,
+  setBlockSelectionPopup,
   setDocDayBlockPopup,
   filteredAppointments,
   setFilteredAppointments,
@@ -35,6 +36,8 @@ export default function BlockTimeSelectionPopup({
 }) {
   const handleClose = () => {
     setTimeSelection(false);
+    setBlockSelectionPopup(true);
+    
   };
 
   const minTime = dayjs(selectedDay).set("hour", 8).set("minute", 55); // 9:00 AM minimum available time
